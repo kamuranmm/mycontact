@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CardPro — Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0a1628;--navy-mid:#112040;--blue:#185FA5;--blue-light:#378ADD;
+  --accent:#4FACFE;--gold:#C9A84C;--white:#ffffff;--gray:#8A9BB5;
+  --gray-light:#E8EDF5;--surface:#f4f6fb;--error:#e74c3c;--success:#27ae60;
+  --warning:#f39c12;--sidebar:240px;
+}
+body{font-family:'DM Sans',sans-serif;background:var(--surface);display:flex;min-height:100vh;color:var(--navy)}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar);background:var(--navy);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;transition:transform .3s}
+.sidebar-brand{padding:1.5rem;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:10px}
+.brand-mark{width:34px;height:34px;background:linear-gradient(135deg,var(--blue),var(--accent));border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.brand-name{font-family:'DM Serif Display',serif;font-size:18px;color:var(--white)}
+.brand-name span{color:var(--accent)}
+.sidebar-nav{flex:1;padding:1rem 0;overflow-y:auto}
+.nav-section{padding:0.5rem 1rem 0.25rem;font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;margin-top:0.5rem}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 1rem;font-size:13px;color:rgba(255,255,255,0.6);cursor:pointer;transition:all .15s;border-left:3px solid transparent;margin:1px 0}
+.nav-item:hover{color:var(--white);background:rgba(255,255,255,0.05)}
+.nav-item.active{color:var(--white);background:rgba(79,172,254,0.12);border-left-color:var(--accent)}
+.nav-item svg{flex-shrink:0;opacity:0.7}
+.nav-item.active svg{opacity:1}
+.sidebar-footer{padding:1rem;border-top:1px solid rgba(255,255,255,0.08)}
+.admin-info{display:flex;align-items:center;gap:10px}
+.admin-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--white);flex-shrink:0}
+.admin-name{font-size:13px;color:var(--white);font-weight:500}
+.admin-role{font-size:11px;color:rgba(255,255,255,0.4)}
+.logout-btn{margin-top:0.75rem;width:100%;padding:8px;background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.2);color:#e74c3c;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
+.logout-btn:hover{background:rgba(231,76,60,0.2)}
+
+/* MAIN */
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:var(--white);border-bottom:1px solid var(--gray-light);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.topbar-title{font-size:15px;font-weight:500;color:var(--navy)}
+.topbar-right{display:flex;align-items:center;gap:12px}
+.badge-admin{background:rgba(79,172,254,0.12);color:var(--blue);font-size:11px;padding:3px 10px;border-radius:20px;font-weight:500;border:1px solid rgba(79,172,254,0.2)}
+.content{padding:2rem;flex:1}
+.panel{display:none}
+.panel.active{display:block}
+
+/* STATS */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:2rem}
+.stat-card{background:var(--white);border-radius:12px;padding:1.25rem;border:1px solid var(--gray-light)}
+.stat-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.stat-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.stat-icon.blue{background:rgba(24,95,165,0.1)}
+.stat-icon.green{background:rgba(39,174,96,0.1)}
+.stat-icon.gold{background:rgba(201,168,76,0.1)}
+.stat-icon.red{background:rgba(231,76,60,0.1)}
+.stat-trend{font-size:11px;font-weight:500;padding:2px 7px;border-radius:20px}
+.stat-trend.up{background:#f0fdf4;color:var(--success)}
+.stat-trend.down{background:#fef2f2;color:var(--error)}
+.stat-num{font-family:'DM Serif Display',serif;font-size:30px;color:var(--navy);line-height:1}
+.stat-label{font-size:12px;color:var(--gray);margin-top:4px}
+
+/* SECTION */
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.section-title{font-size:15px;font-weight:500;color:var(--navy)}
+.card{background:var(--white);border-radius:12px;border:1px solid var(--gray-light);overflow:hidden}
+
+/* TABLE */
+.table-toolbar{padding:1rem 1.25rem;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--gray-light);flex-wrap:wrap}
+.search-input{flex:1;min-width:200px;padding:8px 12px;border:1.5px solid var(--gray-light);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--navy);outline:none;background:var(--surface);transition:border-color .2s}
+.search-input:focus{border-color:var(--blue)}
+.filter-select{padding:8px 10px;border:1.5px solid var(--gray-light);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--navy);outline:none;background:var(--white);cursor:pointer}
+.btn{padding:8px 16px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;border:1.5px solid var(--gray-light);background:var(--white);color:var(--navy);display:inline-flex;align-items:center;gap:6px}
+.btn:hover{background:var(--surface)}
+.btn-primary{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.btn-primary:hover{background:var(--navy-mid)}
+.btn-sm{padding:5px 10px;font-size:12px}
+.btn-danger{border-color:rgba(231,76,60,0.3);color:var(--error);background:rgba(231,76,60,0.05)}
+.btn-danger:hover{background:rgba(231,76,60,0.1)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{padding:10px 1.25rem;text-align:left;font-size:11px;font-weight:500;color:var(--gray);background:var(--surface);letter-spacing:0.03em;border-bottom:1px solid var(--gray-light)}
+tbody td{padding:12px 1.25rem;border-bottom:1px solid var(--gray-light);color:var(--navy);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:#fafbfd}
+.badge{display:inline-flex;align-items:center;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:500}
+.badge-pro{background:#eff6ff;color:#1d4ed8}
+.badge-premium{background:#fffbeb;color:#b45309}
+.badge-free{background:var(--surface);color:var(--gray)}
+.badge-active{background:#f0fdf4;color:var(--success)}
+.badge-blocked{background:#fef2f2;color:var(--error)}
+.user-cell{display:flex;align-items:center;gap:10px}
+.user-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--blue-light),var(--accent));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--white);flex-shrink:0}
+.user-name{font-weight:500;font-size:13px}
+.user-email{font-size:11px;color:var(--gray)}
+.action-btns{display:flex;gap:6px}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(10,22,40,0.5);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--white);border-radius:16px;padding:2rem;width:100%;max-width:440px;transform:translateY(12px);transition:transform .2s}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--navy);margin-bottom:0.25rem}
+.modal-sub{font-size:13px;color:var(--gray);margin-bottom:1.5rem}
+.form-group{margin-bottom:1rem}
+.form-label{display:block;font-size:12px;font-weight:500;color:var(--navy);margin-bottom:5px}
+.form-input{width:100%;padding:10px 12px;border:1.5px solid var(--gray-light);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--navy);outline:none;background:var(--surface);transition:border-color .2s}
+.form-input:focus{border-color:var(--blue);background:var(--white)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.modal-footer{display:flex;gap:10px;margin-top:1.5rem}
+.modal-footer .btn{flex:1;justify-content:center}
+.error-box{background:#fef2f2;border:1px solid #fecaca;color:var(--error);font-size:12px;padding:9px 12px;border-radius:8px;margin-bottom:1rem;display:none}
+.error-box.show{display:block}
+.success-box{background:#f0fdf4;border:1px solid #bbf7d0;color:var(--success);font-size:12px;padding:9px 12px;border-radius:8px;margin-bottom:1rem;display:none}
+.success-box.show{display:block}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:3rem;color:var(--gray)}
+.empty-icon{font-size:40px;margin-bottom:1rem;opacity:0.4}
+.empty-text{font-size:14px}
+
+/* LOADING */
+.loading-row td{text-align:center;padding:2rem;color:var(--gray);font-size:13px}
+
+/* Plan modal */
+.plan-options{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem}
+.plan-opt{padding:12px 8px;border:1.5px solid var(--gray-light);border-radius:10px;text-align:center;cursor:pointer;transition:all .15s}
+.plan-opt:hover{border-color:var(--blue-light)}
+.plan-opt.selected{border-color:var(--blue);background:rgba(24,95,165,0.05)}
+.plan-opt-name{font-size:13px;font-weight:500;color:var(--navy)}
+.plan-opt-desc{font-size:10px;color:var(--gray);margin-top:2px}
+
+/* TOAST */
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--navy);color:var(--white);padding:12px 18px;border-radius:10px;font-size:13px;z-index:999;transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:var(--success)}
+.toast.error{background:var(--error)}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-mark">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2"/><circle cx="12" cy="13" r="2"/></svg>
+    </div>
+    <span class="brand-name">Card<span>Pro</span></span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Ümumi</div>
+    <div class="nav-item active" onclick="showPanel('overview')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+      İcmal
+    </div>
+    <div class="nav-section">İdarəetmə</div>
+    <div class="nav-item" onclick="showPanel('users')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+      İstifadəçilər
+    </div>
+    <div class="nav-item" onclick="showPanel('cards')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2"/></svg>
+      Bütün kartlar
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="admin-info">
+      <div class="admin-avatar" id="adminInitials">A</div>
+      <div>
+        <div class="admin-name" id="adminName">Admin</div>
+        <div class="admin-role">Super Admin</div>
+      </div>
+    </div>
+    <button class="logout-btn" onclick="doLogout()">Çıxış</button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbarTitle">İcmal</div>
+    <div class="topbar-right">
+      <span class="badge-admin">Admin Panel</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- OVERVIEW -->
+    <div class="panel active" id="panel-overview">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon blue">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            </div>
+            <span class="stat-trend up" id="trendUsers">—</span>
+          </div>
+          <div class="stat-num" id="statUsers">—</div>
+          <div class="stat-label">Ümumi istifadəçi</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon green">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2"/></svg>
+            </div>
+            <span class="stat-trend up" id="trendCards">—</span>
+          </div>
+          <div class="stat-num" id="statCards">—</div>
+          <div class="stat-label">Aktiv kartlar</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon gold">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <span class="stat-trend up" id="trendPro">—</span>
+          </div>
+          <div class="stat-num" id="statPro">—</div>
+          <div class="stat-label">Pro istifadəçilər</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon red">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            </div>
+            <span class="stat-trend down" id="trendBlocked">—</span>
+          </div>
+          <div class="stat-num" id="statBlocked">—</div>
+          <div class="stat-label">Bloklu hesablar</div>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <div class="section-title">Son istifadəçilər</div>
+        <button class="btn btn-sm" onclick="showPanel('users')">Hamısına bax</button>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>İstifadəçi</th><th>Plan</th><th>Status</th><th>Qeydiyyat</th></tr></thead>
+          <tbody id="recentUsersBody">
+            <tr class="loading-row"><td colspan="4">Yüklənir...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- USERS -->
+    <div class="panel" id="panel-users">
+      <div class="section-head">
+        <div class="section-title">İstifadəçilər</div>
+        <button class="btn btn-primary" onclick="openCreateModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Yeni istifadəçi
+        </button>
+      </div>
+      <div class="card">
+        <div class="table-toolbar">
+          <input class="search-input" type="text" placeholder="Ad və ya email ilə axtar..." id="userSearch" oninput="filterUsers()">
+          <select class="filter-select" id="planFilter" onchange="filterUsers()">
+            <option value="">Bütün planlar</option>
+            <option value="free">Free</option>
+            <option value="pro">Pro</option>
+            <option value="premium">Premium</option>
+          </select>
+          <select class="filter-select" id="statusFilter" onchange="filterUsers()">
+            <option value="">Bütün statuslar</option>
+            <option value="active">Aktiv</option>
+            <option value="blocked">Bloklu</option>
+          </select>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>İstifadəçi</th>
+              <th>Plan</th>
+              <th>Status</th>
+              <th>Kart linki</th>
+              <th>Qeydiyyat</th>
+              <th>Əməliyyat</th>
+            </tr>
+          </thead>
+          <tbody id="usersBody">
+            <tr class="loading-row"><td colspan="6">Yüklənir...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CARDS -->
+    <div class="panel" id="panel-cards">
+      <div class="section-head">
+        <div class="section-title">Bütün kartlar</div>
+      </div>
+      <div class="card">
+        <table>
+          <thead>
+            <tr><th>İstifadəçi</th><th>Vəzifə</th><th>Şirkət</th><th>Plan</th><th>Əməliyyat</th></tr>
+          </thead>
+          <tbody id="cardsBody">
+            <tr class="loading-row"><td colspan="5">Yüklənir...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- CREATE USER MODAL -->
+<div class="modal-overlay" id="createModal">
+  <div class="modal">
+    <div class="modal-title">Yeni istifadəçi</div>
+    <div class="modal-sub">Firebase-də hesab yaradılacaq</div>
+    <div class="error-box" id="createErr"></div>
+    <div class="success-box" id="createOk"></div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Ad</label>
+        <input class="form-input" id="newName" placeholder="Aytən">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Soyad</label>
+        <input class="form-input" id="newSurname" placeholder="Həsənova">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Email</label>
+      <input class="form-input" type="email" id="newEmail" placeholder="ayten@email.com">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Şifrə</label>
+      <input class="form-input" type="password" id="newPass" placeholder="Minimum 6 simvol">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Kart linki (slug)</label>
+      <input class="form-input" id="newSlug" placeholder="ayten-hasanova">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Plan</label>
+      <div class="plan-options">
+        <div class="plan-opt selected" onclick="selectPlan(this,'free')">
+          <div class="plan-opt-name">Free</div>
+          <div class="plan-opt-desc">Əsas funksiyalar</div>
+        </div>
+        <div class="plan-opt" onclick="selectPlan(this,'pro')">
+          <div class="plan-opt-name">Pro</div>
+          <div class="plan-opt-desc">Tam funksiyalar</div>
+        </div>
+        <div class="plan-opt" onclick="selectPlan(this,'premium')">
+          <div class="plan-opt-name">Premium</div>
+          <div class="plan-opt-desc">Prioritet dəstək</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('createModal')">Ləğv et</button>
+      <button class="btn btn-primary" id="createBtn" onclick="createUser()">
+        <span class="btn-text">Yarat</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT USER MODAL -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-title">İstifadəçini redaktə et</div>
+    <div class="modal-sub" id="editModalSub">—</div>
+    <div class="error-box" id="editErr"></div>
+    <input type="hidden" id="editUid">
+    <div class="form-group">
+      <label class="form-label">Ad Soyad</label>
+      <input class="form-input" id="editName">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Kart linki</label>
+      <input class="form-input" id="editSlug">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Plan</label>
+      <div class="plan-options" id="editPlanOpts">
+        <div class="plan-opt" onclick="selectEditPlan(this,'free')"><div class="plan-opt-name">Free</div></div>
+        <div class="plan-opt" onclick="selectEditPlan(this,'pro')"><div class="plan-opt-name">Pro</div></div>
+        <div class="plan-opt" onclick="selectEditPlan(this,'premium')"><div class="plan-opt-name">Premium</div></div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Status</label>
+      <select class="form-input" id="editStatus">
+        <option value="active">Aktiv</option>
+        <option value="blocked">Bloklu</option>
+      </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" onclick="deleteUser()">Sil</button>
+      <button class="btn" onclick="closeModal('editModal')">Ləğv et</button>
+      <button class="btn btn-primary" onclick="saveUser()">Yadda saxla</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getDatabase, ref, get, set, update, remove, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBx81QDpjHSPvhkmnnSUNkJYMvR_fnRTaU",
+  authDomain: "mycontact-e626e.firebaseapp.com",
+  databaseURL: "https://mycontact-e626e-default-rtdb.firebaseio.com",
+  projectId: "mycontact-e626e",
+  storageBucket: "mycontact-e626e.firebasestorage.app",
+  messagingSenderId: "420594516827",
+  appId: "1:420594516827:web:f30266800c690c6ff9107e"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
+
+let allUsers = [];
+let selectedPlan = 'free';
+let selectedEditPlan = 'free';
+
+// AUTH CHECK
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = 'index.html'; return; }
+  const snap = await get(ref(db, `users/${user.uid}/role`));
+  if (snap.val() !== 'admin') { window.location.href = 'dashboard.html'; return; }
+  const nameSnap = await get(ref(db, `users/${user.uid}/name`));
+  const name = nameSnap.val() || user.email;
+  document.getElementById('adminName').textContent = name;
+  document.getElementById('adminInitials').textContent = name.charAt(0).toUpperCase();
+  loadAll();
+});
+
+function loadAll() {
+  onValue(ref(db, 'users'), (snap) => {
+    const data = snap.val() || {};
+    allUsers = Object.entries(data)
+      .filter(([uid, u]) => u.role !== 'admin')
+      .map(([uid, u]) => ({ uid, ...u }));
+    renderStats();
+    renderRecentUsers();
+    renderUsers(allUsers);
+    renderCards();
+  });
+}
+
+function renderStats() {
+  const total = allUsers.length;
+  const active = allUsers.filter(u => u.status !== 'blocked').length;
+  const pro = allUsers.filter(u => u.plan === 'pro' || u.plan === 'premium').length;
+  const blocked = allUsers.filter(u => u.status === 'blocked').length;
+  document.getElementById('statUsers').textContent = total;
+  document.getElementById('statCards').textContent = active;
+  document.getElementById('statPro').textContent = pro;
+  document.getElementById('statBlocked').textContent = blocked;
+  document.getElementById('trendUsers').textContent = total + ' cəmi';
+  document.getElementById('trendCards').textContent = active + ' aktiv';
+  document.getElementById('trendPro').textContent = pro + ' pro';
+  document.getElementById('trendBlocked').textContent = blocked + ' blok';
+}
+
+function renderRecentUsers() {
+  const tbody = document.getElementById('recentUsersBody');
+  const recent = [...allUsers].slice(-5).reverse();
+  if (!recent.length) { tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--gray)">Hələ istifadəçi yoxdur</td></tr>'; return; }
+  tbody.innerHTML = recent.map(u => `
+    <tr>
+      <td><div class="user-cell">
+        <div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div>
+        <div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div>
+      </div></td>
+      <td>${planBadge(u.plan)}</td>
+      <td>${statusBadge(u.status)}</td>
+      <td style="font-size:12px;color:var(--gray)">${u.createdAt ? new Date(u.createdAt).toLocaleDateString('az') : '—'}</td>
+    </tr>`).join('');
+}
+
+function renderUsers(users) {
+  const tbody = document.getElementById('usersBody');
+  if (!users.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--gray)">Nəticə tapılmadı</td></tr>'; return; }
+  tbody.innerHTML = users.map(u => `
+    <tr>
+      <td><div class="user-cell">
+        <div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div>
+        <div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div>
+      </div></td>
+      <td>${planBadge(u.plan)}</td>
+      <td>${statusBadge(u.status)}</td>
+      <td style="font-size:12px;color:var(--blue-light)">${u.slug ? 'cardpro.az/'+u.slug : '—'}</td>
+      <td style="font-size:12px;color:var(--gray)">${u.createdAt ? new Date(u.createdAt).toLocaleDateString('az') : '—'}</td>
+      <td><div class="action-btns">
+        <button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button>
+        <button class="btn btn-sm" onclick="toggleBlock('${u.uid}','${u.status}')">${u.status==='blocked'?'Aktiv et':'Blokla'}</button>
+      </div></td>
+    </tr>`).join('');
+}
+
+function renderCards() {
+  const tbody = document.getElementById('cardsBody');
+  const withCards = allUsers.filter(u => u.card);
+  if (!withCards.length) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray)">Hələ kart yoxdur</td></tr>'; return; }
+  tbody.innerHTML = withCards.map(u => `
+    <tr>
+      <td><div class="user-cell">
+        <div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div>
+        <div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div>
+      </div></td>
+      <td style="font-size:13px">${u.card.position||'—'}</td>
+      <td style="font-size:13px">${u.card.company||'—'}</td>
+      <td>${planBadge(u.plan)}</td>
+      <td><button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button></td>
+    </tr>`).join('');
+}
+
+function planBadge(plan) {
+  if (plan === 'pro') return '<span class="badge badge-pro">Pro</span>';
+  if (plan === 'premium') return '<span class="badge badge-premium">Premium</span>';
+  return '<span class="badge badge-free">Free</span>';
+}
+
+function statusBadge(status) {
+  if (status === 'blocked') return '<span class="badge badge-blocked">Bloklu</span>';
+  return '<span class="badge badge-active">Aktiv</span>';
+}
+
+window.filterUsers = function() {
+  const q = document.getElementById('userSearch').value.toLowerCase();
+  const plan = document.getElementById('planFilter').value;
+  const status = document.getElementById('statusFilter').value;
+  const filtered = allUsers.filter(u => {
+    const matchQ = !q || (u.name||'').toLowerCase().includes(q) || (u.email||'').toLowerCase().includes(q);
+    const matchPlan = !plan || u.plan === plan;
+    const matchStatus = !status || (status === 'blocked' ? u.status === 'blocked' : u.status !== 'blocked');
+    return matchQ && matchPlan && matchStatus;
+  });
+  renderUsers(filtered);
+};
+
+window.showPanel = function(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  const titles = { overview: 'İcmal', users: 'İstifadəçilər', cards: 'Bütün kartlar' };
+  document.getElementById('topbarTitle').textContent = titles[name] || name;
+  const idx = { overview: 0, users: 1, cards: 2 };
+  const items = document.querySelectorAll('.nav-item');
+  if (items[idx[name]]) items[idx[name]].classList.add('active');
+};
+
+window.openCreateModal = function() {
+  document.getElementById('createErr').classList.remove('show');
+  document.getElementById('createOk').classList.remove('show');
+  ['newName','newSurname','newEmail','newPass','newSlug'].forEach(id => document.getElementById(id).value = '');
+  selectedPlan = 'free';
+  document.querySelectorAll('#createModal .plan-opt').forEach(o => o.classList.remove('selected'));
+  document.querySelector('#createModal .plan-opt').classList.add('selected');
+  document.getElementById('createModal').classList.add('open');
+};
+
+window.selectPlan = function(el, plan) {
+  selectedPlan = plan;
+  document.querySelectorAll('#createModal .plan-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+};
+
+window.selectEditPlan = function(el, plan) {
+  selectedEditPlan = plan;
+  document.querySelectorAll('#editPlanOpts .plan-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+};
+
+window.closeModal = function(id) {
+  document.getElementById(id).classList.remove('open');
+};
+
+window.createUser = async function() {
+  const name = document.getElementById('newName').value.trim();
+  const surname = document.getElementById('newSurname').value.trim();
+  const email = document.getElementById('newEmail').value.trim();
+  const pass = document.getElementById('newPass').value;
+  const slug = document.getElementById('newSlug').value.trim().toLowerCase().replace(/\s+/g, '-');
+  const err = document.getElementById('createErr');
+  const ok = document.getElementById('createOk');
+  err.classList.remove('show'); ok.classList.remove('show');
+
+  if (!name || !email || !pass || !slug) {
+    err.textContent = 'Bütün sahələri doldurun.'; err.classList.add('show'); return;
+  }
+  if (pass.length < 6) {
+    err.textContent = 'Şifrə minimum 6 simvol olmalıdır.'; err.classList.add('show'); return;
+  }
+
+  const btn = document.getElementById('createBtn');
+  btn.disabled = true; btn.textContent = 'Yaradılır...';
+
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+    await set(ref(db, `users/${cred.user.uid}`), {
+      name: name + ' ' + surname,
+      email,
+      slug,
+      plan: selectedPlan,
+      status: 'active',
+      role: 'user',
+      createdAt: Date.now()
+    });
+    ok.textContent = 'İstifadəçi uğurla yaradıldı!'; ok.classList.add('show');
+    showToast('İstifadəçi yaradıldı', 'success');
+    setTimeout(() => closeModal('createModal'), 1500);
+  } catch(e) {
+    let msg = 'Xəta baş verdi.';
+    if (e.code === 'auth/email-already-in-use') msg = 'Bu email artıq istifadə olunur.';
+    err.textContent = msg; err.classList.add('show');
+  }
+  btn.disabled = false; btn.textContent = 'Yarat';
+};
+
+window.openEditModal = function(uid) {
+  const u = allUsers.find(x => x.uid === uid);
+  if (!u) return;
+  document.getElementById('editUid').value = uid;
+  document.getElementById('editModalSub').textContent = u.email || '';
+  document.getElementById('editName').value = u.name || '';
+  document.getElementById('editSlug').value = u.slug || '';
+  document.getElementById('editStatus').value = u.status === 'blocked' ? 'blocked' : 'active';
+  selectedEditPlan = u.plan || 'free';
+  document.querySelectorAll('#editPlanOpts .plan-opt').forEach(o => o.classList.remove('selected'));
+  const plans = ['free','pro','premium'];
+  const pi = plans.indexOf(selectedEditPlan);
+  if (pi >= 0) document.querySelectorAll('#editPlanOpts .plan-opt')[pi].classList.add('selected');
+  document.getElementById('editErr').classList.remove('show');
+  document.getElementById('editModal').classList.add('open');
+};
+
+window.saveUser = async function() {
+  const uid = document.getElementById('editUid').value;
+  const name = document.getElementById('editName').value.trim();
+  const slug = document.getElementById('editSlug').value.trim();
+  const status = document.getElementById('editStatus').value;
+  const err = document.getElementById('editErr');
+  if (!name || !slug) { err.textContent = 'Ad və link boş ola bilməz.'; err.classList.add('show'); return; }
+  await update(ref(db, `users/${uid}`), { name, slug, plan: selectedEditPlan, status });
+  showToast('Dəyişikliklər saxlanıldı', 'success');
+  closeModal('editModal');
+};
+
+window.deleteUser = async function() {
+  const uid = document.getElementById('editUid').value;
+  if (!confirm('Bu istifadəçini silmək istədiyinizdən əminsiniz?')) return;
+  await remove(ref(db, `users/${uid}`));
+  showToast('İstifadəçi silindi', 'error');
+  closeModal('editModal');
+};
+
+window.toggleBlock = async function(uid, currentStatus) {
+  const newStatus = currentStatus === 'blocked' ? 'active' : 'blocked';
+  await update(ref(db, `users/${uid}`), { status: newStatus });
+  showToast(newStatus === 'blocked' ? 'İstifadəçi bloklandı' : 'İstifadəçi aktivləşdirildi', 'success');
+};
+
+window.doLogout = async function() {
+  await signOut(auth);
+  window.location.href = 'index.html';
+};
+
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  setTimeout(() => t.className = 'toast', 3000);
+}
+
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+});
+</script>
+</body>
+</html>

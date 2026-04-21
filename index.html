@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CardPro — Giriş</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #112040;
+    --blue: #185FA5;
+    --blue-light: #378ADD;
+    --accent: #4FACFE;
+    --gold: #C9A84C;
+    --white: #ffffff;
+    --gray: #8A9BB5;
+    --gray-light: #E8EDF5;
+    --surface: #f4f6fb;
+    --error: #e74c3c;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface);
+    min-height: 100vh;
+    display: flex;
+    align-items: stretch;
+  }
+
+  /* Left panel */
+  .left {
+    width: 52%;
+    background: var(--navy);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .left::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -120px;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(55,138,221,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .left::after {
+    content: '';
+    position: absolute;
+    bottom: -80px; left: -80px;
+    width: 300px; height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,168,76,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .brand-mark {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--blue) 0%, var(--accent) 100%);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .brand-mark svg { width: 18px; height: 18px; }
+
+  .brand-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--white);
+    letter-spacing: 0.01em;
+  }
+
+  .brand-name span { color: var(--accent); }
+
+  .hero {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(79,172,254,0.12);
+    border: 1px solid rgba(79,172,254,0.25);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 42px;
+    line-height: 1.15;
+    color: var(--white);
+    margin-bottom: 1rem;
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero p {
+    font-size: 15px;
+    color: var(--gray);
+    line-height: 1.7;
+    max-width: 340px;
+    margin-bottom: 2rem;
+  }
+
+  .feature-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+  }
+
+  .feature-icon {
+    width: 28px; height: 28px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .stats-row {
+    display: flex;
+    gap: 2rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stat { }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--white);
+  }
+  .stat-label {
+    font-size: 11px;
+    color: var(--gray);
+    margin-top: 2px;
+  }
+
+  /* Right panel */
+  .right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    background: var(--white);
+  }
+
+  .login-box {
+    width: 100%;
+    max-width: 380px;
+  }
+
+  .login-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 28px;
+    color: var(--navy);
+    margin-bottom: 6px;
+  }
+
+  .login-sub {
+    font-size: 14px;
+    color: var(--gray);
+    margin-bottom: 2rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--navy);
+    margin-bottom: 6px;
+    letter-spacing: 0.02em;
+  }
+
+  .form-input {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid var(--gray-light);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--navy);
+    background: var(--surface);
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+  }
+
+  .form-input:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(24,95,165,0.1);
+    background: var(--white);
+  }
+
+  .form-input::placeholder { color: var(--gray); }
+
+  .btn-login {
+    width: 100%;
+    padding: 12px;
+    background: var(--navy);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .2s, transform .1s;
+    margin-top: 0.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-login:hover { background: var(--navy-mid); }
+  .btn-login:active { transform: scale(0.99); }
+
+  .btn-login:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  .btn-login .spinner {
+    display: none;
+    width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+    margin: 0 auto;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .btn-login.loading .btn-text { display: none; }
+  .btn-login.loading .spinner { display: block; }
+
+  .error-msg {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    color: var(--error);
+    font-size: 13px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    display: none;
+  }
+
+  .error-msg.show { display: block; }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 1.5rem 0;
+    color: var(--gray);
+    font-size: 12px;
+  }
+
+  .divider::before, .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--gray-light);
+  }
+
+  .secure-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--gray);
+    margin-top: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    body { flex-direction: column; }
+    .left { width: 100%; padding: 2rem; min-height: 260px; }
+    .hero h1 { font-size: 28px; }
+    .stats-row { display: none; }
+    .right { padding: 2rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="left">
+  <div class="brand">
+    <div class="brand-mark">
+      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
+        <rect x="3" y="6" width="18" height="13" rx="2"/>
+        <path d="M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2"/>
+        <circle cx="12" cy="13" r="2"/>
+      </svg>
+    </div>
+    <span class="brand-name">Card<span>Pro</span></span>
+  </div>
+
+  <div class="hero">
+    <div class="hero-tag">
+      <div class="hero-dot"></div>
+      Rəqəmsal vizit kart platforması
+    </div>
+    <h1>Peşəkar kartınız<br><em>həmişə yanınızda</em></h1>
+    <p>Bir link ilə bütün kontakt məlumatlarınızı, sosial şəbəkələrinizi və portfelinizi paylaşın.</p>
+    <div class="feature-list">
+      <div class="feature-item">
+        <div class="feature-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        Profil şəkli və cover foto
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3m0 4h4v-4m-7 0h3"/></svg>
+        </div>
+        QR kod — vCard ilə kontakt saxla
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+        </div>
+        PDF, YouTube video, sosial şəbəkələr
+      </div>
+    </div>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat">
+      <div class="stat-num">1K+</div>
+      <div class="stat-label">İstifadəçi</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">50K+</div>
+      <div class="stat-label">Kart baxışı</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">99%</div>
+      <div class="stat-label">Uptime</div>
+    </div>
+  </div>
+</div>
+
+<div class="right">
+  <div class="login-box">
+    <div class="login-title">Xoş gəldiniz</div>
+    <div class="login-sub">Hesabınıza daxil olun</div>
+
+    <div class="error-msg" id="errorMsg"></div>
+
+    <div class="form-group">
+      <label class="form-label">Email ünvanı</label>
+      <input type="email" class="form-input" id="emailInput" placeholder="email@nümunə.az" autocomplete="email">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Şifrə</label>
+      <input type="password" class="form-input" id="passInput" placeholder="••••••••" autocomplete="current-password">
+    </div>
+
+    <button class="btn-login" id="loginBtn" onclick="doLogin()">
+      <span class="btn-text">Daxil ol</span>
+      <div class="spinner"></div>
+    </button>
+
+    <div class="divider">və ya</div>
+
+    <div class="secure-note">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      Firebase ilə qorunan giriş
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBx81QDpjHSPvhkmnnSUNkJYMvR_fnRTaU",
+    authDomain: "mycontact-e626e.firebaseapp.com",
+    databaseURL: "https://mycontact-e626e-default-rtdb.firebaseio.com",
+    projectId: "mycontact-e626e",
+    storageBucket: "mycontact-e626e.firebasestorage.app",
+    messagingSenderId: "420594516827",
+    appId: "1:420594516827:web:f30266800c690c6ff9107e"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getDatabase(app);
+
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      const snap = await get(ref(db, `users/${user.uid}/role`));
+      const role = snap.val();
+      if (role === 'admin') {
+        window.location.href = 'admin.html';
+      } else {
+        window.location.href = 'dashboard.html';
+      }
+    }
+  });
+
+  window.doLogin = async function() {
+    const email = document.getElementById('emailInput').value.trim();
+    const pass = document.getElementById('passInput').value;
+    const btn = document.getElementById('loginBtn');
+    const err = document.getElementById('errorMsg');
+
+    err.classList.remove('show');
+
+    if (!email || !pass) {
+      err.textContent = 'Email və şifrəni daxil edin.';
+      err.classList.add('show');
+      return;
+    }
+
+    btn.classList.add('loading');
+    btn.disabled = true;
+
+    try {
+      const cred = await signInWithEmailAndPassword(auth, email, pass);
+      const snap = await get(ref(db, `users/${cred.user.uid}/role`));
+      const role = snap.val();
+      if (role === 'admin') {
+        window.location.href = 'admin.html';
+      } else {
+        window.location.href = 'dashboard.html';
+      }
+    } catch (e) {
+      let msg = 'Giriş uğursuz oldu.';
+      if (e.code === 'auth/user-not-found' || e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') {
+        msg = 'Email və ya şifrə yanlışdır.';
+      } else if (e.code === 'auth/too-many-requests') {
+        msg = 'Çox cəhd edildi. Bir az gözləyin.';
+      }
+      err.textContent = msg;
+      err.classList.add('show');
+      btn.classList.remove('loading');
+      btn.disabled = false;
+    }
+  };
+
+  document.getElementById('passInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') window.doLogin();
+  });
+</script>
+</body>
+</html>
