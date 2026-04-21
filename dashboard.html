@@ -6,13 +6,10 @@
 <title>CardPro — Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsqr/1.4.0/jsQR.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --navy:#0a1628;--navy-mid:#112040;--blue:#185FA5;--blue-light:#378ADD;
-  --accent:#4FACFE;--white:#fff;--gray:#8A9BB5;--gray-light:#E8EDF5;
-  --surface:#f4f6fb;--error:#e74c3c;--success:#27ae60;--sidebar:240px;
-}
+:root{--navy:#0a1628;--navy-mid:#112040;--blue:#185FA5;--blue-light:#378ADD;--accent:#4FACFE;--white:#fff;--gray:#8A9BB5;--gray-light:#E8EDF5;--surface:#f4f6fb;--error:#e74c3c;--success:#27ae60;--warning:#f39c12;--sidebar:240px}
 body{font-family:'DM Sans',sans-serif;background:var(--surface);display:flex;min-height:100vh;color:var(--navy)}
 .sidebar{width:var(--sidebar);background:var(--navy);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100}
 .sidebar-brand{padding:1.5rem;border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:10px}
@@ -20,41 +17,27 @@ body{font-family:'DM Sans',sans-serif;background:var(--surface);display:flex;min
 .brand-name{font-family:'DM Serif Display',serif;font-size:18px;color:var(--white)}
 .brand-name span{color:var(--accent)}
 .sidebar-nav{flex:1;padding:1rem 0;overflow-y:auto}
-.nav-section{padding:0.5rem 1rem 0.25rem;font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;margin-top:0.5rem}
-.nav-item{display:flex;align-items:center;gap:10px;padding:9px 1rem;font-size:13px;color:rgba(255,255,255,0.6);cursor:pointer;transition:all .15s;border-left:3px solid transparent;margin:1px 0}
-.nav-item:hover{color:var(--white);background:rgba(255,255,255,0.05)}
-.nav-item.active{color:var(--white);background:rgba(79,172,254,0.12);border-left-color:var(--accent)}
-.sidebar-footer{padding:1rem;border-top:1px solid rgba(255,255,255,0.08)}
+.nav-section{padding:.5rem 1rem .25rem;font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-top:.5rem}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 1rem;font-size:13px;color:rgba(255,255,255,.6);cursor:pointer;transition:all .15s;border-left:3px solid transparent;margin:1px 0}
+.nav-item:hover{color:var(--white);background:rgba(255,255,255,.05)}
+.nav-item.active{color:var(--white);background:rgba(79,172,254,.12);border-left-color:var(--accent)}
+.nav-badge{margin-left:auto;background:rgba(79,172,254,.2);color:var(--accent);font-size:10px;padding:2px 7px;border-radius:10px;font-weight:500}
+.nav-pro{margin-left:auto;background:rgba(201,168,76,.2);color:#C9A84C;font-size:9px;padding:2px 6px;border-radius:8px;font-weight:600}
+.sidebar-footer{padding:1rem;border-top:1px solid rgba(255,255,255,.08)}
 .user-info{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .user-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--white);flex-shrink:0;overflow:hidden}
 .user-av img{width:100%;height:100%;object-fit:cover}
 .user-name-sm{font-size:13px;color:var(--white);font-weight:500}
-.user-plan{font-size:11px;color:rgba(255,255,255,0.4)}
-.logout-btn{width:100%;padding:8px;background:rgba(231,76,60,0.12);border:1px solid rgba(231,76,60,0.2);color:#e74c3c;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .15s}
-.logout-btn:hover{background:rgba(231,76,60,0.2)}
+.user-plan{font-size:11px;color:rgba(255,255,255,.4)}
+.logout-btn{width:100%;padding:8px;background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.2);color:#e74c3c;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif}
 .main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column}
 .topbar{background:var(--white);border-bottom:1px solid var(--gray-light);padding:0 2rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
 .topbar-title{font-size:15px;font-weight:500;color:var(--navy)}
 .topbar-right{display:flex;align-items:center;gap:10px}
-.link-chip{background:var(--surface);border:1px solid var(--gray-light);border-radius:20px;padding:5px 12px;font-size:12px;color:var(--blue);cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .15s}
-.link-chip:hover{border-color:var(--blue-light);background:#eff6ff}
+.link-chip{background:var(--surface);border:1px solid var(--gray-light);border-radius:20px;padding:5px 12px;font-size:12px;color:var(--blue);cursor:pointer;display:flex;align-items:center;gap:6px}
 .btn-view{padding:7px 14px;background:var(--navy);color:var(--white);border:none;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif}
 .content{padding:2rem;flex:1}
-.panel{display:none}
-.panel.active{display:block}
-
-/* CARD EDITOR */
-.editor-grid{display:grid;grid-template-columns:1fr 360px;gap:1.5rem;align-items:start}
-.card-box{background:var(--white);border-radius:14px;border:1px solid var(--gray-light);overflow:hidden}
-.cover-area{height:130px;background:linear-gradient(135deg,#185FA5 0%,#378ADD 100%);position:relative;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden}
-.cover-area img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.cover-label{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:6px;color:rgba(255,255,255,0.8);font-size:12px}
-.cover-edit-btn{position:absolute;top:10px;right:10px;background:rgba(0,0,0,0.4);border:none;border-radius:6px;padding:5px 10px;color:#fff;font-size:11px;cursor:pointer;z-index:2;font-family:'DM Sans',sans-serif}
-.photo-wrap{position:relative;margin-top:-44px;margin-left:1.5rem;width:80px;height:80px;flex-shrink:0}
-.profile-photo{width:80px;height:80px;border-radius:50%;border:3px solid var(--white);background:var(--gray-light);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:500;color:var(--gray);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
-.profile-photo img{width:100%;height:100%;object-fit:cover}
-.photo-edit-btn{position:absolute;bottom:2px;right:2px;width:24px;height:24px;border-radius:50%;background:var(--blue);border:2px solid var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2}
-.card-fields{padding:1rem 1.5rem 1.5rem}
+.panel{display:none}.panel.active{display:block}
 .form-group{margin-bottom:12px}
 .form-label{display:block;font-size:12px;font-weight:500;color:var(--navy);margin-bottom:5px}
 .form-input{width:100%;padding:9px 12px;border:1.5px solid var(--gray-light);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--navy);outline:none;background:var(--surface);transition:border-color .2s}
@@ -66,114 +49,153 @@ textarea.form-input{resize:none;height:72px;line-height:1.5}
 .btn-primary{background:var(--navy);color:var(--white);border-color:var(--navy)}
 .btn-primary:hover{background:var(--navy-mid)}
 .btn-sm{padding:5px 10px;font-size:12px}
+.btn-danger{border-color:rgba(231,76,60,.3);color:var(--error);background:rgba(231,76,60,.05)}
+.btn-success{background:var(--success);color:var(--white);border-color:var(--success)}
 .save-bar{display:flex;gap:8px;justify-content:flex-end;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--gray-light)}
-
-/* SOCIAL */
-.social-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.soc-item{border:1.5px solid var(--gray-light);border-radius:10px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:all .15s}
-.soc-item:hover{border-color:var(--blue-light)}
-.soc-item.on{border-color:var(--blue);background:rgba(24,95,165,0.05)}
-.soc-icon{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0}
-.soc-name{font-size:10px;color:var(--gray);text-align:center}
-.soc-item.on .soc-name{color:var(--blue)}
-.si-ig{background:#C13584}.si-li{background:#0077B5}.si-fb{background:#1877F2}
-.si-tw{background:#1DA1F2}.si-tt{background:#000}.si-yt{background:#FF0000}
-.si-tg{background:#2CA5E0}.si-wa{background:#25D366}
-.soc-inputs{margin-top:1rem;display:flex;flex-direction:column;gap:8px}
-.soc-input-row{display:flex;align-items:center;gap:8px}
-.soc-input-label{width:70px;font-size:11px;color:var(--gray);flex-shrink:0}
-
-/* RIGHT PANEL */
-.right-col{display:flex;flex-direction:column;gap:1rem}
+.card-box{background:var(--white);border-radius:14px;border:1px solid var(--gray-light);overflow:hidden}
 .widget{background:var(--white);border-radius:14px;border:1px solid var(--gray-light);padding:1.25rem}
 .widget-title{font-size:13px;font-weight:500;color:var(--navy);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between}
 
-/* QR */
-.qr-wrap{display:flex;justify-content:center;margin-bottom:12px}
-#qrcode{display:flex;justify-content:center}
-#qrcode canvas, #qrcode img{border-radius:8px}
-.qr-actions{display:flex;gap:8px}
-.qr-actions .btn{flex:1;justify-content:center;font-size:12px}
+/* OVERVIEW */
+.dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:1.5rem}
+.dash-stat{background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem}
+.ds-num{font-family:'DM Serif Display',serif;font-size:32px;color:var(--navy)}
+.ds-label{font-size:12px;color:var(--gray);margin-top:4px}
+.profile-link-box{background:var(--white);border:1px solid var(--gray-light);border-radius:12px;padding:1.25rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.plink-label{font-size:12px;color:var(--gray);margin-bottom:4px}
+.plink-url{font-size:14px;color:var(--blue);font-weight:500}
 
-/* STATS WIDGET */
+/* EDITOR */
+.editor-grid{display:grid;grid-template-columns:1fr 360px;gap:1.5rem;align-items:start}
+.cover-area{height:130px;background:linear-gradient(135deg,#185FA5,#378ADD);position:relative;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden}
+.cover-area img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cover-label{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:6px;color:rgba(255,255,255,.8);font-size:12px}
+.cover-edit-btn{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.4);border:none;border-radius:6px;padding:5px 10px;color:#fff;font-size:11px;cursor:pointer;z-index:2;font-family:'DM Sans',sans-serif}
+.photo-wrap{position:relative;margin-top:-44px;margin-left:1.5rem;width:80px;height:80px}
+.profile-photo{width:80px;height:80px;border-radius:50%;border:3px solid var(--white);background:var(--gray-light);display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--gray);overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.profile-photo img{width:100%;height:100%;object-fit:cover}
+.photo-edit-btn{position:absolute;bottom:2px;right:2px;width:24px;height:24px;border-radius:50%;background:var(--blue);border:2px solid var(--white);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:2}
+.card-fields{padding:1rem 1.5rem 1.5rem}
+.right-col{display:flex;flex-direction:column;gap:1rem}
 .mini-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .mini-stat{background:var(--surface);border-radius:9px;padding:10px}
 .mini-stat-num{font-size:20px;font-weight:600;color:var(--navy)}
 .mini-stat-label{font-size:11px;color:var(--gray);margin-top:2px}
 
-/* PDF */
-.pdf-row{display:flex;align-items:center;gap:10px;padding:10px;border:1px solid var(--gray-light);border-radius:9px;margin-bottom:8px}
+/* SOCIAL */
+.social-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.soc-item{border:1.5px solid var(--gray-light);border-radius:10px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:all .15s}
+.soc-item.on{border-color:var(--blue);background:rgba(24,95,165,.05)}
+.soc-icon{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff}
+.soc-name{font-size:10px;color:var(--gray);text-align:center}
+.soc-item.on .soc-name{color:var(--blue)}
+.si-ig{background:#C13584}.si-li{background:#0077B5}.si-fb{background:#1877F2}.si-tw{background:#1DA1F2}.si-tt{background:#000}.si-yt{background:#FF0000}.si-tg{background:#2CA5E0}.si-wa{background:#25D366}
+.soc-inputs{margin-top:1rem;display:flex;flex-direction:column;gap:8px}
+.soc-input-row{display:flex;align-items:center;gap:8px}
+.soc-input-label{width:70px;font-size:11px;color:var(--gray);flex-shrink:0}
+
+/* PDF / VIDEO */
+.pdf-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--gray-light);border-radius:9px;margin-bottom:8px}
 .pdf-icon{width:36px;height:36px;border-radius:8px;background:#fef2f2;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--error);flex-shrink:0}
 .pdf-meta{flex:1}
 .pdf-name{font-size:13px;color:var(--navy);font-weight:500}
 .pdf-size{font-size:11px;color:var(--gray)}
-
-/* VIDEO */
 .video-preview{background:var(--surface);border-radius:10px;height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border:1px solid var(--gray-light);position:relative;overflow:hidden;margin-top:8px}
 .video-preview iframe{position:absolute;inset:0;width:100%;height:100%;border:none;border-radius:10px}
-.play-placeholder{display:flex;flex-direction:column;align-items:center;gap:6px}
-.play-btn{width:40px;height:40px;border-radius:50%;background:#FF0000;display:flex;align-items:center;justify-content:center}
+.play-btn2{width:40px;height:40px;border-radius:50%;background:#FF0000;display:flex;align-items:center;justify-content:center}
 .play-tri{width:0;height:0;border-top:7px solid transparent;border-bottom:7px solid transparent;border-left:12px solid #fff;margin-left:3px}
-.video-hint{font-size:11px;color:var(--gray)}
 
-/* TOAST */
-.toast{position:fixed;bottom:2rem;right:2rem;background:var(--navy);color:var(--white);padding:12px 18px;border-radius:10px;font-size:13px;z-index:999;transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none}
+/* SCANNER */
+.scanner-wrap{max-width:520px}
+.scanner-card{background:var(--white);border-radius:16px;border:1px solid var(--gray-light);overflow:hidden;margin-bottom:1rem}
+.scanner-top{padding:1.25rem;border-bottom:1px solid var(--gray-light);display:flex;align-items:center;justify-content:space-between}
+.scanner-title{font-size:15px;font-weight:500;color:var(--navy)}
+.scanner-sub{font-size:12px;color:var(--gray);margin-top:2px}
+.scanner-body{padding:1.25rem}
+.camera-box{width:100%;aspect-ratio:1;background:var(--navy);border-radius:12px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:1rem}
+#scannerVideo{width:100%;height:100%;object-fit:cover;display:none}
+.camera-placeholder{display:flex;flex-direction:column;align-items:center;gap:10px;color:rgba(255,255,255,.5)}
+.scan-frame{position:absolute;inset:0;pointer-events:none}
+.scan-corner{position:absolute;width:32px;height:32px;border-color:var(--accent);border-style:solid;border-width:0}
+.sc-tl{top:16px;left:16px;border-top-width:3px;border-left-width:3px;border-radius:4px 0 0 0}
+.sc-tr{top:16px;right:16px;border-top-width:3px;border-right-width:3px;border-radius:0 4px 0 0}
+.sc-bl{bottom:16px;left:16px;border-bottom-width:3px;border-left-width:3px;border-radius:0 0 0 4px}
+.sc-br{bottom:16px;right:16px;border-bottom-width:3px;border-right-width:3px;border-radius:0 0 4px 0}
+.scan-line{position:absolute;left:16px;right:16px;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);animation:scanLine 2s ease-in-out infinite;display:none}
+@keyframes scanLine{0%{top:16px}100%{top:calc(100% - 18px)}}
+.scan-result-box{background:var(--surface);border-radius:10px;padding:1rem;margin-bottom:1rem;display:none;border:1px solid var(--gray-light)}
+.scan-field{display:flex;gap:8px;margin-bottom:6px}
+.scan-field-label{font-size:11px;color:var(--gray);width:60px;flex-shrink:0;padding-top:2px}
+.scan-field-val{font-size:13px;color:var(--navy);flex:1}
+
+/* CONTACTS */
+.contacts-toolbar{display:flex;gap:10px;margin-bottom:1rem;flex-wrap:wrap}
+.search-input{flex:1;min-width:180px;padding:8px 12px;border:1.5px solid var(--gray-light);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--navy);outline:none;background:var(--surface)}
+.contacts-grid{display:flex;flex-direction:column;gap:8px}
+.contact-card{background:var(--white);border:1px solid var(--gray-light);border-radius:12px;padding:1rem 1.25rem;display:flex;align-items:center;gap:14px}
+.contact-av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--blue-light),var(--accent));display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;color:var(--white);flex-shrink:0}
+.contact-info{flex:1;min-width:0}
+.contact-name{font-size:14px;font-weight:500;color:var(--navy)}
+.contact-meta{font-size:12px;color:var(--gray);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.contact-actions{display:flex;gap:6px;flex-shrink:0}
+.contact-source{font-size:10px;padding:2px 7px;border-radius:10px;font-weight:500}
+.src-scan{background:rgba(79,172,254,.1);color:var(--blue)}
+.src-manual{background:rgba(39,174,96,.1);color:var(--success)}
+.empty-contacts{text-align:center;padding:3rem;color:var(--gray)}
+
+/* CRM */
+.crm-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.crm-card{background:var(--white);border:1.5px solid var(--gray-light);border-radius:14px;padding:1.25rem;position:relative;transition:border-color .2s}
+.crm-card.connected{border-color:var(--success)}
+.crm-logo{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;font-size:11px;font-weight:700;color:#fff}
+.crm-hs{background:#FF7A59}.crm-sf{background:#00A1E0}
+.crm-name{font-size:14px;font-weight:500;color:var(--navy);margin-bottom:4px}
+.crm-desc{font-size:12px;color:var(--gray);line-height:1.5;margin-bottom:12px}
+.crm-status{display:flex;align-items:center;gap:6px;font-size:12px;margin-bottom:10px}
+.crm-dot{width:7px;height:7px;border-radius:50%}
+.crm-dot.on{background:var(--success)}.crm-dot.off{background:var(--gray)}
+.pro-lock-overlay{position:absolute;inset:0;background:rgba(244,246,251,.9);border-radius:13px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+.pro-lock-text{font-size:12px;color:var(--navy);font-weight:500;text-align:center}
+.pro-lock-btn{padding:6px 14px;background:var(--warning);color:var(--white);border:none;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif}
+.crm-sync-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--gray-light);margin-top:8px;font-size:12px;color:var(--gray)}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(10,22,40,.5);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--white);border-radius:16px;padding:2rem;width:calc(100% - 2rem);max-width:440px;transform:translateY(12px);transition:transform .2s;max-height:90vh;overflow-y:auto}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--navy);margin-bottom:4px}
+.modal-sub{font-size:13px;color:var(--gray);margin-bottom:1.5rem}
+.modal-footer{display:flex;gap:10px;margin-top:1.5rem}
+.modal-footer .btn{flex:1;justify-content:center}
+
+.toast{position:fixed;bottom:2rem;right:2rem;background:var(--navy);color:var(--white);padding:12px 18px;border-radius:10px;font-size:13px;z-index:999;transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none;max-width:300px}
 .toast.show{transform:translateY(0);opacity:1}
-.toast.success{background:var(--success)}
-.toast.error{background:var(--error)}
-
-/* DASH OVERVIEW */
-.dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:1.5rem}
-.dash-stat{background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem}
-.ds-num{font-family:'DM Serif Display',serif;font-size:32px;color:var(--navy)}
-.ds-label{font-size:12px;color:var(--gray);margin-top:4px}
-.ds-sub{font-size:11px;color:var(--success);margin-top:2px}
-.profile-link-box{background:var(--white);border:1px solid var(--gray-light);border-radius:12px;padding:1.25rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
-.plink-label{font-size:12px;color:var(--gray);margin-bottom:4px}
-.plink-url{font-size:14px;color:var(--blue);font-weight:500}
-.plink-actions{display:flex;gap:8px}
+.toast.success{background:var(--success)}.toast.error{background:var(--error)}
 </style>
 </head>
 <body>
 
 <aside class="sidebar">
   <div class="sidebar-brand">
-    <div class="brand-mark">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2"/><circle cx="12" cy="13" r="2"/></svg>
-    </div>
+    <div class="brand-mark"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="3" y="6" width="18" height="13" rx="2"/><circle cx="12" cy="13" r="2"/></svg></div>
     <span class="brand-name">Card<span>Pro</span></span>
   </div>
   <nav class="sidebar-nav">
     <div class="nav-section">Menyü</div>
-    <div class="nav-item active" onclick="showPanel('overview')">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-      İcmal
-    </div>
-    <div class="nav-item" onclick="showPanel('editor')">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-      Kartımı redaktə et
-    </div>
-    <div class="nav-item" onclick="showPanel('social')">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-      Sosial şəbəkələr
-    </div>
-    <div class="nav-item" onclick="showPanel('media')">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
-      PDF və Video
-    </div>
-    <div class="nav-item" onclick="showPanel('qr')">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3m0 4h4v-4m-7 0h3"/></svg>
-      QR Kod
-    </div>
+    <div class="nav-item active" onclick="showPanel('overview')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>İcmal</div>
+    <div class="nav-item" onclick="showPanel('editor')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Kartımı redaktə et</div>
+    <div class="nav-item" onclick="showPanel('social')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Sosial şəbəkələr</div>
+    <div class="nav-item" onclick="showPanel('media')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>PDF və Video</div>
+    <div class="nav-item" onclick="showPanel('qr')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3m0 4h4v-4m-7 0h3"/></svg>QR Kod</div>
+    <div class="nav-section">Kontaktlar</div>
+    <div class="nav-item" onclick="showPanel('scanner')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7V1h-6M1 7V1h6M23 17v6h-6M1 17v6h6"/><line x1="1" y1="12" x2="23" y2="12"/></svg>QR Oxuyucu</div>
+    <div class="nav-item" onclick="showPanel('contacts')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Kontaktlarım<span class="nav-badge" id="contactsBadge">0</span></div>
+    <div class="nav-section">İnteqrasiya</div>
+    <div class="nav-item" onclick="showPanel('crm')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>CRM<span class="nav-pro">PRO</span></div>
   </nav>
   <div class="sidebar-footer">
-    <div class="user-info">
-      <div class="user-av" id="sideAvatar">?</div>
-      <div>
-        <div class="user-name-sm" id="sideName">—</div>
-        <div class="user-plan" id="sidePlan">—</div>
-      </div>
-    </div>
+    <div class="user-info"><div class="user-av" id="sideAvatar">?</div><div><div class="user-name-sm" id="sideName">—</div><div class="user-plan" id="sidePlan">—</div></div></div>
     <button class="logout-btn" onclick="doLogout()">Çıxış</button>
   </div>
 </aside>
@@ -182,162 +204,72 @@ textarea.form-input{resize:none;height:72px;line-height:1.5}
   <div class="topbar">
     <div class="topbar-title" id="topbarTitle">İcmal</div>
     <div class="topbar-right">
-      <div class="link-chip" onclick="copyLink()" id="linkChip">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
-        <span id="linkText">cardpro.az/—</span>
-      </div>
+      <div class="link-chip" onclick="copyLink()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg><span id="linkText">cardpro.az/—</span></div>
       <button class="btn-view" onclick="viewProfile()">Profilə bax</button>
     </div>
   </div>
-
   <div class="content">
 
     <!-- OVERVIEW -->
     <div class="panel active" id="panel-overview">
       <div class="profile-link-box">
-        <div>
-          <div class="plink-label">Profil linkiniz</div>
-          <div class="plink-url" id="overviewLink">cardpro.az/—</div>
-        </div>
-        <div class="plink-actions">
-          <button class="btn btn-sm" onclick="copyLink()">Kopyala</button>
-          <button class="btn btn-sm btn-primary" onclick="viewProfile()">Aç</button>
-        </div>
+        <div><div class="plink-label">Profil linkiniz</div><div class="plink-url" id="overviewLink">cardpro.az/—</div></div>
+        <div style="display:flex;gap:8px"><button class="btn btn-sm" onclick="copyLink()">Kopyala</button><button class="btn btn-sm btn-primary" onclick="viewProfile()">Aç</button></div>
       </div>
       <div class="dash-stats">
-        <div class="dash-stat">
-          <div class="ds-num" id="ovViews">0</div>
-          <div class="ds-label">Kart baxışı</div>
-          <div class="ds-sub">Bu ay</div>
-        </div>
-        <div class="dash-stat">
-          <div class="ds-num" id="ovSaves">0</div>
-          <div class="ds-label">Kontakt saxlayanlar</div>
-          <div class="ds-sub">Bu ay</div>
-        </div>
-        <div class="dash-stat">
-          <div class="ds-num" id="ovQr">0</div>
-          <div class="ds-label">QR skanlar</div>
-          <div class="ds-sub">Bu ay</div>
-        </div>
+        <div class="dash-stat"><div class="ds-num" id="ovViews">0</div><div class="ds-label">Kart baxışı</div></div>
+        <div class="dash-stat"><div class="ds-num" id="ovSaves">0</div><div class="ds-label">Kontakt saxlayanlar</div></div>
+        <div class="dash-stat"><div class="ds-num" id="ovContacts">0</div><div class="ds-label">Mənim kontaktlarım</div></div>
       </div>
       <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.5rem;text-align:center">
-        <div style="font-size:13px;color:var(--gray);margin-bottom:1rem">Kartınızı doldurmaq üçün</div>
-        <button class="btn btn-primary" onclick="showPanel('editor')">Kartı redaktə et →</button>
+        <div style="font-size:13px;color:var(--gray);margin-bottom:1rem">Kağız vizit kartları skan edin</div>
+        <button class="btn btn-primary" onclick="showPanel('scanner')">QR Oxuyucunu aç →</button>
       </div>
     </div>
 
-    <!-- CARD EDITOR -->
+    <!-- EDITOR -->
     <div class="panel" id="panel-editor">
       <div class="editor-grid">
         <div>
           <div class="card-box">
-            <!-- COVER -->
             <div class="cover-area" id="coverArea">
               <img id="coverImg" src="" style="display:none">
-              <div class="cover-label" id="coverLabel">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                Cover şəkil əlavə et
-              </div>
+              <div class="cover-label" id="coverLabel"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><polyline points="21 15 16 10 5 21"/></svg>Cover əlavə et</div>
               <button class="cover-edit-btn" id="coverEditBtn" style="display:none" onclick="document.getElementById('coverFile').click()">Dəyiş</button>
               <input type="file" id="coverFile" accept="image/*" style="display:none" onchange="loadCover(event)">
             </div>
             <div style="padding:0 1.5rem;position:relative">
               <div class="photo-wrap">
-                <div class="profile-photo" id="profilePhoto">
-                  <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--gray)" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                </div>
-                <div class="photo-edit-btn" onclick="document.getElementById('photoFile').click()">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-                </div>
+                <div class="profile-photo" id="profilePhoto"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="var(--gray)" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+                <div class="photo-edit-btn" onclick="document.getElementById('photoFile').click()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
                 <input type="file" id="photoFile" accept="image/*" style="display:none" onchange="loadPhoto(event)">
               </div>
             </div>
             <div class="card-fields">
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">Ad</label>
-                  <input class="form-input" id="fName" placeholder="Kamran">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Soyad</label>
-                  <input class="form-input" id="fSurname" placeholder="Məmmədov">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Vəzifə</label>
-                <input class="form-input" id="fPosition" placeholder="Data Analytics Manager">
-              </div>
-              <div class="form-group">
-                <label class="form-label">Şirkət</label>
-                <input class="form-input" id="fCompany" placeholder="Şirkət adı">
-              </div>
-              <div class="form-group">
-                <label class="form-label">Bio</label>
-                <textarea class="form-input" id="fBio" placeholder="Özünüz haqqında qısa məlumat..."></textarea>
-              </div>
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">Telefon</label>
-                  <input class="form-input" id="fPhone" placeholder="+994 50 000 00 00">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Email</label>
-                  <input class="form-input" id="fEmail" placeholder="email@nümunə.az">
-                </div>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Vebsayt</label>
-                <input class="form-input" id="fWeb" placeholder="saytiniz.az">
-              </div>
-              <div class="form-group">
-                <label class="form-label">Ünvan</label>
-                <input class="form-input" id="fAddress" placeholder="Bakı, Azərbaycan">
-              </div>
-              <div class="save-bar">
-                <button class="btn btn-primary" onclick="saveCard()">Yadda saxla</button>
-              </div>
+              <div class="form-row"><div class="form-group"><label class="form-label">Ad</label><input class="form-input" id="fName" placeholder="Kamran"></div><div class="form-group"><label class="form-label">Soyad</label><input class="form-input" id="fSurname" placeholder="Məmmədov"></div></div>
+              <div class="form-group"><label class="form-label">Vəzifə</label><input class="form-input" id="fPosition" placeholder="Manager"></div>
+              <div class="form-group"><label class="form-label">Şirkət</label><input class="form-input" id="fCompany" placeholder="Şirkət adı"></div>
+              <div class="form-group"><label class="form-label">Bio</label><textarea class="form-input" id="fBio"></textarea></div>
+              <div class="form-row"><div class="form-group"><label class="form-label">Telefon</label><input class="form-input" id="fPhone"></div><div class="form-group"><label class="form-label">Email</label><input class="form-input" id="fEmail"></div></div>
+              <div class="form-group"><label class="form-label">Vebsayt</label><input class="form-input" id="fWeb"></div>
+              <div class="form-group"><label class="form-label">Ünvan</label><input class="form-input" id="fAddress"></div>
+              <div class="save-bar"><button class="btn btn-primary" onclick="saveCard()">Yadda saxla</button></div>
             </div>
           </div>
         </div>
-
-        <!-- RIGHT -->
         <div class="right-col">
-          <div class="widget">
-            <div class="widget-title">Statistika</div>
-            <div class="mini-stats">
-              <div class="mini-stat">
-                <div class="mini-stat-num" id="wViews">0</div>
-                <div class="mini-stat-label">Baxış</div>
-              </div>
-              <div class="mini-stat">
-                <div class="mini-stat-num" id="wSaves">0</div>
-                <div class="mini-stat-label">Saxlayan</div>
-              </div>
-            </div>
-          </div>
-          <div class="widget">
-            <div class="widget-title">
-              QR Kod
-              <button class="btn btn-sm" onclick="showPanel('qr')">Tam bax</button>
-            </div>
-            <div id="qrMini" style="display:flex;justify-content:center;margin-bottom:10px"></div>
-            <button class="btn btn-sm btn-primary" style="width:100%;justify-content:center" onclick="downloadQR()">PNG yüklə</button>
-          </div>
-          <div class="widget">
-            <div class="widget-title">Profil linki</div>
-            <div style="font-size:13px;color:var(--blue);margin-bottom:10px" id="wLink">—</div>
-            <button class="btn btn-sm" style="width:100%;justify-content:center" onclick="copyLink()">Kopyala</button>
-          </div>
+          <div class="widget"><div class="widget-title">Statistika</div><div class="mini-stats"><div class="mini-stat"><div class="mini-stat-num" id="wViews">0</div><div class="mini-stat-label">Baxış</div></div><div class="mini-stat"><div class="mini-stat-num" id="wSaves">0</div><div class="mini-stat-label">Saxlayan</div></div></div></div>
+          <div class="widget"><div class="widget-title">QR Kod<button class="btn btn-sm" onclick="showPanel('qr')">Tam bax</button></div><div id="qrMini" style="display:flex;justify-content:center;margin-bottom:10px"></div><button class="btn btn-sm btn-primary" style="width:100%;justify-content:center" onclick="downloadQR()">PNG yüklə</button></div>
+          <div class="widget"><div class="widget-title">Profil linki</div><div style="font-size:13px;color:var(--blue);margin-bottom:10px" id="wLink">—</div><button class="btn btn-sm" style="width:100%;justify-content:center" onclick="copyLink()">Kopyala</button></div>
         </div>
       </div>
     </div>
 
     <!-- SOCIAL -->
     <div class="panel" id="panel-social">
-      <div class="card-box" style="background:var(--white);border-radius:14px;border:1px solid var(--gray-light);padding:1.5rem;max-width:600px">
+      <div style="background:var(--white);border-radius:14px;border:1px solid var(--gray-light);padding:1.5rem;max-width:600px">
         <div style="margin-bottom:1rem;font-size:13px;color:var(--gray)">Aktiv etmək istədiyiniz şəbəkələri seçin</div>
-        <div class="social-grid" id="socialGrid">
+        <div class="social-grid">
           <div class="soc-item" data-key="instagram" onclick="toggleSoc(this)"><div class="soc-icon si-ig">IG</div><div class="soc-name">Instagram</div></div>
           <div class="soc-item" data-key="linkedin" onclick="toggleSoc(this)"><div class="soc-icon si-li">in</div><div class="soc-name">LinkedIn</div></div>
           <div class="soc-item" data-key="facebook" onclick="toggleSoc(this)"><div class="soc-icon si-fb">f</div><div class="soc-name">Facebook</div></div>
@@ -348,39 +280,23 @@ textarea.form-input{resize:none;height:72px;line-height:1.5}
           <div class="soc-item" data-key="whatsapp" onclick="toggleSoc(this)"><div class="soc-icon si-wa">WA</div><div class="soc-name">WhatsApp</div></div>
         </div>
         <div class="soc-inputs" id="socInputs"></div>
-        <div style="margin-top:1rem;display:flex;justify-content:flex-end">
-          <button class="btn btn-primary" onclick="saveSocials()">Yadda saxla</button>
-        </div>
+        <div style="margin-top:1rem;display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveSocials()">Yadda saxla</button></div>
       </div>
     </div>
 
     <!-- MEDIA -->
     <div class="panel" id="panel-media">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:800px">
-        <div class="card-box" style="background:var(--white);border-radius:14px;border:1px solid var(--gray-light);padding:1.5rem">
+        <div style="background:var(--white);border-radius:14px;border:1px solid var(--gray-light);padding:1.5rem">
           <div style="font-size:14px;font-weight:500;margin-bottom:1rem">PDF sənəd</div>
           <div id="pdfList"></div>
-          <label style="display:flex;align-items:center;gap:8px;padding:10px;border:1.5px dashed var(--gray-light);border-radius:9px;cursor:pointer;font-size:13px;color:var(--gray);justify-content:center;margin-top:8px">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            PDF əlavə et
-            <input type="file" accept=".pdf" style="display:none" onchange="uploadPdf(event)">
-          </label>
+          <label style="display:flex;align-items:center;gap:8px;padding:10px;border:1.5px dashed var(--gray-light);border-radius:9px;cursor:pointer;font-size:13px;color:var(--gray);justify-content:center;margin-top:8px">+ PDF əlavə et<input type="file" accept=".pdf" style="display:none" onchange="uploadPdf(event)"></label>
         </div>
-        <div class="card-box" style="background:var(--white);border-radius:14px;border:1px solid var(--gray-light);padding:1.5rem">
+        <div style="background:var(--white);border-radius:14px;border:1px solid var(--gray-light);padding:1.5rem">
           <div style="font-size:14px;font-weight:500;margin-bottom:1rem">YouTube video</div>
-          <div class="form-group">
-            <label class="form-label">YouTube linki</label>
-            <input class="form-input" id="ytLink" placeholder="https://youtube.com/watch?v=..." oninput="previewYt()">
-          </div>
-          <div class="video-preview" id="videoPreview">
-            <div class="play-placeholder">
-              <div class="play-btn"><div class="play-tri"></div></div>
-              <div class="video-hint">Link daxil edin</div>
-            </div>
-          </div>
-          <div style="margin-top:10px;display:flex;justify-content:flex-end">
-            <button class="btn btn-primary btn-sm" onclick="saveVideo()">Saxla</button>
-          </div>
+          <div class="form-group"><label class="form-label">YouTube linki</label><input class="form-input" id="ytLink" placeholder="https://youtube.com/watch?v=..." oninput="previewYt()"></div>
+          <div class="video-preview" id="videoPreview"><div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div class="play-btn2"><div class="play-tri"></div></div><div style="font-size:11px;color:var(--gray)">Link daxil edin</div></div></div>
+          <div style="margin-top:10px;display:flex;justify-content:flex-end"><button class="btn btn-primary btn-sm" onclick="saveVideo()">Saxla</button></div>
         </div>
       </div>
     </div>
@@ -396,9 +312,90 @@ textarea.form-input{resize:none;height:72px;line-height:1.5}
             <button class="btn btn-primary" onclick="downloadQR()">PNG yüklə</button>
             <button class="btn" onclick="copyLink()">Linki kopyala</button>
           </div>
-          <div style="margin-top:1rem;padding:10px;background:var(--surface);border-radius:9px;font-size:12px;color:var(--gray)">
-            QR kod vCard formatında bütün məlumatlarınızı özündə saxlayır. İnternetsiz işləyir.
+        </div>
+      </div>
+    </div>
+
+    <!-- SCANNER -->
+    <div class="panel" id="panel-scanner">
+      <div class="scanner-wrap">
+        <div class="scanner-card">
+          <div class="scanner-top"><div><div class="scanner-title">QR Kart Oxuyucu</div><div class="scanner-sub">Kağız vizit kartını kameraya tutun</div></div></div>
+          <div class="scanner-body">
+            <div class="camera-box" id="cameraBox">
+              <video id="scannerVideo" playsinline autoplay muted></video>
+              <canvas id="scannerCanvas" style="display:none"></canvas>
+              <div class="camera-placeholder" id="cameraPlaceholder"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M23 7V1h-6M1 7V1h6M23 17v6h-6M1 17v6h6"/><circle cx="12" cy="12" r="4"/></svg><div style="font-size:13px">Kameranı aktivləşdirin</div></div>
+              <div class="scan-frame"><div class="scan-corner sc-tl"></div><div class="scan-corner sc-tr"></div><div class="scan-corner sc-bl"></div><div class="scan-corner sc-br"></div></div>
+              <div class="scan-line" id="scanLine"></div>
+            </div>
+            <div style="text-align:center;font-size:13px;color:var(--gray);margin-bottom:1rem" id="scannerStatus">Skan etmək üçün kameranı açın</div>
+            <div style="display:flex;gap:8px;justify-content:center;margin-bottom:1rem">
+              <button class="btn btn-primary" id="startScanBtn" onclick="startScanner()">Kameranı aç</button>
+              <button class="btn" id="stopScanBtn" onclick="stopScanner()" style="display:none">Dayandır</button>
+            </div>
+            <div class="scan-result-box" id="scanResultBox">
+              <div style="font-size:12px;font-weight:500;color:var(--gray);margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em">Skan nəticəsi</div>
+              <div id="scanFields"></div>
+              <div style="display:flex;gap:8px;margin-top:10px">
+                <button class="btn btn-primary btn-sm" onclick="saveScanContact()">Kontaktlara əlavə et</button>
+                <button class="btn btn-sm" onclick="downloadVcf()">Telefona saxla</button>
+                <button class="btn btn-sm" onclick="clearScan()">Sil</button>
+              </div>
+            </div>
           </div>
+        </div>
+        <div class="scanner-card">
+          <div class="scanner-top"><div><div class="scanner-title">Əl ilə əlavə et</div><div class="scanner-sub">QR kodu olmayan kartlar üçün</div></div></div>
+          <div class="scanner-body">
+            <div class="form-row"><div class="form-group"><label class="form-label">Ad Soyad</label><input class="form-input" id="mName" placeholder="Nicat Rəhimov"></div><div class="form-group"><label class="form-label">Vəzifə</label><input class="form-input" id="mPosition" placeholder="Müdür"></div></div>
+            <div class="form-row"><div class="form-group"><label class="form-label">Şirkət</label><input class="form-input" id="mCompany" placeholder="ABC LLC"></div><div class="form-group"><label class="form-label">Telefon</label><input class="form-input" id="mPhone" placeholder="+994 55 000 00 00"></div></div>
+            <div class="form-row"><div class="form-group"><label class="form-label">Email</label><input class="form-input" id="mEmail"></div><div class="form-group"><label class="form-label">Vebsayt</label><input class="form-input" id="mWeb"></div></div>
+            <div class="form-group"><label class="form-label">Qeyd</label><input class="form-input" id="mNote" placeholder="Harada tanışdıq..."></div>
+            <div style="display:flex;justify-content:flex-end;margin-top:.5rem"><button class="btn btn-primary" onclick="addManualContact()">Əlavə et</button></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACTS -->
+    <div class="panel" id="panel-contacts">
+      <div style="max-width:720px">
+        <div class="contacts-toolbar">
+          <input class="search-input" type="text" placeholder="Ad, şirkət, email ilə axtar..." oninput="filterContacts(this.value)">
+          <select class="form-input" style="width:auto" onchange="filterContactsBySource(this.value)"><option value="">Hamısı</option><option value="scan">Skanlanmış</option><option value="manual">Əl ilə</option></select>
+          <button class="btn btn-primary btn-sm" onclick="showPanel('scanner')">+ Yeni skan</button>
+        </div>
+        <div class="contacts-grid" id="contactsGrid"><div class="empty-contacts"><div style="font-size:40px;opacity:.3;margin-bottom:1rem">📇</div><div style="font-size:14px;color:var(--navy);margin-bottom:4px">Hələ kontakt yoxdur</div><div style="font-size:13px">QR oxuyucu ilə kart skan edin</div></div></div>
+      </div>
+    </div>
+
+    <!-- CRM -->
+    <div class="panel" id="panel-crm">
+      <div style="max-width:720px">
+        <div style="margin-bottom:1.5rem"><div style="font-size:15px;font-weight:500;color:var(--navy);margin-bottom:4px">CRM İnteqrasiya</div><div style="font-size:13px;color:var(--gray)">Kontaktlarınızı avtomatik CRM sistemlərinə göndərin</div></div>
+        <div class="crm-grid">
+          <div class="crm-card" id="hsCard">
+            <div class="crm-logo crm-hs">HS</div>
+            <div class="crm-name">HubSpot</div>
+            <div class="crm-desc">Kontaktları HubSpot CRM-ə avtomatik göndərin. API key ilə qoşulun.</div>
+            <div class="crm-status"><div class="crm-dot off" id="hsDot"></div><span id="hsStatusText">Qoşulmayıb</span></div>
+            <button class="btn btn-sm" onclick="openCrmModal('hubspot')">Qoş</button>
+            <div class="crm-sync-row" id="hsSyncRow" style="display:none"><span id="hsSyncCount">0 kontakt sync edilib</span><button class="btn btn-sm btn-success" onclick="syncToHubspot()">Sync et</button></div>
+          </div>
+          <div class="crm-card" id="sfCard">
+            <div class="crm-logo crm-sf">SF</div>
+            <div class="crm-name">Salesforce</div>
+            <div class="crm-desc">Kontaktları Salesforce-a göndərin. Instance URL və token ilə qoşulun.</div>
+            <div class="crm-status"><div class="crm-dot off" id="sfDot"></div><span id="sfStatusText">Qoşulmayıb</span></div>
+            <button class="btn btn-sm" onclick="openCrmModal('salesforce')">Qoş</button>
+            <div class="crm-sync-row" id="sfSyncRow" style="display:none"><span id="sfSyncCount">0 kontakt sync edilib</span><button class="btn btn-sm btn-success" onclick="syncToSalesforce()">Sync et</button></div>
+            <div class="pro-lock-overlay" id="sfLock" style="display:none"><div style="font-size:24px">🔒</div><div class="pro-lock-text">Salesforce inteqrasiyası<br>Pro planda mövcuddur</div><button class="pro-lock-btn">Pro-ya keç</button></div>
+          </div>
+        </div>
+        <div style="background:var(--white);border-radius:14px;border:1px solid var(--gray-light);padding:1.25rem;margin-top:1rem;display:none" id="crmLogCard">
+          <div style="font-size:13px;font-weight:500;color:var(--navy);margin-bottom:10px">Sync tarixçəsi</div>
+          <div id="crmLog" style="font-size:12px;color:var(--gray);display:flex;flex-direction:column;gap:6px"></div>
         </div>
       </div>
     </div>
@@ -406,312 +403,247 @@ textarea.form-input{resize:none;height:72px;line-height:1.5}
   </div>
 </main>
 
+<!-- CRM MODAL -->
+<div class="modal-overlay" id="crmModal">
+  <div class="modal">
+    <div class="modal-title" id="crmModalTitle">CRM Qoşulma</div>
+    <div class="modal-sub" id="crmModalSub"></div>
+    <div id="crmModalFields"></div>
+    <div class="modal-footer"><button class="btn" onclick="closeModal('crmModal')">Ləğv et</button><button class="btn btn-primary" onclick="saveCrmConfig()">Qoş</button></div>
+  </div>
+</div>
+
+<!-- CONTACT MODAL -->
+<div class="modal-overlay" id="contactModal">
+  <div class="modal">
+    <div class="modal-title" id="contactModalName">Kontakt</div>
+    <div class="modal-sub" id="contactModalMeta"></div>
+    <div id="contactModalFields"></div>
+    <div class="modal-footer"><button class="btn btn-danger btn-sm" onclick="deleteContact(window._cid)">Sil</button><button class="btn" onclick="closeModal('contactModal')">Bağla</button><button class="btn btn-primary" onclick="exportContactVcf(window._cid)">Telefona saxla</button></div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getDatabase, ref, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import{getDatabase,ref,get,update,remove,push,onValue}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import{getStorage,ref as sRef,uploadBytes,getDownloadURL}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBx81QDpjHSPvhkmnnSUNkJYMvR_fnRTaU",
-  authDomain: "mycontact-e626e.firebaseapp.com",
-  databaseURL: "https://mycontact-e626e-default-rtdb.firebaseio.com",
-  projectId: "mycontact-e626e",
-  storageBucket: "mycontact-e626e.firebasestorage.app",
-  messagingSenderId: "420594516827",
-  appId: "1:420594516827:web:f30266800c690c6ff9107e"
-};
+const cfg={apiKey:"AIzaSyBx81QDpjHSPvhkmnnSUNkJYMvR_fnRTaU",authDomain:"mycontact-e626e.firebaseapp.com",databaseURL:"https://mycontact-e626e-default-rtdb.firebaseio.com",projectId:"mycontact-e626e",storageBucket:"mycontact-e626e.firebasestorage.app",messagingSenderId:"420594516827",appId:"1:420594516827:web:f30266800c690c6ff9107e"};
+const app=initializeApp(cfg);const auth=getAuth(app);const db=getDatabase(app);const storage=getStorage(app);
+let CU=null,UD=null,activeSocials={},allContacts=[],scanResult=null,crmTarget='',scanInterval=null,camStream=null;
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
-const storage = getStorage(app);
-
-let currentUser = null;
-let userData = null;
-let activeSocials = {};
-let qrInstance = null;
-let qrMiniInstance = null;
-
-onAuthStateChanged(auth, async (user) => {
-  if (!user) { window.location.href = 'index.html'; return; }
-  currentUser = user;
-  const snap = await get(ref(db, `users/${user.uid}/role`));
-  if (snap.val() === 'admin') { window.location.href = 'admin.html'; return; }
-  onValue(ref(db, `users/${user.uid}`), (s) => {
-    userData = s.val() || {};
-    loadUserData();
+onAuthStateChanged(auth,async u=>{
+  if(!u){location.href='index.html';return;}CU=u;
+  const s=await get(ref(db,`users/${u.uid}/role`));
+  if(s.val()==='admin'){location.href='admin.html';return;}
+  onValue(ref(db,`users/${u.uid}`),s=>{UD=s.val()||{};loadUD();});
+  onValue(ref(db,`contacts/${u.uid}`),s=>{
+    const d=s.val()||{};
+    allContacts=Object.entries(d).map(([id,c])=>({id,...c})).sort((a,b)=>(b.addedAt||0)-(a.addedAt||0));
+    renderContacts(allContacts);
+    document.getElementById('contactsBadge').textContent=allContacts.length;
+    document.getElementById('ovContacts').textContent=allContacts.length;
   });
 });
 
-function loadUserData() {
-  const d = userData;
-  const name = d.name || d.email || '?';
-  document.getElementById('sideName').textContent = name;
-  document.getElementById('sidePlan').textContent = (d.plan || 'free').charAt(0).toUpperCase() + (d.plan||'free').slice(1) + ' Plan';
-  document.getElementById('sideAvatar').textContent = name.charAt(0).toUpperCase();
-
-  const slug = d.slug || '';
-  const link = slug ? 'cardpro.az/' + slug : '—';
-  document.getElementById('linkText').textContent = link;
-  document.getElementById('overviewLink').textContent = link;
-  document.getElementById('wLink').textContent = link;
-
-  const card = d.card || {};
-  document.getElementById('fName').value = card.name || '';
-  document.getElementById('fSurname').value = card.surname || '';
-  document.getElementById('fPosition').value = card.position || '';
-  document.getElementById('fCompany').value = card.company || '';
-  document.getElementById('fBio').value = card.bio || '';
-  document.getElementById('fPhone').value = card.phone || '';
-  document.getElementById('fEmail').value = card.email || d.email || '';
-  document.getElementById('fWeb').value = card.web || '';
-  document.getElementById('fAddress').value = card.address || '';
-
-  if (card.photo) {
-    document.getElementById('profilePhoto').innerHTML = `<img src="${card.photo}">`;
-    document.getElementById('sideAvatar').innerHTML = `<img src="${card.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
-  }
-  if (card.cover) {
-    const ci = document.getElementById('coverImg');
-    ci.src = card.cover; ci.style.display = 'block';
-    document.getElementById('coverLabel').style.display = 'none';
-    document.getElementById('coverEditBtn').style.display = 'block';
-  }
-
-  const stats = d.stats || {};
-  document.getElementById('ovViews').textContent = stats.views || 0;
-  document.getElementById('ovSaves').textContent = stats.saves || 0;
-  document.getElementById('ovQr').textContent = stats.qr || 0;
-  document.getElementById('wViews').textContent = stats.views || 0;
-  document.getElementById('wSaves').textContent = stats.saves || 0;
-
-  activeSocials = d.socials || {};
-  loadSocialUI();
-
-  if (d.video) document.getElementById('ytLink').value = d.video;
-  previewYt();
-  loadPdfList(d.pdfs || []);
-
-  generateQRCodes(card, slug);
+function loadUD(){
+  const d=UD,n=d.name||d.email||'?';
+  document.getElementById('sideName').textContent=n;
+  document.getElementById('sidePlan').textContent=(d.plan||'free').charAt(0).toUpperCase()+(d.plan||'free').slice(1)+' Plan';
+  document.getElementById('sideAvatar').textContent=n.charAt(0).toUpperCase();
+  const slug=d.slug||'',link=slug?'cardpro.az/'+slug:'—';
+  ['linkText','overviewLink','wLink'].forEach(id=>document.getElementById(id).textContent=link);
+  const c=d.card||{};
+  document.getElementById('fName').value=c.name||'';document.getElementById('fSurname').value=c.surname||'';
+  document.getElementById('fPosition').value=c.position||'';document.getElementById('fCompany').value=c.company||'';
+  document.getElementById('fBio').value=c.bio||'';document.getElementById('fPhone').value=c.phone||'';
+  document.getElementById('fEmail').value=c.email||d.email||'';document.getElementById('fWeb').value=c.web||'';
+  document.getElementById('fAddress').value=c.address||'';
+  if(c.photo){document.getElementById('profilePhoto').innerHTML=`<img src="${c.photo}">`;document.getElementById('sideAvatar').innerHTML=`<img src="${c.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;}
+  if(c.cover){const ci=document.getElementById('coverImg');ci.src=c.cover;ci.style.display='block';document.getElementById('coverLabel').style.display='none';document.getElementById('coverEditBtn').style.display='block';}
+  const st=d.stats||{};
+  ['ovViews','wViews'].forEach(id=>document.getElementById(id).textContent=st.views||0);
+  ['ovSaves','wSaves'].forEach(id=>document.getElementById(id).textContent=st.saves||0);
+  activeSocials=d.socials||{};loadSocialUI();
+  if(d.video)document.getElementById('ytLink').value=d.video;
+  previewYt();loadPdfList(d.pdfs||[]);generateQRCodes(c,slug);loadCrmStatus(d.crm||{},d.plan||'free');
 }
 
-function loadSocialUI() {
-  document.querySelectorAll('.soc-item').forEach(el => {
-    const key = el.dataset.key;
-    if (activeSocials[key]) el.classList.add('on');
-    else el.classList.remove('on');
-  });
-  renderSocInputs();
+// SCANNER
+window.startScanner=async function(){
+  try{
+    camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
+    const v=document.getElementById('scannerVideo');v.srcObject=camStream;v.style.display='block';
+    document.getElementById('cameraPlaceholder').style.display='none';
+    document.getElementById('scanLine').style.display='block';
+    document.getElementById('startScanBtn').style.display='none';
+    document.getElementById('stopScanBtn').style.display='inline-flex';
+    document.getElementById('scannerStatus').textContent='QR kodu axtarılır...';
+    scanInterval=setInterval(scanFrame,300);
+  }catch(e){showToast('Kameraya icazə verilmədi','error');}
+};
+window.stopScanner=function(){
+  if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null;}
+  clearInterval(scanInterval);
+  const v=document.getElementById('scannerVideo');v.style.display='none';
+  document.getElementById('cameraPlaceholder').style.display='flex';
+  document.getElementById('scanLine').style.display='none';
+  document.getElementById('startScanBtn').style.display='inline-flex';
+  document.getElementById('stopScanBtn').style.display='none';
+  document.getElementById('scannerStatus').textContent='Skan etmək üçün kameranı açın';
+};
+function scanFrame(){
+  const v=document.getElementById('scannerVideo');if(v.readyState!==v.HAVE_ENOUGH_DATA)return;
+  const c=document.getElementById('scannerCanvas');c.width=v.videoWidth;c.height=v.videoHeight;
+  const ctx=c.getContext('2d');ctx.drawImage(v,0,0);
+  const img=ctx.getImageData(0,0,c.width,c.height);
+  const code=jsQR(img.data,img.width,img.height,{inversionAttempts:'dontInvert'});
+  if(code){stopScanner();processQR(code.data);}
 }
-
-function renderSocInputs() {
-  const container = document.getElementById('socInputs');
-  const keys = Object.keys(activeSocials).filter(k => activeSocials[k] !== false);
-  if (!keys.length) { container.innerHTML = ''; return; }
-  const labels = {instagram:'Instagram',linkedin:'LinkedIn',facebook:'Facebook',twitter:'Twitter/X',tiktok:'TikTok',youtube:'YouTube',telegram:'Telegram',whatsapp:'WhatsApp'};
-  container.innerHTML = keys.map(k => `
-    <div class="soc-input-row">
-      <span class="soc-input-label">${labels[k]||k}</span>
-      <input class="form-input" id="soc_${k}" placeholder="${k}.com/..." value="${typeof activeSocials[k]==='string'?activeSocials[k]:''}">
-    </div>`).join('');
+function processQR(raw){
+  const p=parseVCard(raw)||{name:'',phone:'',email:'',company:'',position:'',web:'',raw};
+  scanResult=p;showScanResult(p);
+  document.getElementById('scannerStatus').textContent='QR tapıldı!';
 }
-
-window.toggleSoc = function(el) {
-  const key = el.dataset.key;
-  el.classList.toggle('on');
-  if (el.classList.contains('on')) activeSocials[key] = activeSocials[key] || '';
-  else delete activeSocials[key];
-  renderSocInputs();
-};
-
-window.saveSocials = async function() {
-  const keys = Object.keys(activeSocials);
-  keys.forEach(k => {
-    const inp = document.getElementById('soc_' + k);
-    if (inp) activeSocials[k] = inp.value.trim();
-  });
-  await update(ref(db, `users/${currentUser.uid}`), { socials: activeSocials });
-  showToast('Sosial şəbəkələr saxlanıldı', 'success');
-};
-
-window.saveCard = async function() {
-  const card = {
-    name: document.getElementById('fName').value.trim(),
-    surname: document.getElementById('fSurname').value.trim(),
-    position: document.getElementById('fPosition').value.trim(),
-    company: document.getElementById('fCompany').value.trim(),
-    bio: document.getElementById('fBio').value.trim(),
-    phone: document.getElementById('fPhone').value.trim(),
-    email: document.getElementById('fEmail').value.trim(),
-    web: document.getElementById('fWeb').value.trim(),
-    address: document.getElementById('fAddress').value.trim(),
-  };
-  if (userData?.card?.photo) card.photo = userData.card.photo;
-  if (userData?.card?.cover) card.cover = userData.card.cover;
-  await update(ref(db, `users/${currentUser.uid}`), { card });
-  showToast('Kart saxlanıldı', 'success');
-  generateQRCodes(card, userData?.slug || '');
-};
-
-window.loadCover = async function(e) {
-  const file = e.target.files[0]; if (!file) return;
-  showToast('Şəkil yüklənir...');
-  try {
-    const storageRef = sRef(storage, `covers/${currentUser.uid}`);
-    await uploadBytes(storageRef, file);
-    const url = await getDownloadURL(storageRef);
-    const ci = document.getElementById('coverImg');
-    ci.src = url; ci.style.display = 'block';
-    document.getElementById('coverLabel').style.display = 'none';
-    document.getElementById('coverEditBtn').style.display = 'block';
-    await update(ref(db, `users/${currentUser.uid}/card`), { cover: url });
-    showToast('Cover saxlanıldı', 'success');
-  } catch(err) { showToast('Xəta: ' + err.message, 'error'); }
-};
-
-document.getElementById('coverArea').addEventListener('click', function(e) {
-  if (e.target.closest('#coverEditBtn')) return;
-  if (!document.getElementById('coverImg').src || document.getElementById('coverImg').style.display === 'none') {
-    document.getElementById('coverFile').click();
-  }
-});
-
-window.loadPhoto = async function(e) {
-  const file = e.target.files[0]; if (!file) return;
-  showToast('Şəkil yüklənir...');
-  try {
-    const storageRef = sRef(storage, `photos/${currentUser.uid}`);
-    await uploadBytes(storageRef, file);
-    const url = await getDownloadURL(storageRef);
-    document.getElementById('profilePhoto').innerHTML = `<img src="${url}">`;
-    document.getElementById('sideAvatar').innerHTML = `<img src="${url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
-    await update(ref(db, `users/${currentUser.uid}/card`), { photo: url });
-    showToast('Profil şəkli saxlanıldı', 'success');
-  } catch(err) { showToast('Xəta: ' + err.message, 'error'); }
-};
-
-window.previewYt = function() {
-  const val = document.getElementById('ytLink').value.trim();
-  const preview = document.getElementById('videoPreview');
-  const id = extractYtId(val);
-  if (id) {
-    preview.innerHTML = `<iframe src="https://www.youtube.com/embed/${id}" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-  } else {
-    preview.innerHTML = `<div class="play-placeholder"><div class="play-btn"><div class="play-tri"></div></div><div class="video-hint">Link daxil edin</div></div>`;
-  }
-};
-
-window.saveVideo = async function() {
-  const val = document.getElementById('ytLink').value.trim();
-  await update(ref(db, `users/${currentUser.uid}`), { video: val });
-  showToast('Video saxlanıldı', 'success');
-};
-
-function extractYtId(url) {
-  const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/);
-  return m ? m[1] : null;
+function parseVCard(t){
+  if(!t.includes('VCARD')&&!t.includes('vcard'))return null;
+  const g=k=>{const m=t.match(new RegExp(k+'[^:]*:([^\r\n]+)','i'));return m?m[1].trim():'';}
+  return{name:g('FN')||(g('N').replace(/;+/g,' ').trim()),phone:g('TEL'),email:g('EMAIL'),company:g('ORG'),position:g('TITLE'),web:g('URL'),address:g('ADR').replace(/;+/g,', ').replace(/^,\s*/,'').trim(),raw:t};
 }
-
-window.uploadPdf = async function(e) {
-  const file = e.target.files[0]; if (!file) return;
-  showToast('PDF yüklənir...');
-  try {
-    const storageRef = sRef(storage, `pdfs/${currentUser.uid}/${file.name}`);
-    await uploadBytes(storageRef, file);
-    const url = await getDownloadURL(storageRef);
-    const pdfs = userData?.pdfs || [];
-    pdfs.push({ name: file.name, url, size: (file.size/1024/1024).toFixed(1) + ' MB' });
-    await update(ref(db, `users/${currentUser.uid}`), { pdfs });
-    showToast('PDF əlavə edildi', 'success');
-  } catch(err) { showToast('Xəta: ' + err.message, 'error'); }
-};
-
-function loadPdfList(pdfs) {
-  const el = document.getElementById('pdfList');
-  if (!pdfs.length) { el.innerHTML = '<div style="font-size:12px;color:var(--gray);text-align:center;padding:10px">PDF yoxdur</div>'; return; }
-  el.innerHTML = pdfs.map((p, i) => `
-    <div class="pdf-row">
-      <div class="pdf-icon">PDF</div>
-      <div class="pdf-meta">
-        <div class="pdf-name">${p.name}</div>
-        <div class="pdf-size">${p.size}</div>
-      </div>
-      <button class="btn btn-sm" onclick="removePdf(${i})">Sil</button>
-    </div>`).join('');
+function showScanResult(d){
+  document.getElementById('scanResultBox').style.display='block';
+  const rows=[{l:'Ad',v:d.name},{l:'Telefon',v:d.phone},{l:'Email',v:d.email},{l:'Şirkət',v:d.company},{l:'Vəzifə',v:d.position},{l:'Vebsayt',v:d.web}].filter(r=>r.v);
+  document.getElementById('scanFields').innerHTML=rows.map(r=>`<div class="scan-field"><span class="scan-field-label">${r.l}</span><span class="scan-field-val">${r.v}</span></div>`).join('');
 }
-
-window.removePdf = async function(i) {
-  const pdfs = [...(userData?.pdfs || [])];
-  pdfs.splice(i, 1);
-  await update(ref(db, `users/${currentUser.uid}`), { pdfs });
-  showToast('PDF silindi');
+window.saveScanContact=async function(){
+  if(!scanResult)return;
+  await push(ref(db,`contacts/${CU.uid}`),{...scanResult,source:'scan',addedAt:Date.now()});
+  showToast('Kontakt əlavə edildi','success');clearScan();
+};
+window.clearScan=function(){scanResult=null;document.getElementById('scanResultBox').style.display='none';document.getElementById('scannerStatus').textContent='Skan etmək üçün kameranı açın';};
+window.downloadVcf=function(){
+  if(!scanResult)return;
+  const v=`BEGIN:VCARD\nVERSION:3.0\nFN:${scanResult.name||''}\nTEL:${scanResult.phone||''}\nEMAIL:${scanResult.email||''}\nORG:${scanResult.company||''}\nTITLE:${scanResult.position||''}\nEND:VCARD`;
+  const b=new Blob([v],{type:'text/vcard'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(scanResult.name||'contact')+'.vcf';a.click();
+};
+window.addManualContact=async function(){
+  const n=document.getElementById('mName').value.trim();if(!n){showToast('Ad daxil edin','error');return;}
+  const c={name:n,position:document.getElementById('mPosition').value.trim(),company:document.getElementById('mCompany').value.trim(),phone:document.getElementById('mPhone').value.trim(),email:document.getElementById('mEmail').value.trim(),web:document.getElementById('mWeb').value.trim(),note:document.getElementById('mNote').value.trim(),source:'manual',addedAt:Date.now()};
+  await push(ref(db,`contacts/${CU.uid}`),c);
+  ['mName','mPosition','mCompany','mPhone','mEmail','mWeb','mNote'].forEach(id=>document.getElementById(id).value='');
+  showToast('Kontakt əlavə edildi','success');showPanel('contacts');
 };
 
-function generateQRCodes(card, slug) {
-  const vcard = `BEGIN:VCARD\nVERSION:3.0\nFN:${card.name||''} ${card.surname||''}\nTITLE:${card.position||''}\nORG:${card.company||''}\nTEL:${card.phone||''}\nEMAIL:${card.email||''}\nURL:${card.web||''}\nADR:;;${card.address||''};;;;\nEND:VCARD`;
-
-  ['qrMini','qrBig'].forEach(id => {
-    const el = document.getElementById(id);
-    el.innerHTML = '';
-    try {
-      new QRCode(el, {
-        text: vcard,
-        width: id === 'qrBig' ? 200 : 100,
-        height: id === 'qrBig' ? 200 : 100,
-        colorDark: '#0a1628',
-        colorLight: '#ffffff',
-        correctLevel: QRCode.CorrectLevel.M
-      });
-    } catch(e) {}
-  });
+// CONTACTS
+function renderContacts(list){
+  const g=document.getElementById('contactsGrid');
+  if(!list.length){g.innerHTML='<div class="empty-contacts"><div style="font-size:40px;opacity:.3;margin-bottom:1rem">📇</div><div style="font-size:14px;color:var(--navy);margin-bottom:4px">Hələ kontakt yoxdur</div><div style="font-size:13px">QR oxuyucu ilə kart skan edin</div></div>';return;}
+  g.innerHTML=list.map(c=>`<div class="contact-card"><div class="contact-av">${(c.name||'?').charAt(0).toUpperCase()}</div><div class="contact-info"><div class="contact-name">${c.name||'—'}</div><div class="contact-meta">${[c.position,c.company,c.phone,c.email].filter(Boolean).join(' · ')}</div></div><span class="contact-source ${c.source==='scan'?'src-scan':'src-manual'}">${c.source==='scan'?'Skan':'Əl ilə'}</span><div class="contact-actions"><button class="btn btn-sm" onclick="openContactModal('${c.id}')">Bax</button><button class="btn btn-sm" onclick="exportContactVcf('${c.id}')"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button></div></div>`).join('');
 }
-
-window.downloadQR = function() {
-  const canvas = document.querySelector('#qrBig canvas');
-  if (!canvas) { showToast('Əvvəlcə kartı doldurun', 'error'); return; }
-  const a = document.createElement('a');
-  a.download = 'cardpro-qr.png';
-  a.href = canvas.toDataURL('image/png');
-  a.click();
+window.filterContacts=function(q){renderContacts(allContacts.filter(c=>[c.name,c.company,c.email,c.phone,c.position].join(' ').toLowerCase().includes(q.toLowerCase())));};
+window.filterContactsBySource=function(s){renderContacts(s?allContacts.filter(c=>c.source===s):allContacts);};
+window.openContactModal=function(id){
+  const c=allContacts.find(x=>x.id===id);if(!c)return;window._cid=id;
+  document.getElementById('contactModalName').textContent=c.name||'—';
+  document.getElementById('contactModalMeta').textContent=[c.position,c.company].filter(Boolean).join(' · ');
+  const rows=[{l:'Telefon',v:c.phone},{l:'Email',v:c.email},{l:'Şirkət',v:c.company},{l:'Vəzifə',v:c.position},{l:'Vebsayt',v:c.web},{l:'Ünvan',v:c.address},{l:'Qeyd',v:c.note}].filter(r=>r.v);
+  document.getElementById('contactModalFields').innerHTML=rows.map(r=>`<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--gray-light)"><span style="font-size:12px;color:var(--gray);width:60px;flex-shrink:0">${r.l}</span><span style="font-size:13px;color:var(--navy)">${r.v}</span></div>`).join('');
+  document.getElementById('contactModal').classList.add('open');
+};
+window.deleteContact=async function(id){if(!id)return;await remove(ref(db,`contacts/${CU.uid}/${id}`));closeModal('contactModal');showToast('Kontakt silindi');};
+window.exportContactVcf=function(id){
+  const c=allContacts.find(x=>x.id===id);if(!c)return;
+  const v=`BEGIN:VCARD\nVERSION:3.0\nFN:${c.name||''}\nTEL:${c.phone||''}\nEMAIL:${c.email||''}\nORG:${c.company||''}\nTITLE:${c.position||''}\nURL:${c.web||''}\nEND:VCARD`;
+  const b=new Blob([v],{type:'text/vcard'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(c.name||'contact')+'.vcf';a.click();showToast('Kontakt yükləndi');
 };
 
-window.copyLink = function() {
-  const slug = userData?.slug;
-  if (!slug) { showToast('Əvvəlcə admin sizə link təyin etməlidir', 'error'); return; }
-  navigator.clipboard.writeText('https://cardpro.az/' + slug);
-  showToast('Link kopyalandı', 'success');
-};
-
-window.viewProfile = function() {
-  const slug = userData?.slug;
-  if (!slug) { showToast('Profil linki yoxdur', 'error'); return; }
-  window.open('profile.html?u=' + slug, '_blank');
-};
-
-window.showPanel = function(name) {
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('panel-' + name).classList.add('active');
-  const titles = { overview:'İcmal', editor:'Kartımı redaktə et', social:'Sosial şəbəkələr', media:'PDF və Video', qr:'QR Kod' };
-  document.getElementById('topbarTitle').textContent = titles[name] || name;
-  const items = document.querySelectorAll('.nav-item');
-  const idx = { overview:0, editor:1, social:2, media:3, qr:4 };
-  if (items[idx[name]]) items[idx[name]].classList.add('active');
-};
-
-window.doLogout = async function() {
-  await signOut(auth);
-  window.location.href = 'index.html';
-};
-
-function showToast(msg, type = '') {
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.className = 'toast show ' + type;
-  setTimeout(() => t.className = 'toast', 3000);
+// CRM
+function loadCrmStatus(crm,plan){
+  const isPro=plan==='pro'||plan==='premium';
+  if(!isPro)document.getElementById('sfLock').style.display='flex';
+  if(crm.hubspot){document.getElementById('hsDot').className='crm-dot on';document.getElementById('hsStatusText').textContent='Qoşulub';document.getElementById('hsSyncRow').style.display='flex';document.getElementById('hsSyncCount').textContent=(crm.hubspot.syncCount||0)+' kontakt sync edilib';document.getElementById('hsCard').classList.add('connected');}
+  if(crm.salesforce&&isPro){document.getElementById('sfDot').className='crm-dot on';document.getElementById('sfStatusText').textContent='Qoşulub';document.getElementById('sfSyncRow').style.display='flex';document.getElementById('sfSyncCount').textContent=(crm.salesforce.syncCount||0)+' kontakt sync edilib';document.getElementById('sfCard').classList.add('connected');}
+  if(crm.hubspot||crm.salesforce)document.getElementById('crmLogCard').style.display='block';
+  const log=crm.log||[];document.getElementById('crmLog').innerHTML=log.length?log.slice(-5).reverse().map(l=>`<div style="display:flex;justify-content:space-between"><span>${l.msg}</span><span>${new Date(l.at).toLocaleDateString('az')}</span></div>`).join(''):'<div>Hələ sync edilməyib</div>';
 }
+window.openCrmModal=function(t){
+  crmTarget=t;const crm=UD?.crm||{};
+  if(t==='hubspot'){document.getElementById('crmModalTitle').textContent='HubSpot Qoşulma';document.getElementById('crmModalSub').textContent='Private App API key daxil edin';document.getElementById('crmModalFields').innerHTML=`<div class="form-group"><label class="form-label">API Key</label><input class="form-input" id="crmKey1" placeholder="pat-na1-..." value="${crm.hubspot?.apiKey||''}"></div><div style="font-size:12px;color:var(--gray);margin-top:-6px">HubSpot → Settings → Private Apps → Create → Scopes: crm.objects.contacts.write</div>`;}
+  else{document.getElementById('crmModalTitle').textContent='Salesforce Qoşulma';document.getElementById('crmModalSub').textContent='Connected App məlumatlarını daxil edin';document.getElementById('crmModalFields').innerHTML=`<div class="form-group"><label class="form-label">Instance URL</label><input class="form-input" id="crmKey1" placeholder="https://yourorg.salesforce.com" value="${crm.salesforce?.instanceUrl||''}"></div><div class="form-group"><label class="form-label">Access Token</label><input class="form-input" id="crmKey2" placeholder="00D..." value="${crm.salesforce?.token||''}"></div>`;}
+  document.getElementById('crmModal').classList.add('open');
+};
+window.saveCrmConfig=async function(){
+  const k1=document.getElementById('crmKey1')?.value.trim();if(!k1){showToast('Məlumatları daxil edin','error');return;}
+  const crm=UD?.crm||{};
+  if(crmTarget==='hubspot')crm.hubspot={apiKey:k1,syncCount:crm.hubspot?.syncCount||0};
+  else{const k2=document.getElementById('crmKey2')?.value.trim();crm.salesforce={instanceUrl:k1,token:k2,syncCount:crm.salesforce?.syncCount||0};}
+  await update(ref(db,`users/${CU.uid}`),{crm});showToast('CRM qoşuldu','success');closeModal('crmModal');
+};
+window.syncToHubspot=async function(){
+  const apiKey=UD?.crm?.hubspot?.apiKey;if(!apiKey){showToast('HubSpot qoşulmayıb','error');return;}
+  showToast('HubSpot-a göndərilir...');let count=0;
+  for(const c of allContacts){try{const r=await fetch('https://api.hubapi.com/crm/v3/objects/contacts',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},body:JSON.stringify({properties:{firstname:c.name?.split(' ')[0]||'',lastname:c.name?.split(' ').slice(1).join(' ')||'',phone:c.phone||'',email:c.email||'',company:c.company||'',jobtitle:c.position||''}})});if(r.ok||r.status===409)count++;}catch(e){}}
+  const log=[...(UD?.crm?.log||[]),{msg:`HubSpot: ${count} kontakt göndərildi`,at:Date.now()}];
+  await update(ref(db,`users/${CU.uid}/crm`),{'hubspot/syncCount':count,log});showToast(`${count} kontakt HubSpot-a göndərildi`,'success');
+};
+window.syncToSalesforce=async function(){
+  const sf=UD?.crm?.salesforce;if(!sf?.instanceUrl||!sf?.token){showToast('Salesforce qoşulmayıb','error');return;}
+  showToast('Salesforce-a göndərilir...');let count=0;
+  for(const c of allContacts){try{const r=await fetch(`${sf.instanceUrl}/services/data/v58.0/sobjects/Contact`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+sf.token},body:JSON.stringify({FirstName:c.name?.split(' ')[0]||'',LastName:c.name?.split(' ').slice(1).join(' ')||c.name||'',Phone:c.phone||'',Email:c.email||'',Title:c.position||''})});if(r.ok||r.status===201)count++;}catch(e){}}
+  const log=[...(UD?.crm?.log||[]),{msg:`Salesforce: ${count} kontakt göndərildi`,at:Date.now()}];
+  await update(ref(db,`users/${CU.uid}/crm`),{'salesforce/syncCount':count,log});showToast(`${count} kontakt Salesforce-a göndərildi`,'success');
+};
+
+// CARD
+window.saveCard=async function(){
+  const card={name:document.getElementById('fName').value.trim(),surname:document.getElementById('fSurname').value.trim(),position:document.getElementById('fPosition').value.trim(),company:document.getElementById('fCompany').value.trim(),bio:document.getElementById('fBio').value.trim(),phone:document.getElementById('fPhone').value.trim(),email:document.getElementById('fEmail').value.trim(),web:document.getElementById('fWeb').value.trim(),address:document.getElementById('fAddress').value.trim()};
+  if(UD?.card?.photo)card.photo=UD.card.photo;if(UD?.card?.cover)card.cover=UD.card.cover;
+  await update(ref(db,`users/${CU.uid}`),{card});showToast('Kart saxlanıldı','success');generateQRCodes(card,UD?.slug||'');
+};
+window.loadCover=async function(e){const f=e.target.files[0];if(!f)return;showToast('Yüklənir...');try{const r=sRef(storage,`covers/${CU.uid}`);await uploadBytes(r,f);const url=await getDownloadURL(r);const ci=document.getElementById('coverImg');ci.src=url;ci.style.display='block';document.getElementById('coverLabel').style.display='none';document.getElementById('coverEditBtn').style.display='block';await update(ref(db,`users/${CU.uid}/card`),{cover:url});showToast('Cover saxlanıldı','success');}catch(err){showToast('Xəta: '+err.message,'error');}};
+document.getElementById('coverArea').addEventListener('click',function(e){if(e.target.closest('#coverEditBtn'))return;if(!document.getElementById('coverImg').src||document.getElementById('coverImg').style.display==='none')document.getElementById('coverFile').click();});
+window.loadPhoto=async function(e){const f=e.target.files[0];if(!f)return;showToast('Yüklənir...');try{const r=sRef(storage,`photos/${CU.uid}`);await uploadBytes(r,f);const url=await getDownloadURL(r);document.getElementById('profilePhoto').innerHTML=`<img src="${url}">`;document.getElementById('sideAvatar').innerHTML=`<img src="${url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;await update(ref(db,`users/${CU.uid}/card`),{photo:url});showToast('Şəkil saxlanıldı','success');}catch(err){showToast('Xəta: '+err.message,'error');}};
+
+// SOCIAL
+function loadSocialUI(){document.querySelectorAll('.soc-item').forEach(el=>el.classList.toggle('on',!!activeSocials[el.dataset.key]));renderSocInputs();}
+function renderSocInputs(){const keys=Object.keys(activeSocials).filter(k=>activeSocials[k]!==false);const lb={instagram:'Instagram',linkedin:'LinkedIn',facebook:'Facebook',twitter:'Twitter/X',tiktok:'TikTok',youtube:'YouTube',telegram:'Telegram',whatsapp:'WhatsApp'};document.getElementById('socInputs').innerHTML=keys.length?keys.map(k=>`<div class="soc-input-row"><span class="soc-input-label">${lb[k]||k}</span><input class="form-input" id="soc_${k}" placeholder="${k}.com/..." value="${typeof activeSocials[k]==='string'?activeSocials[k]:''}"></div>`).join(''):'';}
+window.toggleSoc=function(el){const k=el.dataset.key;el.classList.toggle('on');if(el.classList.contains('on'))activeSocials[k]=activeSocials[k]||'';else delete activeSocials[k];renderSocInputs();};
+window.saveSocials=async function(){Object.keys(activeSocials).forEach(k=>{const i=document.getElementById('soc_'+k);if(i)activeSocials[k]=i.value.trim();});await update(ref(db,`users/${CU.uid}`),{socials:activeSocials});showToast('Sosial şəbəkələr saxlanıldı','success');};
+
+// MEDIA
+window.previewYt=function(){const v=document.getElementById('ytLink').value.trim();const id=v.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)?.[1];document.getElementById('videoPreview').innerHTML=id?`<iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe>`:`<div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div class="play-btn2"><div class="play-tri"></div></div><div style="font-size:11px;color:var(--gray)">Link daxil edin</div></div>`;};
+window.saveVideo=async function(){await update(ref(db,`users/${CU.uid}`),{video:document.getElementById('ytLink').value.trim()});showToast('Video saxlanıldı','success');};
+window.uploadPdf=async function(e){const f=e.target.files[0];if(!f)return;showToast('Yüklənir...');try{const r=sRef(storage,`pdfs/${CU.uid}/${f.name}`);await uploadBytes(r,f);const url=await getDownloadURL(r);const pdfs=[...(UD?.pdfs||[])];pdfs.push({name:f.name,url,size:(f.size/1024/1024).toFixed(1)+' MB'});await update(ref(db,`users/${CU.uid}`),{pdfs});showToast('PDF əlavə edildi','success');}catch(err){showToast('Xəta: '+err.message,'error');}};
+function loadPdfList(pdfs){document.getElementById('pdfList').innerHTML=pdfs.length?pdfs.map((p,i)=>`<div class="pdf-row"><div class="pdf-icon">PDF</div><div class="pdf-meta"><div class="pdf-name">${p.name}</div><div class="pdf-size">${p.size}</div></div><button class="btn btn-sm btn-danger" onclick="removePdf(${i})">Sil</button></div>`).join(''):'<div style="font-size:12px;color:var(--gray);text-align:center;padding:10px">PDF yoxdur</div>';}
+window.removePdf=async function(i){const pdfs=[...(UD?.pdfs||[])];pdfs.splice(i,1);await update(ref(db,`users/${CU.uid}`),{pdfs});showToast('PDF silindi');};
+
+// QR
+function generateQRCodes(c,slug){
+  const v=`BEGIN:VCARD\nVERSION:3.0\nFN:${c.name||''} ${c.surname||''}\nTITLE:${c.position||''}\nORG:${c.company||''}\nTEL:${c.phone||''}\nEMAIL:${c.email||''}\nURL:${c.web||''}\nEND:VCARD`;
+  ['qrMini','qrBig'].forEach(id=>{const el=document.getElementById(id);if(!el)return;el.innerHTML='';try{new QRCode(el,{text:v,width:id==='qrBig'?200:100,height:id==='qrBig'?200:100,colorDark:'#0a1628',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});}catch(e){}});
+}
+window.downloadQR=function(){const c=document.querySelector('#qrBig canvas');if(!c){showToast('Əvvəlcə kartı doldurun','error');return;}const a=document.createElement('a');a.download='cardpro-qr.png';a.href=c.toDataURL('image/png');a.click();};
+window.copyLink=function(){const s=UD?.slug;if(!s){showToast('Profil linki yoxdur','error');return;}navigator.clipboard.writeText('https://cardpro.az/'+s);showToast('Link kopyalandı','success');};
+window.viewProfile=function(){const s=UD?.slug;if(!s){showToast('Profil linki yoxdur','error');return;}window.open('profile.html?u='+s,'_blank');};
+
+// NAV
+window.showPanel=function(n){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+  document.getElementById('panel-'+n).classList.add('active');
+  const t={overview:'İcmal',editor:'Kartımı redaktə et',social:'Sosial şəbəkələr',media:'PDF və Video',qr:'QR Kod',scanner:'QR Oxuyucu',contacts:'Kontaktlarım',crm:'CRM İnteqrasiya'};
+  document.getElementById('topbarTitle').textContent=t[n]||n;
+  const m={overview:0,editor:1,social:2,media:3,qr:4,scanner:5,contacts:6,crm:7};
+  const items=document.querySelectorAll('.nav-item');if(items[m[n]])items[m[n]].classList.add('active');
+  if(n!=='scanner')stopScanner();
+};
+window.closeModal=function(id){document.getElementById(id).classList.remove('open');};
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+window.doLogout=async function(){stopScanner();await signOut(auth);location.href='index.html';};
+function showToast(m,t=''){const el=document.getElementById('toast');el.textContent=m;el.className='toast show '+t;setTimeout(()=>el.className='toast',3000);}
 </script>
 </body>
 </html>
