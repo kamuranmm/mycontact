@@ -6,6 +6,7 @@
 <title>CardPro — Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--navy:#0a1628;--navy-mid:#112040;--blue:#185FA5;--blue-light:#378ADD;--accent:#4FACFE;--white:#fff;--gray:#8A9BB5;--gray-light:#E8EDF5;--surface:#f4f6fb;--error:#e74c3c;--success:#27ae60;--warning:#f39c12;--sidebar:240px}
@@ -746,49 +747,40 @@ window.readFromGallery=async function(e){
 
 async function processCardImage(dataUrl){
   document.getElementById('ocrProcessing').style.display='flex';
-  document.getElementById('scannerStatus').textContent='AI vizit kartı oxuyur...';
+  document.getElementById('scannerStatus').textContent='Məlumatlar oxunur...';
   document.getElementById('ocrResult').style.display='none';
-
   try{
-    const base64=dataUrl.split(',')[1];
-    const mediaType=dataUrl.split(';')[0].split(':')[1];
-
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        model:'claude-sonnet-4-20250514',
-        max_tokens:1000,
-        messages:[{
-          role:'user',
-          content:[
-            {type:'image',source:{type:'base64',media_type:mediaType,data:base64}},
-            {type:'text',text:`Bu vizit kartındakı bütün məlumatları çıxar və YALNIZ bu JSON formatında qaytar, heç bir əlavə mətn olmadan:
-{"name":"","position":"","company":"","phone":"","email":"","web":"","address":""}
-Boş sahələri boş string saxla. Telefon nömrəsini tam formatda yaz. Vebsaytı http/https olmadan yaz. Əgər bu vizit kartı deyilsə, bütün sahələri boş burax.`}
-          ]
-        }]
-      })
-    });
-
-    const data=await resp.json();
-    const text=data.content?.[0]?.text||'{}';
-    let parsed={};
-    try{
-      const clean=text.replace(/```json|```/g,'').trim();
-      parsed=JSON.parse(clean);
-    }catch(err){parsed={};}
-
+    const{data:{text}}=await Tesseract.recognize(dataUrl,'eng+tur',{logger:()=>{}});
+    const parsed=parseCardText(text);
     ocrResult=parsed;
     showOcrResult(parsed);
     document.getElementById('ocrProcessing').style.display='none';
-    document.getElementById('scannerStatus').textContent='Məlumatlar oxundu! Yoxlayın və əlavə edin.';
-
+    document.getElementById('scannerStatus').textContent='Məlumatları yoxlayın və əlavə edin';
   }catch(err){
     document.getElementById('ocrProcessing').style.display='none';
-    document.getElementById('scannerStatus').textContent='Xəta baş verdi, yenidən cəhd edin';
-    showToast('Oxuma xətası: '+err.message,'error');
+    document.getElementById('scannerStatus').textContent='Xəta. Daha aydın şəkil çəkin.';
+    showToast('Oxuma xətası','error');
   }
+}
+
+function parseCardText(raw){
+  const lines=raw.split('\n').map(l=>l.trim()).filter(l=>l.length>1);
+  const emailM=raw.match(/[\w.+%-]+@[\w.-]+\.[a-z]{2,}/i);
+  const email=emailM?emailM[0]:'';
+  const phoneM=raw.match(/[\+\(]?[\d][\d\s\-\.\(\)]{6,18}/);
+  const phone=phoneM?phoneM[0].trim():'';
+  const webM=raw.match(/(?:https?:\/\/)?(?:www\.)?[\w-]+\.(?:com|az|net|org|io|co|ru|eu|info|biz)(?:\/[\w\-._~:/?#[\]@!$&'()*+,;=%]*)*/i);
+  const web=webM?webM[0].replace(/^https?:\/\//,''):'';
+  const clean=lines.filter(l=>{
+    if(email&&l.toLowerCase().includes(email.toLowerCase()))return false;
+    if(phone&&l.replace(/\s/g,'').includes(phone.replace(/\s/g,'')))return false;
+    if(web&&l.toLowerCase().includes(web.split('/')[0].toLowerCase()))return false;
+    if(l.match(/[\+\(]?[\d][\d\s\-\.\(\)]{6,}/))return false;
+    if(l.match(/[\w.+%-]+@[\w.-]+\.[a-z]{2,}/i))return false;
+    if(l.match(/(?:https?:\/\/)?www\./i))return false;
+    return true;
+  }).filter(l=>l.length>1);
+  return{name:clean[0]||'',position:clean[1]||'',company:clean[2]||'',phone,email,web};
 }
 
 function showOcrResult(d){
