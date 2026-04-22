@@ -292,7 +292,8 @@ function renderProfile(d){
 
   const contacts=[];
   if(card.phone)contacts.push({icon:phoneIcon(),label:'Telefon',val:card.phone,href:'tel:'+card.phone});
-  if(card.email)contacts.push({icon:emailIcon(),label:'Email',val:card.email,href:'mailto:'+card.email});
+  const displayEmail=card.email||d.email||'';
+  if(displayEmail)contacts.push({icon:emailIcon(),label:'Email',val:displayEmail,href:'mailto:'+displayEmail});
   if(card.web)contacts.push({icon:webIcon(),label:'Vebsayt',val:card.web,href:'https://'+card.web.replace(/^https?:\/\//,'')});
   if(card.address)contacts.push({icon:locIcon(),label:'Ünvan',val:card.address,href:null});
   document.getElementById('contactList').innerHTML=contacts.map(c=>`<a class="contact-row" href="${c.href||'#'}" ${c.href?'target="_blank"':''}><div class="contact-icon">${c.icon}</div><div><div class="contact-label">${c.label}</div><div class="contact-text">${c.val}</div></div></a>`).join('');
