@@ -244,7 +244,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--surface);min-height:100vh
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getDatabase,ref,get,query,orderByChild,equalTo,update,push,onValue}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import{getDatabase,ref,get,update,push,onValue}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const cfg={apiKey:"AIzaSyBx81QDpjHSPvhkmnnSUNkJYMvR_fnRTaU",authDomain:"mycontact-e626e.firebaseapp.com",databaseURL:"https://mycontact-e626e-default-rtdb.firebaseio.com",projectId:"mycontact-e626e",storageBucket:"mycontact-e626e.firebasestorage.app",messagingSenderId:"420594516827",appId:"1:420594516827:web:f30266800c690c6ff9107e"};
 const app=initializeApp(cfg);const db=getDatabase(app);
@@ -254,20 +254,21 @@ const slug=new URLSearchParams(location.search).get('u');
 async function loadProfile(){
   if(!slug){showNotFound();return;}
   try{
-    const q=query(ref(db,'users'),orderByChild('slug'),equalTo(slug));
-    const snap=await get(q);
+    const snap=await get(ref(db,'users'));
     if(!snap.exists()){showNotFound();return;}
-    const[uid,data]=Object.entries(snap.val())[0];
-    if(data.status==='blocked'){showNotFound();return;}
-    profileData=data;profileUid=uid;
-    document.title=`${data.name||'Profil'} — CardPro`;
-
-    // Real-time listener — dəyişiklik olsa avtomatik yenilənir
-    onValue(ref(db,`users/${uid}`),s=>{
+    let foundUid=null,foundData=null;
+    snap.forEach(child=>{
+      if(child.val()&&child.val().slug===slug){foundUid=child.key;foundData=child.val();}
+    });
+    if(!foundUid){showNotFound();return;}
+    if(foundData.status==='blocked'){showNotFound();return;}
+    profileData=foundData;profileUid=foundUid;
+    document.title=`${foundData.name||'Profil'} — CardPro`;
+    onValue(ref(db,`users/${foundUid}`),s=>{
       const d=s.val();if(!d||d.status==='blocked')return;
       profileData=d;renderProfile(d);
     });
-    incrementViews(uid,data);
+    incrementViews(foundUid,foundData);
   }catch(e){showNotFound();}
 }
 
