@@ -171,7 +171,7 @@ tbody tr:hover td{background:#fafbfd}
     <div class="panel" id="panel-cards">
       <div class="section-head"><div class="section-title">Bütün kartlar</div></div>
       <div class="card">
-        <table><thead><tr><th>İstifadəçi</th><th>Vəzifə</th><th>Şirkət</th><th>Sosial</th><th>Plan</th><th>Əməliyyat</th></tr></thead><tbody id="cardsBody"><tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray)">Yüklənir...</td></tr></tbody></table>
+        <table><thead><tr><th>İstifadəçi</th><th>Vəzifə</th><th>Şirkət</th><th>Plan</th><th>Əməliyyat</th></tr></thead><tbody id="cardsBody"><tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray)">Yüklənir...</td></tr></tbody></table>
         <div id="cardsMobileCards"></div>
       </div>
     </div>
@@ -284,7 +284,7 @@ function renderCards(){
   const mc=document.getElementById('cardsMobileCards');
   const wc=allUsers.filter(u=>u.card);
   if(!wc.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray)">Hələ kart yoxdur</td></tr>';mc.innerHTML='';return;}
-  tbody.innerHTML=wc.map(u=>{const socCount=u.socials?Object.keys(u.socials).filter(k=>u.socials[k]).length:0;return`<tr><td><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div></td><td style="font-size:13px">${u.card.position||'—'}</td><td style="font-size:13px">${u.card.company||'—'}</td><td style="font-size:12px;color:var(--gray)">${socCount} sosial</td><td>${planBadge(u.plan)}</td><td><button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button></td></tr>`}).join('');
+  tbody.innerHTML=wc.map(u=>`<tr><td><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div></td><td style="font-size:13px">${u.card.position||'—'}</td><td style="font-size:13px">${u.card.company||'—'}</td><td>${planBadge(u.plan)}</td><td><button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button></td></tr>`).join('');
   mc.innerHTML=wc.map(u=>`<div class="mobile-card"><div class="mobile-card-top"><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.card?.position||''} · ${u.card?.company||''}</div></div></div>${planBadge(u.plan)}</div><button class="btn btn-sm" style="margin-top:8px" onclick="openEditModal('${u.uid}')">Redaktə</button></div>`).join('');
 }
 
@@ -322,7 +322,7 @@ window.selectPlan=function(el,p){selectedPlan=p;document.querySelectorAll('#crea
 window.selectEditPlan=function(el,p){selectedEditPlan=p;document.querySelectorAll('#editPlanOpts .plan-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');};
 window.closeModal=function(id){document.getElementById(id).classList.remove('open');};
 
-function genRandomSlug(){const chars='abcdefghijklmnopqrstuvwxyz0123456789';return Array.from({length:8},()=>chars[Math.floor(Math.random()*chars.length)]).join('');}
+function genRandomSlug(){const c='abcdefghijklmnopqrstuvwxyz0123456789';return Array.from({length:8},()=>c[Math.floor(Math.random()*c.length)]).join('');}
 
 window.createUser=async function(){
   const name=document.getElementById('newName').value.trim(),sur=document.getElementById('newSurname').value.trim(),email=document.getElementById('newEmail').value.trim(),pass=document.getElementById('newPass').value;
@@ -334,9 +334,13 @@ window.createUser=async function(){
   const btn=document.getElementById('createBtn');btn.disabled=true;btn.textContent='Yaradılır...';
   try{
     const cred=await createUserWithEmailAndPassword(auth,email,pass);
-    await set(ref(db,`users/${cred.user.uid}`),{name:name+(sur?' '+sur:''),email,slug,plan:selectedPlan,status:'active',role:'user',createdAt:Date.now(),scanCount:0,card:{name,surname:sur,phone:'',email,web:'',position:'',company:'',bio:'',address:''}});
-    ok.textContent='İstifadəçi yaradıldı!';ok.className='success-box show';
-    showToast('İstifadəçi yaradıldı','success');setTimeout(()=>closeModal('createModal'),1500);
+    await set(ref(db,`users/${cred.user.uid}`),{
+      name:name+(sur?' '+sur:''),email,slug,plan:selectedPlan,status:'active',role:'user',
+      createdAt:Date.now(),scanCount:0,
+      card:{name,surname:sur||'',phone:'',email,web:'',position:'',company:'',bio:'',address:''}
+    });
+    ok.textContent='İstifadəçi yaradıldı! Link: cardpro.az/'+slug;ok.className='success-box show';
+    showToast('İstifadəçi yaradıldı','success');setTimeout(()=>closeModal('createModal'),2000);
   }catch(e){let m='Xəta baş verdi.';if(e.code==='auth/email-already-in-use')m='Bu email artıq istifadə olunur.';err.textContent=m;err.className='error-box show';}
   btn.disabled=false;btn.textContent='Yarat';
 };
@@ -360,10 +364,8 @@ window.openEditModal=function(uid){
 window.saveUser=async function(){
   const uid=document.getElementById('editUid').value,name=document.getElementById('editName').value.trim(),slug=document.getElementById('editSlug').value.trim(),status=document.getElementById('editStatus').value;
   if(!name||!slug){document.getElementById('editErr').textContent='Ad və link boş ola bilməz.';document.getElementById('editErr').className='error-box show';return;}
-  // Ad dəyişirsə card.name/surname-i də yenilə
-  const parts=name.split(' ');
-  const cardName=parts[0]||'';const cardSurname=parts.slice(1).join(' ')||'';
-  const updates={name,slug,plan:selectedEditPlan,status,'card/name':cardName,'card/surname':cardSurname};
+  const parts=name.trim().split(' ');
+  const updates={name,slug,plan:selectedEditPlan,status,'card/name':parts[0]||'','card/surname':parts.slice(1).join(' ')||''};
   await update(ref(db,`users/${uid}`),updates);
   showToast('Dəyişikliklər saxlanıldı','success');closeModal('editModal');
 };
