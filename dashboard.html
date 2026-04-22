@@ -653,6 +653,8 @@ function renderSlugSection(slug,isPro){
 }
 
 window.saveSlug=async function(){
+  const isPro=UD?.plan==='pro'||UD?.plan==='premium';
+  if(!isPro){showToast('Linki dəyişmək yalnız Pro planda mümkündür','error');return;}
   const val=document.getElementById('slugInput')?.value.trim().toLowerCase().replace(/[^a-z0-9-]/g,'-');
   if(!val||val.length<3){showToast('Minimum 3 simvol olmalıdır','error');return;}
   if(val.length>60){showToast('Maksimum 60 simvol olmalıdır','error');return;}
@@ -902,9 +904,9 @@ window.openUpgradeModal=function(){document.getElementById('upgradeModal').class
 // CARD
 window.saveCard=async function(){
   const card={name:document.getElementById('fName').value.trim(),surname:document.getElementById('fSurname').value.trim(),position:document.getElementById('fPosition').value.trim(),company:document.getElementById('fCompany').value.trim(),bio:document.getElementById('fBio').value.trim(),phone:document.getElementById('fPhone').value.trim(),email:document.getElementById('fEmail').value.trim(),web:document.getElementById('fWeb').value.trim(),address:document.getElementById('fAddress').value.trim()};
-  // photo ve cover-i UD-den ve ya local variable-dan al
-  const photoUrl=UD?.card?.photo||_lastPhotoUrl;
-  const coverUrl=UD?.card?.cover||_lastCoverUrl;
+  // Mövcud photo/cover URL-lərini saxla
+  const photoUrl=_lastPhotoUrl||(UD?.card?.photo)||null;
+  const coverUrl=_lastCoverUrl||(UD?.card?.cover)||null;
   if(photoUrl)card.photo=photoUrl;
   if(coverUrl)card.cover=coverUrl;
   await update(ref(db,`users/${CU.uid}`),{card});
