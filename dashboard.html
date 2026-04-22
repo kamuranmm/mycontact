@@ -564,7 +564,7 @@ import{getStorage,ref as sRef,uploadBytes,getDownloadURL}from"https://www.gstati
 
 const cfg={apiKey:"AIzaSyBx81QDpjHSPvhkmnnSUNkJYMvR_fnRTaU",authDomain:"mycontact-e626e.firebaseapp.com",databaseURL:"https://mycontact-e626e-default-rtdb.firebaseio.com",projectId:"mycontact-e626e",storageBucket:"mycontact-e626e.firebasestorage.app",messagingSenderId:"420594516827",appId:"1:420594516827:web:f30266800c690c6ff9107e"};
 const app=initializeApp(cfg);const auth=getAuth(app);const db=getDatabase(app);const storage=getStorage(app);
-let CU=null,UD=null,activeSocials={},allContacts=[],crmTarget='',_lastPhotoUrl=null,_lastCoverUrl=null;
+let CU=null,UD=null,activeSocials={},allContacts=[],crmTarget='',_lastPhotoUrl=null,_lastCoverUrl=null,_udLoaded=false;
 const FREE_SCAN_LIMIT=5;
 
 onAuthStateChanged(auth,async u=>{
@@ -589,30 +589,42 @@ function loadUD(){
   const slug=d.slug||'';
   const link=slug?'cardpro.az/'+slug:'—';
   ['linkText','overviewLink','wLink'].forEach(id=>document.getElementById(id).textContent=link);
-  const c=d.card||{};
-  document.getElementById('fName').value=c.name||'';document.getElementById('fSurname').value=c.surname||'';
-  document.getElementById('fPosition').value=c.position||'';document.getElementById('fCompany').value=c.company||'';
-  document.getElementById('fBio').value=c.bio||'';document.getElementById('fPhone').value=c.phone||'';
-  document.getElementById('fEmail').value=c.email||d.email||'';document.getElementById('fWeb').value=c.web||'';
-  document.getElementById('fAddress').value=c.address||'';
-  // FIX: photo-nu mütləq əvvəl yoxla, onda avatar-ı set et
-  if(c.photo){
-    document.getElementById('profilePhoto').innerHTML=`<img src="${c.photo}">`;
-    document.getElementById('sideAvatar').innerHTML=`<img src="${c.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
-  } else {
-    document.getElementById('sideAvatar').textContent=n.charAt(0).toUpperCase();
-    document.getElementById('profilePhoto').innerHTML=`<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray)" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+
+  // Form sahələrini YALNIZ ilk dəfə doldur — sonrakı onValue trigger-ləri üzərinə yazmasın
+  if(!_udLoaded){
+    _udLoaded=true;
+    const c=d.card||{};
+    document.getElementById('fName').value=c.name||'';
+    document.getElementById('fSurname').value=c.surname||'';
+    document.getElementById('fPosition').value=c.position||'';
+    document.getElementById('fCompany').value=c.company||'';
+    document.getElementById('fBio').value=c.bio||'';
+    document.getElementById('fPhone').value=c.phone||'';
+    document.getElementById('fEmail').value=c.email||d.email||'';
+    document.getElementById('fWeb').value=c.web||'';
+    document.getElementById('fAddress').value=c.address||'';
+    if(c.photo){
+      document.getElementById('profilePhoto').innerHTML=`<img src="${c.photo}">`;
+      document.getElementById('sideAvatar').innerHTML=`<img src="${c.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    } else {
+      document.getElementById('sideAvatar').textContent=n.charAt(0).toUpperCase();
+      document.getElementById('profilePhoto').innerHTML=`<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray)" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
+    }
+    if(c.cover){const ci=document.getElementById('coverImg');ci.src=c.cover;ci.style.display='block';document.getElementById('coverLabel').style.display='none';document.getElementById('coverEditBtn').style.display='block';}
+    if(d.video)document.getElementById('ytLink').value=d.video;
+    previewYt();
+    activeSocials=d.socials||{};loadSocialUI();
+    renderSlugSection(slug,isPro);
+    generateQRCodes(d.card||{},slug);
   }
-  if(c.cover){const ci=document.getElementById('coverImg');ci.src=c.cover;ci.style.display='block';document.getElementById('coverLabel').style.display='none';document.getElementById('coverEditBtn').style.display='block';}
+
+  // Hər zaman yenilən: stats, pdf, crm, scan limit
   const st=d.stats||{};
   ['ovViews','wViews'].forEach(id=>document.getElementById(id).textContent=st.views||0);
   ['ovSaves','wSaves'].forEach(id=>document.getElementById(id).textContent=st.saves||0);
-  activeSocials=d.socials||{};loadSocialUI();
-  if(d.video)document.getElementById('ytLink').value=d.video;
-  previewYt();loadPdfList(d.pdfs||[]);
-  generateQRCodes(c,slug);loadCrmStatus(d.crm||{},d.plan||'free');
+  loadPdfList(d.pdfs||[]);
+  loadCrmStatus(d.crm||{},d.plan||'free');
   updateScanLimit(d.scanCount||0,isPro);
-  renderSlugSection(slug,isPro);
 }
 
 // SCAN LIMIT
@@ -653,8 +665,6 @@ function renderSlugSection(slug,isPro){
 }
 
 window.saveSlug=async function(){
-  const isPro=UD?.plan==='pro'||UD?.plan==='premium';
-  if(!isPro){showToast('Linki dəyişmək yalnız Pro planda mümkündür','error');return;}
   const val=document.getElementById('slugInput')?.value.trim().toLowerCase().replace(/[^a-z0-9-]/g,'-');
   if(!val||val.length<3){showToast('Minimum 3 simvol olmalıdır','error');return;}
   if(val.length>60){showToast('Maksimum 60 simvol olmalıdır','error');return;}
@@ -903,15 +913,29 @@ window.openUpgradeModal=function(){document.getElementById('upgradeModal').class
 
 // CARD
 window.saveCard=async function(){
-  const card={name:document.getElementById('fName').value.trim(),surname:document.getElementById('fSurname').value.trim(),position:document.getElementById('fPosition').value.trim(),company:document.getElementById('fCompany').value.trim(),bio:document.getElementById('fBio').value.trim(),phone:document.getElementById('fPhone').value.trim(),email:document.getElementById('fEmail').value.trim(),web:document.getElementById('fWeb').value.trim(),address:document.getElementById('fAddress').value.trim()};
-  // Mövcud photo/cover URL-lərini saxla
+  const cardFields={
+    'card/name':document.getElementById('fName').value.trim(),
+    'card/surname':document.getElementById('fSurname').value.trim(),
+    'card/position':document.getElementById('fPosition').value.trim(),
+    'card/company':document.getElementById('fCompany').value.trim(),
+    'card/bio':document.getElementById('fBio').value.trim(),
+    'card/phone':document.getElementById('fPhone').value.trim(),
+    'card/email':document.getElementById('fEmail').value.trim(),
+    'card/web':document.getElementById('fWeb').value.trim(),
+    'card/address':document.getElementById('fAddress').value.trim()
+  };
   const photoUrl=_lastPhotoUrl||(UD?.card?.photo)||null;
   const coverUrl=_lastCoverUrl||(UD?.card?.cover)||null;
-  if(photoUrl)card.photo=photoUrl;
-  if(coverUrl)card.cover=coverUrl;
-  await update(ref(db,`users/${CU.uid}`),{card});
+  if(photoUrl)cardFields['card/photo']=photoUrl;
+  if(coverUrl)cardFields['card/cover']=coverUrl;
+  await update(ref(db,`users/${CU.uid}`),cardFields);
+  // Lokal UD-ni yenilə ki növbəti onValue trigger form sahələrini silməsin
+  if(!UD)UD={};
+  if(!UD.card)UD.card={};
+  Object.entries(cardFields).forEach(([k,v])=>{UD.card[k.replace('card/','')]=v;});
   showToast('Kart saxlanıldı və profil yeniləndi','success');
-  generateQRCodes(card,UD?.slug||'');
+  const c=UD.card;
+  generateQRCodes(c,UD?.slug||'');
 };
 window.loadCover=async function(e){const f=e.target.files[0];if(!f)return;showToast('Yüklənir...');try{const r=sRef(storage,`covers/${CU.uid}`);await uploadBytes(r,f);const url=await getDownloadURL(r);_lastCoverUrl=url;const ci=document.getElementById('coverImg');ci.src=url;ci.style.display='block';document.getElementById('coverLabel').style.display='none';document.getElementById('coverEditBtn').style.display='block';await update(ref(db,`users/${CU.uid}/card`),{cover:url});showToast('Cover saxlanıldı','success');}catch(err){showToast('Xəta','error');}};
 document.getElementById('coverArea').addEventListener('click',function(e){if(e.target.closest('#coverEditBtn'))return;if(!document.getElementById('coverImg').src||document.getElementById('coverImg').style.display==='none')document.getElementById('coverFile').click();});
@@ -921,7 +945,11 @@ window.loadPhoto=async function(e){const f=e.target.files[0];if(!f)return;showTo
 function loadSocialUI(){document.querySelectorAll('.soc-item').forEach(el=>el.classList.toggle('on',!!activeSocials[el.dataset.key]));renderSocInputs();}
 function renderSocInputs(){const keys=Object.keys(activeSocials).filter(k=>activeSocials[k]!==false);const lb={instagram:'Instagram',linkedin:'LinkedIn',facebook:'Facebook',twitter:'Twitter/X',tiktok:'TikTok',youtube:'YouTube',telegram:'Telegram',whatsapp:'WhatsApp'};document.getElementById('socInputs').innerHTML=keys.length?keys.map(k=>`<div class="soc-input-row"><span class="soc-input-label">${lb[k]||k}</span><input class="form-input" id="soc_${k}" placeholder="${k}.com/..." value="${typeof activeSocials[k]==='string'?activeSocials[k]:''}"></div>`).join(''):'';}
 window.toggleSoc=function(el){const k=el.dataset.key;el.classList.toggle('on');if(el.classList.contains('on'))activeSocials[k]=activeSocials[k]||'';else delete activeSocials[k];renderSocInputs();};
-window.saveSocials=async function(){Object.keys(activeSocials).forEach(k=>{const i=document.getElementById('soc_'+k);if(i)activeSocials[k]=i.value.trim();});await update(ref(db,`users/${CU.uid}`),{socials:activeSocials});showToast('Saxlanıldı','success');};
+window.saveSocials=async function(){
+  Object.keys(activeSocials).forEach(k=>{const i=document.getElementById('soc_'+k);if(i)activeSocials[k]=i.value.trim();});
+  await update(ref(db,`users/${CU.uid}`),{socials:activeSocials});
+  showToast('Saxlanıldı','success');
+};
 
 // MEDIA
 window.previewYt=function(){const v=document.getElementById('ytLink').value.trim();const id=v.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)?.[1];document.getElementById('videoPreview').innerHTML=id?`<iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe>`:`<div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div class="play-btn2"><div class="play-tri"></div></div><div style="font-size:11px;color:var(--gray)">Link daxil edin</div></div>`;};
