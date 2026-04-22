@@ -6,6 +6,7 @@
 <title>CardPro — Profil</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--navy:#0a1628;--blue:#185FA5;--blue-light:#378ADD;--accent:#4FACFE;--white:#fff;--gray:#8A9BB5;--gray-light:#E8EDF5;--surface:#f4f6fb}
@@ -65,6 +66,39 @@ body{font-family:'DM Sans',sans-serif;background:var(--surface);min-height:100vh
 .not-found{text-align:center;padding:2.5rem 1.25rem}
 .toast-pub{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;z-index:999;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
 .toast-pub.show{transform:translateX(-50%) translateY(0);opacity:1}
+
+/* CARD SCANNER MODAL */
+.scan-modal-overlay{position:fixed;inset:0;background:rgba(10,22,40,.7);z-index:300;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.scan-modal-overlay.open{opacity:1;pointer-events:all}
+.scan-modal{background:var(--white);border-radius:22px 22px 0 0;width:100%;max-width:480px;padding:1.5rem 1.25rem 2rem;transform:translateY(40px);transition:transform .25s;max-height:92vh;overflow-y:auto}
+.scan-modal-overlay.open .scan-modal{transform:translateY(0)}
+.scan-modal-handle{width:36px;height:4px;background:var(--gray-light);border-radius:2px;margin:0 auto 1.1rem}
+.scan-modal-title{font-family:'DM Serif Display',serif;font-size:19px;color:var(--navy);margin-bottom:3px}
+.scan-modal-sub{font-size:12px;color:var(--gray);margin-bottom:1.1rem}
+.scan-cam-box{width:100%;aspect-ratio:16/9;background:#0a1628;border-radius:13px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;margin-bottom:.9rem}
+.scan-cam-box video{width:100%;height:100%;object-fit:cover;display:none}
+.scan-cam-box img.preview{width:100%;height:100%;object-fit:cover;display:none;position:absolute;inset:0}
+.scan-cam-placeholder{display:flex;flex-direction:column;align-items:center;gap:9px;color:rgba(255,255,255,.45);text-align:center;padding:1rem}
+.scan-corner2{position:absolute;width:20px;height:20px;border-color:var(--accent);border-style:solid;border-width:0}
+.sc2-tl{top:12px;left:12px;border-top-width:3px;border-left-width:3px;border-radius:3px 0 0 0}
+.sc2-tr{top:12px;right:12px;border-top-width:3px;border-right-width:3px;border-radius:0 3px 0 0}
+.sc2-bl{bottom:12px;left:12px;border-bottom-width:3px;border-left-width:3px;border-radius:0 0 0 3px}
+.sc2-br{bottom:12px;right:12px;border-bottom-width:3px;border-right-width:3px;border-radius:0 0 3px 0}
+.ocr-overlay{position:absolute;inset:0;background:rgba(10,22,40,.72);display:none;flex-direction:column;align-items:center;justify-content:center;gap:10px;border-radius:13px}
+.ocr-spin{width:32px;height:32px;border:3px solid rgba(255,255,255,.2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+.scan-btns{display:flex;gap:8px;justify-content:center;margin-bottom:.75rem;flex-wrap:wrap}
+.scan-btn{padding:10px 18px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;border:none;display:inline-flex;align-items:center;gap:6px;transition:all .15s}
+.scan-btn-primary{background:var(--navy);color:#fff}
+.scan-btn-primary:hover{background:#112040}
+.scan-btn-success{background:#27ae60;color:#fff}
+.scan-btn-ghost{background:var(--surface);color:var(--navy);border:1px solid var(--gray-light)}
+.ocr-fields{background:var(--surface);border-radius:10px;padding:.9rem;display:none;margin-bottom:.9rem;border:1px solid var(--gray-light)}
+.ocr-row{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid var(--gray-light)}
+.ocr-row:last-child{border-bottom:none}
+.ocr-lbl{font-size:11px;color:var(--gray);width:58px;flex-shrink:0;padding-top:1px}
+.ocr-inp{flex:1;font-size:13px;color:var(--navy);border:none;background:transparent;outline:none;font-family:'DM Sans',sans-serif}
+.share-card-btn{width:100%;padding:13px;border-radius:11px;background:linear-gradient(135deg,var(--blue),var(--accent));color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:.75rem;transition:opacity .15s}
+.share-card-btn:hover{opacity:.9}
 </style>
 </head>
 <body>
@@ -106,6 +140,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--surface);min-height:100vh
       <button class="action-btn action-btn-sec" onclick="openQrModal()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3m0 4h4v-4m-7 0h3"/></svg>QR Kod</button>
     </div>
     <button class="action-btn action-btn-sec" style="width:100%;margin-top:9px" onclick="shareProfile()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Paylaş</button>
+    <!-- SHARE MY CARD BUTTON -->
+    <button class="share-card-btn" onclick="openCardScanner()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      Öz kartımı göndər
+    </button>
   </div>
 </div>
 
@@ -115,6 +154,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--surface);min-height:100vh
 
 <div class="footer"><a href="index.html">CardPro</a> ilə yaradılmışdır · Siz də öz kartınızı yaradın →</div>
 
+<!-- QR MODAL -->
 <div class="modal-overlay" id="qrModal">
   <div class="modal">
     <div class="modal-title">QR Kod</div>
@@ -125,11 +165,86 @@ body{font-family:'DM Sans',sans-serif;background:var(--surface);min-height:100vh
   </div>
 </div>
 
+<!-- BUSINESS CARD SCANNER MODAL -->
+<div class="scan-modal-overlay" id="scanModal">
+  <div class="scan-modal">
+    <div class="scan-modal-handle"></div>
+    <div class="scan-modal-title">📷 Öz kartınızı göndərin</div>
+    <div class="scan-modal-sub" id="scanModalSub">Kağız vizit kartınızı kameraya tutun — məlumatlar oxunub <strong id="ownerNameSpan">profil sahibinə</strong> göndəriləcək</div>
+
+    <!-- Camera box -->
+    <div class="scan-cam-box" id="scanCamBox">
+      <video id="scanVideo" playsinline autoplay muted></video>
+      <img class="preview" id="scanPreview" alt="">
+      <canvas id="scanCanvas" style="display:none"></canvas>
+      <div class="scan-cam-placeholder" id="scanPlaceholder">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="1.5"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        <div style="font-size:12px">Kameranı açın</div>
+      </div>
+      <div style="position:absolute;inset:0;pointer-events:none">
+        <div class="scan-corner2 sc2-tl"></div>
+        <div class="scan-corner2 sc2-tr"></div>
+        <div class="scan-corner2 sc2-bl"></div>
+        <div class="scan-corner2 sc2-br"></div>
+      </div>
+      <div class="ocr-overlay" id="ocrOverlay">
+        <div class="ocr-spin"></div>
+        <div style="font-size:12px;color:rgba(255,255,255,.8)">Məlumatlar oxunur...</div>
+      </div>
+    </div>
+
+    <!-- Status -->
+    <div style="text-align:center;font-size:12px;color:var(--gray);margin-bottom:.75rem" id="scanStatus">Başlamaq üçün kameranı açın</div>
+
+    <!-- Buttons -->
+    <div class="scan-btns" id="scanBtnsRow">
+      <button class="scan-btn scan-btn-primary" id="scanStartBtn" onclick="profileStartCam()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+        Kameranı aç
+      </button>
+      <button class="scan-btn scan-btn-success" id="scanCaptureBtn" onclick="profileCapture()" style="display:none">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4" fill="currentColor" stroke="none"/></svg>
+        Şəkil çək
+      </button>
+      <button class="scan-btn scan-btn-ghost" id="scanRetakeBtn" onclick="profileRetake()" style="display:none">Yenidən çək</button>
+      <button class="scan-btn scan-btn-ghost" onclick="closeCardScanner()">Bağla</button>
+    </div>
+
+    <!-- Gallery upload -->
+    <div style="text-align:center;margin-bottom:.75rem">
+      <label style="font-size:12px;color:var(--blue);cursor:pointer;display:inline-flex;align-items:center;gap:4px">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Qalereyadan seç
+        <input type="file" accept="image/*" style="display:none" onchange="profileGallery(event)">
+      </label>
+    </div>
+
+    <!-- OCR Result fields (editable) -->
+    <div class="ocr-fields" id="ocrFields">
+      <div style="font-size:11px;font-weight:600;color:var(--navy);margin-bottom:7px;text-transform:uppercase;letter-spacing:.06em">Oxunan məlumatlar — yoxlayın</div>
+      <div class="ocr-row"><span class="ocr-lbl">Ad</span><input class="ocr-inp" id="ocrName" placeholder="—"></div>
+      <div class="ocr-row"><span class="ocr-lbl">Vəzifə</span><input class="ocr-inp" id="ocrPosition" placeholder="—"></div>
+      <div class="ocr-row"><span class="ocr-lbl">Şirkət</span><input class="ocr-inp" id="ocrCompany" placeholder="—"></div>
+      <div class="ocr-row"><span class="ocr-lbl">Telefon</span><input class="ocr-inp" id="ocrPhone" placeholder="—"></div>
+      <div class="ocr-row"><span class="ocr-lbl">Email</span><input class="ocr-inp" id="ocrEmail" placeholder="—"></div>
+      <div class="ocr-row"><span class="ocr-lbl">Vebsayt</span><input class="ocr-inp" id="ocrWeb" placeholder="—"></div>
+      <div style="display:flex;gap:7px;margin-top:.9rem;flex-wrap:wrap">
+        <button class="scan-btn scan-btn-primary" onclick="submitOcrContact()" style="flex:1;justify-content:center">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Göndər
+        </button>
+        <button class="scan-btn scan-btn-ghost" onclick="profileRetake()">Yenidən çək</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <div class="toast-pub" id="toastPub"></div>
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getDatabase,ref,get,query,orderByChild,equalTo,update,onValue}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import{getDatabase,ref,get,query,orderByChild,equalTo,update,push,onValue}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const cfg={apiKey:"AIzaSyBx81QDpjHSPvhkmnnSUNkJYMvR_fnRTaU",authDomain:"mycontact-e626e.firebaseapp.com",databaseURL:"https://mycontact-e626e-default-rtdb.firebaseio.com",projectId:"mycontact-e626e",storageBucket:"mycontact-e626e.firebasestorage.app",messagingSenderId:"420594516827",appId:"1:420594516827:web:f30266800c690c6ff9107e"};
 const app=initializeApp(cfg);const db=getDatabase(app);
@@ -215,6 +330,162 @@ window.saveContact=function(){
 window.openQrModal=function(){document.getElementById('qrModal').classList.add('open');};
 window.downloadQR=function(){const c=document.querySelector('#qrModalCode canvas');if(!c)return;const a=document.createElement('a');a.download='cardpro-qr.png';a.href=c.toDataURL('image/png');a.click();};
 window.shareProfile=function(){const url=location.href;if(navigator.share)navigator.share({title:profileData?.name||'CardPro',url});else{navigator.clipboard.writeText(url);showToast('Link kopyalandı');}};
+
+// ── BUSINESS CARD SCANNER (profile-dan) ───────────────────────────
+let scanCamStream=null;
+
+window.openCardScanner=function(){
+  document.getElementById('scanModal').classList.add('open');
+  // Owner adını göstər
+  const ownerName=(profileData?.card?.name||profileData?.name||'profil sahibi');
+  document.getElementById('ownerNameSpan').textContent=ownerName+'a';
+};
+window.closeCardScanner=function(){
+  stopProfileCam();
+  document.getElementById('scanModal').classList.remove('open');
+  document.getElementById('ocrFields').style.display='none';
+  document.getElementById('scanStatus').textContent='Başlamaq üçün kameranı açın';
+};
+
+window.profileStartCam=async function(){
+  try{
+    scanCamStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment',width:{ideal:1920}}});
+    const v=document.getElementById('scanVideo');
+    v.srcObject=scanCamStream;v.style.display='block';
+    document.getElementById('scanPlaceholder').style.display='none';
+    document.getElementById('scanPreview').style.display='none';
+    document.getElementById('scanStartBtn').style.display='none';
+    document.getElementById('scanCaptureBtn').style.display='inline-flex';
+    document.getElementById('scanRetakeBtn').style.display='none';
+    document.getElementById('ocrFields').style.display='none';
+    document.getElementById('scanStatus').textContent='Vizit kartınızı çərçivəyə tutun';
+  }catch(e){showToast('Kameraya icazə verilmədi');}
+};
+
+function stopProfileCam(){
+  if(scanCamStream){scanCamStream.getTracks().forEach(t=>t.stop());scanCamStream=null;}
+  const v=document.getElementById('scanVideo');if(v)v.style.display='none';
+}
+
+window.profileCapture=async function(){
+  const v=document.getElementById('scanVideo');
+  const c=document.getElementById('scanCanvas');
+  c.width=v.videoWidth;c.height=v.videoHeight;
+  c.getContext('2d').drawImage(v,0,0);
+  const dataUrl=c.toDataURL('image/jpeg',0.92);
+  // Show preview
+  const prev=document.getElementById('scanPreview');
+  prev.src=dataUrl;prev.style.display='block';
+  v.style.display='none';
+  stopProfileCam();
+  document.getElementById('scanCaptureBtn').style.display='none';
+  document.getElementById('scanRetakeBtn').style.display='inline-flex';
+  await runOCR(dataUrl);
+};
+
+window.profileGallery=async function(e){
+  const f=e.target.files[0];if(!f)return;
+  const reader=new FileReader();
+  reader.onload=async ev=>{
+    const dataUrl=ev.target.result;
+    const prev=document.getElementById('scanPreview');
+    prev.src=dataUrl;prev.style.display='block';
+    document.getElementById('scanVideo').style.display='none';
+    document.getElementById('scanPlaceholder').style.display='none';
+    document.getElementById('scanStartBtn').style.display='none';
+    document.getElementById('scanCaptureBtn').style.display='none';
+    document.getElementById('scanRetakeBtn').style.display='inline-flex';
+    document.getElementById('ocrFields').style.display='none';
+    stopProfileCam();
+    await runOCR(dataUrl);
+  };
+  reader.readAsDataURL(f);
+};
+
+window.profileRetake=function(){
+  document.getElementById('scanPreview').style.display='none';
+  document.getElementById('scanPlaceholder').style.display='flex';
+  document.getElementById('ocrFields').style.display='none';
+  document.getElementById('scanStartBtn').style.display='inline-flex';
+  document.getElementById('scanCaptureBtn').style.display='none';
+  document.getElementById('scanRetakeBtn').style.display='none';
+  document.getElementById('ocrOverlay').style.display='none';
+  document.getElementById('scanStatus').textContent='Başlamaq üçün kameranı açın';
+};
+
+async function runOCR(dataUrl){
+  document.getElementById('ocrOverlay').style.display='flex';
+  document.getElementById('scanStatus').textContent='Məlumatlar oxunur...';
+  document.getElementById('ocrFields').style.display='none';
+  try{
+    const {data:{text}}=await Tesseract.recognize(dataUrl,'eng+tur',{logger:()=>{}});
+    const parsed=parseCardText(text);
+    fillOcrFields(parsed);
+    document.getElementById('ocrOverlay').style.display='none';
+    document.getElementById('ocrFields').style.display='block';
+    document.getElementById('scanStatus').textContent='Məlumatları yoxlayın, sonra göndərin';
+  }catch(err){
+    document.getElementById('ocrOverlay').style.display='none';
+    document.getElementById('scanStatus').textContent='Oxuma xətası. Daha aydın şəkil çəkin.';
+    showToast('Xəta: '+err.message);
+  }
+}
+
+function parseCardText(raw){
+  const lines=raw.split('\n').map(l=>l.trim()).filter(l=>l.length>1);
+  // Email
+  const emailM=raw.match(/[\w.+%-]+@[\w.-]+\.[a-z]{2,}/i);
+  const email=emailM?emailM[0]:'';
+  // Phone — includes international formats
+  const phoneM=raw.match(/[\+\(]?[\d][\d\s\-\.\(\)]{6,18}/);
+  const phone=phoneM?phoneM[0].trim():'';
+  // Website
+  const webM=raw.match(/(?:https?:\/\/)?(?:www\.)?[\w-]+\.(?:com|az|net|org|io|co|ru|eu|info|biz)(?:\/[\w\-._~:/?#[\]@!$&'()*+,;=%]*)*/i);
+  const web=webM?webM[0].replace(/^https?:\/\//,''):'';
+  // Remove matched lines to find name/position/company
+  const clean=lines.filter(l=>{
+    if(email&&l.toLowerCase().includes(email.toLowerCase()))return false;
+    if(phone&&l.replace(/\s/g,'').includes(phone.replace(/\s/g,'')))return false;
+    if(web&&l.toLowerCase().includes(web.split('/')[0].toLowerCase()))return false;
+    if(l.match(/[\+\(]?[\d][\d\s\-\.\(\)]{6,}/))return false;
+    if(l.match(/[\w.+%-]+@[\w.-]+\.[a-z]{2,}/i))return false;
+    if(l.match(/(?:https?:\/\/)?www\./i))return false;
+    return true;
+  }).filter(l=>l.length>1);
+  return{
+    name:clean[0]||'',
+    position:clean[1]||'',
+    company:clean[2]||'',
+    phone,email,web
+  };
+}
+
+function fillOcrFields(d){
+  ['Name','Position','Company','Phone','Email','Web'].forEach(k=>{
+    const el=document.getElementById('ocr'+k);
+    if(el)el.value=d[k.toLowerCase()]||'';
+  });
+}
+
+window.submitOcrContact=async function(){
+  if(!profileUid){showToast('Profil tapılmadı');return;}
+  const contact={
+    name:document.getElementById('ocrName').value.trim(),
+    position:document.getElementById('ocrPosition').value.trim(),
+    company:document.getElementById('ocrCompany').value.trim(),
+    phone:document.getElementById('ocrPhone').value.trim(),
+    email:document.getElementById('ocrEmail').value.trim(),
+    web:document.getElementById('ocrWeb').value.trim(),
+    source:'scan',
+    addedAt:Date.now()
+  };
+  if(!contact.name&&!contact.phone&&!contact.email){showToast('Ən azı ad və ya telefon daxil edin');return;}
+  try{
+    await push(ref(db,`contacts/${profileUid}`),contact);
+    showToast('Kartınız göndərildi ✓');
+    closeCardScanner();
+  }catch(e){showToast('Xəta: '+e.message);}
+};;
 
 async function incrementViews(uid,data){
   await update(ref(db,`users/${uid}/stats`),{views:(data?.stats?.views||0)+1});
