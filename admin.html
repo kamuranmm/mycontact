@@ -189,7 +189,7 @@ tbody tr:hover td{background:#fafbfd}
     <div class="form-row"><div class="form-group"><label class="form-label">Ad</label><input class="form-input" id="newName" placeholder="Aytən"></div><div class="form-group"><label class="form-label">Soyad</label><input class="form-input" id="newSurname" placeholder="Həsənova"></div></div>
     <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" id="newEmail" placeholder="ayten@email.com"></div>
     <div class="form-group"><label class="form-label">Şifrə</label><input class="form-input" type="password" id="newPass" placeholder="Min 6 simvol"></div>
-    <div class="form-group"><label class="form-label">Profil linki</label><div style="font-size:12px;color:var(--gray);padding:7px 11px;background:var(--surface);border:1.5px solid var(--gray-light);border-radius:9px">cardpro.az/<span id="newSlugPreview" style="color:var(--blue);font-weight:500">—</span> <span style="color:var(--gray)">(avtomatik yaranacaq)</span></div></div>
+    <div class="form-group"><label class="form-label">Profil linki</label><div style="font-size:12px;color:var(--gray);padding:7px 11px;background:var(--surface);border:1.5px solid var(--gray-light);border-radius:9px">cardpro.az/<span id="newSlugPreview" style="color:var(--blue);font-weight:500">—</span> <span style="color:var(--gray)">(avtomatik)</span></div></div>
     <div class="form-group"><label class="form-label">Plan</label>
       <div class="plan-options">
         <div class="plan-opt selected" onclick="selectPlan(this,'free')"><div class="plan-opt-name">Free</div><div class="plan-opt-desc">5 skan/ay</div></div>
@@ -337,9 +337,9 @@ window.createUser=async function(){
     await set(ref(db,`users/${cred.user.uid}`),{
       name:name+(sur?' '+sur:''),email,slug,plan:selectedPlan,status:'active',role:'user',
       createdAt:Date.now(),scanCount:0,
-      card:{name,surname:sur||'',phone:'',email,web:'',position:'',company:'',bio:'',address:''}
+      card:{name,surname:sur||'',phone:'',email,web:'',position:'',company:'',bio:'',address:'',photo:'',cover:''}
     });
-    ok.textContent='İstifadəçi yaradıldı! Link: cardpro.az/'+slug;ok.className='success-box show';
+    ok.textContent='Yaradıldı! Link: cardpro.az/'+slug;ok.className='success-box show';
     showToast('İstifadəçi yaradıldı','success');setTimeout(()=>closeModal('createModal'),2000);
   }catch(e){let m='Xəta baş verdi.';if(e.code==='auth/email-already-in-use')m='Bu email artıq istifadə olunur.';err.textContent=m;err.className='error-box show';}
   btn.disabled=false;btn.textContent='Yarat';
@@ -365,8 +365,7 @@ window.saveUser=async function(){
   const uid=document.getElementById('editUid').value,name=document.getElementById('editName').value.trim(),slug=document.getElementById('editSlug').value.trim(),status=document.getElementById('editStatus').value;
   if(!name||!slug){document.getElementById('editErr').textContent='Ad və link boş ola bilməz.';document.getElementById('editErr').className='error-box show';return;}
   const parts=name.trim().split(' ');
-  const updates={name,slug,plan:selectedEditPlan,status,'card/name':parts[0]||'','card/surname':parts.slice(1).join(' ')||''};
-  await update(ref(db,`users/${uid}`),updates);
+  await update(ref(db,`users/${uid}`),{name,slug,plan:selectedEditPlan,status,'card/name':parts[0]||'','card/surname':parts.slice(1).join(' ')||''});
   showToast('Dəyişikliklər saxlanıldı','success');closeModal('editModal');
 };
 
