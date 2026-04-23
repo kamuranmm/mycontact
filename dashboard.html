@@ -69,7 +69,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 .widget-title{font-size:13px;font-weight:500;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
 
 /* OVERVIEW */
-.dash-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.25rem}
+.dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1.25rem}
 .dash-stat{background:var(--white);border-radius:11px;border:1px solid var(--gray-light);padding:1rem}
 .ds-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--navy)}
 .ds-label{font-size:12px;color:var(--gray);margin-top:3px}
@@ -255,9 +255,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
     <div class="nav-item" onclick="showPanel('editor')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>Kartımı redaktə et</div>
     <div class="nav-item" onclick="showPanel('social')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Sosial şəbəkələr</div>
     <div class="nav-item" onclick="showPanel('media')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>PDF və Video</div>
-    <div class="nav-item" onclick="showPanel('qr')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3m0 4h4v-4m-7 0h3"/></svg>QR Kod</div>
     <div class="nav-section">Kontaktlar</div>
-    <div class="nav-item" onclick="showPanel('scanner')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M7 8h2m2 0h2m2 0h2"/><path d="M7 11h4m3 0h3"/></svg>Kart Oxuyucu<span class="nav-badge" id="scanLimitBadge">5</span></div>
     <div class="nav-item" onclick="showPanel('contacts')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Kontaktlarım<span class="nav-badge" id="contactsBadge">0</span></div>
     <div class="nav-section">İnteqrasiya</div>
     <div class="nav-item" onclick="showPanel('crm')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>CRM<span class="nav-pro">PRO</span></div>
@@ -285,15 +283,51 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
         <div><div class="plink-label">Profil linkiniz</div><div class="plink-url" id="overviewLink">—</div></div>
         <div style="display:flex;gap:7px;flex-shrink:0"><button class="btn btn-sm" onclick="copyLink()">Kopyala</button><button class="btn btn-sm btn-primary" onclick="viewProfile()">Aç</button></div>
       </div>
+
+      <!-- Stat cards -->
       <div class="dash-stats">
-        <div class="dash-stat"><div class="ds-num" id="ovViews">0</div><div class="ds-label">Ümumi baxış</div></div>
-        <div class="dash-stat"><div class="ds-num" id="ovUniqueViews">0</div><div class="ds-label">Unikal baxış</div></div>
-        <div class="dash-stat"><div class="ds-num" id="ovSaves">0</div><div class="ds-label">Kontakt saxlayanlar</div></div>
-        <div class="dash-stat"><div class="ds-num" id="ovContacts">0</div><div class="ds-label">Mənim kontaktlarım</div></div>
+        <div class="dash-stat">
+          <div class="ds-icon" style="background:rgba(24,95,165,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+          <div class="ds-num" id="ovViews">0</div><div class="ds-label">Ümumi baxış</div>
+        </div>
+        <div class="dash-stat">
+          <div class="ds-icon" style="background:rgba(79,172,254,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4FACFE" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+          <div class="ds-num" id="ovUniqueViews">0</div><div class="ds-label">Unikal baxış</div>
+        </div>
+        <div class="dash-stat">
+          <div class="ds-icon" style="background:rgba(39,174,96,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+          <div class="ds-num" id="ovSaves">0</div><div class="ds-label">Kontakt saxlayanlar</div>
+        </div>
+        <div class="dash-stat">
+          <div class="ds-icon" style="background:rgba(201,168,76,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+          <div class="ds-num" id="ovContacts">0</div><div class="ds-label">Kontaktlarım</div>
+        </div>
       </div>
-      <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;text-align:center">
-        <div style="font-size:13px;color:var(--gray);margin-bottom:.9rem">Kağız vizit kartlarını kamera ilə skan edin, AI məlumatları oxusun</div>
-        <button class="btn btn-primary" onclick="showPanel('scanner')">📷 Vizit Kart Oxuyucunu aç →</button>
+
+      <!-- Charts row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+        <!-- Bar chart: views vs saves vs contacts -->
+        <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
+          <div style="font-size:13px;font-weight:500;color:var(--navy);margin-bottom:1rem">Statistika xülasəsi</div>
+          <canvas id="barChart" height="180"></canvas>
+        </div>
+        <!-- Donut chart: unique vs repeat -->
+        <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem;display:flex;flex-direction:column;align-items:center">
+          <div style="font-size:13px;font-weight:500;color:var(--navy);margin-bottom:1rem;align-self:flex-start">Baxış növləri</div>
+          <canvas id="donutChart" width="160" height="160"></canvas>
+          <div style="display:flex;gap:1.25rem;margin-top:.9rem">
+            <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gray)"><span style="width:10px;height:10px;border-radius:50%;background:#185FA5;display:inline-block"></span>Unikal</div>
+            <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gray)"><span style="width:10px;height:10px;border-radius:50%;background:#4FACFE;display:inline-block"></span>Təkrar</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity feed -->
+      <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
+        <div style="font-size:13px;font-weight:500;color:var(--navy);margin-bottom:.9rem">Son aktivlik</div>
+        <div id="activityFeed" style="display:flex;flex-direction:column;gap:7px">
+          <div style="font-size:12px;color:var(--gray);text-align:center;padding:.9rem">Hələ aktivlik yoxdur</div>
+        </div>
       </div>
     </div>
 
@@ -329,7 +363,6 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
         </div>
         <div class="right-col">
           <div class="widget"><div class="widget-title">Statistika</div><div class="mini-stats" style="grid-template-columns:1fr 1fr 1fr"><div class="mini-stat"><div class="mini-stat-num" id="wViews">0</div><div class="mini-stat-label">Ümumi baxış</div></div><div class="mini-stat"><div class="mini-stat-num" id="wUniqueViews">0</div><div class="mini-stat-label">Unikal baxış</div></div><div class="mini-stat"><div class="mini-stat-num" id="wSaves">0</div><div class="mini-stat-label">Saxlayan</div></div></div></div>
-          <div class="widget"><div class="widget-title">QR Kod<button class="btn btn-sm" onclick="showPanel('qr')">Tam bax</button></div><div id="qrMini" style="display:flex;justify-content:center;margin-bottom:9px"></div><button class="btn btn-sm btn-primary" style="width:100%;justify-content:center" onclick="downloadQR()">PNG yüklə</button></div>
           <div class="widget"><div class="widget-title">Profil linki</div><div style="font-size:13px;color:var(--blue);margin-bottom:9px;word-break:break-all" id="wLink">—</div><button class="btn btn-sm" style="width:100%;justify-content:center" onclick="copyLink()">Kopyala</button></div>
         </div>
       </div>
@@ -358,9 +391,14 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
     <div class="panel" id="panel-media">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;max-width:780px">
         <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
-          <div style="font-size:14px;font-weight:500;margin-bottom:.9rem">PDF sənəd</div>
+          <div style="font-size:14px;font-weight:500;margin-bottom:.25rem">PDF sənəd</div>
+          <div style="font-size:12px;color:var(--gray);margin-bottom:.9rem">PDF linkini əlavə edin (Google Drive, Dropbox, OneDrive və s.)</div>
           <div id="pdfList"></div>
-          <label style="display:flex;align-items:center;gap:7px;padding:9px;border:1.5px dashed var(--gray-light);border-radius:9px;cursor:pointer;font-size:13px;color:var(--gray);justify-content:center;margin-top:7px">+ PDF əlavə et<input type="file" accept=".pdf" style="display:none" onchange="uploadPdf(event)"></label>
+          <div style="margin-top:9px;background:var(--surface);border-radius:10px;padding:.9rem;border:1.5px dashed var(--gray-light)">
+            <div class="form-group" style="margin-bottom:7px"><label class="form-label">Sənədin adı</label><input class="form-input" id="pdfName" placeholder="Məs: Kataloq 2025, CV..."></div>
+            <div class="form-group" style="margin-bottom:9px"><label class="form-label">PDF linki</label><input class="form-input" id="pdfUrl" placeholder="https://drive.google.com/..."></div>
+            <button class="btn btn-primary btn-sm" style="width:100%;justify-content:center" onclick="addPdfLink()">+ Əlavə et</button>
+          </div>
         </div>
         <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
           <div style="font-size:14px;font-weight:500;margin-bottom:.9rem">YouTube video</div>
@@ -371,135 +409,13 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
       </div>
     </div>
 
-    <!-- QR -->
-    <div class="panel" id="panel-qr">
-      <div style="max-width:420px">
-        <div class="widget" style="text-align:center">
-          <div style="font-size:14px;font-weight:500;margin-bottom:5px">vCard QR Kod</div>
-          <div style="font-size:12px;color:var(--gray);margin-bottom:1.1rem">Skan etdikdə kontakt məlumatları birbaşa telefona saxlanır</div>
-          <div id="qrBig" style="display:flex;justify-content:center;margin-bottom:1.1rem"></div>
-          <div style="display:flex;gap:7px;justify-content:center">
-            <button class="btn btn-primary" onclick="downloadQR()">PNG yüklə</button>
-            <button class="btn" onclick="copyLink()">Linki kopyala</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SCANNER -->
-    <div class="panel" id="panel-scanner">
-      <div class="scanner-wrap">
-        <div class="scan-limit-bar" id="scanLimitBar">
-          <div class="scan-limit-top">
-            <span style="color:var(--gray)">Aylıq skan limiti</span>
-            <span class="scan-limit-count" id="scanLimitText">0 / 5</span>
-          </div>
-          <div class="scan-limit-track"><div class="scan-limit-fill" id="scanLimitFill" style="width:0%"></div></div>
-        </div>
-
-        <!-- CAMERA CARD -->
-        <div class="scanner-card">
-          <div class="scanner-top">
-            <div>
-              <div class="scanner-title">📷 Vizit Kart Oxuyucu</div>
-              <div class="scanner-sub">Kağız vizit kartını kameraya tutun, AI məlumatları oxuyacaq</div>
-            </div>
-          </div>
-          <div class="scanner-body">
-            <!-- Camera / Preview box -->
-            <div class="camera-box" id="cameraBox">
-              <video id="scannerVideo" playsinline autoplay muted></video>
-              <img id="capturedPreview" alt="captured">
-              <canvas id="scannerCanvas" style="display:none"></canvas>
-              <div class="camera-placeholder" id="cameraPlaceholder">
-                <div class="cam-icon-wrap">
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="1.5"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                </div>
-                <div style="font-size:13px;font-weight:500;color:rgba(255,255,255,.8)">Vizit kartı kameraya tutun</div>
-                <div style="font-size:11px;color:rgba(255,255,255,.4)">Kart çərçivəyə sığmalıdır</div>
-              </div>
-              <!-- Guide frame -->
-              <div style="position:absolute;inset:0;pointer-events:none">
-                <div class="scan-corner sc-tl"></div>
-                <div class="scan-corner sc-tr"></div>
-                <div class="scan-corner sc-bl"></div>
-                <div class="scan-corner sc-br"></div>
-              </div>
-              <!-- OCR processing overlay -->
-              <div class="ocr-processing" id="ocrProcessing">
-                <div class="ocr-spinner"></div>
-                <div style="font-size:13px;color:rgba(255,255,255,.8);font-weight:500">AI oxuyur...</div>
-                <div style="font-size:11px;color:rgba(255,255,255,.4)">Bir neçə saniyə</div>
-              </div>
-            </div>
-
-            <!-- Status -->
-            <div style="text-align:center;font-size:13px;color:var(--gray);margin-bottom:.9rem" id="scannerStatus">Başlamaq üçün kameranı açın</div>
-
-            <!-- Buttons -->
-            <div style="display:flex;gap:7px;justify-content:center;margin-bottom:.9rem" id="scanBtns">
-              <button class="btn btn-primary" id="startScanBtn" onclick="startCardScanner()">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
-                Kameranı aç
-              </button>
-              <button class="btn btn-success" id="captureBtn" onclick="captureAndRead()" style="display:none">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4" fill="currentColor" stroke="none"/></svg>
-                Şəkil çək
-              </button>
-              <button class="btn" id="stopScanBtn" onclick="stopCardScanner()" style="display:none">Dayandır</button>
-              <button class="btn" id="retakeBtn" onclick="retakePhoto()" style="display:none">Yenidən çək</button>
-            </div>
-
-            <!-- Upload from gallery -->
-            <div style="text-align:center;margin-bottom:.9rem">
-              <label style="font-size:12px;color:var(--blue);cursor:pointer;display:inline-flex;align-items:center;gap:5px">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                Qalereyadan şəkil seç
-                <input type="file" accept="image/*" style="display:none" onchange="readFromGallery(event)">
-              </label>
-            </div>
-
-            <!-- OCR Result -->
-            <div class="ocr-result" id="ocrResult">
-              <div class="ocr-badge">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                Məlumatlar oxundu
-              </div>
-              <div id="ocrFields"></div>
-              <div style="display:flex;gap:7px;margin-top:.9rem;flex-wrap:wrap">
-                <button class="btn btn-primary btn-sm" onclick="saveOcrContact()">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                  Kontaktlara əlavə et
-                </button>
-                <button class="btn btn-sm" onclick="exportOcrVcf()">Telefona saxla</button>
-                <button class="btn btn-sm" onclick="clearOcrResult()">Bağla</button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- MANUAL ADD CARD -->
-        <div class="scanner-card">
-          <div class="scanner-top"><div><div class="scanner-title">✏️ Əl ilə əlavə et</div><div class="scanner-sub">Kartı oxumaq mümkün olmadıqda — limitsiz</div></div></div>
-          <div class="scanner-body">
-            <div class="form-row"><div class="form-group"><label class="form-label">Ad Soyad</label><input class="form-input" id="mName" placeholder="Nicat Rəhimov"></div><div class="form-group"><label class="form-label">Vəzifə</label><input class="form-input" id="mPosition"></div></div>
-            <div class="form-row"><div class="form-group"><label class="form-label">Şirkət</label><input class="form-input" id="mCompany"></div><div class="form-group"><label class="form-label">Telefon</label><input class="form-input" id="mPhone"></div></div>
-            <div class="form-row"><div class="form-group"><label class="form-label">Email</label><input class="form-input" id="mEmail"></div><div class="form-group"><label class="form-label">Vebsayt</label><input class="form-input" id="mWeb"></div></div>
-            <div class="form-group"><label class="form-label">Qeyd</label><input class="form-input" id="mNote" placeholder="Harada tanışdıq..."></div>
-            <div style="display:flex;justify-content:flex-end;margin-top:.5rem"><button class="btn btn-primary" onclick="addManualContact()">Əlavə et</button></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- CONTACTS -->
     <div class="panel" id="panel-contacts">
       <div style="max-width:700px">
         <div class="contacts-toolbar">
           <input class="search-input" type="text" placeholder="Ad, şirkət, email ilə axtar..." oninput="filterContacts(this.value)">
           <select class="form-input" style="width:auto" onchange="filterContactsBySource(this.value)"><option value="">Hamısı</option><option value="scan">Skanlanmış</option><option value="manual">Əl ilə</option></select>
-          <button class="btn btn-primary btn-sm" onclick="showPanel('scanner')">+ Yeni</button>
+          <button class="btn btn-primary btn-sm" onclick="openAddContactModal()">+ Yeni kontakt</button>
         </div>
         <div class="contacts-grid" id="contactsGrid"><div class="empty-state"><div style="font-size:36px;opacity:.3;margin-bottom:.9rem">📇</div><div style="font-size:14px;color:var(--navy);margin-bottom:3px">Hələ kontakt yoxdur</div><div style="font-size:12px">QR oxuyucu ilə kart skan edin</div></div></div>
       </div>
@@ -557,6 +473,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 
 <div class="toast" id="toast"></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -623,9 +540,13 @@ function loadUD(){
     generateQRCodes(d.card||{},slug);
   }
   const st=d.stats||{};
-  ['ovViews','wViews'].forEach(id=>document.getElementById(id).textContent=st.views||0);
-  ['ovUniqueViews','wUniqueViews'].forEach(id=>document.getElementById(id).textContent=st.uniqueViews||0);
-  ['ovSaves','wSaves'].forEach(id=>document.getElementById(id).textContent=st.saves||0);
+  const views=st.views||0,uniqueViews=st.uniqueViews||0,saves=st.saves||0;
+  ['ovViews','wViews'].forEach(id=>document.getElementById(id)&&(document.getElementById(id).textContent=views));
+  ['ovUniqueViews','wUniqueViews'].forEach(id=>document.getElementById(id)&&(document.getElementById(id).textContent=uniqueViews));
+  ['ovSaves','wSaves'].forEach(id=>document.getElementById(id)&&(document.getElementById(id).textContent=saves));
+  document.getElementById('ovContacts')&&(document.getElementById('ovContacts').textContent=allContacts.length);
+  renderCharts(views,uniqueViews,saves,allContacts.length);
+  renderActivityFeed(d);
   loadPdfList(d.pdfs||[]);
   loadCrmStatus(d.crm||{},d.plan||'free');
   updateScanLimit(d.scanCount||0,isPro);
@@ -981,28 +902,71 @@ window.saveSocials=async function(){Object.keys(activeSocials).forEach(k=>{const
 // MEDIA
 window.previewYt=function(){const v=document.getElementById('ytLink').value.trim();const id=v.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)?.[1];document.getElementById('videoPreview').innerHTML=id?`<iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe>`:`<div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div class="play-btn2"><div class="play-tri"></div></div><div style="font-size:11px;color:var(--gray)">Link daxil edin</div></div>`;};
 window.saveVideo=async function(){await update(ref(db,`users/${CU.uid}`),{video:document.getElementById('ytLink').value.trim()});showToast('Video saxlanıldı','success');};
-window.uploadPdf=async function(e){
-  const f=e.target.files[0];if(!f)return;
-  if(f.size>4*1024*1024){showToast('PDF maksimum 4MB olmalıdır','error');return;}
-  showToast('Yüklənir...');
-  try{
-    const base64=await new Promise((res,rej)=>{
-      const r=new FileReader();
-      r.onload=ev=>res(ev.target.result);
-      r.onerror=rej;
-      r.readAsDataURL(f);
-    });
-    const pdfs=[...(UD?.pdfs||[])];
-    if(pdfs.length>=5){showToast('Maksimum 5 PDF əlavə edə bilərsiniz','error');return;}
-    pdfs.push({name:f.name,url:base64,size:(f.size/1024/1024).toFixed(1)+' MB'});
-    await update(ref(db,`users/${CU.uid}`),{pdfs});
-    showToast('PDF əlavə edildi','success');
-  }catch(err){showToast('Xəta: '+err.message,'error');}
+// PDF LINK
+window.addPdfLink=async function(){
+  const name=document.getElementById('pdfName').value.trim();
+  const url=document.getElementById('pdfUrl').value.trim();
+  if(!name||!url){showToast('Ad və link daxil edin','error');return;}
+  if(!url.startsWith('http')){showToast('Link http:// ilə başlamalıdır','error');return;}
+  const pdfs=[...(UD?.pdfs||[])];
+  if(pdfs.length>=10){showToast('Maksimum 10 PDF link','error');return;}
+  pdfs.push({name,url,size:'Link'});
+  await update(ref(db,`users/${CU.uid}`),{pdfs});
+  document.getElementById('pdfName').value='';document.getElementById('pdfUrl').value='';
+  showToast('PDF əlavə edildi','success');
 };
 function loadPdfList(pdfs){document.getElementById('pdfList').innerHTML=pdfs.length?pdfs.map((p,i)=>`<div class="pdf-row"><div class="pdf-icon">PDF</div><div class="pdf-meta"><div class="pdf-name">${p.name}</div><div class="pdf-size-t">${p.size}</div></div><button class="btn btn-sm btn-danger" onclick="removePdf(${i})">Sil</button></div>`).join(''):'<div style="font-size:12px;color:var(--gray);text-align:center;padding:9px">PDF yoxdur</div>';}
 window.removePdf=async function(i){const pdfs=[...(UD?.pdfs||[])];pdfs.splice(i,1);await update(ref(db,`users/${CU.uid}`),{pdfs});showToast('PDF silindi');};
 
-// QR
+// CHARTS
+let _barChart=null,_donutChart=null;
+function renderCharts(views,uniqueViews,saves,contacts){
+  if(typeof Chart==='undefined')return;
+  // Bar chart
+  const bCtx=document.getElementById('barChart');
+  if(!bCtx)return;
+  if(_barChart)_barChart.destroy();
+  _barChart=new Chart(bCtx,{
+    type:'bar',
+    data:{
+      labels:['Ümumi baxış','Unikal baxış','Saxlayan','Kontaktlar'],
+      datasets:[{
+        data:[views,uniqueViews,saves,contacts],
+        backgroundColor:['rgba(24,95,165,.85)','rgba(79,172,254,.85)','rgba(39,174,96,.85)','rgba(201,168,76,.85)'],
+        borderRadius:8,borderSkipped:false
+      }]
+    },
+    options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.raw+' ədəd'}}},scales:{y:{beginAtZero:true,ticks:{precision:0},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}
+  });
+  // Donut chart
+  const dCtx=document.getElementById('donutChart');
+  if(!dCtx)return;
+  if(_donutChart)_donutChart.destroy();
+  const repeat=Math.max(0,views-uniqueViews);
+  _donutChart=new Chart(dCtx,{
+    type:'doughnut',
+    data:{
+      labels:['Unikal','Təkrar'],
+      datasets:[{data:[uniqueViews||0,repeat||0],backgroundColor:['#185FA5','#4FACFE'],borderWidth:0,hoverOffset:4}]
+    },
+    options:{responsive:false,cutout:'72%',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.label+': '+ctx.raw}}}}
+  });
+}
+
+function renderActivityFeed(d){
+  const el=document.getElementById('activityFeed');if(!el)return;
+  const items=[];
+  if(d.stats?.views)items.push({icon:'👁',text:`Profiliniz ${d.stats.views} dəfə baxılıb`,t:Date.now()-3e5});
+  if(d.stats?.saves)items.push({icon:'💾',text:`${d.stats.saves} nəfər kontaktınızı saxlayıb`,t:Date.now()-6e5});
+  if(allContacts.length)items.push({icon:'📇',text:`${allContacts.length} kontakt qeyd edilib`,t:Date.now()-9e5});
+  if(d.pdfs?.length)items.push({icon:'📄',text:`${d.pdfs.length} PDF sənəd əlavə edilib`,t:Date.now()-12e5});
+  if(!items.length){el.innerHTML='<div style="font-size:12px;color:var(--gray);text-align:center;padding:.9rem">Hələ aktivlik yoxdur</div>';return;}
+  el.innerHTML=items.map(i=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--gray-light)"><span style="font-size:18px">${i.icon}</span><span style="font-size:13px;color:var(--navy)">${i.text}</span></div>`).join('');
+}
+
+window.openAddContactModal=function(){showPanel('contacts');};
+
+// QR (only for vCard generation, no panel needed)
 function generateQRCodes(c,slug){
   const v=`BEGIN:VCARD\nVERSION:3.0\nFN:${c.name||''} ${c.surname||''}\nTITLE:${c.position||''}\nORG:${c.company||''}\nTEL:${c.phone||''}\nEMAIL:${c.email||''}\nURL:${c.web||''}\nEND:VCARD`;
   ['qrMini','qrBig'].forEach(id=>{const el=document.getElementById(id);if(!el)return;el.innerHTML='';try{new QRCode(el,{text:v,width:id==='qrBig'?200:96,height:id==='qrBig'?200:96,colorDark:'#0a1628',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});}catch(e){}});
@@ -1016,11 +980,10 @@ window.showPanel=function(n){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
   document.getElementById('panel-'+n).classList.add('active');
-  const t={overview:'İcmal',editor:'Kartımı redaktə et',social:'Sosial şəbəkələr',media:'PDF və Video',qr:'QR Kod',scanner:'QR Oxuyucu',contacts:'Kontaktlarım',crm:'CRM İnteqrasiya',settings:'Ayarlar'};
+  const t={overview:'İcmal',editor:'Kartımı redaktə et',social:'Sosial şəbəkələr',media:'PDF və Video',contacts:'Kontaktlarım',crm:'CRM İnteqrasiya',settings:'Ayarlar'};
   document.getElementById('topbarTitle').textContent=t[n]||n;
-  const m={overview:0,editor:1,social:2,media:3,qr:4,scanner:5,contacts:6,crm:7,settings:8};
+  const m={overview:0,editor:1,social:2,media:3,contacts:4,crm:5,settings:6};
   const items=document.querySelectorAll('.nav-item');if(items[m[n]])items[m[n]].classList.add('active');
-  if(n!=='scanner')stopScanner();
   closeSidebar();
 };
 window.closeModal=function(id){document.getElementById(id).classList.remove('open');};
