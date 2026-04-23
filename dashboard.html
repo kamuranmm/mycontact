@@ -69,7 +69,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 .widget-title{font-size:13px;font-weight:500;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
 
 /* OVERVIEW */
-.dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1.25rem}
+.dash-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.25rem}
 .dash-stat{background:var(--white);border-radius:11px;border:1px solid var(--gray-light);padding:1rem}
 .ds-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--navy)}
 .ds-label{font-size:12px;color:var(--gray);margin-top:3px}
@@ -286,7 +286,8 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
         <div style="display:flex;gap:7px;flex-shrink:0"><button class="btn btn-sm" onclick="copyLink()">Kopyala</button><button class="btn btn-sm btn-primary" onclick="viewProfile()">Aç</button></div>
       </div>
       <div class="dash-stats">
-        <div class="dash-stat"><div class="ds-num" id="ovViews">0</div><div class="ds-label">Kart baxışı</div></div>
+        <div class="dash-stat"><div class="ds-num" id="ovViews">0</div><div class="ds-label">Ümumi baxış</div></div>
+        <div class="dash-stat"><div class="ds-num" id="ovUniqueViews">0</div><div class="ds-label">Unikal baxış</div></div>
         <div class="dash-stat"><div class="ds-num" id="ovSaves">0</div><div class="ds-label">Kontakt saxlayanlar</div></div>
         <div class="dash-stat"><div class="ds-num" id="ovContacts">0</div><div class="ds-label">Mənim kontaktlarım</div></div>
       </div>
@@ -327,7 +328,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
           </div>
         </div>
         <div class="right-col">
-          <div class="widget"><div class="widget-title">Statistika</div><div class="mini-stats"><div class="mini-stat"><div class="mini-stat-num" id="wViews">0</div><div class="mini-stat-label">Baxış</div></div><div class="mini-stat"><div class="mini-stat-num" id="wSaves">0</div><div class="mini-stat-label">Saxlayan</div></div></div></div>
+          <div class="widget"><div class="widget-title">Statistika</div><div class="mini-stats" style="grid-template-columns:1fr 1fr 1fr"><div class="mini-stat"><div class="mini-stat-num" id="wViews">0</div><div class="mini-stat-label">Ümumi baxış</div></div><div class="mini-stat"><div class="mini-stat-num" id="wUniqueViews">0</div><div class="mini-stat-label">Unikal baxış</div></div><div class="mini-stat"><div class="mini-stat-num" id="wSaves">0</div><div class="mini-stat-label">Saxlayan</div></div></div></div>
           <div class="widget"><div class="widget-title">QR Kod<button class="btn btn-sm" onclick="showPanel('qr')">Tam bax</button></div><div id="qrMini" style="display:flex;justify-content:center;margin-bottom:9px"></div><button class="btn btn-sm btn-primary" style="width:100%;justify-content:center" onclick="downloadQR()">PNG yüklə</button></div>
           <div class="widget"><div class="widget-title">Profil linki</div><div style="font-size:13px;color:var(--blue);margin-bottom:9px;word-break:break-all" id="wLink">—</div><button class="btn btn-sm" style="width:100%;justify-content:center" onclick="copyLink()">Kopyala</button></div>
         </div>
@@ -623,6 +624,7 @@ function loadUD(){
   }
   const st=d.stats||{};
   ['ovViews','wViews'].forEach(id=>document.getElementById(id).textContent=st.views||0);
+  ['ovUniqueViews','wUniqueViews'].forEach(id=>document.getElementById(id).textContent=st.uniqueViews||0);
   ['ovSaves','wSaves'].forEach(id=>document.getElementById(id).textContent=st.saves||0);
   loadPdfList(d.pdfs||[]);
   loadCrmStatus(d.crm||{},d.plan||'free');
@@ -649,8 +651,6 @@ function updateScanLimit(count,isPro){
 // SLUG SECTION
 function renderSlugSection(slug,isPro){
   const el=document.getElementById('slugSection');
-  // Ad-soyad formatında slug aşkar et (tire içərən, hərflərdən ibarət)
-  const looksLikeName=slug&&/^[a-z]+-[a-z]+/.test(slug)&&!/[0-9]{4,}/.test(slug);
   if(isPro){
     el.innerHTML=`
       <div style="display:flex;align-items:center;gap:7px;margin-bottom:.75rem"><span style="font-size:12px;color:var(--gray)">Pro plan — linkinizi istədiyiniz kimi dəyişə bilərsiniz</span><span class="pro-badge">✦ PRO</span></div>
@@ -661,31 +661,12 @@ function renderSlugSection(slug,isPro){
       <div style="font-size:11px;color:var(--gray);margin-bottom:.75rem">Yalnız ingilis hərf, rəqəm və tire (-) istifadə edin. Minimum 3, maksimum 60 simvol.</div>
       <button class="btn btn-primary btn-sm" onclick="saveSlug()">Linki yenilə</button>`;
   } else {
-    const warningHtml=looksLikeName?`
-      <div style="background:#fff8e1;border:1px solid #ffe082;border-radius:9px;padding:9px 12px;margin-bottom:.75rem;font-size:12px;color:#7a5800;display:flex;align-items:flex-start;gap:8px">
-        <span style="font-size:15px">⚠️</span>
-        <div>Linkinizdə ad-soyad görünür. Gizlilik üçün tövsiyə olunan linki istifadə edin:
-          <br><button class="btn btn-sm" style="margin-top:6px;background:#185FA5;color:#fff;border:none" onclick="applyRandomSlug()">Avtomatik link yarat</button>
-        </div>
-      </div>`:'';
     el.innerHTML=`
-      ${warningHtml}
       <div style="font-size:13px;color:var(--navy);margin-bottom:.5rem;word-break:break-all"><strong>cardpro.az/${slug||'—'}</strong></div>
       <div class="lock-msg"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Linki dəyişmək yalnız Pro planda mümkündür</div>
       <button class="btn btn-sm" style="margin-top:.75rem" onclick="openUpgradeModal()">Pro-ya keç →</button>`;
   }
 }
-
-window.applyRandomSlug=async function(){
-  const chars='abcdefghijklmnopqrstuvwxyz0123456789';
-  const newSlug=Array.from({length:10},()=>chars[Math.floor(Math.random()*chars.length)]).join('');
-  if(!confirm('Linkiniz dəyişdiriləcək:\ncardpro.az/'+newSlug+'\n\nDavam etmək istəyirsiniz?'))return;
-  await update(ref(db,`users/${CU.uid}`),{slug:newSlug});
-  const isPro=UD?.plan==='pro'||UD?.plan==='premium';
-  renderSlugSection(newSlug,isPro);
-  ['linkText','overviewLink','wLink'].forEach(id=>document.getElementById(id).textContent='cardpro.az/'+newSlug);
-  showToast('Yeni link yaradıldı','success');
-};
 
 window.saveSlug=async function(){
   const isPro=UD?.plan==='pro'||UD?.plan==='premium';
@@ -958,16 +939,16 @@ window.saveCard=async function(){
   generateQRCodes(UD.card,UD?.slug||'');
 };
 window.loadCover=async function(e){
-  const f=e.target.files[0];if(!f)return;
-  if(f.size>2*1024*1024){showToast('Maksimum 2MB olmalıdır','error');return;}
-  showToast('Yüklənir...');
+  const f=e.target.files[0];if(!f)return;showToast('Yüklənir...');
   try{
-    // Resize + base64 — CORS problemi olmur, birbaşa DB-ə yazılır
-    const url=await resizeImage(f,1200,400,0.82);
+    const r=sRef(storage,`covers/${CU.uid}`);
+    await uploadBytes(r,f);
+    const url=await getDownloadURL(r);
     _lastCoverUrl=url;
     const ci=document.getElementById('coverImg');ci.src=url;ci.style.display='block';
     document.getElementById('coverLabel').style.display='none';
     document.getElementById('coverEditBtn').style.display='block';
+    // Dərhal Firebase-ə yaz — ayrıca Saxla tələb etməsin
     await update(ref(db,`users/${CU.uid}`),{'card/cover':url});
     if(!UD)UD={};if(!UD.card)UD.card={};
     UD.card.cover=url;
@@ -976,44 +957,21 @@ window.loadCover=async function(e){
 };
 document.getElementById('coverArea').addEventListener('click',function(e){if(e.target.closest('#coverEditBtn'))return;if(!document.getElementById('coverImg').src||document.getElementById('coverImg').style.display==='none')document.getElementById('coverFile').click();});
 window.loadPhoto=async function(e){
-  const f=e.target.files[0];if(!f)return;
-  if(f.size>2*1024*1024){showToast('Maksimum 2MB olmalıdır','error');return;}
-  showToast('Yüklənir...');
+  const f=e.target.files[0];if(!f)return;showToast('Yüklənir...');
   try{
-    // Resize + base64 — CORS problemi olmur, birbaşa DB-ə yazılır
-    const url=await resizeImage(f,400,400,0.85);
+    const r=sRef(storage,`photos/${CU.uid}`);
+    await uploadBytes(r,f);
+    const url=await getDownloadURL(r);
     _lastPhotoUrl=url;
     document.getElementById('profilePhoto').innerHTML=`<img src="${url}">`;
     document.getElementById('sideAvatar').innerHTML=`<img src="${url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
+    // Dərhal Firebase-ə yaz — ayrıca Saxla tələb etməsin
     await update(ref(db,`users/${CU.uid}`),{'card/photo':url});
     if(!UD)UD={};if(!UD.card)UD.card={};
     UD.card.photo=url;
     showToast('Şəkil saxlanıldı','success');
   }catch(err){showToast('Xəta: '+err.message,'error');}
 };
-
-// Şəkili canvas ilə resize edib base64 qaytar
-function resizeImage(file,maxW,maxH,quality){
-  return new Promise((res,rej)=>{
-    const reader=new FileReader();
-    reader.onload=ev=>{
-      const img=new Image();
-      img.onload=()=>{
-        let w=img.width,h=img.height;
-        if(w>maxW){h=Math.round(h*maxW/w);w=maxW;}
-        if(h>maxH){w=Math.round(w*maxH/h);h=maxH;}
-        const canvas=document.createElement('canvas');
-        canvas.width=w;canvas.height=h;
-        canvas.getContext('2d').drawImage(img,0,0,w,h);
-        res(canvas.toDataURL('image/jpeg',quality));
-      };
-      img.onerror=rej;
-      img.src=ev.target.result;
-    };
-    reader.onerror=rej;
-    reader.readAsDataURL(file);
-  });
-}
 // SOCIAL
 function loadSocialUI(){document.querySelectorAll('.soc-item').forEach(el=>el.classList.toggle('on',!!activeSocials[el.dataset.key]));renderSocInputs();}
 function renderSocInputs(){const keys=Object.keys(activeSocials).filter(k=>activeSocials[k]!==false);const lb={instagram:'Instagram',linkedin:'LinkedIn',facebook:'Facebook',twitter:'Twitter/X',tiktok:'TikTok',youtube:'YouTube',telegram:'Telegram',whatsapp:'WhatsApp'};document.getElementById('socInputs').innerHTML=keys.length?keys.map(k=>`<div class="soc-input-row"><span class="soc-input-label">${lb[k]||k}</span><input class="form-input" id="soc_${k}" placeholder="${k}.com/..." value="${typeof activeSocials[k]==='string'?activeSocials[k]:''}"></div>`).join(''):'';}
@@ -1023,7 +981,24 @@ window.saveSocials=async function(){Object.keys(activeSocials).forEach(k=>{const
 // MEDIA
 window.previewYt=function(){const v=document.getElementById('ytLink').value.trim();const id=v.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)?.[1];document.getElementById('videoPreview').innerHTML=id?`<iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe>`:`<div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div class="play-btn2"><div class="play-tri"></div></div><div style="font-size:11px;color:var(--gray)">Link daxil edin</div></div>`;};
 window.saveVideo=async function(){await update(ref(db,`users/${CU.uid}`),{video:document.getElementById('ytLink').value.trim()});showToast('Video saxlanıldı','success');};
-window.uploadPdf=async function(e){const f=e.target.files[0];if(!f)return;showToast('Yüklənir...');try{const r=sRef(storage,`pdfs/${CU.uid}/${f.name}`);await uploadBytes(r,f);const url=await getDownloadURL(r);const pdfs=[...(UD?.pdfs||[])];pdfs.push({name:f.name,url,size:(f.size/1024/1024).toFixed(1)+' MB'});await update(ref(db,`users/${CU.uid}`),{pdfs});showToast('PDF əlavə edildi','success');}catch(err){showToast('Xəta','error');}};
+window.uploadPdf=async function(e){
+  const f=e.target.files[0];if(!f)return;
+  if(f.size>4*1024*1024){showToast('PDF maksimum 4MB olmalıdır','error');return;}
+  showToast('Yüklənir...');
+  try{
+    const base64=await new Promise((res,rej)=>{
+      const r=new FileReader();
+      r.onload=ev=>res(ev.target.result);
+      r.onerror=rej;
+      r.readAsDataURL(f);
+    });
+    const pdfs=[...(UD?.pdfs||[])];
+    if(pdfs.length>=5){showToast('Maksimum 5 PDF əlavə edə bilərsiniz','error');return;}
+    pdfs.push({name:f.name,url:base64,size:(f.size/1024/1024).toFixed(1)+' MB'});
+    await update(ref(db,`users/${CU.uid}`),{pdfs});
+    showToast('PDF əlavə edildi','success');
+  }catch(err){showToast('Xəta: '+err.message,'error');}
+};
 function loadPdfList(pdfs){document.getElementById('pdfList').innerHTML=pdfs.length?pdfs.map((p,i)=>`<div class="pdf-row"><div class="pdf-icon">PDF</div><div class="pdf-meta"><div class="pdf-name">${p.name}</div><div class="pdf-size-t">${p.size}</div></div><button class="btn btn-sm btn-danger" onclick="removePdf(${i})">Sil</button></div>`).join(''):'<div style="font-size:12px;color:var(--gray);text-align:center;padding:9px">PDF yoxdur</div>';}
 window.removePdf=async function(i){const pdfs=[...(UD?.pdfs||[])];pdfs.splice(i,1);await update(ref(db,`users/${CU.uid}`),{pdfs});showToast('PDF silindi');};
 
