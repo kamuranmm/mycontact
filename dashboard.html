@@ -247,7 +247,6 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
     <div class="nav-item" onclick="showPanel('contacts')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Kontaktlarım<span class="nav-badge" id="contactsBadge">0</span></div>
     <div class="nav-section">İnteqrasiya</div>
     <div class="nav-section">Alətlər</div>
-    <div class="nav-item" onclick="showPanel('scanner')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg>Kart Oxuyucu</div>
     <div class="nav-item" onclick="showPanel('signature')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Email İmzası<span class="nav-pro">PRO</span></div>
     <div class="nav-item" onclick="showPanel('customize')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 010 20"/></svg>Dizayn</div>
     <div class="nav-section">İnteqrasiya</div>
@@ -409,45 +408,6 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
           <div class="crm-card"><div class="crm-logo" style="background:#0078D4">D365</div><div class="crm-name">MS Dynamics 365</div><div class="crm-desc">Microsoft Dynamics 365-ə kontakt sinxronizasiyası.</div><div class="crm-status"><div class="crm-dot off"></div><span>Qoşulmayıb</span></div><button class="btn btn-sm" onclick="openCrmModal('dynamics')">Qoş</button><div class="pro-lock-overlay"><div style="font-size:22px">🔒</div><div class="pro-lock-text">Pro planda mövcuddur</div><button class="pro-lock-btn" onclick="openUpgradeModal()">Pro-ya keç</button></div></div>
         </div>
         <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.1rem;margin-top:1rem;display:none" id="crmLogCard"><div style="font-size:13px;font-weight:500;color:var(--navy);margin-bottom:9px">Sync tarixçəsi</div><div id="crmLog" style="font-size:12px;color:var(--gray);display:flex;flex-direction:column;gap:5px"></div></div>
-      </div>
-    </div>
-
-    <!-- CARD SCANNER -->
-    <div class="panel" id="panel-scanner">
-      <div style="max-width:700px">
-        <div style="margin-bottom:1rem"><div style="font-size:15px;font-weight:500;color:var(--navy);margin-bottom:3px">Vizit Kart Oxuyucu</div><div style="font-size:13px;color:var(--gray)">Kameranızla vizit kartı skan edin, məlumatlar avtomatik oxunacaq</div></div>
-        <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
-          <div id="scanLimitBar" style="background:var(--surface);border-radius:9px;padding:.75rem 1rem;margin-bottom:.9rem;border:1px solid var(--gray-light)">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;font-size:12px"><span style="font-weight:500;color:var(--navy)">Skan limiti</span><span id="scanLimitBadge" style="font-size:11px;padding:2px 8px;border-radius:10px;background:rgba(24,95,165,.1);color:var(--blue)">5 qalıb</span></div>
-            <div style="font-size:11px;color:var(--gray);margin-bottom:6px" id="scanLimitText">0 / 5</div>
-            <div style="height:5px;background:var(--gray-light);border-radius:3px;overflow:hidden"><div id="scanLimitFill" style="height:100%;background:var(--blue);border-radius:3px;width:0%;transition:width .3s"></div></div>
-          </div>
-          <div class="camera-box">
-            <video id="scannerVideo" autoplay playsinline></video>
-            <img id="capturedPreview" alt="">
-            <div class="camera-placeholder" id="cameraPlaceholder">
-              <div class="cam-icon-wrap"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.6)" stroke-width="1.5"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg></div>
-              <div style="font-size:13px">Skan başlatmaq üçün kameranı açın</div>
-            </div>
-            <div class="card-guide"><div class="scan-corner sc-tl"></div><div class="scan-corner sc-tr"></div><div class="scan-corner sc-bl"></div><div class="scan-corner sc-br"></div></div>
-            <div class="ocr-processing" id="ocrProcessing"><div class="ocr-spinner"></div><div style="color:#fff;font-size:13px">Oxunur...</div></div>
-          </div>
-          <div style="font-size:12px;color:var(--gray);margin-bottom:.75rem;text-align:center" id="scannerStatus">Başlamaq üçün kameranı açın</div>
-          <div style="display:flex;gap:7px;flex-wrap:wrap">
-            <button class="btn btn-primary" id="startScanBtn" onclick="startCardScanner()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>Kameranı aç</button>
-            <button class="btn btn-primary" id="captureBtn" style="display:none" onclick="captureAndRead()">Şəkil çək</button>
-            <button class="btn" id="stopScanBtn" style="display:none" onclick="stopCardScanner()">Dayandır</button>
-            <button class="btn" id="retakeBtn" style="display:none" onclick="retakePhoto()">Yenidən çək</button>
-            <label class="btn" style="cursor:pointer"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><polyline points="21 15 16 10 5 21"/></svg>Qalereyadan seç<input type="file" accept="image/*" style="display:none" onchange="readFromGallery(event)"></label>
-          </div>
-          <canvas id="scannerCanvas" style="display:none"></canvas>
-          <div class="ocr-result" id="ocrResult"><div style="font-size:12px;font-weight:500;color:var(--success);margin-bottom:9px;display:flex;align-items:center;gap:5px">✓ Məlumatlar tapıldı</div><div id="ocrFields"></div></div>
-          <div id="ocrActions" style="display:none;margin-top:9px;display:flex;gap:7px;flex-wrap:wrap">
-            <button class="btn btn-primary btn-sm" onclick="saveOcrContact()">Kontakt kimi saxla</button>
-            <button class="btn btn-sm" onclick="exportOcrVcf()">VCF yüklə</button>
-            <button class="btn btn-sm" onclick="clearOcrResult()">Sıfırla</button>
-          </div>
-        </div>
       </div>
     </div>
 
@@ -766,113 +726,6 @@ window.syncToSalesforce=async function(){const sf=UD?.crm?.salesforce;if(!sf?.in
 window.syncToZoho=async function(){const z=UD?.crm?.zoho;if(!z?.token){showToast('Zoho qoşulmayıb','error');return;}showToast('Zoho-ya göndərilir...');let count=0;for(const c of allContacts){try{const r=await fetch('https://www.zohoapis.com/crm/v3/Contacts',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Zoho-oauthtoken '+z.token},body:JSON.stringify({data:[{First_Name:c.name?.split(' ')[0]||'',Last_Name:c.name?.split(' ').slice(1).join(' ')||c.name||'',Phone:c.phone||'',Email:c.email||'',Account_Name:c.company||'',Title:c.position||''}]})});if(r.ok)count++;}catch(e){}}showToast(`${count} kontakt Zoho-ya göndərildi`,'success');};
 window.syncToPipedrive=async function(){const p=UD?.crm?.pipedrive;if(!p?.token){showToast('Pipedrive qoşulmayıb','error');return;}showToast('Pipedrive-a göndərilir...');let count=0;for(const c of allContacts){try{const r=await fetch(`https://api.pipedrive.com/v1/persons?api_token=${p.token}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:c.name||'',phone:[{value:c.phone||'',primary:true}],email:[{value:c.email||'',primary:true}]})});if(r.ok)count++;}catch(e){}}showToast(`${count} kontakt Pipedrive-a göndərildi`,'success');};
 window.exportToGoogleContacts=function(){const isPro=UD?.plan==='pro'||UD?.plan==='premium';if(!isPro){openUpgradeModal();return;}let vcf='';for(const c of allContacts){vcf+=`BEGIN:VCARD\nVERSION:3.0\nFN:${c.name||''}\nTEL:${c.phone||''}\nEMAIL:${c.email||''}\nORG:${c.company||''}\nTITLE:${c.position||''}\nEND:VCARD\n\n`;}const b=new Blob([vcf],{type:'text/vcard'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='contacts.vcf';a.click();showToast('VCF yükləndi — Google Contacts-a import edin','success');};
-
-// ── CARD SCANNER ──────────────────────────────────────────────────────────
-let camStream=null,ocrResult=null;
-const FREE_SCAN_LIMIT=5;
-window.startCardScanner=async function(){
-  const isPro=UD?.plan==='pro'||UD?.plan==='premium';const count=UD?.scanCount||0;
-  if(!isPro&&count>=FREE_SCAN_LIMIT){openUpgradeModal();return;}
-  try{camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment',width:{ideal:1920},height:{ideal:1080}}});
-    const v=document.getElementById('scannerVideo');v.srcObject=camStream;v.style.display='block';
-    document.getElementById('cameraPlaceholder').style.display='none';document.getElementById('capturedPreview').style.display='none';
-    document.getElementById('startScanBtn').style.display='none';document.getElementById('captureBtn').style.display='inline-flex';
-    document.getElementById('stopScanBtn').style.display='inline-flex';document.getElementById('retakeBtn').style.display='none';
-    document.getElementById('scannerStatus').textContent='Vizit kartı çərçivəyə tutun, sonra "Şəkil çək"';}
-  catch(e){showToast('Kameraya icazə verilmədi','error');}
-};
-window.stopCardScanner=function(){if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null;}document.getElementById('scannerVideo').style.display='none';document.getElementById('cameraPlaceholder').style.display='flex';document.getElementById('startScanBtn').style.display='inline-flex';document.getElementById('captureBtn').style.display='none';document.getElementById('stopScanBtn').style.display='none';document.getElementById('retakeBtn').style.display='none';document.getElementById('scannerStatus').textContent='Başlamaq üçün kameranı açın';};
-window.retakePhoto=function(){document.getElementById('capturedPreview').style.display='none';document.getElementById('ocrResult').style.display='none';ocrResult=null;startCardScanner();};
-window.captureAndRead=async function(){
-  const v=document.getElementById('scannerVideo');const c=document.getElementById('scannerCanvas');
-  c.width=v.videoWidth;c.height=v.videoHeight;const ctx=c.getContext('2d');ctx.drawImage(v,0,0);
-  const dataUrl=c.toDataURL('image/jpeg',.92);const prev=document.getElementById('capturedPreview');
-  prev.src=dataUrl;prev.style.display='block';v.style.display='none';
-  if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null;}
-  document.getElementById('captureBtn').style.display='none';document.getElementById('stopScanBtn').style.display='none';document.getElementById('retakeBtn').style.display='inline-flex';
-  await processCardImage(dataUrl);
-};
-window.readFromGallery=async function(e){
-  const f=e.target.files[0];if(!f)return;
-  const isPro=UD?.plan==='pro'||UD?.plan==='premium';const count=UD?.scanCount||0;
-  if(!isPro&&count>=FREE_SCAN_LIMIT){openUpgradeModal();return;}
-  const reader=new FileReader();reader.onload=async ev=>{const d=ev.target.result;const prev=document.getElementById('capturedPreview');prev.src=d;prev.style.display='block';document.getElementById('cameraPlaceholder').style.display='none';document.getElementById('startScanBtn').style.display='none';document.getElementById('ocrResult').style.display='none';document.getElementById('retakeBtn').style.display='inline-flex';if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null;}await processCardImage(d);};reader.readAsDataURL(f);
-};
-async function processCardImage(dataUrl){
-  document.getElementById('ocrProcessing').style.display='flex';document.getElementById('scannerStatus').textContent='Məlumatlar oxunur...';document.getElementById('ocrResult').style.display='none';
-  try{
-    if(typeof Tesseract==='undefined'){showToast('Tesseract.js yüklənmir','error');document.getElementById('ocrProcessing').style.display='none';return;}
-    // Use multiple languages for best accuracy
-    const{data:{text}}=await Tesseract.recognize(dataUrl,'eng+aze+rus+tur',{logger:m=>{if(m.status==='recognizing text'){document.getElementById('scannerStatus').textContent='Oxunur... '+Math.round(m.progress*100)+'%';}}}).catch(()=>Tesseract.recognize(dataUrl,'eng',{logger:()=>{}}));
-    ocrResult=parseCardText(text);showOcrResult(ocrResult);document.getElementById('ocrProcessing').style.display='none';document.getElementById('scannerStatus').textContent='Məlumatları yoxlayın';document.getElementById('ocrActions').style.display='flex';
-    // increment scan count
-    const cnt=(UD?.scanCount||0)+1;await update(ref(db,`users/${CU.uid}`),{scanCount:cnt});
-  }catch(err){document.getElementById('ocrProcessing').style.display='none';document.getElementById('scannerStatus').textContent='Xəta. Daha aydın şəkil çəkin.';showToast('Oxuma xətası: '+err.message,'error');}
-}
-function parseCardText(raw){
-  const lines=raw.split('\n').map(l=>l.trim()).filter(l=>l.length>1);
-  // Extract structured fields with priority patterns
-  const emailM=raw.match(/[\w.+%-]+@[\w.-]+\.[a-z]{2,}/i);const email=emailM?emailM[0].toLowerCase():'';
-  // Phone: match international and local formats including +994, 050, 055, 070, 077 etc.
-  const phoneMs=raw.match(/(?:\+?\d[\d\s\-\.\(\)]{7,18})/g)||[];
-  const phone=phoneMs.map(p=>p.trim()).find(p=>p.replace(/\D/g,'').length>=7)||'';
-  // Web: common TLDs
-  const webM=raw.match(/(?:https?:\/\/)?(?:www\.)?[\w-]+\.(?:com|az|net|org|io|co|ru|eu|gov|edu|info|biz)(?:\/[^\s]*)*/i);
-  const web=webM?webM[0].replace(/[,;]$/,''):'';
-  // Address clues
-  const addrM=raw.match(/(?:ünvan|address|addr|küçə|street|prospekt|avenue|blvd|məhəllə|qəsəbə)[:\s]+(.+)/i);
-  const address=addrM?addrM[1].trim():'';
-  // Remove identified data from lines to find name/position/company
-  const clean=lines.filter(l=>{
-    const ln=l.toLowerCase().replace(/\s/g,'');
-    if(email&&ln.includes(email.replace(/\s/g,'').toLowerCase()))return false;
-    if(phone&&l.replace(/\D/g,'').length>=7&&l.replace(/[^\d]/g,'').includes(phone.replace(/[^\d]/g,'')))return false;
-    if(web&&ln.includes(web.split('/')[0].replace(/https?:\/\//,'').toLowerCase()))return false;
-    if(addrM&&l.includes(addrM[1]))return false;
-    if(l.match(/^\s*[+\(]?[\d][\d\s\-\.\(\)]{5,}/))return false;  // standalone phone line
-    if(l.match(/[\w.+%-]+@[\w.-]+\.[a-z]{2,}/i))return false;  // standalone email line
-    if(l.match(/(?:https?:\/\/|www\.)/i))return false; // standalone web line
-    if(l.split(' ').length===1&&l.length<=3)return false; // too short single words
-    return l.length>1;
-  });
-  // Heuristic: longest clean line is likely company, shortest with capitals is name
-  // First meaningful line = name (often bold/large on card), second = position, third = company
-  const significant=clean.filter(l=>l.length>2);
-  let name='',position='',company='';
-  if(significant.length>=1)name=significant[0];
-  if(significant.length>=2){
-    // If second line looks like a title/role keyword
-    const posKeywords=/(?:müdir|director|manager|menecer|baş|chief|ceo|cto|cfo|specialist|mütəxəssis|menencer|sales|marketing|engineer|mühəndis|koordinator|koordinatör|specialist|əməkdaş)/i;
-    if(posKeywords.test(significant[1])){position=significant[1];company=significant[2]||'';}
-    else{company=significant[1];position=significant[2]||'';}
-  }
-  return{name,position,company,phone,email,web,address};
-}
-function showOcrResult(d){
-  const labels={name:'Ad',position:'Vəzifə',company:'Şirkət',phone:'Telefon',email:'Email',web:'Vebsayt',address:'Ünvan'};
-  const fields=Object.entries(labels).filter(([k])=>d[k]);
-  document.getElementById('ocrFields').innerHTML=fields.length?fields.map(([k,l])=>`<div class="ocr-field"><span class="ocr-label">${l}</span><input class="form-input" id="ocr_${k}" value="${String(d[k]||'').replace(/"/g,'&quot;')}" style="flex:1;padding:4px 8px;font-size:13px;border:1.5px solid var(--gray-light);border-radius:7px;font-family:'DM Sans',sans-serif;outline:none;background:var(--surface)" oninput="ocrResult['${k}']=this.value"></div>`).join(''):'<div style="font-size:12px;color:var(--gray)">Məlumat tapılmadı. Daha yaxın çəkin.</div>';
-  document.getElementById('ocrResult').style.display='block';
-}
-window.saveOcrContact=async function(){
-  if(!CU)return;
-  // Read editable field values (user may have corrected them)
-  ['name','position','company','phone','email','web','address'].forEach(k=>{const el=document.getElementById('ocr_'+k);if(el)ocrResult[k]=el.value.trim();});
-  if(!ocrResult||!ocrResult.name){showToast('Ad sahəsi boş ola bilməz','error');return;}
-  try{
-    await push(ref(db,`contacts/${CU.uid}`),{...ocrResult,source:'scan',addedAt:Date.now()});
-    showToast('Kontakt əlavə edildi ✓','success');
-    clearOcrResult();setTimeout(()=>showPanel('contacts'),1200);
-  }catch(e){showToast('Xəta baş verdi','error');}
-};
-window.exportOcrVcf=function(){
-  if(!ocrResult)return;
-  ['name','position','company','phone','email','web','address'].forEach(k=>{const el=document.getElementById('ocr_'+k);if(el)ocrResult[k]=el.value.trim();});
-  const v=`BEGIN:VCARD\nVERSION:3.0\nFN:${ocrResult.name||''}\nN:;;${ocrResult.name||''};;;\nTEL;TYPE=CELL:${ocrResult.phone||''}\nEMAIL:${ocrResult.email||''}\nORG:${ocrResult.company||''}\nTITLE:${ocrResult.position||''}\nURL:${ocrResult.web||''}\nADR;TYPE=WORK:;;${ocrResult.address||''};;;;\nEND:VCARD`;
-  const b=new Blob([v],{type:'text/vcard'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(ocrResult.name||'contact')+'.vcf';a.click();showToast('VCF yükləndi');
-};
-window.clearOcrResult=function(){ocrResult=null;document.getElementById('ocrResult').style.display='none';document.getElementById('capturedPreview').style.display='none';document.getElementById('cameraPlaceholder').style.display='flex';document.getElementById('startScanBtn').style.display='inline-flex';document.getElementById('retakeBtn').style.display='none';document.getElementById('ocrActions').style.display='none';document.getElementById('scannerStatus').textContent='Başlamaq üçün kameranı açın';};
-function updateScanLimit(count,isPro){if(isPro){document.getElementById('scanLimitBar').style.display='none';return;}const rem=Math.max(0,FREE_SCAN_LIMIT-count);const pct=Math.min(100,(count/FREE_SCAN_LIMIT)*100);document.getElementById('scanLimitText').textContent=`${count} / ${FREE_SCAN_LIMIT}`;document.getElementById('scanLimitFill').style.width=pct+'%';document.getElementById('scanLimitFill').style.background=count>=FREE_SCAN_LIMIT?'var(--error)':'var(--blue)';document.getElementById('scanLimitBadge').textContent=rem+' qalıb';}
 
 // ── EMAIL SIGNATURE ───────────────────────────────────────────────────────
 const sigState={name:true,position:true,phone:true,email:true,web:false,socials:false,photo:false,cardlink:true};
