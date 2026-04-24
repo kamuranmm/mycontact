@@ -303,6 +303,119 @@ body{font-family:'Inter',sans-serif;background:#f0f2f5;min-height:100vh;display:
 .c8-soc{display:flex;flex-wrap:wrap;gap:7px;margin-top:.5rem}
 .c8-sp{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;text-decoration:none;border:1px solid #eee;color:#333;background:#fafafa}
 
+/* ════════════════════════════════════════
+   T9 — LINKO FULL (Şəkil 1 — Linko)
+   Tam ekran foto, dark gradient overlay, ad aşağıda
+════════════════════════════════════════ */
+.c9{width:100%;max-width:430px;background:#111;border-radius:22px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.45);margin:0 .75rem}
+.c9-hero{width:100%;height:320px;position:relative;overflow:hidden;background:linear-gradient(135deg,#0a1628,var(--p));display:flex;align-items:center;justify-content:center}
+.c9-hero img.av{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
+.c9-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.3) 50%,transparent 100%)}
+.c9-info{position:absolute;bottom:0;left:0;right:0;padding:1.25rem}
+.c9-name{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:800;color:#fff;line-height:1.1;margin-bottom:4px}
+.c9-pos{font-size:13px;color:rgba(255,255,255,.65);margin-bottom:1px}
+.c9-co{font-size:13px;color:var(--a);font-weight:600}
+.c9-ph{position:absolute;top:14px;right:14px;display:flex;gap:8px}
+.c9-pill{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:20px;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);font-size:11px;font-weight:700;color:#fff;cursor:pointer;text-decoration:none}
+.c9-body{padding:1rem 1.25rem 1.5rem;background:#111}
+.c9-list{display:flex;flex-direction:column;gap:7px;margin-bottom:.9rem}
+.c9-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:50px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);cursor:pointer;text-decoration:none;transition:all .15s}
+.c9-row:hover{background:rgba(255,255,255,.11)}
+.c9-ico{width:32px;height:32px;border-radius:50%;background:rgba(79,172,254,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.c9-val{font-size:13px;color:rgba(255,255,255,.85);font-weight:500;flex:1}
+.c9-lbl{font-size:10px;color:rgba(255,255,255,.3)}
+.c9-soc{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:.9rem;padding-top:.75rem;border-top:1px solid rgba(255,255,255,.07)}
+.c9-sp{display:flex;align-items:center;gap:5px;padding:7px 14px;border-radius:50px;font-size:12px;font-weight:600;text-decoration:none;background:rgba(255,255,255,.08);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.1)}
+.c9-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+
+/* ════════════════════════════════════════
+   T10 — ACHIEVEMENT (Şəkil 2 — Kevin Smith)
+   Rəngli üst, böyük foto sol-mərkəz, achievement badge
+════════════════════════════════════════ */
+.c10{width:100%;max-width:430px;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 6px 32px rgba(10,22,40,.12);margin:0 .75rem}
+.c10-header{background:var(--p);padding:1.5rem 1.25rem 3.5rem;position:relative;text-align:center;overflow:hidden}
+.c10-header::before{content:'';position:absolute;top:-30px;right:-30px;width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,.07)}
+.c10-header::after{content:'';position:absolute;bottom:-20px;left:-20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.05)}
+.c10-brand{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem}
+.c10-av-wrap{display:flex;justify-content:center;margin-top:-3rem;position:relative;z-index:2;margin-bottom:.5rem}
+.c10-av{width:120px;height:140px;border-radius:18px;border:4px solid #fff;background:var(--gl);overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:42px;color:var(--g)}
+.c10-av img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.c10-body{padding:.25rem 1.25rem 1.5rem;text-align:center}
+.c10-name{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:800;color:var(--dark);margin-bottom:3px;line-height:1.2}
+.c10-pos{font-size:13px;color:#888;margin-bottom:8px}
+.c10-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:50px;background:color-mix(in srgb,var(--p) 10%,#fff);border:1.5px solid color-mix(in srgb,var(--p) 25%,#fff);font-size:11px;font-weight:700;color:var(--p);margin-bottom:1rem;text-transform:uppercase;letter-spacing:.06em}
+.c10-bio{font-size:13px;color:#888;line-height:1.6;margin-bottom:.9rem;text-align:left}
+.c10-icorow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:.9rem 0;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;margin-bottom:.9rem}
+.c10-icoitem{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;text-decoration:none}
+.c10-ico{width:46px;height:46px;border-radius:13px;background:#f5f5f5;display:flex;align-items:center;justify-content:center}
+.c10-ilbl{font-size:9px;color:#999;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.c10-list{display:flex;flex-direction:column;gap:0;text-align:left}
+.c10-row{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid #f5f5f5;text-decoration:none;cursor:pointer}
+.c10-row:last-child{border-bottom:none}
+.c10-lico{width:34px;height:34px;border-radius:9px;background:color-mix(in srgb,var(--p) 9%,#fff);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.c10-val{font-size:13px;color:var(--dark);font-weight:500;flex:1}
+.c10-lbl{font-size:10px;color:#bbb}
+
+/* ════════════════════════════════════════
+   T11 — HIHELLO (Şəkil 3 — HiHello Networking)
+   Böyük foto + organik dalğa kənarı + sol accent xətt
+════════════════════════════════════════ */
+.c11{width:100%;max-width:430px;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 4px 28px rgba(10,22,40,.1);margin:0 .75rem}
+.c11-photo{width:100%;height:300px;background:var(--p);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:80px;color:rgba(255,255,255,.2)}
+.c11-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
+.c11-wave{display:block;width:100%;margin-top:-2px}
+.c11-body{padding:.1rem 1.25rem 1.5rem}
+.c11-nameblock{display:flex;gap:12px;align-items:flex-start;margin-bottom:.9rem}
+.c11-accent{width:4px;border-radius:4px;background:linear-gradient(180deg,var(--p),var(--a));flex-shrink:0;align-self:stretch;min-height:40px}
+.c11-ninfo{}
+.c11-name{font-family:'Space Grotesk',sans-serif;font-size:23px;font-weight:800;color:var(--dark);margin-bottom:3px;line-height:1.2}
+.c11-pos{font-size:13px;color:#666;margin-bottom:1px}
+.c11-co{font-size:13px;color:var(--p);font-weight:700}
+.c11-bio{font-size:13px;color:#888;line-height:1.6;margin-bottom:.9rem}
+.c11-list{display:flex;flex-direction:column;margin-bottom:.9rem}
+.c11-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #f0f0f0;text-decoration:none;cursor:pointer}
+.c11-row:last-child{border-bottom:none}
+.c11-ico{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:color-mix(in srgb,var(--p) 10%,#fff)}
+.c11-val{font-size:13px;color:var(--dark);font-weight:500;flex:1}
+.c11-lbl{font-size:10px;color:#aaa}
+.c11-soc{display:flex;flex-direction:column;gap:0;margin-bottom:1rem}
+.c11-srow{display:flex;align-items:center;gap:11px;padding:10px 13px;border-radius:11px;text-decoration:none;margin-bottom:6px;border:1.5px solid #eeeeee;transition:all .15s;font-size:13px;font-weight:500;color:var(--dark)}
+.c11-srow:hover{border-color:var(--p);background:color-mix(in srgb,var(--p) 4%,#fff)}
+.c11-sdot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.c11-send{display:flex;align-items:center;justify-content:center;gap:7px;padding:13px;border-radius:50px;background:var(--p);color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;width:100%;font-family:'Inter',sans-serif}
+
+/* ════════════════════════════════════════
+   T12 — VITAWILL (Şəkil 4 — Vitawill team)
+   Rəngli hero band, avatar üstdən çıxır, icon grid, links section
+════════════════════════════════════════ */
+.c12{width:100%;max-width:430px;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 4px 28px rgba(10,22,40,.1);margin:0 .75rem}
+.c12-topbar{background:#fff;padding:.7rem 1.25rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f5f5f5}
+.c12-brand{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--dark)}
+.c12-share{width:32px;height:32px;border-radius:50%;background:var(--s);display:flex;align-items:center;justify-content:center;cursor:pointer;border:none}
+.c12-hero{background:var(--p);padding:1.5rem 1.25rem 5rem;position:relative;overflow:visible}
+.c12-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:28px;background:#fff;border-radius:22px 22px 0 0}
+.c12-av-wrap{display:flex;justify-content:center;margin-top:-4.5rem;position:relative;z-index:3;margin-bottom:.5rem}
+.c12-av{width:110px;height:110px;border-radius:50%;border:5px solid #fff;background:var(--gl);overflow:hidden;box-shadow:0 5px 22px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:38px;color:var(--g)}
+.c12-av img{width:100%;height:100%;object-fit:cover}
+.c12-body{padding:0 1.25rem 1.5rem;text-align:center}
+.c12-name{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:800;color:var(--dark);margin-bottom:3px}
+.c12-pos{font-size:13px;color:#888;margin-bottom:1px}
+.c12-co{font-size:13px;color:var(--p);font-weight:700;margin-bottom:.75rem}
+.c12-actgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:.9rem 0;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;margin-bottom:1rem}
+.c12-acti{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;text-decoration:none}
+.c12-aci-c{width:52px;height:52px;border-radius:15px;background:color-mix(in srgb,var(--p) 8%,#fff);border:1.5px solid color-mix(in srgb,var(--p) 18%,#fff);display:flex;align-items:center;justify-content:center;transition:all .15s}
+.c12-acti:hover .c12-aci-c{background:color-mix(in srgb,var(--p) 15%,#fff)}
+.c12-aci-l{font-size:9px;color:#999;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.c12-sec{font-size:10px;font-weight:700;color:#ccc;text-transform:uppercase;letter-spacing:.08em;margin:.75rem 0 .4rem;text-align:left}
+.c12-links{display:flex;flex-direction:column;gap:0;text-align:left}
+.c12-lrow{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid #f7f7f7;text-decoration:none;cursor:pointer}
+.c12-lrow:last-child{border-bottom:none}
+.c12-lico{width:36px;height:36px;border-radius:10px;background:color-mix(in srgb,var(--p) 8%,#fff);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.c12-val{font-size:13px;color:var(--dark);font-weight:500;flex:1}
+.c12-lbl{font-size:10px;color:#bbb}
+.c12-qr-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:.75rem;padding:.6rem .9rem;border-radius:12px;border:1.5px dashed #ddd;cursor:pointer}
+.c12-qrlbl{font-size:12px;color:#aaa;font-weight:500}
+
 /* shared video/pdf */
 .vframe{width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:var(--s);margin-bottom:1rem}
 .vframe iframe{width:100%;height:100%;border:none}
@@ -376,6 +489,10 @@ body{font-family:'Inter',sans-serif;background:#f0f2f5;min-height:100vh;display:
       <div class="to" id="t-6" onclick="setTmpl(6)"><div class="to-prev" style="background:linear-gradient(90deg,#185FA5 45%,#fff 45%)"></div>Split</div>
       <div class="to" id="t-7" onclick="setTmpl(7)"><div class="to-prev" style="background:#111"></div>Linko</div>
       <div class="to" id="t-8" onclick="setTmpl(8)"><div class="to-prev" style="border-top:10px solid #185FA5;background:#fff;border-radius:6px"></div>Card</div>
+      <div class="to" id="t-9" onclick="setTmpl(9)"><div class="to-prev" style="background:#111"></div>Linko+</div>
+      <div class="to" id="t-10" onclick="setTmpl(10)"><div class="to-prev" style="background:linear-gradient(180deg,#185FA5 55%,#fff 45%)"></div>Achiev</div>
+      <div class="to" id="t-11" onclick="setTmpl(11)"><div class="to-prev" style="background:linear-gradient(180deg,#185FA5 60%,#fff 40%)"></div>HiHello</div>
+      <div class="to" id="t-12" onclick="setTmpl(12)"><div class="to-prev" style="background:linear-gradient(180deg,#185FA5 55%,#fff 45%)"></div>Vitawill</div>
     </div>
   </div>
 </div>
@@ -477,7 +594,9 @@ async function init(){
     lang=localStorage.getItem('cp_lang_'+slug)||PD.defaultLang||'az';
     const lm=LM[lang]||LM.az;document.getElementById('lfl').textContent=lm.f;document.getElementById('lco').textContent=lm.c;document.querySelectorAll('.lang-opt').forEach(o=>o.classList.toggle('sel',o.dataset.l===lang));
     color=localStorage.getItem('cp_col_'+slug)||'#185FA5';
-    tmpl=parseInt(localStorage.getItem('cp_tmpl_'+slug)||'1');
+    // tmplNum — dashboard-dan seçilmiş şablon (1-12), lokal override var ise onu götür
+    const savedTmpl=parseInt(localStorage.getItem('cp_tmpl_'+slug)||PD.tmplNum||PD.template||'1');
+    tmpl=isNaN(savedTmpl)?1:Math.min(Math.max(savedTmpl,1),12);
     applyColor(color);
     document.getElementById('lw').style.display='none';
     document.getElementById('cardWrap').style.display='block';
@@ -549,7 +668,7 @@ function render(){
   const d=PD;const card=d.card||{};
   const name=`${card.name||''} ${card.surname||''}`.trim()||d.name||'';
   buildVC(d,name);
-  const fns=[null,t1,t2,t3,t4,t5,t6,t7,t8];
+  const fns=[null,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12];
   const fn=fns[tmpl]||t1;
   document.getElementById('cardWrap').innerHTML=fn(d,card,name);
 }
@@ -788,6 +907,134 @@ function t8(d,c,name){
     <div class="c8-sec">Əlaqə</div><div class="c8-list">${rows}</div>
     ${sk.length?`<div class="c8-sec" style="margin-top:.75rem">Sosial</div><div class="c8-soc">${sk.map(x=>`<a class="c8-sp" href="${htp(soc[x])}" target="_blank"><span style="width:7px;height:7px;border-radius:50%;background:${socCol[x]||'#888'};display:inline-block;flex-shrink:0"></span>${socLab[x]||x}</a>`).join('')}</div>`:''}
     ${videoH(d)}${pdfsH(d)}
+  </div></div>`;
+}
+
+// ── T9 LINKO FULL ─────────────────────────────────────────────────────────
+function t9(d,c,name){
+  let rows='';
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
+  if(c.phone) rows+=`<div class="c9-row" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ic('c9-ico',ico.phoneW)}<div><div class="c9-val">${esc(c.phone)}</div><div class="c9-lbl">${t('phone')}</div></div></div>`;
+  if(c.email) rows+=`<div class="c9-row" onclick="oEm('${esc(c.email)}')">${ic('c9-ico',ico.emailW)}<div><div class="c9-val">${esc(c.email)}</div><div class="c9-lbl">${t('email')}</div></div></div>`;
+  if(c.web) rows+=`<a class="c9-row" href="${htp(c.web)}" target="_blank">${ic('c9-ico',ico.webW)}<div><div class="c9-val">${esc(c.web)}</div><div class="c9-lbl">${t('web')}</div></div></a>`;
+  if(c.address) rows+=`<a class="c9-row" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ic('c9-ico',ico.locW)}<div><div class="c9-val">${esc(c.address)}</div><div class="c9-lbl">${t('addr')}</div></div></a>`;
+  const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
+  return`<div class="c9">
+  <div class="c9-hero">
+    ${c.photo?`<img class="av" src="${esc(c.photo)}" onerror="this.style.display='none'">`:`<span style="font-size:80px;font-family:'Playfair Display',serif;color:rgba(255,255,255,.2)">${(name||'?').charAt(0).toUpperCase()}</span>`}
+    <div class="c9-grad"></div>
+    <div class="c9-ph">
+      <a class="c9-pill" onclick="svContact()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>${t('save')}</a>
+      <a class="c9-pill" onclick="shProfile()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>${t('share')}</a>
+    </div>
+    <div class="c9-info">
+      <div class="c9-name">${esc(name)||'—'}</div>
+      ${c.position?`<div class="c9-pos">${esc(c.position)}</div>`:''}
+      ${c.company?`<div class="c9-co">${esc(c.company)}</div>`:''}
+    </div>
+  </div>
+  <div class="c9-body">
+    ${c.bio?`<div style="font-size:13px;color:rgba(255,255,255,.4);line-height:1.6;margin-bottom:.9rem;padding-bottom:.9rem;border-bottom:1px solid rgba(255,255,255,.08)">${esc(c.bio)}</div>`:''}
+    <div class="c9-list">${rows}</div>
+    ${sk.length?`<div class="c9-soc">${sk.map(x=>`<a class="c9-sp" href="${htp(soc[x])}" target="_blank"><span style="width:7px;height:7px;border-radius:50%;background:${socCol[x]||'#888'};display:inline-block;flex-shrink:0"></span>${socLab[x]||x}</a>`).join('')}</div>`:''}
+    ${videoH(d,true)}${pdfsH(d,true)}${qrBtn(true)}
+    <div class="c9-actions">
+      <button class="abtn" style="background:rgba(255,255,255,.09);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.12)" onclick="document.getElementById('moScan').classList.add('open');rstScan()">${ico.scan} ${t('scan')}</button>
+      <button class="abtn" style="background:var(--p);color:#fff" onclick="svContact()">${ico.save} ${t('save')}</button>
+    </div>
+  </div></div>`;
+}
+
+// ── T10 ACHIEVEMENT ────────────────────────────────────────────────────────
+function t10(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
+  let rows='';
+  if(c.phone) rows+=`<div class="c10-row" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ic('c10-lico',ico.phone)}<div><div class="c10-val">${esc(c.phone)}</div><div class="c10-lbl">${t('phone')}</div></div></div>`;
+  if(c.email) rows+=`<div class="c10-row" onclick="oEm('${esc(c.email)}')">${ic('c10-lico',ico.email)}<div><div class="c10-val">${esc(c.email)}</div><div class="c10-lbl">${t('email')}</div></div></div>`;
+  if(c.web) rows+=`<a class="c10-row" href="${htp(c.web)}" target="_blank">${ic('c10-lico',ico.web)}<div><div class="c10-val">${esc(c.web)}</div><div class="c10-lbl">${t('web')}</div></div></a>`;
+  if(c.address) rows+=`<a class="c10-row" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ic('c10-lico',ico.loc)}<div><div class="c10-val">${esc(c.address)}</div><div class="c10-lbl">${t('addr')}</div></div></a>`;
+  const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
+  return`<div class="c10">
+  <div class="c10-header">
+    ${c.company?`<div class="c10-brand">${esc(c.company)}</div>`:''}
+  </div>
+  <div class="c10-av-wrap"><div class="c10-av">${avImg(c.photo,(name||'?').charAt(0).toUpperCase())}</div></div>
+  <div class="c10-body">
+    <div class="c10-name">${esc(name)||'—'}</div>
+    ${c.position?`<div class="c10-pos">${esc(c.position)}</div>`:''}
+    ${c.position||c.company?`<div class="c10-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>${esc(c.position||c.company)}</div>`:''}
+    ${c.bio?`<div class="c10-bio">${esc(c.bio)}</div>`:''}
+    <div class="c10-icorow">
+      <div class="c10-icoitem" onclick="svContact()"><div class="c10-ico">${ico.save.replace('currentColor','var(--p)')}</div><span class="c10-ilbl">${t('ko')}</span></div>
+      ${c.phone?`<a class="c10-icoitem" href="tel:${c.phone}"><div class="c10-ico">${ico.phone}</div><span class="c10-ilbl">${t('anrufen')}</span></a>`:`<div class="c10-icoitem"><div class="c10-ico" style="opacity:.3">${ico.phone}</div><span class="c10-ilbl">—</span></div>`}
+      <div class="c10-icoitem" onclick="document.getElementById('moQr').classList.add('open')"><div class="c10-ico">${ico.qr.replace('currentColor','var(--p)')}</div><span class="c10-ilbl">QR</span></div>
+      <div class="c10-icoitem" onclick="shProfile()"><div class="c10-ico">${ico.shr.replace('currentColor','var(--p)')}</div><span class="c10-ilbl">${t('share')}</span></div>
+    </div>
+    <div class="c10-list">${rows}</div>
+    ${sk.length?`<div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:.75rem;padding-top:.75rem;border-top:1px solid #f5f5f5">${sk.map(x=>`<a style="display:flex;align-items:center;gap:5px;padding:6px 13px;border-radius:20px;font-size:12px;font-weight:500;text-decoration:none;border:1px solid #eee;color:#333" href="${htp(soc[x])}" target="_blank"><span style="width:7px;height:7px;border-radius:50%;background:${socCol[x]||'#888'};display:inline-block"></span>${socLab[x]||x}</a>`).join('')}</div>`:''}
+    ${videoH(d)}${pdfsH(d)}
+    <div style="margin-top:.9rem">${actBtns()}</div>
+  </div></div>`;
+}
+
+// ── T11 HIHELLO ────────────────────────────────────────────────────────────
+function t11(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
+  let rows='';
+  if(c.phone) rows+=`<div class="c11-row" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ic('c11-ico',ico.phone)}<div><div class="c11-val">${esc(c.phone)}</div><div class="c11-lbl">${t('phone')}</div></div></div>`;
+  if(c.email) rows+=`<div class="c11-row" onclick="oEm('${esc(c.email)}')">${ic('c11-ico',ico.email)}<div><div class="c11-val">${esc(c.email)}</div><div class="c11-lbl">${t('email')}</div></div></div>`;
+  if(c.web) rows+=`<a class="c11-row" href="${htp(c.web)}" target="_blank">${ic('c11-ico',ico.web)}<div><div class="c11-val">${esc(c.web)}</div><div class="c11-lbl">${t('web')}</div></div></a>`;
+  if(c.address) rows+=`<a class="c11-row" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ic('c11-ico',ico.loc)}<div><div class="c11-val">${esc(c.address)}</div><div class="c11-lbl">${t('addr')}</div></div></a>`;
+  const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
+  // wave SVG with accent color
+  const waveColor=encodeURIComponent(getComputedStyle(document.documentElement).getPropertyValue('--p').trim()||'#185FA5');
+  return`<div class="c11">
+  <div class="c11-photo">
+    ${c.photo?`<img src="${esc(c.photo)}" onerror="this.style.display='none'">`:`<span>${(name||'?').charAt(0).toUpperCase()}</span>`}
+  </div>
+  <svg class="c11-wave" viewBox="0 0 430 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0 C80,38 160,42 220,28 C280,14 360,0 430,32 L430,0 Z" fill="var(--p)"/><path d="M0,32 C80,10 160,44 220,30 C280,16 360,2 430,40 L430,40 L0,40 Z" fill="#fff"/></svg>
+  <div class="c11-body">
+    <div class="c11-nameblock"><div class="c11-accent"></div><div class="c11-ninfo"><div class="c11-name">${esc(name)||'—'}</div>${c.position?`<div class="c11-pos">${esc(c.position)}</div>`:''}${c.company?`<div class="c11-co">${esc(c.company)}</div>`:''}</div></div>
+    ${c.bio?`<div class="c11-bio">${esc(c.bio)}</div>`:''}
+    <div class="c11-list">${rows}</div>
+    ${sk.length?`<div class="c11-soc">${sk.map(x=>`<a class="c11-srow" href="${htp(soc[x])}" target="_blank"><span class="c11-sdot" style="background:${socCol[x]||'#888'}"></span>${socLab[x]||x}</a>`).join('')}</div>`:''}
+    ${videoH(d)}${pdfsH(d)}${qrBtn()}
+    <button class="c11-send" onclick="svContact()">${ico.save} ${t('save')}</button>
+    <button class="abtn" style="width:100%;margin-top:8px;background:var(--s);color:var(--dark)" onclick="document.getElementById('moScan').classList.add('open');rstScan()">${ico.scan} ${t('scan')}</button>
+  </div></div>`;
+}
+
+// ── T12 VITAWILL ───────────────────────────────────────────────────────────
+function t12(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
+  let rows='';
+  if(c.phone) rows+=`<div class="c12-lrow" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ic('c12-lico',ico.phone)}<div><div class="c12-val">${esc(c.phone)}</div><div class="c12-lbl">${t('phone')}</div></div></div>`;
+  if(c.email) rows+=`<div class="c12-lrow" onclick="oEm('${esc(c.email)}')">${ic('c12-lico',ico.email)}<div><div class="c12-val">${esc(c.email)}</div><div class="c12-lbl">${t('email')}</div></div></div>`;
+  if(c.web) rows+=`<a class="c12-lrow" href="${htp(c.web)}" target="_blank">${ic('c12-lico',ico.web)}<div><div class="c12-val">${esc(c.web)}</div><div class="c12-lbl">${t('web')}</div></div></a>`;
+  if(c.address) rows+=`<a class="c12-lrow" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ic('c12-lico',ico.loc)}<div><div class="c12-val">${esc(c.address)}</div><div class="c12-lbl">${t('addr')}</div></div></a>`;
+  const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
+  return`<div class="c12">
+  <div class="c12-topbar">
+    <div class="c12-brand">${c.company?esc(c.company):'CardPro'}</div>
+    <button class="c12-share" onclick="shProfile()">${ico.shr.replace('currentColor','var(--p)')}</button>
+  </div>
+  <div class="c12-hero"></div>
+  <div class="c12-av-wrap"><div class="c12-av">${avImg(c.photo,(name||'?').charAt(0).toUpperCase())}</div></div>
+  <div class="c12-body">
+    <div class="c12-name">${esc(name)||'—'}</div>
+    ${c.position?`<div class="c12-pos">${esc(c.position)}</div>`:''}
+    ${c.company?`<div class="c12-co">${esc(c.company)}</div>`:''}
+    <div class="c12-actgrid">
+      <div class="c12-acti" onclick="svContact()"><div class="c12-aci-c">${ico.save.replace('currentColor','var(--p)')}</div><span class="c12-aci-l">${t('ko')}</span></div>
+      ${c.phone?`<a class="c12-acti" href="tel:${c.phone}"><div class="c12-aci-c">${ico.phone}</div><span class="c12-aci-l">${t('anrufen')}</span></a>`:`<div class="c12-acti" style="opacity:.3"><div class="c12-aci-c">${ico.phone}</div><span class="c12-aci-l">—</span></div>`}
+      <div class="c12-acti" onclick="document.getElementById('moQr').classList.add('open')"><div class="c12-aci-c">${ico.qr.replace('currentColor','var(--p)')}</div><span class="c12-aci-l">QR</span></div>
+    </div>
+    ${c.bio?`<div style="font-size:13px;color:#888;line-height:1.6;margin-bottom:.75rem;text-align:left">${esc(c.bio)}</div>`:''}
+    ${rows?`<div class="c12-sec">Əlaqə</div><div class="c12-links">${rows}</div>`:''}
+    ${sk.length?`<div class="c12-sec" style="margin-top:.75rem">Sosial</div><div class="c12-links">${sk.map(x=>`<a class="c12-lrow" href="${htp(soc[x])}" target="_blank">${ic('c12-lico',`<span style="width:9px;height:9px;border-radius:50%;background:${socCol[x]||'#888'};display:inline-block"></span>`)}<div><div class="c12-val">${socLab[x]||x}</div></div></a>`).join('')}</div>`:''}
+    ${videoH(d)}${pdfsH(d)}
+    <div class="c12-qr-row" onclick="document.getElementById('moScan').classList.add('open');rstScan()">${ico.scan.replace('currentColor','#bbb')}<span class="c12-qrlbl">${t('scan')}</span></div>
+    <button class="abtn" style="width:100%;margin-top:.75rem;background:var(--p);color:#fff" onclick="svContact()">${ico.save} ${t('save')}</button>
   </div></div>`;
 }
 
