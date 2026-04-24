@@ -320,11 +320,23 @@ tbody tr:hover td{background:#fafbfd}
 
     <!-- DOMAINS -->
     <div class="panel" id="panel-domains">
-      <div style="max-width:660px">
+      <div style="max-width:720px">
         <div style="margin-bottom:1.25rem">
           <div style="font-size:15px;font-weight:500;color:var(--navy);margin-bottom:4px">Domain İdarəsi (White-label)</div>
-          <div style="font-size:13px;color:var(--gray)">Subdomain və ya xüsusi domain əlavə edin. Print mərkəzləri üçün ideal.</div>
+          <div style="font-size:13px;color:var(--gray)">Şirkətlər üçün öz domeni ilə white-label xidmət. Hər domenə limitli sub-admin icazəsi verin.</div>
         </div>
+
+        <!-- How it works -->
+        <div style="background:rgba(24,95,165,.05);border:1px solid rgba(24,95,165,.15);border-radius:12px;padding:1.1rem;margin-bottom:1.25rem">
+          <div style="font-size:13px;font-weight:500;color:var(--blue);margin-bottom:.6rem">ℹ️ Necə işləyir?</div>
+          <div style="font-size:12px;color:var(--navy);line-height:1.8">
+            <div>1️⃣ <strong>Şirkət alır</strong> → onlara domain əlavə edirsən (məs. <code style="background:var(--gray-light);padding:2px 5px;border-radius:4px">cards.sirket.az</code>)</div>
+            <div>2️⃣ <strong>DNS yazısı</strong> → şirkət domain qeydiyyatçısında CNAME əlavə edir</div>
+            <div>3️⃣ <strong>Sub-admin icazəsi</strong> → şirkətin öz adminini seçirsən, yalnız öz domeninin istifadəçilərini idarə edə bilir</div>
+            <div>4️⃣ <strong>Sən master admin</strong> olaraq hər şeyi görürsən — plan, limit, billing sənin əlindədir</div>
+          </div>
+        </div>
+
         <!-- Domain types -->
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem">
           <div style="background:var(--white);border-radius:11px;border:1px solid var(--gray-light);padding:1rem">
@@ -338,32 +350,46 @@ tbody tr:hover td{background:#fafbfd}
             <div style="font-family:monospace;font-size:12px;background:var(--surface);padding:6px 10px;border-radius:7px;color:var(--blue)">cards.brand.com/profil</div>
           </div>
         </div>
+
         <!-- Add domain -->
         <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1rem">
-          <div style="font-size:13px;font-weight:500;margin-bottom:.75rem">Domain əlavə et</div>
-          <div style="display:flex;gap:8px;align-items:flex-end">
-            <div class="form-group" style="flex:1;margin-bottom:0"><label class="form-label">Domain</label><input class="form-input" id="newDomain" placeholder="cards.brand.com və ya brand.com"></div>
-            <button class="btn btn-primary" onclick="addDomain()" style="flex-shrink:0">Əlavə et</button>
+          <div style="font-size:13px;font-weight:500;margin-bottom:.75rem">Yeni domain əlavə et</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:flex-end">
+            <div class="form-group" style="margin-bottom:0">
+              <label class="form-label">Domain</label>
+              <input class="form-input" id="newDomain" placeholder="cards.brand.com">
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label class="form-label">Sub-admin (optional)</label>
+              <select class="form-input" id="newDomainAdmin">
+                <option value="">-- Seçin --</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" onclick="addDomain()" style="flex-shrink:0;margin-bottom:0">Əlavə et</button>
           </div>
+          <div style="font-size:11px;color:var(--gray);margin-top:7px">Sub-admin yalnız bu domenin istifadəçilərini görə bilər (profil açmaq, şablon dəyişmək). Plan/billing idarəsi yalnız sizin əlinizdədir.</div>
         </div>
+
         <!-- Domain list -->
-        <div id="domainList">
-          <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem">
-            <div style="font-size:13px;font-weight:500;margin-bottom:.9rem">Əlavə edilmiş domainlər</div>
-            <div id="domainsInner"><div style="font-size:12px;color:var(--gray);text-align:center;padding:1rem">Hələ domain əlavə edilməyib</div></div>
-          </div>
+        <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1rem">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.9rem">Əlavə edilmiş domainlər</div>
+          <div id="domainsInner"><div style="font-size:12px;color:var(--gray);text-align:center;padding:1rem">Hələ domain əlavə edilməyib</div></div>
         </div>
+
         <!-- DNS Guide -->
         <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-top:1rem">
           <div style="font-size:13px;font-weight:500;margin-bottom:.75rem">📋 DNS Konfiqurasiya Rəhbəri</div>
-          <div style="font-size:12px;color:var(--gray);margin-bottom:.75rem">Domain qeydiyyatçınızda aşağıdakı DNS qeydlərini əlavə edin:</div>
+          <div style="font-size:12px;color:var(--gray);margin-bottom:.75rem">Domain qeydiyyatçınızda (Aznet, NIC.az, GoDaddy, Cloudflare vs.) aşağıdakı DNS qeydlərini əlavə edin:</div>
           <div class="dns-guide">
-            <div><strong>CNAME qeydi:</strong></div>
-            <div><span class="dns-record">Host: @ (və ya subdomain)</span></div>
+            <div><strong>CNAME qeydi (subdomain üçün):</strong></div>
+            <div><span class="dns-record">Host: cards (və ya istənilən subdomain)</span></div>
             <div><span class="dns-record">Value: proxy.cardpro.az</span></div>
-            <div style="margin-top:.5rem"><strong>TXT qeydi (doğrulama):</strong></div>
+            <div style="margin-top:.6rem"><strong>A qeydi (kök domain üçün):</strong></div>
+            <div><span class="dns-record">Host: @ </span></div>
+            <div><span class="dns-record">Value: 76.76.21.21</span></div>
+            <div style="margin-top:.6rem"><strong>TXT qeydi (doğrulama):</strong></div>
             <div><span class="dns-record">Host: _cardpro</span></div>
-            <div><span class="dns-record">Value: verify=xxxxxxxx</span></div>
+            <div><span class="dns-record">Value: verify=[sistem tərəfindən verilir]</span></div>
             <div style="margin-top:.5rem;font-size:11px">⏱ DNS yayılması 24-48 saat çəkə bilər. Status avtomatik yenilənir.</div>
           </div>
         </div>
@@ -604,6 +630,9 @@ function renderPlanCounts(){
 
 // Domains
 function renderDomains(){
+  // Populate sub-admin select
+  const sel=document.getElementById('newDomainAdmin');
+  if(sel){sel.innerHTML='<option value="">-- Sub-admin seçin --</option>'+allUsers.filter(u=>u.status!=='blocked').map(u=>`<option value="${u.uid}">${u.name||u.email} (${u.userRole||'user'})</option>`).join('');}
   get(ref(db,'domains')).then(s=>{
     const d=s.val()||{};
     const keys=Object.keys(d);
@@ -612,20 +641,42 @@ function renderDomains(){
     inner.innerHTML=keys.map(k=>{
       const dom=d[k];
       const statusHtml=dom.status==='active'?'<span class="domain-status ds-active">✓ Aktiv</span>':dom.status==='error'?'<span class="domain-status ds-error">✗ Xəta</span>':'<span class="domain-status ds-pending">⏳ Gözləyir</span>';
-      return`<div class="domain-card"><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--navy)">${dom.domain}</div><div style="font-size:11px;color:var(--gray);margin-top:2px">Əlavə edildi: ${dom.addedAt?new Date(dom.addedAt).toLocaleDateString('az'):'—'}</div></div>${statusHtml}<button class="btn btn-sm btn-danger" onclick="removeDomain('${k}')">Sil</button></div>`;
+      const adminUser=dom.adminUid?allUsers.find(u=>u.uid===dom.adminUid):null;
+      const adminBadge=adminUser?`<span style="font-size:10px;background:rgba(24,95,165,.1);color:var(--blue);padding:2px 8px;border-radius:10px;margin-left:6px">👤 ${adminUser.name||adminUser.email}</span>`:'<span style="font-size:10px;color:var(--gray);margin-left:6px">sub-admin yoxdur</span>';
+      return`<div class="domain-card"><div style="flex:1"><div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px"><span style="font-size:13px;font-weight:500;color:var(--navy)">${dom.domain}</span>${adminBadge}</div><div style="font-size:11px;color:var(--gray);margin-top:3px">Əlavə edildi: ${dom.addedAt?new Date(dom.addedAt).toLocaleDateString('az'):'—'} · Limit: ${dom.userLimit||'limitsiz'} istifadəçi</div></div>${statusHtml}<button class="btn btn-sm" onclick="editDomainAdmin('${k}')">Admin</button><button class="btn btn-sm btn-danger" onclick="removeDomain('${k}')">Sil</button></div>`;
     }).join('');
   });
 }
 window.addDomain=async function(){
   const d=document.getElementById('newDomain').value.trim();
   if(!d){showToast('Domain daxil edin','error');return;}
-  const key=d.replace(/\./g,'-');
-  await set(ref(db,`domains/${key}`),{domain:d,status:'pending',addedAt:Date.now()});
-  document.getElementById('newDomain').value='';
-  showToast('Domain əlavə edildi. DNS konfiqurası edin.','success');
+  const adminUid=document.getElementById('newDomainAdmin')?.value||'';
+  const key=d.replace(/[^a-zA-Z0-9]/g,'-');
+  const verifyToken='cp-'+Math.random().toString(36).slice(2,10);
+  await set(ref(db,`domains/${key}`),{domain:d,status:'pending',addedAt:Date.now(),adminUid:adminUid||null,verifyToken,userLimit:50});
+  // If admin assigned, update their role in users
+  if(adminUid){await update(ref(db,`users/${adminUid}`),{domainAdmin:key,domainAdminOf:d});}
+  document.getElementById('newDomain').value='';if(document.getElementById('newDomainAdmin'))document.getElementById('newDomainAdmin').value='';
+  showToast(`Domain əlavə edildi. DNS: CNAME → proxy.cardpro.az`,'success');
   renderDomains();
 };
-window.removeDomain=async function(k){if(!confirm('Silmək istəyirsiniz?'))return;await remove(ref(db,`domains/${k}`));renderDomains();showToast('Silindi');};
+window.editDomainAdmin=async function(k){
+  const d=(await get(ref(db,`domains/${k}`))).val();if(!d)return;
+  const curAdmin=d.adminUid||'';
+  const opts=allUsers.map(u=>`<option value="${u.uid}"${u.uid===curAdmin?' selected':''}>${u.name||u.email}</option>`).join('');
+  const newAdminUid=prompt(`"${d.domain}" üçün sub-admin seçin (UID daxil edin)\nMövcud: ${curAdmin||'yoxdur'}\nİstifadəçi listinə baxın. Boş buraxsanız silir.`,'');
+  if(newAdminUid===null)return;
+  await update(ref(db,`domains/${k}`),{adminUid:newAdminUid||null});
+  if(newAdminUid){await update(ref(db,`users/${newAdminUid}`),{domainAdmin:k,domainAdminOf:d.domain});}
+  if(curAdmin&&curAdmin!==newAdminUid){await update(ref(db,`users/${curAdmin}`),{domainAdmin:null,domainAdminOf:null});}
+  showToast('Sub-admin yeniləndi','success');renderDomains();
+};
+window.removeDomain=async function(k){
+  if(!confirm('Bu domeni silmək istəyirsiniz? Sub-admin icazəsi də silinəcək.'))return;
+  const d=(await get(ref(db,`domains/${k}`))).val();
+  if(d?.adminUid){await update(ref(db,`users/${d.adminUid}`),{domainAdmin:null,domainAdminOf:null});}
+  await remove(ref(db,`domains/${k}`));renderDomains();showToast('Silindi');
+};
 
 // Filter
 window.filterUsers=function(){
@@ -774,10 +825,11 @@ function processBulkFileObj(file){
       name:String(r.name||r.Name||r.ad||'').trim(),
       surname:String(r.surname||r.Surname||r.soyad||'').trim(),
       email:String(r.email||r.Email||'').trim().toLowerCase(),
+      password:String(r.password||r.Password||r.sifre||r.şifrə||'').trim(),
       plan:String(r.plan||r.Plan||'free').trim().toLowerCase(),
       role:String(r.role||r.Role||r.rol||'user').trim().toLowerCase(),
-      company:String(r.company||r.Company||r.sirket||'').trim(),
-      action:String(r.action||r.Action||r.emeliyyat||'add').trim().toLowerCase()
+      company:String(r.company||r.Company||r.sirket||r.şirkət||'').trim(),
+      action:String(r.action||r.Action||r.emeliyyat||r.əməliyyat||'add').trim().toLowerCase()
     })).filter(r=>r.email);
     renderBulkPreview();
   };
@@ -790,46 +842,87 @@ function renderBulkPreview(){
   document.getElementById('bulkAddCount').textContent=adds+' əlavə';
   document.getElementById('bulkUpdateCount').textContent=updates+' yenilə';
   document.getElementById('bulkDeleteCount').textContent=deletes+' sil';
-  const head='<div class="bulk-row header"><div>Ad</div><div>Email</div><div>Plan</div><div>Rol</div><div>Status</div></div>';
+  const head='<div class="bulk-row header"><div>Ad</div><div>Email</div><div>Plan</div><div>Şifrə</div><div>Status</div></div>';
   const rows=bulkData.slice(0,20).map(r=>{
     const sc=r.action==='delete'?'bs-delete':r.action==='update'?'bs-update':'bs-add';
     const sl=r.action==='delete'?'SİL':r.action==='update'?'YENİLƏ':'ƏLAVƏ';
-    return`<div class="bulk-row"><div>${r.name} ${r.surname}</div><div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.email}</div><div>${r.plan}</div><div>${r.role}</div><div><span class="bulk-row-status ${sc}">${sl}</span></div></div>`;
+    const passDisplay=r.password?'✓ var':'auto';
+    return`<div class="bulk-row"><div>${r.name} ${r.surname}</div><div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.email}</div><div>${r.plan}</div><div style="font-size:11px;color:var(--gray)">${passDisplay}</div><div><span class="bulk-row-status ${sc}">${sl}</span></div></div>`;
   }).join('');
   document.getElementById('bulkPreview').innerHTML=head+rows+(bulkData.length>20?`<div style="text-align:center;padding:.75rem;font-size:12px;color:var(--gray)">+${bulkData.length-20} daha çox sətir</div>`:'');
   document.getElementById('bulkPreviewWrap').style.display='block';
 }
 window.applyBulk=async function(){
   const btn=document.getElementById('bulkApplyBtn');btn.disabled=true;btn.textContent='Tətbiq edilir...';
-  let done=0;
+  let done=0,skipped=0,errors=[];
+  const totalAdd=bulkData.filter(r=>r.action!=='delete'&&r.action!=='update').length;
+  showToast(`${totalAdd} profil yaradılır...`);
+
   for(const r of bulkData){
     try{
       const existing=allUsers.find(u=>(u.email||'').toLowerCase()===r.email);
-      if(r.action==='delete'){if(existing)await remove(ref(db,`users/${existing.uid}`));}
-      else if(r.action==='update'){if(existing)await update(ref(db,`users/${existing.uid}`),{name:(r.name+' '+r.surname).trim(),plan:r.plan,userRole:r.role,company:r.company});}
-      else{
-        if(!existing){
-          const tempUid='bulk_'+Date.now()+'_'+Math.random().toString(36).slice(2,7);
-          await set(ref(db,`users/${tempUid}`),{name:(r.name+' '+r.surname).trim(),email:r.email,plan:r.plan,userRole:r.role,company:r.company,status:'active',role:'user',slug:genRandomSlug(),createdAt:Date.now(),scanCount:0,defaultLang:'az',card:{name:r.name,surname:r.surname,company:r.company,email:r.email}});
+      if(r.action==='delete'){
+        if(existing){await remove(ref(db,`users/${existing.uid}`));done++;}
+      } else if(r.action==='update'){
+        if(existing){await update(ref(db,`users/${existing.uid}`),{name:(r.name+' '+r.surname).trim(),plan:r.plan,userRole:r.role,company:r.company});done++;}
+      } else {
+        if(existing){skipped++;continue;}
+        // Auto-generate password if not provided
+        const pass=r.password||genBulkPassword(r.name,r.surname);
+        try{
+          const cred=await createUserWithEmailAndPassword(auth,r.email,pass);
+          const slug=genRandomSlug();
+          await set(ref(db,`users/${cred.user.uid}`),{
+            name:(r.name+' '+r.surname).trim(),email:r.email,slug,
+            plan:r.plan,status:'active',role:'user',userRole:r.role,
+            company:r.company,createdAt:Date.now(),scanCount:0,defaultLang:'az',
+            bulkPassword:r.password?'custom':'auto', // track if auto-generated
+            card:{name:r.name,surname:r.surname,company:r.company,email:r.email,phone:'',web:'',position:'',bio:'',address:'',photo:'',cover:''}
+          });
+          done++;
+        }catch(authErr){
+          if(authErr.code==='auth/email-already-in-use'){skipped++;}
+          else{errors.push(`${r.email}: ${authErr.message}`);}
         }
       }
-      done++;
-    }catch(e){}
+    }catch(e){errors.push(`${r.email}: ${e.message}`);}
   }
-  showToast(`${done}/${bulkData.length} əməliyyat tamamlandı`,'success');
-  btn.disabled=false;btn.textContent='Tətbiq et';clearBulk();
+
+  let msg=`${done}/${bulkData.length} tamamlandı`;
+  if(skipped)msg+=` (${skipped} mövcuddur)`;
+  if(errors.length)msg+=` — ${errors.length} xəta`;
+  showToast(msg,errors.length?'error':'success');
+  btn.disabled=false;btn.textContent='Tətbiq et';
+  if(!errors.length)clearBulk();
+  else{// show errors
+    console.error('Bulk errors:',errors);
+    const errDiv=document.createElement('div');errDiv.style.cssText='margin-top:.75rem;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:.75rem;font-size:11px;color:#e74c3c;max-height:120px;overflow-y:auto';
+    errDiv.innerHTML='<strong>Xətalar:</strong><br>'+errors.join('<br>');
+    document.getElementById('bulkApplyBtn').parentNode.appendChild(errDiv);
+  }
 };
+function genBulkPassword(name,surname){
+  // Generate a predictable but somewhat secure password
+  const base=(name.charAt(0)||'U').toUpperCase()+(surname.charAt(0)||'u').toLowerCase();
+  const num=Math.floor(1000+Math.random()*9000);
+  return base+num+'!';
+}
 window.clearBulk=function(){bulkData=[];document.getElementById('bulkPreviewWrap').style.display='none';document.getElementById('bulkFile').value='';};
 window.downloadBulkTemplate=function(){
   if(typeof XLSX==='undefined'){showToast('XLSX yüklənmir','error');return;}
   const ws=XLSX.utils.aoa_to_sheet([
-    ['name','surname','email','plan','role','company','action'],
-    ['Aytən','Həsənova','ayten@email.com','pro','user','ABC Şirkəti','add'],
-    ['Rauf','Əliyev','rauf@email.com','free','manager','XYZ Corp','add'],
-    ['Leyla','Məmmədova','leyla@email.com','business','owner','Big Corp','add'],
+    ['name','surname','email','password','plan','role','company','action'],
+    ['Aytən','Həsənova','ayten@email.com','Sifre123!','pro','user','ABC Şirkəti','add'],
+    ['Rauf','Əliyev','rauf@email.com','Sifre456!','free','manager','XYZ Corp','add'],
+    ['Leyla','Məmmədova','leyla@email.com','','business','owner','Big Corp','add'],
   ]);
+  // Add column width hints
+  ws['!cols']=[{wch:12},{wch:14},{wch:26},{wch:16},{wch:10},{wch:10},{wch:18},{wch:8}];
+  // Add note cell about password
+  ws['A5']={t:'s',v:'Qeyd: password boş buraxılsa avtomatik yaranır. İstifadəçiyə email göndərin.'};
   const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Users');
   XLSX.writeFile(wb,'cardpro_bulk_template.xlsx');
+  showToast('Şablon yükləndi','success');
 };
 
 // BULK PLAN CHANGE
