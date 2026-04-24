@@ -5,9 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CardPro — Admin Panel</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--navy:#0a1628;--navy-mid:#112040;--blue:#185FA5;--blue-light:#378ADD;--accent:#4FACFE;--white:#fff;--gray:#8A9BB5;--gray-light:#E8EDF5;--surface:#f4f6fb;--error:#e74c3c;--success:#27ae60;--warning:#f39c12;--sidebar:230px}
+:root{--navy:#0a1628;--navy-mid:#112040;--blue:#185FA5;--blue-light:#378ADD;--accent:#4FACFE;--white:#fff;--gray:#8A9BB5;--gray-light:#E8EDF5;--surface:#f4f6fb;--error:#e74c3c;--success:#27ae60;--warning:#f39c12;--sidebar:240px}
 body{font-family:'DM Sans',sans-serif;background:var(--surface);display:flex;min-height:100vh;color:var(--navy)}
 .sidebar{width:var(--sidebar);background:var(--navy);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;transition:transform .3s}
 .sidebar-brand{padding:1.25rem 1rem;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:9px}
@@ -28,21 +29,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--surface);display:flex;min
 .hamburger{display:none;position:fixed;top:12px;left:12px;z-index:200;width:40px;height:40px;background:var(--navy);border:none;border-radius:9px;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px}
 .hamburger span{width:18px;height:2px;background:#fff;border-radius:2px;display:block}
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
-.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column}
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100vh}
 .topbar{background:var(--white);border-bottom:1px solid var(--gray-light);padding:0 1.5rem;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
 .topbar-title{font-size:14px;font-weight:500;color:var(--navy)}
 .badge-admin{background:rgba(79,172,254,.1);color:var(--blue);font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500;border:1px solid rgba(79,172,254,.2)}
 .content{padding:1.5rem;flex:1}
 .panel{display:none}.panel.active{display:block}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.5rem}
+/* Stats */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.25rem}
 .stat-card{background:var(--white);border-radius:11px;padding:1rem;border:1px solid var(--gray-light)}
 .stat-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .stat-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center}
-.stat-icon.blue{background:rgba(24,95,165,.1)}.stat-icon.green{background:rgba(39,174,96,.1)}.stat-icon.gold{background:rgba(201,168,76,.1)}.stat-icon.red{background:rgba(231,76,60,.1)}
-.stat-trend{font-size:11px;font-weight:500;padding:2px 6px;border-radius:20px}
-.stat-trend.up{background:#f0fdf4;color:var(--success)}
+.stat-icon.blue{background:rgba(24,95,165,.1)}.stat-icon.green{background:rgba(39,174,96,.1)}.stat-icon.gold{background:rgba(201,168,76,.1)}.stat-icon.red{background:rgba(231,76,60,.1)}.stat-icon.purple{background:rgba(124,58,237,.1)}
+.stat-trend{font-size:11px;font-weight:500;padding:2px 6px;border-radius:20px;background:#f0fdf4;color:var(--success)}
 .stat-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--navy);line-height:1}
 .stat-label{font-size:12px;color:var(--gray);margin-top:3px}
+/* Table */
 .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem;flex-wrap:wrap;gap:8px}
 .section-title{font-size:14px;font-weight:500;color:var(--navy)}
 .card{background:var(--white);border-radius:12px;border:1px solid var(--gray-light);overflow:hidden}
@@ -56,15 +58,22 @@ body{font-family:'DM Sans',sans-serif;background:var(--surface);display:flex;min
 .btn-primary:hover{background:var(--navy-mid)}
 .btn-sm{padding:4px 9px;font-size:12px}
 .btn-danger{border-color:rgba(231,76,60,.3);color:var(--error);background:rgba(231,76,60,.05)}
+.btn-success{background:var(--success);color:var(--white);border-color:var(--success)}
 .badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:20px;font-size:11px;font-weight:500}
-.badge-pro{background:#eff6ff;color:#1d4ed8}.badge-premium{background:#fffbeb;color:#b45309}.badge-free{background:var(--surface);color:var(--gray)}.badge-active{background:#f0fdf4;color:var(--success)}.badge-blocked{background:#fef2f2;color:var(--error)}
+.badge-pro{background:#eff6ff;color:#1d4ed8}.badge-premium{background:#fffbeb;color:#b45309}.badge-business{background:rgba(124,58,237,.1);color:#7C3AED}.badge-free{background:var(--surface);color:var(--gray)}.badge-active{background:#f0fdf4;color:var(--success)}.badge-blocked{background:#fef2f2;color:var(--error)}
+.role-badge{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:600}
+.role-owner{background:rgba(201,168,76,.15);color:#b45309}
+.role-admin{background:rgba(24,95,165,.12);color:#185FA5}
+.role-manager{background:rgba(39,174,96,.12);color:var(--success)}
+.role-user{background:var(--surface);color:var(--gray)}
 table{width:100%;border-collapse:collapse;font-size:13px}
 thead th{text-align:left;padding:8px 1.1rem;font-size:11px;font-weight:500;color:var(--gray);background:var(--surface);letter-spacing:.03em;border-bottom:1px solid var(--gray-light)}
 tbody td{padding:11px 1.1rem;border-bottom:1px solid var(--gray-light);color:var(--navy);vertical-align:middle}
 tbody tr:last-child td{border-bottom:none}
 tbody tr:hover td{background:#fafbfd}
 .user-cell{display:flex;align-items:center;gap:9px}
-.user-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--blue-light),var(--accent));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--white);flex-shrink:0}
+.user-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--blue-light),var(--accent));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--white);flex-shrink:0;overflow:hidden}
+.user-av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
 .user-name{font-weight:500;font-size:13px}
 .user-email{font-size:11px;color:var(--gray)}
 .action-btns{display:flex;gap:5px}
@@ -73,9 +82,38 @@ tbody tr:hover td{background:#fafbfd}
 .form-input{width:100%;padding:8px 11px;border:1.5px solid var(--gray-light);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--navy);outline:none;background:var(--surface);transition:border-color .2s}
 .form-input:focus{border-color:var(--blue);background:var(--white)}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.plan-options{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:.9rem}
+.plan-opt{padding:10px 7px;border:1.5px solid var(--gray-light);border-radius:9px;text-align:center;cursor:pointer;transition:all .15s}
+.plan-opt.selected{border-color:var(--blue);background:rgba(24,95,165,.05)}
+.plan-opt-name{font-size:12px;font-weight:500;color:var(--navy)}
+.plan-opt-desc{font-size:10px;color:var(--gray);margin-top:2px}
+/* Team roles */
+.role-options{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:.9rem}
+.role-opt{padding:9px 5px;border:1.5px solid var(--gray-light);border-radius:9px;text-align:center;cursor:pointer;transition:all .15s}
+.role-opt.selected{border-color:var(--blue);background:rgba(24,95,165,.05)}
+.role-opt-name{font-size:12px;font-weight:500;color:var(--navy)}
+.role-opt-desc{font-size:9px;color:var(--gray);margin-top:2px}
+/* Domain */
+.domain-card{background:var(--white);border:1px solid var(--gray-light);border-radius:11px;padding:1rem 1.25rem;margin-bottom:9px;display:flex;align-items:center;gap:12px}
+.domain-status{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:500}
+.ds-active{color:var(--success)}.ds-pending{color:var(--warning)}.ds-error{color:var(--error)}
+.dns-guide{background:var(--surface);border-radius:9px;padding:.9rem;font-size:12px;color:var(--gray);line-height:1.8;margin-top:.75rem;border:1px solid var(--gray-light)}
+.dns-record{font-family:monospace;font-size:12px;color:var(--navy);background:rgba(24,95,165,.06);padding:3px 7px;border-radius:4px;display:inline-block;margin:2px 0}
+/* Bulk upload */
+.drop-zone{border:2px dashed var(--gray-light);border-radius:12px;padding:2rem;text-align:center;cursor:pointer;transition:all .2s}
+.drop-zone:hover,.drop-zone.dragover{border-color:var(--blue);background:rgba(24,95,165,.03)}
+.drop-zone-icon{font-size:36px;margin-bottom:.75rem}
+.bulk-preview{background:var(--surface);border-radius:11px;border:1px solid var(--gray-light);overflow:hidden;margin-top:1rem}
+.bulk-preview-head{padding:.75rem 1rem;background:var(--navy);display:flex;align-items:center;justify-content:space-between}
+.bulk-preview-title{font-size:12px;font-weight:500;color:#fff}
+.bulk-row{display:grid;grid-template-columns:1fr 1fr 100px 80px 100px;gap:9px;padding:7px 1rem;border-bottom:1px solid var(--gray-light);font-size:12px;align-items:center}
+.bulk-row.header{background:var(--surface);font-weight:500;font-size:11px;color:var(--gray)}
+.bulk-row-status{font-size:11px;padding:2px 7px;border-radius:20px;font-weight:500;text-align:center}
+.bs-add{background:#f0fdf4;color:var(--success)}.bs-update{background:#eff6ff;color:var(--blue)}.bs-delete{background:#fef2f2;color:var(--error)}
+/* Modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(10,22,40,.5);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
 .modal-overlay.open{opacity:1;pointer-events:all}
-.modal{background:var(--white);border-radius:16px;padding:1.75rem;width:calc(100% - 2rem);max-width:430px;transform:translateY(12px);transition:transform .2s;max-height:90vh;overflow-y:auto}
+.modal{background:var(--white);border-radius:16px;padding:1.75rem;width:calc(100% - 2rem);max-width:480px;transform:translateY(12px);transition:transform .2s;max-height:90vh;overflow-y:auto}
 .modal-overlay.open .modal{transform:translateY(0)}
 .modal-title{font-family:'DM Serif Display',serif;font-size:21px;color:var(--navy);margin-bottom:3px}
 .modal-sub{font-size:13px;color:var(--gray);margin-bottom:1.25rem}
@@ -85,33 +123,28 @@ tbody tr:hover td{background:#fafbfd}
 .error-box.show{display:block}
 .success-box{background:#f0fdf4;border:1px solid #bbf7d0;color:var(--success);font-size:12px;padding:8px 11px;border-radius:8px;margin-bottom:.9rem;display:none}
 .success-box.show{display:block}
-.plan-options{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:.9rem}
-.plan-opt{padding:10px 7px;border:1.5px solid var(--gray-light);border-radius:9px;text-align:center;cursor:pointer;transition:all .15s}
-.plan-opt.selected{border-color:var(--blue);background:rgba(24,95,165,.05)}
-.plan-opt-name{font-size:13px;font-weight:500;color:var(--navy)}
-.plan-opt-desc{font-size:10px;color:var(--gray);margin-top:2px}
-.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--navy);color:var(--white);padding:11px 16px;border-radius:10px;font-size:13px;z-index:999;transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none}
-.toast.show{transform:translateY(0);opacity:1}
-.toast.success{background:var(--success)}.toast.error{background:var(--error)}
 .mobile-card{display:none;background:var(--white);border:1px solid var(--gray-light);border-radius:11px;padding:1rem;margin-bottom:8px}
 .mobile-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .mobile-card-meta{font-size:12px;color:var(--gray);margin-top:4px;line-height:1.5}
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--navy);color:var(--white);padding:11px 16px;border-radius:10px;font-size:13px;z-index:999;transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none;max-width:280px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:var(--success)}.toast.error{background:var(--error)}
+@keyframes spin{to{transform:rotate(360deg)}}
 @media(max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:768px){
   .sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}
   .sidebar-overlay.open{display:block}.hamburger{display:flex}
   .main{margin-left:0}.topbar{padding-left:60px}
-  .stats-grid{grid-template-columns:repeat(2,1fr)}
-  .content{padding:1rem}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}.content{padding:1rem}
   table{display:none}.mobile-card{display:block}
-  .table-toolbar{flex-direction:column;align-items:stretch}
-  .search-input{min-width:100%}
+  .table-toolbar{flex-direction:column;align-items:stretch}.search-input{min-width:100%}
+  .plan-options{grid-template-columns:repeat(2,1fr)}.role-options{grid-template-columns:repeat(2,1fr)}
+  .bulk-row{grid-template-columns:1fr 1fr 80px}
 }
 @media(max-width:480px){.stats-grid{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
 <button class="hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></button>
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
@@ -126,9 +159,15 @@ tbody tr:hover td{background:#fafbfd}
     <div class="nav-section">İdarəetmə</div>
     <div class="nav-item" onclick="showPanel('users')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>İstifadəçilər</div>
     <div class="nav-item" onclick="showPanel('cards')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2"/></svg>Bütün kartlar</div>
+    <div class="nav-section">B2B</div>
+    <div class="nav-item" onclick="showPanel('team')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><circle cx="20" cy="7" r="3"/></svg>Team & Şirkət</div>
+    <div class="nav-item" onclick="showPanel('bulk')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Bulk Upload</div>
+    <div class="nav-section">Konfiqurasiya</div>
+    <div class="nav-item" onclick="showPanel('domains')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>Domain idarəsi</div>
+    <div class="nav-item" onclick="showPanel('plans')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Plan idarəsi</div>
   </nav>
   <div class="sidebar-footer">
-    <div class="admin-info"><div class="admin-av" id="adminInitials">A</div><div><div class="admin-name" id="adminName">Admin</div><div class="admin-role">Super Admin</div></div></div>
+    <div class="admin-info"><div class="admin-av" id="adminInitials">A</div><div><div class="admin-name" id="adminName">Admin</div><div class="admin-role">Master Admin</div></div></div>
     <button class="logout-btn" onclick="doLogout()">Çıxış</button>
   </div>
 </aside>
@@ -136,33 +175,56 @@ tbody tr:hover td{background:#fafbfd}
 <main class="main">
   <div class="topbar">
     <div class="topbar-title" id="topbarTitle">İcmal</div>
-    <div><span class="badge-admin">Admin Panel</span></div>
+    <div><span class="badge-admin">🔐 Master Admin</span></div>
   </div>
   <div class="content">
 
     <!-- OVERVIEW -->
     <div class="panel active" id="panel-overview">
       <div class="stats-grid">
-        <div class="stat-card"><div class="stat-top"><div class="stat-icon blue"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><span class="stat-trend up" id="trendUsers">—</span></div><div class="stat-num" id="statUsers">—</div><div class="stat-label">Ümumi istifadəçi</div></div>
-        <div class="stat-card"><div class="stat-top"><div class="stat-icon green"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2"/></svg></div><span class="stat-trend up" id="trendCards">—</span></div><div class="stat-num" id="statCards">—</div><div class="stat-label">Aktiv kartlar</div></div>
-        <div class="stat-card"><div class="stat-top"><div class="stat-icon gold"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><span class="stat-trend up" id="trendPro">—</span></div><div class="stat-num" id="statPro">—</div><div class="stat-label">Pro istifadəçilər</div></div>
-        <div class="stat-card"><div class="stat-top"><div class="stat-icon red"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div><span class="stat-trend up" id="trendBlocked">—</span></div><div class="stat-num" id="statBlocked">—</div><div class="stat-label">Bloklu hesablar</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon blue"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><span class="stat-trend" id="trendUsers">—</span></div><div class="stat-num" id="statUsers">—</div><div class="stat-label">Ümumi istifadəçi</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon green"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/></svg></div><span class="stat-trend" id="trendCards">—</span></div><div class="stat-num" id="statCards">—</div><div class="stat-label">Aktiv kartlar</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon gold"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><span class="stat-trend" id="trendPro">—</span></div><div class="stat-num" id="statPro">—</div><div class="stat-label">Ödənişli planlar</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon purple"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><circle cx="20" cy="7" r="3"/></svg></div><span class="stat-trend" id="trendBusiness">—</span></div><div class="stat-num" id="statBusiness">—</div><div class="stat-label">Business planlar</div></div>
       </div>
-      <div class="section-head"><div class="section-title">Son istifadəçilər</div><button class="btn btn-sm" onclick="showPanel('users')">Hamısına bax</button></div>
-      <div class="card"><table><thead><tr><th>İstifadəçi</th><th>Plan</th><th>Status</th><th>Skanlar</th><th>Qeydiyyat</th></tr></thead><tbody id="recentUsersBody"><tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray)">Yüklənir...</td></tr></tbody></table>
-      <div id="recentMobileCards"></div></div>
+      <!-- Charts -->
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:1rem;margin-bottom:1.25rem">
+        <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem">
+          <div style="font-size:13px;font-weight:500;margin-bottom:1rem">Plan bölgüsü</div>
+          <canvas id="planChart" height="120"></canvas>
+        </div>
+        <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;display:flex;flex-direction:column;align-items:center">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.75rem;align-self:flex-start">Status</div>
+          <canvas id="statusChart" width="140" height="140"></canvas>
+          <div style="display:flex;gap:1rem;margin-top:.75rem">
+            <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gray)"><span style="width:9px;height:9px;border-radius:50%;background:#27ae60;display:inline-block"></span>Aktiv</div>
+            <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gray)"><span style="width:9px;height:9px;border-radius:50%;background:#e74c3c;display:inline-block"></span>Bloklu</div>
+          </div>
+        </div>
+      </div>
+      <div class="section-head"><div class="section-title">Son qeydiyyatlar</div><button class="btn btn-sm" onclick="showPanel('users')">Hamısına bax</button></div>
+      <div class="card">
+        <table><thead><tr><th>İstifadəçi</th><th>Plan</th><th>Rol</th><th>Status</th><th>Qeydiyyat</th></tr></thead><tbody id="recentUsersBody"><tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray)">Yüklənir...</td></tr></tbody></table>
+        <div id="recentMobileCards"></div>
+      </div>
     </div>
 
     <!-- USERS -->
     <div class="panel" id="panel-users">
-      <div class="section-head"><div class="section-title">İstifadəçilər</div><button class="btn btn-primary" onclick="openCreateModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Yeni istifadəçi</button></div>
+      <div class="section-head">
+        <div class="section-title">İstifadəçilər</div>
+        <div style="display:flex;gap:7px">
+          <button class="btn btn-primary" onclick="openCreateModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Yeni istifadəçi</button>
+        </div>
+      </div>
       <div class="card">
         <div class="table-toolbar">
-          <input class="search-input" type="text" placeholder="Ad və ya email..." id="userSearch" oninput="filterUsers()">
-          <select class="filter-select" id="planFilter" onchange="filterUsers()"><option value="">Bütün planlar</option><option value="free">Free</option><option value="pro">Pro</option><option value="premium">Premium</option></select>
+          <input class="search-input" type="text" placeholder="Ad, email, link..." id="userSearch" oninput="filterUsers()">
+          <select class="filter-select" id="planFilter" onchange="filterUsers()"><option value="">Bütün planlar</option><option value="free">Free</option><option value="pro">Pro</option><option value="premium">Premium</option><option value="business">Business</option></select>
+          <select class="filter-select" id="roleFilter" onchange="filterUsers()"><option value="">Bütün rollar</option><option value="owner">Owner</option><option value="admin_user">Admin</option><option value="manager">Manager</option><option value="user">User</option></select>
           <select class="filter-select" id="statusFilter" onchange="filterUsers()"><option value="">Bütün statuslar</option><option value="active">Aktiv</option><option value="blocked">Bloklu</option></select>
         </div>
-        <table><thead><tr><th>İstifadəçi</th><th>Plan</th><th>Status</th><th>Link</th><th>Skanlar</th><th>Əməliyyat</th></tr></thead><tbody id="usersBody"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--gray)">Yüklənir...</td></tr></tbody></table>
+        <table><thead><tr><th>İstifadəçi</th><th>Plan</th><th>Rol</th><th>Status</th><th>Link</th><th>Əməliyyat</th></tr></thead><tbody id="usersBody"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--gray)">Yüklənir...</td></tr></tbody></table>
         <div id="usersMobileCards"></div>
       </div>
     </div>
@@ -171,8 +233,182 @@ tbody tr:hover td{background:#fafbfd}
     <div class="panel" id="panel-cards">
       <div class="section-head"><div class="section-title">Bütün kartlar</div></div>
       <div class="card">
-        <table><thead><tr><th>İstifadəçi</th><th>Vəzifə</th><th>Şirkət</th><th>Plan</th><th>Əməliyyat</th></tr></thead><tbody id="cardsBody"><tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray)">Yüklənir...</td></tr></tbody></table>
+        <table><thead><tr><th>İstifadəçi</th><th>Vəzifə</th><th>Şirkət</th><th>Plan</th><th>Baxış</th><th>Əməliyyat</th></tr></thead><tbody id="cardsBody"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--gray)">Yüklənir...</td></tr></tbody></table>
         <div id="cardsMobileCards"></div>
+      </div>
+    </div>
+
+    <!-- TEAM MANAGEMENT -->
+    <div class="panel" id="panel-team">
+      <div style="margin-bottom:1.25rem">
+        <div style="font-size:15px;font-weight:500;color:var(--navy);margin-bottom:4px">Team & Şirkət İdarəsi</div>
+        <div style="font-size:13px;color:var(--gray)">İstifadəçilərə rol təyin edin. Şirkət daxilindəki profil bölgüsünü idarə edin.</div>
+      </div>
+      <!-- Role Hierarchy -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem">
+        <div style="background:var(--white);border-radius:11px;border:2px solid #D97706;padding:1rem;text-align:center">
+          <div style="font-size:22px;margin-bottom:6px">👑</div>
+          <div style="font-size:13px;font-weight:600;color:#b45309">Owner</div>
+          <div style="font-size:11px;color:var(--gray);margin-top:4px;line-height:1.5">Bütün kartlar üzərində tam nəzarət. Billing idarəsi.</div>
+        </div>
+        <div style="background:var(--white);border-radius:11px;border:2px solid #185FA5;padding:1rem;text-align:center">
+          <div style="font-size:22px;margin-bottom:6px">🛡️</div>
+          <div style="font-size:13px;font-weight:600;color:#185FA5">Admin</div>
+          <div style="font-size:11px;color:var(--gray);margin-top:4px;line-height:1.5">İstifadəçi yaratma, plan dəyişmə, domain idarəsi.</div>
+        </div>
+        <div style="background:var(--white);border-radius:11px;border:2px solid #27ae60;padding:1rem;text-align:center">
+          <div style="font-size:22px;margin-bottom:6px">📋</div>
+          <div style="font-size:13px;font-weight:600;color:#27ae60">Manager</div>
+          <div style="font-size:11px;color:var(--gray);margin-top:4px;line-height:1.5">Öz qrupundakı istifadəçiləri idarə edir.</div>
+        </div>
+        <div style="background:var(--white);border-radius:11px;border:1px solid var(--gray-light);padding:1rem;text-align:center">
+          <div style="font-size:22px;margin-bottom:6px">👤</div>
+          <div style="font-size:13px;font-weight:600;color:var(--gray)">User</div>
+          <div style="font-size:11px;color:var(--gray);margin-top:4px;line-height:1.5">Yalnız öz profilini redaktə edə bilər.</div>
+        </div>
+      </div>
+      <!-- Team Members table -->
+      <div class="section-head"><div class="section-title">Komanda üzvləri</div><button class="btn btn-primary btn-sm" onclick="openAssignRoleModal()">+ Rol təyin et</button></div>
+      <div class="card">
+        <table><thead><tr><th>İstifadəçi</th><th>Plan</th><th>Rol</th><th>Şirkət</th><th>Əməliyyat</th></tr></thead>
+        <tbody id="teamBody"><tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray)">Yüklənir...</td></tr></tbody></table>
+        <div id="teamMobileCards"></div>
+      </div>
+    </div>
+
+    <!-- BULK UPLOAD -->
+    <div class="panel" id="panel-bulk">
+      <div style="max-width:760px">
+        <div style="margin-bottom:1.25rem">
+          <div style="font-size:15px;font-weight:500;color:var(--navy);margin-bottom:4px">Bulk İstifadəçi Upload</div>
+          <div style="font-size:13px;color:var(--gray)">Excel (.xlsx) faylı ilə toplu istifadəçi əlavə et, yenilə, sil.</div>
+        </div>
+        <!-- Template download -->
+        <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1rem">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.5rem">1. Şablonu yüklə</div>
+          <div style="font-size:12px;color:var(--gray);margin-bottom:.75rem">Excel şablonunu yükləyin, məlumatları doldurun: ad, soyad, email, şifrə, plan, rol, şirkət</div>
+          <button class="btn btn-sm" onclick="downloadBulkTemplate()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Şablonu yüklə (.xlsx)</button>
+        </div>
+        <!-- Drop zone -->
+        <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1rem">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.75rem">2. Faylı yüklə</div>
+          <div class="drop-zone" id="dropZone" onclick="document.getElementById('bulkFile').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="handleDrop(event)">
+            <div class="drop-zone-icon">📊</div>
+            <div style="font-size:13px;color:var(--navy);margin-bottom:5px">Excel faylını buraya sürükləyin</div>
+            <div style="font-size:12px;color:var(--gray)">və ya klik edərək seçin (.xlsx, .csv)</div>
+            <input type="file" id="bulkFile" accept=".xlsx,.csv" style="display:none" onchange="processBulkFile(event)">
+          </div>
+        </div>
+        <!-- Preview -->
+        <div id="bulkPreviewWrap" style="display:none">
+          <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem">
+            <div style="font-size:13px;font-weight:500;margin-bottom:.75rem">3. Nəticəni yoxla və tətbiq et</div>
+            <div style="display:flex;gap:9px;margin-bottom:.9rem">
+              <span id="bulkAddCount" style="font-size:12px;padding:3px 9px;border-radius:20px;background:#f0fdf4;color:var(--success)">0 əlavə</span>
+              <span id="bulkUpdateCount" style="font-size:12px;padding:3px 9px;border-radius:20px;background:#eff6ff;color:var(--blue)">0 yenilə</span>
+              <span id="bulkDeleteCount" style="font-size:12px;padding:3px 9px;border-radius:20px;background:#fef2f2;color:var(--error)">0 sil</span>
+            </div>
+            <div class="bulk-preview" id="bulkPreview"></div>
+            <div style="margin-top:.9rem;display:flex;gap:7px">
+              <button class="btn btn-primary" id="bulkApplyBtn" onclick="applyBulk()">Tətbiq et</button>
+              <button class="btn" onclick="clearBulk()">Sıfırla</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOMAINS -->
+    <div class="panel" id="panel-domains">
+      <div style="max-width:660px">
+        <div style="margin-bottom:1.25rem">
+          <div style="font-size:15px;font-weight:500;color:var(--navy);margin-bottom:4px">Domain İdarəsi (White-label)</div>
+          <div style="font-size:13px;color:var(--gray)">Subdomain və ya xüsusi domain əlavə edin. Print mərkəzləri üçün ideal.</div>
+        </div>
+        <!-- Domain types -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem">
+          <div style="background:var(--white);border-radius:11px;border:1px solid var(--gray-light);padding:1rem">
+            <div style="font-size:13px;font-weight:500;margin-bottom:4px">🌐 Subdomain <span style="font-size:10px;background:#f0fdf4;color:var(--success);padding:2px 7px;border-radius:10px;font-weight:600;margin-left:4px">STANDARD</span></div>
+            <div style="font-size:12px;color:var(--gray);margin-bottom:.75rem">brand.cardpro.az — avtomatik aktivdir</div>
+            <div style="font-family:monospace;font-size:12px;background:var(--surface);padding:6px 10px;border-radius:7px;color:var(--blue)">brand.cardpro.az/profil</div>
+          </div>
+          <div style="background:var(--white);border-radius:11px;border:1px solid var(--gray-light);padding:1rem">
+            <div style="font-size:13px;font-weight:500;margin-bottom:4px">🔗 Custom Domain <span style="font-size:10px;background:rgba(201,168,76,.15);color:#b45309;padding:2px 7px;border-radius:10px;font-weight:600;margin-left:4px">PRO/BUSINESS</span></div>
+            <div style="font-size:12px;color:var(--gray);margin-bottom:.75rem">brand.com — DNS ilə qoşulur</div>
+            <div style="font-family:monospace;font-size:12px;background:var(--surface);padding:6px 10px;border-radius:7px;color:var(--blue)">cards.brand.com/profil</div>
+          </div>
+        </div>
+        <!-- Add domain -->
+        <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1rem">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.75rem">Domain əlavə et</div>
+          <div style="display:flex;gap:8px;align-items:flex-end">
+            <div class="form-group" style="flex:1;margin-bottom:0"><label class="form-label">Domain</label><input class="form-input" id="newDomain" placeholder="cards.brand.com və ya brand.com"></div>
+            <button class="btn btn-primary" onclick="addDomain()" style="flex-shrink:0">Əlavə et</button>
+          </div>
+        </div>
+        <!-- Domain list -->
+        <div id="domainList">
+          <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem">
+            <div style="font-size:13px;font-weight:500;margin-bottom:.9rem">Əlavə edilmiş domainlər</div>
+            <div id="domainsInner"><div style="font-size:12px;color:var(--gray);text-align:center;padding:1rem">Hələ domain əlavə edilməyib</div></div>
+          </div>
+        </div>
+        <!-- DNS Guide -->
+        <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-top:1rem">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.75rem">📋 DNS Konfiqurasiya Rəhbəri</div>
+          <div style="font-size:12px;color:var(--gray);margin-bottom:.75rem">Domain qeydiyyatçınızda aşağıdakı DNS qeydlərini əlavə edin:</div>
+          <div class="dns-guide">
+            <div><strong>CNAME qeydi:</strong></div>
+            <div><span class="dns-record">Host: @ (və ya subdomain)</span></div>
+            <div><span class="dns-record">Value: proxy.cardpro.az</span></div>
+            <div style="margin-top:.5rem"><strong>TXT qeydi (doğrulama):</strong></div>
+            <div><span class="dns-record">Host: _cardpro</span></div>
+            <div><span class="dns-record">Value: verify=xxxxxxxx</span></div>
+            <div style="margin-top:.5rem;font-size:11px">⏱ DNS yayılması 24-48 saat çəkə bilər. Status avtomatik yenilənir.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLAN MANAGEMENT -->
+    <div class="panel" id="panel-plans">
+      <div style="max-width:760px">
+        <div style="margin-bottom:1.25rem">
+          <div style="font-size:15px;font-weight:500;color:var(--navy);margin-bottom:4px">Plan İdarəsi</div>
+          <div style="font-size:13px;color:var(--gray)">İstifadəçilərin planlarını toplu və ya fərdi dəyişin.</div>
+        </div>
+        <!-- Plan overview cards -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem">
+          <div style="background:var(--white);border-radius:12px;border:2px solid var(--gray-light);padding:1.1rem">
+            <div style="font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">🟢 FREE</div>
+            <div style="font-size:26px;font-family:'DM Serif Display',serif;color:var(--navy)" id="planFreeCount">—</div>
+            <div style="font-size:11px;color:var(--gray);margin-top:4px">istifadəçi</div>
+            <div style="margin-top:.75rem;font-size:11px;color:var(--gray);line-height:1.7">1 profil · 3 şablon · Əsas məlumat</div>
+          </div>
+          <div style="background:var(--white);border-radius:12px;border:2px solid #185FA5;padding:1.1rem">
+            <div style="font-size:11px;font-weight:600;color:#185FA5;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">🔵 PRO</div>
+            <div style="font-size:26px;font-family:'DM Serif Display',serif;color:var(--navy)" id="planProCount">—</div>
+            <div style="font-size:11px;color:var(--gray);margin-top:4px">istifadəçi</div>
+            <div style="margin-top:.75rem;font-size:11px;color:var(--gray);line-height:1.7">Multi-lang · CRM · Email imzası · Custom dizayn</div>
+          </div>
+          <div style="background:var(--white);border-radius:12px;border:2px solid #7C3AED;padding:1.1rem">
+            <div style="font-size:11px;font-weight:600;color:#7C3AED;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">🟣 BUSINESS</div>
+            <div style="font-size:26px;font-family:'DM Serif Display',serif;color:var(--navy)" id="planBusinessCount">—</div>
+            <div style="font-size:11px;color:var(--gray);margin-top:4px">istifadəçi</div>
+            <div style="margin-top:.75rem;font-size:11px;color:var(--gray);line-height:1.7">Team · Bulk upload · White-label · Custom domain</div>
+          </div>
+        </div>
+        <!-- Bulk plan change -->
+        <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.9rem">Toplu plan dəyişimi</div>
+          <div style="display:flex;gap:9px;align-items:flex-end;flex-wrap:wrap">
+            <div class="form-group" style="margin-bottom:0;flex:1;min-width:140px"><label class="form-label">Cari plan</label><select class="form-input" id="bulkFromPlan"><option value="free">Free</option><option value="pro">Pro</option><option value="premium">Premium</option><option value="business">Business</option></select></div>
+            <div style="font-size:18px;padding-bottom:9px">→</div>
+            <div class="form-group" style="margin-bottom:0;flex:1;min-width:140px"><label class="form-label">Yeni plan</label><select class="form-input" id="bulkToPlan"><option value="free">Free</option><option value="pro">Pro</option><option value="premium">Premium</option><option value="business">Business</option></select></div>
+            <button class="btn btn-primary" onclick="bulkChangePlan()" style="flex-shrink:0">Tətbiq et</button>
+          </div>
+          <div style="font-size:11px;color:var(--gray);margin-top:.75rem">⚠️ Bu əməliyyat seçilmiş plandakı bütün istifadəçiləri dəyişəcək.</div>
+        </div>
       </div>
     </div>
 
@@ -187,14 +423,23 @@ tbody tr:hover td{background:#fafbfd}
     <div class="error-box" id="createErr"></div>
     <div class="success-box" id="createOk"></div>
     <div class="form-row"><div class="form-group"><label class="form-label">Ad</label><input class="form-input" id="newName" placeholder="Aytən"></div><div class="form-group"><label class="form-label">Soyad</label><input class="form-input" id="newSurname" placeholder="Həsənova"></div></div>
-    <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" id="newEmail" placeholder="ayten@email.com"></div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" id="newEmail"></div>
     <div class="form-group"><label class="form-label">Şifrə</label><input class="form-input" type="password" id="newPass" placeholder="Min 6 simvol"></div>
-    <div class="form-group"><label class="form-label">Profil linki</label><div style="font-size:12px;color:var(--gray);padding:7px 11px;background:var(--surface);border:1.5px solid var(--gray-light);border-radius:9px">cardpro.az/<span id="newSlugPreview" style="color:var(--blue);font-weight:500">—</span> <span style="color:var(--gray)">(avtomatik)</span></div></div>
+    <div class="form-group"><label class="form-label">Şirkət</label><input class="form-input" id="newCompany" placeholder="Şirkət adı (optional)"></div>
     <div class="form-group"><label class="form-label">Plan</label>
       <div class="plan-options">
-        <div class="plan-opt selected" onclick="selectPlan(this,'free')"><div class="plan-opt-name">Free</div><div class="plan-opt-desc">5 skan/ay</div></div>
-        <div class="plan-opt" onclick="selectPlan(this,'pro')"><div class="plan-opt-name">Pro</div><div class="plan-opt-desc">Limitsiz</div></div>
-        <div class="plan-opt" onclick="selectPlan(this,'premium')"><div class="plan-opt-name">Premium</div><div class="plan-opt-desc">Priority</div></div>
+        <div class="plan-opt selected" onclick="selectPlan(this,'free')"><div class="plan-opt-name">🟢 Free</div><div class="plan-opt-desc">Əsas</div></div>
+        <div class="plan-opt" onclick="selectPlan(this,'pro')"><div class="plan-opt-name">🔵 Pro</div><div class="plan-opt-desc">CRM+</div></div>
+        <div class="plan-opt" onclick="selectPlan(this,'premium')"><div class="plan-opt-name">⭐ Premium</div><div class="plan-opt-desc">Priority</div></div>
+        <div class="plan-opt" onclick="selectPlan(this,'business')"><div class="plan-opt-name">🟣 Business</div><div class="plan-opt-desc">Team</div></div>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Rol</label>
+      <div class="role-options" id="createRoleOpts">
+        <div class="role-opt" onclick="selectRole(this,'owner','createRoleOpts')"><div class="role-opt-name">👑 Owner</div><div class="role-opt-desc">Tam nəzarət</div></div>
+        <div class="role-opt" onclick="selectRole(this,'admin_user','createRoleOpts')"><div class="role-opt-name">🛡️ Admin</div><div class="role-opt-desc">İdarəetmə</div></div>
+        <div class="role-opt" onclick="selectRole(this,'manager','createRoleOpts')"><div class="role-opt-name">📋 Manager</div><div class="role-opt-desc">Qrup</div></div>
+        <div class="role-opt selected" onclick="selectRole(this,'user','createRoleOpts')"><div class="role-opt-name">👤 User</div><div class="role-opt-desc">Normal</div></div>
       </div>
     </div>
     <div class="modal-footer"><button class="btn" onclick="closeModal('createModal')">Ləğv et</button><button class="btn btn-primary" id="createBtn" onclick="createUser()">Yarat</button></div>
@@ -209,30 +454,59 @@ tbody tr:hover td{background:#fafbfd}
     <div class="error-box" id="editErr"></div>
     <input type="hidden" id="editUid">
     <div class="form-group"><label class="form-label">Ad Soyad</label><input class="form-input" id="editName"></div>
+    <div class="form-group"><label class="form-label">Şirkət</label><input class="form-input" id="editCompany"></div>
     <div class="form-group"><label class="form-label">Kart linki</label><div style="display:flex;align-items:center;gap:6px"><span style="font-size:12px;color:var(--gray);white-space:nowrap">cardpro.az/</span><input class="form-input" id="editSlug"></div></div>
     <div class="form-group"><label class="form-label">Plan</label>
-      <div class="plan-options" id="editPlanOpts">
-        <div class="plan-opt" onclick="selectEditPlan(this,'free')"><div class="plan-opt-name">Free</div><div class="plan-opt-desc">5 skan/ay</div></div>
-        <div class="plan-opt" onclick="selectEditPlan(this,'pro')"><div class="plan-opt-name">Pro</div><div class="plan-opt-desc">Limitsiz</div></div>
-        <div class="plan-opt" onclick="selectEditPlan(this,'premium')"><div class="plan-opt-name">Premium</div><div class="plan-opt-desc">Priority</div></div>
+      <div class="plan-options">
+        <div class="plan-opt" onclick="selectEditPlan(this,'free')"><div class="plan-opt-name">🟢 Free</div></div>
+        <div class="plan-opt" onclick="selectEditPlan(this,'pro')"><div class="plan-opt-name">🔵 Pro</div></div>
+        <div class="plan-opt" onclick="selectEditPlan(this,'premium')"><div class="plan-opt-name">⭐ Premium</div></div>
+        <div class="plan-opt" onclick="selectEditPlan(this,'business')"><div class="plan-opt-name">🟣 Business</div></div>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Rol</label>
+      <div class="role-options" id="editRoleOpts">
+        <div class="role-opt" onclick="selectRole(this,'owner','editRoleOpts')"><div class="role-opt-name">👑 Owner</div></div>
+        <div class="role-opt" onclick="selectRole(this,'admin_user','editRoleOpts')"><div class="role-opt-name">🛡️ Admin</div></div>
+        <div class="role-opt" onclick="selectRole(this,'manager','editRoleOpts')"><div class="role-opt-name">📋 Manager</div></div>
+        <div class="role-opt" onclick="selectRole(this,'user','editRoleOpts')"><div class="role-opt-name">👤 User</div></div>
       </div>
     </div>
     <div class="form-group"><label class="form-label">Status</label><select class="form-input" id="editStatus"><option value="active">Aktiv</option><option value="blocked">Bloklu</option></select></div>
-    <div class="form-group"><label class="form-label">Skan sayını sıfırla</label><div style="display:flex;align-items:center;gap:8px;margin-top:4px"><span style="font-size:13px;color:var(--navy)" id="editScanCount">0 skan</span><button class="btn btn-sm" onclick="resetScanCount()">Sıfırla</button></div></div>
+    <div class="form-group"><label class="form-label">Default dil</label><select class="form-input" id="editDefaultLang"><option value="az">🇦🇿 Azərbaycan</option><option value="en">🇬🇧 English</option><option value="ru">🇷🇺 Русский</option><option value="tr">🇹🇷 Türkçe</option><option value="zh">🇨🇳 中文</option><option value="ar">🇸🇦 العربية</option><option value="de">🇩🇪 Deutsch</option><option value="es">🇪🇸 Español</option></select></div>
     <div class="modal-footer"><button class="btn btn-danger btn-sm" onclick="deleteUser()">Sil</button><button class="btn" onclick="closeModal('editModal')">Ləğv et</button><button class="btn btn-primary" onclick="saveUser()">Saxla</button></div>
+  </div>
+</div>
+
+<!-- ASSIGN ROLE MODAL -->
+<div class="modal-overlay" id="assignRoleModal">
+  <div class="modal">
+    <div class="modal-title">Rol Təyin Et</div>
+    <div class="modal-sub">İstifadəçini seçin və rol təyin edin</div>
+    <div class="form-group"><label class="form-label">İstifadəçi</label><select class="form-input" id="assignUserSelect"></select></div>
+    <div class="form-group"><label class="form-label">Rol</label>
+      <div class="role-options" id="assignRoleOpts">
+        <div class="role-opt" onclick="selectRole(this,'owner','assignRoleOpts')"><div class="role-opt-name">👑 Owner</div></div>
+        <div class="role-opt" onclick="selectRole(this,'admin_user','assignRoleOpts')"><div class="role-opt-name">🛡️ Admin</div></div>
+        <div class="role-opt" onclick="selectRole(this,'manager','assignRoleOpts')"><div class="role-opt-name">📋 Manager</div></div>
+        <div class="role-opt selected" onclick="selectRole(this,'user','assignRoleOpts')"><div class="role-opt-name">👤 User</div></div>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Şirkət (optional)</label><input class="form-input" id="assignCompany" placeholder="Şirkət adı"></div>
+    <div class="modal-footer"><button class="btn" onclick="closeModal('assignRoleModal')">Ləğv et</button><button class="btn btn-primary" onclick="saveAssignRole()">Təyin et</button></div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import{getAuth,onAuthStateChanged,signOut,createUserWithEmailAndPassword}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import{getDatabase,ref,get,set,update,remove,onValue}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
 const cfg={apiKey:"AIzaSyBx81QDpjHSPvhkmnnSUNkJYMvR_fnRTaU",authDomain:"mycontact-e626e.firebaseapp.com",databaseURL:"https://mycontact-e626e-default-rtdb.firebaseio.com",projectId:"mycontact-e626e",storageBucket:"mycontact-e626e.firebasestorage.app",messagingSenderId:"420594516827",appId:"1:420594516827:web:f30266800c690c6ff9107e"};
 const app=initializeApp(cfg);const auth=getAuth(app);const db=getDatabase(app);
-let allUsers=[],selectedPlan='free',selectedEditPlan='free';
+let allUsers=[],selectedPlan='free',selectedEditPlan='free',selectedRole='user',selectedEditRole='user',selectedAssignRole='user',bulkData=[];
 
 onAuthStateChanged(auth,async u=>{
   if(!u){location.href='index.html';return;}
@@ -249,54 +523,122 @@ function loadAll(){
   onValue(ref(db,'users'),s=>{
     const d=s.val()||{};
     allUsers=Object.entries(d).filter(([,u])=>u.role!=='admin').map(([uid,u])=>({uid,...u}));
-    renderStats();renderRecentUsers();renderUsers(allUsers);renderCards();
+    renderStats();renderCharts();renderRecentUsers();renderUsers(allUsers);renderCards();renderTeam();renderPlanCounts();renderDomains();
   });
 }
 
 function renderStats(){
-  const total=allUsers.length,active=allUsers.filter(u=>u.status!=='blocked').length,pro=allUsers.filter(u=>u.plan==='pro'||u.plan==='premium').length,blocked=allUsers.filter(u=>u.status==='blocked').length;
-  document.getElementById('statUsers').textContent=total;document.getElementById('statCards').textContent=active;document.getElementById('statPro').textContent=pro;document.getElementById('statBlocked').textContent=blocked;
-  document.getElementById('trendUsers').textContent=total+' cəmi';document.getElementById('trendCards').textContent=active+' aktiv';document.getElementById('trendPro').textContent=pro+' pro';document.getElementById('trendBlocked').textContent=blocked+' blok';
+  const total=allUsers.length;
+  const active=allUsers.filter(u=>u.status!=='blocked').length;
+  const paid=allUsers.filter(u=>u.plan==='pro'||u.plan==='premium'||u.plan==='business').length;
+  const biz=allUsers.filter(u=>u.plan==='business').length;
+  document.getElementById('statUsers').textContent=total;
+  document.getElementById('statCards').textContent=active;
+  document.getElementById('statPro').textContent=paid;
+  document.getElementById('statBusiness').textContent=biz;
+  document.getElementById('trendUsers').textContent=total+' cəmi';
+  document.getElementById('trendCards').textContent=active+' aktiv';
+  document.getElementById('trendPro').textContent=paid+' ödənişli';
+  document.getElementById('trendBusiness').textContent=biz+' business';
 }
 
-function planBadge(p){if(p==='pro')return'<span class="badge badge-pro">Pro</span>';if(p==='premium')return'<span class="badge badge-premium">Premium</span>';return'<span class="badge badge-free">Free</span>';}
+let _planChart=null,_statusChart=null;
+function renderCharts(){
+  const free=allUsers.filter(u=>u.plan==='free'||!u.plan).length;
+  const pro=allUsers.filter(u=>u.plan==='pro').length;
+  const prem=allUsers.filter(u=>u.plan==='premium').length;
+  const biz=allUsers.filter(u=>u.plan==='business').length;
+  const active=allUsers.filter(u=>u.status!=='blocked').length;
+  const blocked=allUsers.filter(u=>u.status==='blocked').length;
+  if(typeof Chart==='undefined')return;
+  const pc=document.getElementById('planChart');
+  if(_planChart)_planChart.destroy();
+  _planChart=new Chart(pc,{type:'bar',data:{labels:['Free','Pro','Premium','Business'],datasets:[{data:[free,pro,prem,biz],backgroundColor:['rgba(138,155,181,.5)','rgba(24,95,165,.8)','rgba(201,168,76,.8)','rgba(124,58,237,.8)'],borderRadius:6,borderSkipped:false}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}});
+  const sc=document.getElementById('statusChart');
+  if(_statusChart)_statusChart.destroy();
+  _statusChart=new Chart(sc,{type:'doughnut',data:{labels:['Aktiv','Bloklu'],datasets:[{data:[active||0,blocked||0],backgroundColor:['#27ae60','#e74c3c'],borderWidth:0}]},options:{responsive:false,cutout:'72%',plugins:{legend:{display:false}}}});
+}
+
+function planBadge(p){if(p==='business')return'<span class="badge badge-business">Business</span>';if(p==='pro')return'<span class="badge badge-pro">Pro</span>';if(p==='premium')return'<span class="badge badge-premium">Premium</span>';return'<span class="badge badge-free">Free</span>';}
 function statusBadge(s){return s==='blocked'?'<span class="badge badge-blocked">Bloklu</span>':'<span class="badge badge-active">Aktiv</span>';}
+function roleBadge(r){const m={owner:'role-owner',admin_user:'role-admin',manager:'role-manager',user:'role-user'};const l={owner:'👑 Owner',admin_user:'🛡️ Admin',manager:'📋 Manager',user:'👤 User'};return`<span class="role-badge ${m[r]||'role-user'}">${l[r]||'User'}</span>`;}
 
 function renderRecentUsers(){
-  const tbody=document.getElementById('recentUsersBody');
-  const mc=document.getElementById('recentMobileCards');
-  const recent=[...allUsers].slice(-5).reverse();
+  const recent=[...allUsers].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).slice(0,5);
+  const tbody=document.getElementById('recentUsersBody');const mc=document.getElementById('recentMobileCards');
   if(!recent.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray)">İstifadəçi yoxdur</td></tr>';mc.innerHTML='';return;}
-  tbody.innerHTML=recent.map(u=>`<tr><td><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div></td><td>${planBadge(u.plan)}</td><td>${statusBadge(u.status)}</td><td style="font-size:12px;color:var(--gray)">${u.scanCount||0}</td><td style="font-size:12px;color:var(--gray)">${u.createdAt?new Date(u.createdAt).toLocaleDateString('az'):'—'}</td></tr>`).join('');
-  mc.innerHTML=recent.map(u=>`<div class="mobile-card"><div class="mobile-card-top"><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div></div></div><div style="display:flex;gap:5px">${planBadge(u.plan)}${statusBadge(u.status)}</div></div><div class="mobile-card-meta">${u.email||''} · ${u.scanCount||0} skan</div></div>`).join('');
+  tbody.innerHTML=recent.map(u=>`<tr><td><div class="user-cell"><div class="user-av">${u.card?.photo?`<img src="${u.card.photo}">`:(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div></td><td>${planBadge(u.plan)}</td><td>${roleBadge(u.userRole||'user')}</td><td>${statusBadge(u.status)}</td><td style="font-size:12px;color:var(--gray)">${u.createdAt?new Date(u.createdAt).toLocaleDateString('az'):'—'}</td></tr>`).join('');
+  mc.innerHTML=recent.map(u=>`<div class="mobile-card"><div class="mobile-card-top"><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div></div></div><div style="display:flex;gap:5px">${planBadge(u.plan)}${roleBadge(u.userRole||'user')}</div></div><div class="mobile-card-meta">${u.email||''}</div></div>`).join('');
 }
 
 function renderUsers(users){
-  const tbody=document.getElementById('usersBody');
-  const mc=document.getElementById('usersMobileCards');
+  const tbody=document.getElementById('usersBody');const mc=document.getElementById('usersMobileCards');
   if(!users.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--gray)">Nəticə tapılmadı</td></tr>';mc.innerHTML='';return;}
-  tbody.innerHTML=users.map(u=>`<tr><td><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div></td><td>${planBadge(u.plan)}</td><td>${statusBadge(u.status)}</td><td style="font-size:12px;color:var(--blue-light)">${u.slug?'cardpro.az/'+u.slug:'—'}</td><td style="font-size:12px;color:var(--gray)">${u.scanCount||0}/5</td><td><div class="action-btns"><button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button><button class="btn btn-sm" onclick="toggleBlock('${u.uid}','${u.status}')">${u.status==='blocked'?'Aktiv et':'Blokla'}</button></div></td></tr>`).join('');
-  mc.innerHTML=users.map(u=>`<div class="mobile-card"><div class="mobile-card-top"><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div><div style="display:flex;gap:5px;flex-wrap:wrap">${planBadge(u.plan)}${statusBadge(u.status)}</div></div><div class="mobile-card-meta">${u.slug?'cardpro.az/'+u.slug:'Link yoxdur'} · ${u.scanCount||0} skan</div><div style="display:flex;gap:5px;margin-top:8px"><button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button><button class="btn btn-sm" onclick="toggleBlock('${u.uid}','${u.status}')">${u.status==='blocked'?'Aktiv et':'Blokla'}</button></div></div>`).join('');
+  tbody.innerHTML=users.map(u=>`<tr><td><div class="user-cell"><div class="user-av">${u.card?.photo?`<img src="${u.card.photo}">`:(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div></td><td>${planBadge(u.plan)}</td><td>${roleBadge(u.userRole||'user')}</td><td>${statusBadge(u.status)}</td><td style="font-size:12px;color:var(--blue-light)">${u.slug?'cardpro.az/'+u.slug:'—'}</td><td><div class="action-btns"><button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button><button class="btn btn-sm" onclick="toggleBlock('${u.uid}','${u.status||'active'}')">${u.status==='blocked'?'Aktiv et':'Blokla'}</button></div></td></tr>`).join('');
+  mc.innerHTML=users.map(u=>`<div class="mobile-card"><div class="mobile-card-top"><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div><div style="display:flex;gap:4px;flex-wrap:wrap">${planBadge(u.plan)}${roleBadge(u.userRole||'user')}</div></div><div class="mobile-card-meta">${u.slug?'cardpro.az/'+u.slug:'Link yoxdur'}</div><div style="display:flex;gap:5px;margin-top:8px"><button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button><button class="btn btn-sm" onclick="toggleBlock('${u.uid}','${u.status||'active'}')">${u.status==='blocked'?'Aktiv et':'Blokla'}</button></div></div>`).join('');
 }
 
 function renderCards(){
-  const tbody=document.getElementById('cardsBody');
-  const mc=document.getElementById('cardsMobileCards');
+  const tbody=document.getElementById('cardsBody');const mc=document.getElementById('cardsMobileCards');
   const wc=allUsers.filter(u=>u.card);
-  if(!wc.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray)">Hələ kart yoxdur</td></tr>';mc.innerHTML='';return;}
-  tbody.innerHTML=wc.map(u=>`<tr><td><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div></td><td style="font-size:13px">${u.card.position||'—'}</td><td style="font-size:13px">${u.card.company||'—'}</td><td>${planBadge(u.plan)}</td><td><button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button></td></tr>`).join('');
-  mc.innerHTML=wc.map(u=>`<div class="mobile-card"><div class="mobile-card-top"><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.card?.position||''} · ${u.card?.company||''}</div></div></div>${planBadge(u.plan)}</div><button class="btn btn-sm" style="margin-top:8px" onclick="openEditModal('${u.uid}')">Redaktə</button></div>`).join('');
+  if(!wc.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--gray)">Hələ kart yoxdur</td></tr>';mc.innerHTML='';return;}
+  tbody.innerHTML=wc.map(u=>`<tr><td><div class="user-cell"><div class="user-av">${u.card?.photo?`<img src="${u.card.photo}">`:(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div></td><td style="font-size:13px">${u.card.position||'—'}</td><td style="font-size:13px">${u.card.company||'—'}</td><td>${planBadge(u.plan)}</td><td style="font-size:12px;color:var(--gray)">${u.stats?.views||0}</td><td><button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button></td></tr>`).join('');
+  mc.innerHTML=wc.map(u=>`<div class="mobile-card"><div class="mobile-card-top"><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.card?.position||''} · ${u.card?.company||''}</div></div></div>${planBadge(u.plan)}</div><div class="mobile-card-meta">${u.stats?.views||0} baxış</div><button class="btn btn-sm" style="margin-top:8px" onclick="openEditModal('${u.uid}')">Redaktə</button></div>`).join('');
 }
 
+function renderTeam(){
+  const tbody=document.getElementById('teamBody');const mc=document.getElementById('teamMobileCards');
+  if(!allUsers.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray)">İstifadəçi yoxdur</td></tr>';return;}
+  tbody.innerHTML=allUsers.map(u=>`<tr><td><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div></td><td>${planBadge(u.plan)}</td><td>${roleBadge(u.userRole||'user')}</td><td style="font-size:12px;color:var(--gray)">${u.card?.company||u.company||'—'}</td><td><div class="action-btns"><button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button></div></td></tr>`).join('');
+  mc.innerHTML=allUsers.map(u=>`<div class="mobile-card"><div class="mobile-card-top"><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div></div></div>${roleBadge(u.userRole||'user')}</div><div class="mobile-card-meta">${u.card?.company||'—'} · ${planBadge(u.plan)}</div><button class="btn btn-sm" style="margin-top:8px" onclick="openEditModal('${u.uid}')">Redaktə</button></div>`).join('');
+  // Populate assign select
+  const sel=document.getElementById('assignUserSelect');
+  if(sel)sel.innerHTML=allUsers.map(u=>`<option value="${u.uid}">${u.name||u.email}</option>`).join('');
+}
+
+function renderPlanCounts(){
+  document.getElementById('planFreeCount').textContent=allUsers.filter(u=>!u.plan||u.plan==='free').length;
+  document.getElementById('planProCount').textContent=allUsers.filter(u=>u.plan==='pro'||u.plan==='premium').length;
+  document.getElementById('planBusinessCount').textContent=allUsers.filter(u=>u.plan==='business').length;
+}
+
+// Domains
+function renderDomains(){
+  get(ref(db,'domains')).then(s=>{
+    const d=s.val()||{};
+    const keys=Object.keys(d);
+    const inner=document.getElementById('domainsInner');
+    if(!keys.length){inner.innerHTML='<div style="font-size:12px;color:var(--gray);text-align:center;padding:1rem">Hələ domain əlavə edilməyib</div>';return;}
+    inner.innerHTML=keys.map(k=>{
+      const dom=d[k];
+      const statusHtml=dom.status==='active'?'<span class="domain-status ds-active">✓ Aktiv</span>':dom.status==='error'?'<span class="domain-status ds-error">✗ Xəta</span>':'<span class="domain-status ds-pending">⏳ Gözləyir</span>';
+      return`<div class="domain-card"><div style="flex:1"><div style="font-size:13px;font-weight:500;color:var(--navy)">${dom.domain}</div><div style="font-size:11px;color:var(--gray);margin-top:2px">Əlavə edildi: ${dom.addedAt?new Date(dom.addedAt).toLocaleDateString('az'):'—'}</div></div>${statusHtml}<button class="btn btn-sm btn-danger" onclick="removeDomain('${k}')">Sil</button></div>`;
+    }).join('');
+  });
+}
+window.addDomain=async function(){
+  const d=document.getElementById('newDomain').value.trim();
+  if(!d){showToast('Domain daxil edin','error');return;}
+  const key=d.replace(/\./g,'-');
+  await set(ref(db,`domains/${key}`),{domain:d,status:'pending',addedAt:Date.now()});
+  document.getElementById('newDomain').value='';
+  showToast('Domain əlavə edildi. DNS konfiqurası edin.','success');
+  renderDomains();
+};
+window.removeDomain=async function(k){if(!confirm('Silmək istəyirsiniz?'))return;await remove(ref(db,`domains/${k}`));renderDomains();showToast('Silindi');};
+
+// Filter
 window.filterUsers=function(){
   const q=document.getElementById('userSearch').value.toLowerCase();
   const pl=document.getElementById('planFilter').value;
+  const rl=document.getElementById('roleFilter').value;
   const st=document.getElementById('statusFilter').value;
   renderUsers(allUsers.filter(u=>{
-    const mq=!q||(u.name||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q);
+    const mq=!q||(u.name||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q)||(u.slug||'').includes(q);
     const mp=!pl||u.plan===pl;
+    const mr=!rl||(u.userRole||'user')===rl;
     const ms=!st||(st==='blocked'?u.status==='blocked':u.status!=='blocked');
-    return mq&&mp&&ms;
+    return mq&&mp&&mr&&ms;
   }));
 };
 
@@ -304,29 +646,38 @@ window.showPanel=function(n){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
   document.getElementById('panel-'+n).classList.add('active');
-  const t={overview:'İcmal',users:'İstifadəçilər',cards:'Bütün kartlar'};
+  const t={overview:'İcmal',users:'İstifadəçilər',cards:'Bütün kartlar',team:'Team & Şirkət',bulk:'Bulk Upload',domains:'Domain İdarəsi',plans:'Plan İdarəsi'};
   document.getElementById('topbarTitle').textContent=t[n]||n;
-  const m={overview:0,users:1,cards:2};
+  const m={overview:0,users:1,cards:2,team:3,bulk:4,domains:5,plans:6};
   const items=document.querySelectorAll('.nav-item');if(items[m[n]])items[m[n]].classList.add('active');
+  if(n==='domains')renderDomains();
   closeSidebar();
 };
 
-window.openCreateModal=function(){
-  ['createErr','createOk'].forEach(id=>{document.getElementById(id).className=id.includes('Err')?'error-box':'success-box';});
-  ['newName','newSurname','newEmail','newPass'].forEach(id=>document.getElementById(id).value='');
-  const rSlug=genRandomSlug();document.getElementById('newSlugPreview').textContent=rSlug;document.getElementById('newSlugPreview').dataset.slug=rSlug;
-  selectedPlan='free';document.querySelectorAll('#createModal .plan-opt').forEach(o=>o.classList.remove('selected'));document.querySelector('#createModal .plan-opt').classList.add('selected');
-  document.getElementById('createModal').classList.add('open');
-};
 window.selectPlan=function(el,p){selectedPlan=p;document.querySelectorAll('#createModal .plan-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');};
-window.selectEditPlan=function(el,p){selectedEditPlan=p;document.querySelectorAll('#editPlanOpts .plan-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');};
+window.selectEditPlan=function(el,p){selectedEditPlan=p;document.querySelectorAll('#editModal .plan-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');};
+window.selectRole=function(el,r,containerId){
+  const container=document.getElementById(containerId);
+  container.querySelectorAll('.role-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');
+  if(containerId==='createRoleOpts')selectedRole=r;
+  else if(containerId==='editRoleOpts')selectedEditRole=r;
+  else if(containerId==='assignRoleOpts')selectedAssignRole=r;
+};
 window.closeModal=function(id){document.getElementById(id).classList.remove('open');};
-
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
 function genRandomSlug(){const c='abcdefghijklmnopqrstuvwxyz0123456789';return Array.from({length:8},()=>c[Math.floor(Math.random()*c.length)]).join('');}
 
+window.openCreateModal=function(){
+  ['createErr','createOk'].forEach(id=>document.getElementById(id).className=id.includes('Err')?'error-box':'success-box');
+  ['newName','newSurname','newEmail','newPass','newCompany'].forEach(id=>document.getElementById(id).value='');
+  selectedPlan='free';document.querySelectorAll('#createModal .plan-opt').forEach(o=>o.classList.remove('selected'));document.querySelector('#createModal .plan-opt').classList.add('selected');
+  selectedRole='user';document.querySelectorAll('#createRoleOpts .role-opt').forEach(o=>o.classList.remove('selected'));document.querySelectorAll('#createRoleOpts .role-opt')[3].classList.add('selected');
+  document.getElementById('createModal').classList.add('open');
+};
+
 window.createUser=async function(){
-  const name=document.getElementById('newName').value.trim(),sur=document.getElementById('newSurname').value.trim(),email=document.getElementById('newEmail').value.trim(),pass=document.getElementById('newPass').value;
-  const slug=document.getElementById('newSlugPreview').dataset.slug||genRandomSlug();
+  const name=document.getElementById('newName').value.trim(),sur=document.getElementById('newSurname').value.trim(),email=document.getElementById('newEmail').value.trim(),pass=document.getElementById('newPass').value,company=document.getElementById('newCompany').value.trim();
+  const slug=genRandomSlug();
   const err=document.getElementById('createErr'),ok=document.getElementById('createOk');
   err.className='error-box';ok.className='success-box';
   if(!name||!email||!pass){err.textContent='Ad, email və şifrəni doldurun.';err.className='error-box show';return;}
@@ -335,9 +686,9 @@ window.createUser=async function(){
   try{
     const cred=await createUserWithEmailAndPassword(auth,email,pass);
     await set(ref(db,`users/${cred.user.uid}`),{
-      name:name+(sur?' '+sur:''),email,slug,plan:selectedPlan,status:'active',role:'user',
-      createdAt:Date.now(),scanCount:0,
-      card:{name,surname:sur||'',phone:'',email,web:'',position:'',company:'',bio:'',address:'',photo:'',cover:''}
+      name:name+(sur?' '+sur:''),email,slug,plan:selectedPlan,status:'active',role:'user',userRole:selectedRole,
+      company,createdAt:Date.now(),scanCount:0,defaultLang:'az',
+      card:{name,surname:sur||'',phone:'',email,web:'',position:'',company,bio:'',address:'',photo:'',cover:''}
     });
     ok.textContent='Yaradıldı! Link: cardpro.az/'+slug;ok.className='success-box show';
     showToast('İstifadəçi yaradıldı','success');setTimeout(()=>closeModal('createModal'),2000);
@@ -350,30 +701,33 @@ window.openEditModal=function(uid){
   document.getElementById('editUid').value=uid;
   document.getElementById('editModalSub').textContent=u.email||'';
   document.getElementById('editName').value=u.name||'';
+  document.getElementById('editCompany').value=u.card?.company||u.company||'';
   document.getElementById('editSlug').value=u.slug||'';
   document.getElementById('editStatus').value=u.status==='blocked'?'blocked':'active';
-  document.getElementById('editScanCount').textContent=(u.scanCount||0)+' skan istifadə edilib';
+  document.getElementById('editDefaultLang').value=u.defaultLang||'az';
   selectedEditPlan=u.plan||'free';
-  document.querySelectorAll('#editPlanOpts .plan-opt').forEach(o=>o.classList.remove('selected'));
-  const pi=['free','pro','premium'].indexOf(selectedEditPlan);
-  if(pi>=0)document.querySelectorAll('#editPlanOpts .plan-opt')[pi].classList.add('selected');
+  const pi=['free','pro','premium','business'].indexOf(selectedEditPlan);
+  document.querySelectorAll('#editModal .plan-opt').forEach(o=>o.classList.remove('selected'));
+  if(pi>=0)document.querySelectorAll('#editModal .plan-opt')[pi].classList.add('selected');
+  selectedEditRole=u.userRole||'user';
+  const ri=['owner','admin_user','manager','user'].indexOf(selectedEditRole);
+  document.querySelectorAll('#editRoleOpts .role-opt').forEach(o=>o.classList.remove('selected'));
+  if(ri>=0)document.querySelectorAll('#editRoleOpts .role-opt')[ri].classList.add('selected');
   document.getElementById('editErr').className='error-box';
   document.getElementById('editModal').classList.add('open');
 };
 
 window.saveUser=async function(){
-  const uid=document.getElementById('editUid').value,name=document.getElementById('editName').value.trim(),slug=document.getElementById('editSlug').value.trim(),status=document.getElementById('editStatus').value;
+  const uid=document.getElementById('editUid').value;
+  const name=document.getElementById('editName').value.trim();
+  const slug=document.getElementById('editSlug').value.trim();
+  const company=document.getElementById('editCompany').value.trim();
+  const status=document.getElementById('editStatus').value;
+  const defaultLang=document.getElementById('editDefaultLang').value;
   if(!name||!slug){document.getElementById('editErr').textContent='Ad və link boş ola bilməz.';document.getElementById('editErr').className='error-box show';return;}
   const parts=name.trim().split(' ');
-  await update(ref(db,`users/${uid}`),{name,slug,plan:selectedEditPlan,status,'card/name':parts[0]||'','card/surname':parts.slice(1).join(' ')||''});
+  await update(ref(db,`users/${uid}`),{name,slug,plan:selectedEditPlan,status,userRole:selectedEditRole,company,defaultLang,'card/name':parts[0]||'','card/surname':parts.slice(1).join(' ')||'','card/company':company});
   showToast('Dəyişikliklər saxlanıldı','success');closeModal('editModal');
-};
-
-window.resetScanCount=async function(){
-  const uid=document.getElementById('editUid').value;
-  await update(ref(db,`users/${uid}`),{scanCount:0});
-  document.getElementById('editScanCount').textContent='0 skan istifadə edilib';
-  showToast('Skan sayı sıfırlandı','success');
 };
 
 window.deleteUser=async function(){
@@ -388,9 +742,110 @@ window.toggleBlock=async function(uid,cur){
   showToast(ns==='blocked'?'Bloklandı':'Aktivləşdirildi','success');
 };
 
+// ASSIGN ROLE
+window.openAssignRoleModal=function(){
+  const sel=document.getElementById('assignUserSelect');
+  sel.innerHTML=allUsers.map(u=>`<option value="${u.uid}">${u.name||u.email} (${u.userRole||'user'})</option>`).join('');
+  selectedAssignRole='user';
+  document.querySelectorAll('#assignRoleOpts .role-opt').forEach(o=>o.classList.remove('selected'));
+  document.querySelectorAll('#assignRoleOpts .role-opt')[3].classList.add('selected');
+  document.getElementById('assignCompany').value='';
+  document.getElementById('assignRoleModal').classList.add('open');
+};
+window.saveAssignRole=async function(){
+  const uid=document.getElementById('assignUserSelect').value;const company=document.getElementById('assignCompany').value.trim();
+  if(!uid)return;
+  const updates={userRole:selectedAssignRole};if(company)updates.company=company;
+  await update(ref(db,`users/${uid}`),updates);
+  showToast('Rol təyin edildi','success');closeModal('assignRoleModal');
+};
+
+// BULK UPLOAD
+window.handleDrop=function(e){e.preventDefault();document.getElementById('dropZone').classList.remove('dragover');const f=e.dataTransfer.files[0];if(f)processBulkFileObj(f);};
+window.processBulkFile=function(e){const f=e.target.files[0];if(f)processBulkFileObj(f);};
+function processBulkFileObj(file){
+  if(typeof XLSX==='undefined'){showToast('XLSX kitabxanası yüklənmir','error');return;}
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const wb=XLSX.read(ev.target.result,{type:'array'});
+    const ws=wb.Sheets[wb.SheetNames[0]];
+    const rows=XLSX.utils.sheet_to_json(ws);
+    bulkData=rows.map(r=>({
+      name:String(r.name||r.Name||r.ad||'').trim(),
+      surname:String(r.surname||r.Surname||r.soyad||'').trim(),
+      email:String(r.email||r.Email||'').trim().toLowerCase(),
+      plan:String(r.plan||r.Plan||'free').trim().toLowerCase(),
+      role:String(r.role||r.Role||r.rol||'user').trim().toLowerCase(),
+      company:String(r.company||r.Company||r.sirket||'').trim(),
+      action:String(r.action||r.Action||r.emeliyyat||'add').trim().toLowerCase()
+    })).filter(r=>r.email);
+    renderBulkPreview();
+  };
+  reader.readAsArrayBuffer(file);
+}
+function renderBulkPreview(){
+  const adds=bulkData.filter(r=>r.action!=='delete'&&r.action!=='update').length;
+  const updates=bulkData.filter(r=>r.action==='update').length;
+  const deletes=bulkData.filter(r=>r.action==='delete').length;
+  document.getElementById('bulkAddCount').textContent=adds+' əlavə';
+  document.getElementById('bulkUpdateCount').textContent=updates+' yenilə';
+  document.getElementById('bulkDeleteCount').textContent=deletes+' sil';
+  const head='<div class="bulk-row header"><div>Ad</div><div>Email</div><div>Plan</div><div>Rol</div><div>Status</div></div>';
+  const rows=bulkData.slice(0,20).map(r=>{
+    const sc=r.action==='delete'?'bs-delete':r.action==='update'?'bs-update':'bs-add';
+    const sl=r.action==='delete'?'SİL':r.action==='update'?'YENİLƏ':'ƏLAVƏ';
+    return`<div class="bulk-row"><div>${r.name} ${r.surname}</div><div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.email}</div><div>${r.plan}</div><div>${r.role}</div><div><span class="bulk-row-status ${sc}">${sl}</span></div></div>`;
+  }).join('');
+  document.getElementById('bulkPreview').innerHTML=head+rows+(bulkData.length>20?`<div style="text-align:center;padding:.75rem;font-size:12px;color:var(--gray)">+${bulkData.length-20} daha çox sətir</div>`:'');
+  document.getElementById('bulkPreviewWrap').style.display='block';
+}
+window.applyBulk=async function(){
+  const btn=document.getElementById('bulkApplyBtn');btn.disabled=true;btn.textContent='Tətbiq edilir...';
+  let done=0;
+  for(const r of bulkData){
+    try{
+      const existing=allUsers.find(u=>(u.email||'').toLowerCase()===r.email);
+      if(r.action==='delete'){if(existing)await remove(ref(db,`users/${existing.uid}`));}
+      else if(r.action==='update'){if(existing)await update(ref(db,`users/${existing.uid}`),{name:(r.name+' '+r.surname).trim(),plan:r.plan,userRole:r.role,company:r.company});}
+      else{
+        if(!existing){
+          const tempUid='bulk_'+Date.now()+'_'+Math.random().toString(36).slice(2,7);
+          await set(ref(db,`users/${tempUid}`),{name:(r.name+' '+r.surname).trim(),email:r.email,plan:r.plan,userRole:r.role,company:r.company,status:'active',role:'user',slug:genRandomSlug(),createdAt:Date.now(),scanCount:0,defaultLang:'az',card:{name:r.name,surname:r.surname,company:r.company,email:r.email}});
+        }
+      }
+      done++;
+    }catch(e){}
+  }
+  showToast(`${done}/${bulkData.length} əməliyyat tamamlandı`,'success');
+  btn.disabled=false;btn.textContent='Tətbiq et';clearBulk();
+};
+window.clearBulk=function(){bulkData=[];document.getElementById('bulkPreviewWrap').style.display='none';document.getElementById('bulkFile').value='';};
+window.downloadBulkTemplate=function(){
+  if(typeof XLSX==='undefined'){showToast('XLSX yüklənmir','error');return;}
+  const ws=XLSX.utils.aoa_to_sheet([
+    ['name','surname','email','plan','role','company','action'],
+    ['Aytən','Həsənova','ayten@email.com','pro','user','ABC Şirkəti','add'],
+    ['Rauf','Əliyev','rauf@email.com','free','manager','XYZ Corp','add'],
+    ['Leyla','Məmmədova','leyla@email.com','business','owner','Big Corp','add'],
+  ]);
+  const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Users');
+  XLSX.writeFile(wb,'cardpro_bulk_template.xlsx');
+};
+
+// BULK PLAN CHANGE
+window.bulkChangePlan=async function(){
+  const from=document.getElementById('bulkFromPlan').value;const to=document.getElementById('bulkToPlan').value;
+  if(from===to){showToast('Eyni planı seçdiniz','error');return;}
+  const targets=allUsers.filter(u=>(u.plan||'free')===from);
+  if(!targets.length){showToast('Bu planda istifadəçi yoxdur','error');return;}
+  if(!confirm(`${targets.length} istifadəçinin planı ${from} → ${to} edilsin?`))return;
+  for(const u of targets)await update(ref(db,`users/${u.uid}`),{plan:to});
+  showToast(`${targets.length} istifadəçi ${to} plana keçirildi`,'success');
+};
+
 window.doLogout=async function(){await signOut(auth);location.href='index.html';};
-document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
 function showToast(m,t=''){const el=document.getElementById('toast');el.textContent=m;el.className='toast show '+t;setTimeout(()=>el.className='toast',3000);}
+window.showToast=showToast;
 </script>
 <script>
 function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open');}
