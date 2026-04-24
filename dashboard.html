@@ -5,14 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CardPro — Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--navy:#0a1628;--navy-mid:#112040;--blue:#185FA5;--blue-light:#378ADD;--accent:#4FACFE;--white:#fff;--gray:#8A9BB5;--gray-light:#E8EDF5;--surface:#f4f6fb;--error:#e74c3c;--success:#27ae60;--warning:#f39c12;--sidebar:240px}
 body{font-family:'DM Sans',sans-serif;background:var(--surface);display:flex;min-height:100vh;color:var(--navy)}
-
-/* SIDEBAR */
 .sidebar{width:var(--sidebar);background:var(--navy);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;transition:transform .3s}
 .sidebar-brand{padding:1.25rem 1rem;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:10px}
 .brand-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--blue),var(--accent));border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -32,13 +28,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--surface);display:flex;min
 .user-name-sm{font-size:13px;color:var(--white);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
 .user-plan{font-size:11px;color:rgba(255,255,255,.4)}
 .logout-btn{width:100%;padding:7px;background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.2);color:#e74c3c;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif}
-
-/* MOBILE HAMBURGER */
 .hamburger{display:none;position:fixed;top:12px;left:12px;z-index:200;width:40px;height:40px;background:var(--navy);border:none;border-radius:9px;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px}
 .hamburger span{width:18px;height:2px;background:#fff;border-radius:2px;display:block}
 .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
-
-/* MAIN */
 .main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100vh}
 .topbar{background:var(--white);border-bottom:1px solid var(--gray-light);padding:0 1.5rem;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
 .topbar-title{font-size:14px;font-weight:500;color:var(--navy)}
@@ -48,8 +40,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--surface);display:flex;min
 .btn-view{padding:6px 12px;background:var(--navy);color:var(--white);border:none;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap}
 .content{padding:1.5rem;flex:1}
 .panel{display:none}.panel.active{display:block}
-
-/* FORMS */
 .form-group{margin-bottom:11px}
 .form-label{display:block;font-size:12px;font-weight:500;color:var(--navy);margin-bottom:4px}
 .form-input{width:100%;padding:8px 11px;border:1.5px solid var(--gray-light);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--navy);outline:none;background:var(--surface);transition:border-color .2s}
@@ -66,25 +56,23 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 .save-bar{display:flex;gap:8px;justify-content:flex-end;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--gray-light)}
 .card-box{background:var(--white);border-radius:13px;border:1px solid var(--gray-light);overflow:hidden}
 .widget{background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.1rem}
-.widget-title{font-size:13px;font-weight:500;color:var(--navy);margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
-
-/* OVERVIEW */
-.dash-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:1.25rem}
+.widget-title{font-size:13px;font-weight:500;color:var(--navy);margin-bottom:10px}
+/* Overview */
+.dash-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.25rem}
 .dash-stat{background:var(--white);border-radius:11px;border:1px solid var(--gray-light);padding:1rem}
+.ds-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
 .ds-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--navy)}
 .ds-label{font-size:12px;color:var(--gray);margin-top:3px}
 .profile-link-box{background:var(--white);border:1px solid var(--gray-light);border-radius:12px;padding:1rem 1.25rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;gap:10px;flex-wrap:wrap}
 .plink-label{font-size:11px;color:var(--gray);margin-bottom:3px}
 .plink-url{font-size:13px;color:var(--blue);font-weight:500;word-break:break-all}
-
-/* SLUG EDIT */
-.slug-row{display:flex;align-items:center;gap:8px;margin-bottom:1rem}
+/* Slug */
+.slug-row{display:flex;align-items:center;gap:8px;margin-bottom:.75rem}
 .slug-prefix{font-size:13px;color:var(--gray);white-space:nowrap}
 .slug-input{flex:1;padding:8px 11px;border:1.5px solid var(--blue);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--navy);outline:none}
 .pro-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(201,168,76,.15);color:#b45309;font-size:11px;padding:3px 8px;border-radius:10px;font-weight:500}
 .lock-msg{font-size:12px;color:var(--gray);display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--surface);border-radius:8px;border:1px solid var(--gray-light)}
-
-/* EDITOR */
+/* Editor */
 .editor-grid{display:grid;grid-template-columns:1fr 340px;gap:1.25rem;align-items:start}
 .cover-area{height:120px;background:linear-gradient(135deg,#185FA5,#378ADD);position:relative;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden}
 .cover-area img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -100,8 +88,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 .mini-stat{background:var(--surface);border-radius:9px;padding:9px}
 .mini-stat-num{font-size:19px;font-weight:600;color:var(--navy)}
 .mini-stat-label{font-size:11px;color:var(--gray);margin-top:2px}
-
-/* SOCIAL */
+/* Social */
 .social-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
 .soc-item{border:1.5px solid var(--gray-light);border-radius:9px;padding:9px 5px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;transition:all .15s}
 .soc-item.on{border-color:var(--blue);background:rgba(24,95,165,.05)}
@@ -112,55 +99,15 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 .soc-inputs{margin-top:.75rem;display:flex;flex-direction:column;gap:7px}
 .soc-input-row{display:flex;align-items:center;gap:8px}
 .soc-input-label{width:65px;font-size:11px;color:var(--gray);flex-shrink:0}
-
-/* PDF/VIDEO */
+/* PDF */
 .pdf-row{display:flex;align-items:center;gap:9px;padding:9px 11px;border:1px solid var(--gray-light);border-radius:9px;margin-bottom:7px}
 .pdf-icon{width:34px;height:34px;border-radius:7px;background:#fef2f2;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--error);flex-shrink:0}
-.pdf-meta{flex:1}
-.pdf-name{font-size:13px;color:var(--navy);font-weight:500}
-.pdf-size-t{font-size:11px;color:var(--gray)}
+.pdf-meta{flex:1}.pdf-name{font-size:13px;color:var(--navy);font-weight:500}.pdf-size-t{font-size:11px;color:var(--gray)}
 .video-preview{background:var(--surface);border-radius:9px;height:140px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;border:1px solid var(--gray-light);position:relative;overflow:hidden;margin-top:7px}
 .video-preview iframe{position:absolute;inset:0;width:100%;height:100%;border:none}
 .play-btn2{width:38px;height:38px;border-radius:50%;background:#FF0000;display:flex;align-items:center;justify-content:center}
 .play-tri{width:0;height:0;border-top:6px solid transparent;border-bottom:6px solid transparent;border-left:11px solid #fff;margin-left:3px}
-
-/* CARD SCANNER */
-.scanner-wrap{max-width:560px}
-.scanner-card{background:var(--white);border-radius:14px;border:1px solid var(--gray-light);overflow:hidden;margin-bottom:1rem}
-.scanner-top{padding:1rem 1.25rem;border-bottom:1px solid var(--gray-light);display:flex;align-items:center;justify-content:space-between}
-.scanner-title{font-size:14px;font-weight:500;color:var(--navy)}
-.scanner-sub{font-size:12px;color:var(--gray);margin-top:2px}
-.scanner-body{padding:1rem 1.25rem}
-.camera-box{width:100%;aspect-ratio:16/9;background:var(--navy);border-radius:11px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:.9rem}
-#scannerVideo{width:100%;height:100%;object-fit:cover;display:none}
-#capturedPreview{width:100%;height:100%;object-fit:cover;display:none;position:absolute;inset:0}
-.camera-placeholder{display:flex;flex-direction:column;align-items:center;gap:11px;color:rgba(255,255,255,.5);text-align:center;padding:1rem}
-.cam-icon-wrap{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center}
-.card-guide{position:absolute;inset:14px;border:2px dashed rgba(79,172,254,.6);border-radius:8px;pointer-events:none}
-.scan-corner{position:absolute;width:22px;height:22px;border-color:var(--accent);border-style:solid;border-width:0}
-.sc-tl{top:14px;left:14px;border-top-width:3px;border-left-width:3px;border-radius:3px 0 0 0}
-.sc-tr{top:14px;right:14px;border-top-width:3px;border-right-width:3px;border-radius:0 3px 0 0}
-.sc-bl{bottom:14px;left:14px;border-bottom-width:3px;border-left-width:3px;border-radius:0 0 0 3px}
-.sc-br{bottom:14px;right:14px;border-bottom-width:3px;border-right-width:3px;border-radius:0 0 3px 0}
-.ocr-processing{position:absolute;inset:0;background:rgba(10,22,40,.75);display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;border-radius:11px}
-.ocr-spinner{width:36px;height:36px;border:3px solid rgba(255,255,255,.2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.ocr-result{background:var(--surface);border-radius:11px;padding:1rem;border:1px solid var(--gray-light);display:none;margin-bottom:.9rem}
-.ocr-field{display:flex;gap:9px;padding:6px 0;border-bottom:1px solid var(--gray-light)}
-.ocr-field:last-child{border-bottom:none}
-.ocr-label{font-size:11px;color:var(--gray);width:60px;flex-shrink:0;padding-top:2px}
-.ocr-val{font-size:13px;color:var(--navy);flex:1;font-weight:500}
-.ocr-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:4px 9px;border-radius:20px;font-weight:500;background:rgba(39,174,96,.1);color:var(--success);margin-bottom:.75rem}
-
-/* SCAN LIMIT */
-.scan-limit-bar{background:var(--surface);border-radius:9px;padding:.75rem 1rem;margin-bottom:.9rem;border:1px solid var(--gray-light)}
-.scan-limit-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;font-size:12px}
-.scan-limit-count{font-weight:500;color:var(--navy)}
-.scan-limit-track{height:5px;background:var(--gray-light);border-radius:3px;overflow:hidden}
-.scan-limit-fill{height:100%;background:var(--blue);border-radius:3px;transition:width .3s}
-.scan-limit-fill.danger{background:var(--error)}
-
-/* CONTACTS */
+/* Contacts */
 .contacts-toolbar{display:flex;gap:9px;margin-bottom:1rem;flex-wrap:wrap}
 .search-input{flex:1;min-width:160px;padding:7px 11px;border:1.5px solid var(--gray-light);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--navy);outline:none;background:var(--surface)}
 .contacts-grid{display:flex;flex-direction:column;gap:7px}
@@ -171,10 +118,8 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 .contact-meta{font-size:11px;color:var(--gray);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .contact-actions{display:flex;gap:5px;flex-shrink:0}
 .contact-source{font-size:10px;padding:2px 6px;border-radius:10px;font-weight:500}
-.src-scan{background:rgba(79,172,254,.1);color:var(--blue)}
 .src-manual{background:rgba(39,174,96,.1);color:var(--success)}
 .empty-state{text-align:center;padding:2.5rem;color:var(--gray)}
-
 /* CRM */
 .crm-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
 .crm-card{background:var(--white);border:1.5px solid var(--gray-light);border-radius:13px;padding:1.1rem;position:relative;transition:border-color .2s}
@@ -190,8 +135,15 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 .pro-lock-text{font-size:11px;color:var(--navy);font-weight:500;text-align:center}
 .pro-lock-btn{padding:5px 12px;background:var(--warning);color:var(--white);border:none;border-radius:7px;font-size:11px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif}
 .crm-sync-row{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-top:1px solid var(--gray-light);margin-top:7px;font-size:11px;color:var(--gray)}
-
-/* MODAL */
+/* Language selector in settings */
+.lang-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:.75rem}
+.lang-card{border:1.5px solid var(--gray-light);border-radius:9px;padding:9px 5px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;transition:all .15s;text-align:center}
+.lang-card:hover{border-color:var(--blue)}
+.lang-card.selected{border-color:var(--blue);background:rgba(24,95,165,.05)}
+.lang-flag{font-size:20px;line-height:1}
+.lang-name{font-size:10px;color:var(--gray)}
+.lang-card.selected .lang-name{color:var(--blue)}
+/* Modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(10,22,40,.55);z-index:300;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
 .modal-overlay.open{opacity:1;pointer-events:all}
 .modal{background:var(--white);border-radius:16px;padding:1.75rem;width:calc(100% - 2rem);max-width:420px;transform:translateY(12px);transition:transform .2s;max-height:90vh;overflow-y:auto}
@@ -200,8 +152,6 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 .modal-sub{font-size:13px;color:var(--gray);margin-bottom:1.25rem}
 .modal-footer{display:flex;gap:9px;margin-top:1.25rem}
 .modal-footer .btn{flex:1;justify-content:center}
-
-/* PRO UPGRADE MODAL */
 .upgrade-modal{text-align:center}
 .upgrade-icon{font-size:48px;margin-bottom:1rem}
 .upgrade-title{font-family:'DM Serif Display',serif;font-size:22px;color:var(--navy);margin-bottom:6px}
@@ -209,41 +159,19 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 .upgrade-features{display:flex;flex-direction:column;gap:7px;margin-bottom:1.25rem;text-align:left}
 .upgrade-feat{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--navy)}
 .upgrade-feat-icon{width:20px;height:20px;border-radius:50%;background:rgba(39,174,96,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-
 .toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--navy);color:var(--white);padding:11px 16px;border-radius:10px;font-size:13px;z-index:999;transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none;max-width:280px}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.success{background:var(--success)}.toast.error{background:var(--error)}
-
-/* RESPONSIVE */
+@keyframes spin{to{transform:rotate(360deg)}}
 @media(max-width:768px){
-  .sidebar{transform:translateX(-100%)}
-  .sidebar.open{transform:translateX(0)}
-  .sidebar-overlay.open{display:block}
-  .hamburger{display:flex}
-  .main{margin-left:0}
-  .topbar{padding-left:60px}
-  .editor-grid{grid-template-columns:1fr}
-  .form-row{grid-template-columns:1fr}
-  .dash-stats{grid-template-columns:1fr 1fr}
-  .crm-grid{grid-template-columns:1fr}
-  .social-grid{grid-template-columns:repeat(4,1fr)}
-  .content{padding:1rem}
-  .link-chip{max-width:130px}
-  .profile-link-box{flex-direction:column;align-items:flex-start}
+  .sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.sidebar-overlay.open{display:block}.hamburger{display:flex}.main{margin-left:0}.topbar{padding-left:60px}.editor-grid{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}.dash-stats{grid-template-columns:1fr 1fr}.crm-grid{grid-template-columns:1fr}.content{padding:1rem}.link-chip{max-width:130px}.profile-link-box{flex-direction:column;align-items:flex-start}
 }
-@media(max-width:480px){
-  .dash-stats{grid-template-columns:1fr}
-  .social-grid{grid-template-columns:repeat(4,1fr)}
-}
+@media(max-width:480px){.dash-stats{grid-template-columns:1fr 1fr}.lang-grid{grid-template-columns:repeat(4,1fr)}}
 </style>
 </head>
 <body>
-
-<button class="hamburger" onclick="toggleSidebar()" id="hamburger">
-  <span></span><span></span><span></span>
-</button>
+<button class="hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></button>
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-brand">
     <div class="brand-mark"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="3" y="6" width="18" height="13" rx="2"/><circle cx="12" cy="13" r="2"/></svg></div>
@@ -283,35 +211,17 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
         <div><div class="plink-label">Profil linkiniz</div><div class="plink-url" id="overviewLink">—</div></div>
         <div style="display:flex;gap:7px;flex-shrink:0"><button class="btn btn-sm" onclick="copyLink()">Kopyala</button><button class="btn btn-sm btn-primary" onclick="viewProfile()">Aç</button></div>
       </div>
-
-      <!-- Stat cards -->
       <div class="dash-stats">
-        <div class="dash-stat">
-          <div class="ds-icon" style="background:rgba(24,95,165,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
-          <div class="ds-num" id="ovViews">0</div><div class="ds-label">Ümumi baxış</div>
-        </div>
-        <div class="dash-stat">
-          <div class="ds-icon" style="background:rgba(79,172,254,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4FACFE" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
-          <div class="ds-num" id="ovUniqueViews">0</div><div class="ds-label">Unikal baxış</div>
-        </div>
-        <div class="dash-stat">
-          <div class="ds-icon" style="background:rgba(39,174,96,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
-          <div class="ds-num" id="ovSaves">0</div><div class="ds-label">Kontakt saxlayanlar</div>
-        </div>
-        <div class="dash-stat">
-          <div class="ds-icon" style="background:rgba(201,168,76,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
-          <div class="ds-num" id="ovContacts">0</div><div class="ds-label">Kontaktlarım</div>
-        </div>
+        <div class="dash-stat"><div class="ds-icon" style="background:rgba(24,95,165,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="ds-num" id="ovViews">0</div><div class="ds-label">Ümumi baxış</div></div>
+        <div class="dash-stat"><div class="ds-icon" style="background:rgba(79,172,254,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4FACFE" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div><div class="ds-num" id="ovUniqueViews">0</div><div class="ds-label">Unikal baxış</div></div>
+        <div class="dash-stat"><div class="ds-icon" style="background:rgba(39,174,96,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div><div class="ds-num" id="ovSaves">0</div><div class="ds-label">Saxlayanlar</div></div>
+        <div class="dash-stat"><div class="ds-icon" style="background:rgba(201,168,76,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="ds-num" id="ovContacts">0</div><div class="ds-label">Kontaktlarım</div></div>
       </div>
-
-      <!-- Charts row -->
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
-        <!-- Bar chart: views vs saves vs contacts -->
         <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
           <div style="font-size:13px;font-weight:500;color:var(--navy);margin-bottom:1rem">Statistika xülasəsi</div>
           <canvas id="barChart" height="180"></canvas>
         </div>
-        <!-- Donut chart: unique vs repeat -->
         <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem;display:flex;flex-direction:column;align-items:center">
           <div style="font-size:13px;font-weight:500;color:var(--navy);margin-bottom:1rem;align-self:flex-start">Baxış növləri</div>
           <canvas id="donutChart" width="160" height="160"></canvas>
@@ -321,13 +231,9 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
           </div>
         </div>
       </div>
-
-      <!-- Activity feed -->
       <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
         <div style="font-size:13px;font-weight:500;color:var(--navy);margin-bottom:.9rem">Son aktivlik</div>
-        <div id="activityFeed" style="display:flex;flex-direction:column;gap:7px">
-          <div style="font-size:12px;color:var(--gray);text-align:center;padding:.9rem">Hələ aktivlik yoxdur</div>
-        </div>
+        <div id="activityFeed"><div style="font-size:12px;color:var(--gray);text-align:center;padding:.9rem">Hələ aktivlik yoxdur</div></div>
       </div>
     </div>
 
@@ -354,7 +260,12 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
               <div class="form-group"><label class="form-label">Vəzifə</label><input class="form-input" id="fPosition"></div>
               <div class="form-group"><label class="form-label">Şirkət</label><input class="form-input" id="fCompany"></div>
               <div class="form-group"><label class="form-label">Bio</label><textarea class="form-input" id="fBio"></textarea></div>
-              <div class="form-row"><div class="form-group"><label class="form-label">Telefon</label><input class="form-input" id="fPhone"></div><div class="form-group"><label class="form-label">Email</label><input class="form-input" id="fEmail"></div></div>
+              <div class="form-row"><div class="form-group"><label class="form-label">Telefon</label><input class="form-input" id="fPhone" placeholder="+994..."></div><div class="form-group"><label class="form-label">E-mail</label><input class="form-input" id="fEmail" placeholder="siz@email.com"></div></div>
+              <!-- NEW: WhatsApp fields -->
+              <div class="form-row">
+                <div class="form-group"><label class="form-label">Şəxsi WhatsApp <span style="font-size:10px;color:var(--gray)">(boş = telefon nömrəsi)</span></label><input class="form-input" id="fWhatsapp" placeholder="+994..."></div>
+                <div class="form-group"><label class="form-label">Biznes WhatsApp <span style="font-size:10px;color:var(--gray)">(optional)</span></label><input class="form-input" id="fWhatsappBusiness" placeholder="+994..."></div>
+              </div>
               <div class="form-group"><label class="form-label">Vebsayt</label><input class="form-input" id="fWeb"></div>
               <div class="form-group"><label class="form-label">Ünvan</label><input class="form-input" id="fAddress"></div>
               <div class="save-bar"><button class="btn btn-primary" onclick="saveCard()">Yadda saxla və profili yenilə</button></div>
@@ -362,7 +273,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
           </div>
         </div>
         <div class="right-col">
-          <div class="widget"><div class="widget-title">Statistika</div><div class="mini-stats" style="grid-template-columns:1fr 1fr 1fr"><div class="mini-stat"><div class="mini-stat-num" id="wViews">0</div><div class="mini-stat-label">Ümumi baxış</div></div><div class="mini-stat"><div class="mini-stat-num" id="wUniqueViews">0</div><div class="mini-stat-label">Unikal baxış</div></div><div class="mini-stat"><div class="mini-stat-num" id="wSaves">0</div><div class="mini-stat-label">Saxlayan</div></div></div></div>
+          <div class="widget"><div class="widget-title">Statistika</div><div class="mini-stats" style="grid-template-columns:1fr 1fr 1fr"><div class="mini-stat"><div class="mini-stat-num" id="wViews">0</div><div class="mini-stat-label">Baxış</div></div><div class="mini-stat"><div class="mini-stat-num" id="wUniqueViews">0</div><div class="mini-stat-label">Unikal</div></div><div class="mini-stat"><div class="mini-stat-num" id="wSaves">0</div><div class="mini-stat-label">Saxlayan</div></div></div></div>
           <div class="widget"><div class="widget-title">Profil linki</div><div style="font-size:13px;color:var(--blue);margin-bottom:9px;word-break:break-all" id="wLink">—</div><button class="btn btn-sm" style="width:100%;justify-content:center" onclick="copyLink()">Kopyala</button></div>
         </div>
       </div>
@@ -391,8 +302,8 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
     <div class="panel" id="panel-media">
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;max-width:780px">
         <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
-          <div style="font-size:14px;font-weight:500;margin-bottom:.25rem">PDF sənəd</div>
-          <div style="font-size:12px;color:var(--gray);margin-bottom:.9rem">PDF linkini əlavə edin (Google Drive, Dropbox, OneDrive və s.)</div>
+          <div style="font-size:14px;font-weight:500;margin-bottom:.25rem">PDF sənəd linki</div>
+          <div style="font-size:12px;color:var(--gray);margin-bottom:.9rem">Google Drive, Dropbox, OneDrive və s. linkini əlavə edin</div>
           <div id="pdfList"></div>
           <div style="margin-top:9px;background:var(--surface);border-radius:10px;padding:.9rem;border:1.5px dashed var(--gray-light)">
             <div class="form-group" style="margin-bottom:7px"><label class="form-label">Sənədin adı</label><input class="form-input" id="pdfName" placeholder="Məs: Kataloq 2025, CV..."></div>
@@ -414,10 +325,9 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
       <div style="max-width:700px">
         <div class="contacts-toolbar">
           <input class="search-input" type="text" placeholder="Ad, şirkət, email ilə axtar..." oninput="filterContacts(this.value)">
-          <select class="form-input" style="width:auto" onchange="filterContactsBySource(this.value)"><option value="">Hamısı</option><option value="scan">Skanlanmış</option><option value="manual">Əl ilə</option></select>
           <button class="btn btn-primary btn-sm" onclick="openAddContactModal()">+ Yeni kontakt</button>
         </div>
-        <div class="contacts-grid" id="contactsGrid"><div class="empty-state"><div style="font-size:36px;opacity:.3;margin-bottom:.9rem">📇</div><div style="font-size:14px;color:var(--navy);margin-bottom:3px">Hələ kontakt yoxdur</div><div style="font-size:12px">QR oxuyucu ilə kart skan edin</div></div></div>
+        <div class="contacts-grid" id="contactsGrid"><div class="empty-state"><div style="font-size:36px;opacity:.3;margin-bottom:.9rem">📇</div><div style="font-size:14px;color:var(--navy);margin-bottom:3px">Hələ kontakt yoxdur</div><div style="font-size:12px">Kontakt əlavə etmək üçün "+ Yeni kontakt" düyməsinə basın</div></div></div>
       </div>
     </div>
 
@@ -426,37 +336,36 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
       <div style="max-width:700px">
         <div style="margin-bottom:1.25rem"><div style="font-size:15px;font-weight:500;color:var(--navy);margin-bottom:3px">CRM İnteqrasiya</div><div style="font-size:13px;color:var(--gray)">Kontaktlarınızı avtomatik CRM sistemlərinə göndərin</div></div>
         <div class="crm-grid">
-          <div class="crm-card" id="hsCard">
-            <div class="crm-logo crm-hs">HS</div>
-            <div class="crm-name">HubSpot</div>
-            <div class="crm-desc">Kontaktları HubSpot CRM-ə göndərin. API key ilə qoşulun.</div>
-            <div class="crm-status"><div class="crm-dot off" id="hsDot"></div><span id="hsStatusText">Qoşulmayıb</span></div>
-            <button class="btn btn-sm" onclick="openCrmModal('hubspot')">Qoş</button>
-            <div class="crm-sync-row" id="hsSyncRow" style="display:none"><span id="hsSyncCount">0 sync edilib</span><button class="btn btn-sm btn-success" onclick="syncToHubspot()">Sync et</button></div>
-          </div>
-          <div class="crm-card" id="sfCard">
-            <div class="crm-logo crm-sf">SF</div>
-            <div class="crm-name">Salesforce</div>
-            <div class="crm-desc">Kontaktları Salesforce-a göndərin. Token ilə qoşulun.</div>
-            <div class="crm-status"><div class="crm-dot off" id="sfDot"></div><span id="sfStatusText">Qoşulmayıb</span></div>
-            <button class="btn btn-sm" onclick="openCrmModal('salesforce')">Qoş</button>
-            <div class="crm-sync-row" id="sfSyncRow" style="display:none"><span id="sfSyncCount">0 sync edilib</span><button class="btn btn-sm btn-success" onclick="syncToSalesforce()">Sync et</button></div>
-            <div class="pro-lock-overlay" id="sfLock" style="display:none"><div style="font-size:22px">🔒</div><div class="pro-lock-text">Pro planda mövcuddur</div><button class="pro-lock-btn" onclick="openUpgradeModal()">Pro-ya keç</button></div>
-          </div>
+          <div class="crm-card" id="hsCard"><div class="crm-logo crm-hs">HS</div><div class="crm-name">HubSpot</div><div class="crm-desc">Kontaktları HubSpot CRM-ə göndərin. API key ilə qoşulun.</div><div class="crm-status"><div class="crm-dot off" id="hsDot"></div><span id="hsStatusText">Qoşulmayıb</span></div><button class="btn btn-sm" onclick="openCrmModal('hubspot')">Qoş</button><div class="crm-sync-row" id="hsSyncRow" style="display:none"><span id="hsSyncCount">0 sync edilib</span><button class="btn btn-sm btn-success" onclick="syncToHubspot()">Sync et</button></div></div>
+          <div class="crm-card" id="sfCard"><div class="crm-logo crm-sf">SF</div><div class="crm-name">Salesforce</div><div class="crm-desc">Kontaktları Salesforce-a göndərin. Token ilə qoşulun.</div><div class="crm-status"><div class="crm-dot off" id="sfDot"></div><span id="sfStatusText">Qoşulmayıb</span></div><button class="btn btn-sm" onclick="openCrmModal('salesforce')">Qoş</button><div class="crm-sync-row" id="sfSyncRow" style="display:none"><span id="sfSyncCount">0 sync edilib</span><button class="btn btn-sm btn-success" onclick="syncToSalesforce()">Sync et</button></div><div class="pro-lock-overlay" id="sfLock" style="display:none"><div style="font-size:22px">🔒</div><div class="pro-lock-text">Pro planda mövcuddur</div><button class="pro-lock-btn" onclick="openUpgradeModal()">Pro-ya keç</button></div></div>
         </div>
-        <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.1rem;margin-top:1rem;display:none" id="crmLogCard">
-          <div style="font-size:13px;font-weight:500;color:var(--navy);margin-bottom:9px">Sync tarixçəsi</div>
-          <div id="crmLog" style="font-size:12px;color:var(--gray);display:flex;flex-direction:column;gap:5px"></div>
-        </div>
+        <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.1rem;margin-top:1rem;display:none" id="crmLogCard"><div style="font-size:13px;font-weight:500;color:var(--navy);margin-bottom:9px">Sync tarixçəsi</div><div id="crmLog" style="font-size:12px;color:var(--gray);display:flex;flex-direction:column;gap:5px"></div></div>
       </div>
     </div>
 
     <!-- SETTINGS -->
     <div class="panel" id="panel-settings">
-      <div style="max-width:500px">
-        <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1rem">
+      <div style="max-width:540px;display:flex;flex-direction:column;gap:1rem">
+        <!-- Profil Linki -->
+        <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
           <div style="font-size:14px;font-weight:500;color:var(--navy);margin-bottom:1rem">Profil linki</div>
           <div id="slugSection"></div>
+        </div>
+        <!-- DEFAULT LANGUAGE -->
+        <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
+          <div style="font-size:14px;font-weight:500;color:var(--navy);margin-bottom:4px">Default dil</div>
+          <div style="font-size:12px;color:var(--gray);margin-bottom:.75rem">Profiliniz ilk açıldıqda hansı dildə görünsün?</div>
+          <div class="lang-grid" id="defaultLangGrid">
+            <div class="lang-card" data-lang="az" onclick="selectDefaultLang('az')"><div class="lang-flag">🇦🇿</div><div class="lang-name">Azərbaycan</div></div>
+            <div class="lang-card" data-lang="en" onclick="selectDefaultLang('en')"><div class="lang-flag">🇬🇧</div><div class="lang-name">English</div></div>
+            <div class="lang-card" data-lang="ru" onclick="selectDefaultLang('ru')"><div class="lang-flag">🇷🇺</div><div class="lang-name">Русский</div></div>
+            <div class="lang-card" data-lang="tr" onclick="selectDefaultLang('tr')"><div class="lang-flag">🇹🇷</div><div class="lang-name">Türkçe</div></div>
+            <div class="lang-card" data-lang="zh" onclick="selectDefaultLang('zh')"><div class="lang-flag">🇨🇳</div><div class="lang-name">中文</div></div>
+            <div class="lang-card" data-lang="ar" onclick="selectDefaultLang('ar')"><div class="lang-flag">🇸🇦</div><div class="lang-name">العربية</div></div>
+            <div class="lang-card" data-lang="de" onclick="selectDefaultLang('de')"><div class="lang-flag">🇩🇪</div><div class="lang-name">Deutsch</div></div>
+            <div class="lang-card" data-lang="es" onclick="selectDefaultLang('es')"><div class="lang-flag">🇪🇸</div><div class="lang-name">Español</div></div>
+          </div>
+          <div style="margin-top:.9rem;display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveDefaultLang()">Saxla</button></div>
         </div>
       </div>
     </div>
@@ -466,11 +375,9 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 
 <!-- MODALS -->
 <div class="modal-overlay" id="crmModal"><div class="modal"><div class="modal-title" id="crmModalTitle">CRM</div><div class="modal-sub" id="crmModalSub"></div><div id="crmModalFields"></div><div class="modal-footer"><button class="btn" onclick="closeModal('crmModal')">Ləğv et</button><button class="btn btn-primary" onclick="saveCrmConfig()">Qoş</button></div></div></div>
-
 <div class="modal-overlay" id="contactModal"><div class="modal"><div class="modal-title" id="contactModalName">Kontakt</div><div class="modal-sub" id="contactModalMeta"></div><div id="contactModalFields"></div><div class="modal-footer"><button class="btn btn-danger btn-sm" onclick="deleteContact(window._cid)">Sil</button><button class="btn" onclick="closeModal('contactModal')">Bağla</button><button class="btn btn-primary" onclick="exportContactVcf(window._cid)">Telefona saxla</button></div></div></div>
-
-<div class="modal-overlay" id="upgradeModal"><div class="modal upgrade-modal"><div class="upgrade-icon">🚀</div><div class="upgrade-title">Pro-ya keçin</div><div class="upgrade-text">Limitsiz QR skan, xüsusi profil linki, Salesforce inteqrasiyası və daha çox.</div><div class="upgrade-features"><div class="upgrade-feat"><div class="upgrade-feat-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Limitsiz QR skan</div><div class="upgrade-feat"><div class="upgrade-feat-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Xüsusi profil linki</div><div class="upgrade-feat"><div class="upgrade-feat-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Salesforce inteqrasiyası</div><div class="upgrade-feat"><div class="upgrade-feat-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Priority dəstək</div></div><div class="modal-footer"><button class="btn" onclick="closeModal('upgradeModal')">Sonra</button><button class="btn btn-primary" onclick="closeModal('upgradeModal');showToast('Admin ilə əlaqə saxlayın','success')">Pro-ya keç</button></div></div></div>
-
+<div class="modal-overlay" id="addContactModal"><div class="modal"><div class="modal-title">Yeni kontakt</div><div class="modal-sub">Kontakt məlumatlarını daxil edin</div><div class="form-group"><label class="form-label">Ad Soyad *</label><input class="form-input" id="mName" placeholder="Ad Soyad"></div><div class="form-row"><div class="form-group"><label class="form-label">Vəzifə</label><input class="form-input" id="mPosition"></div><div class="form-group"><label class="form-label">Şirkət</label><input class="form-input" id="mCompany"></div></div><div class="form-row"><div class="form-group"><label class="form-label">Telefon</label><input class="form-input" id="mPhone"></div><div class="form-group"><label class="form-label">E-mail</label><input class="form-input" id="mEmail"></div></div><div class="form-group"><label class="form-label">Qeyd</label><input class="form-input" id="mNote" placeholder="Harada tanışlıq..."></div><div class="modal-footer"><button class="btn" onclick="closeModal('addContactModal')">Ləğv et</button><button class="btn btn-primary" onclick="addManualContact()">Əlavə et</button></div></div></div>
+<div class="modal-overlay" id="upgradeModal"><div class="modal upgrade-modal"><div class="upgrade-icon">🚀</div><div class="upgrade-title">Pro-ya keçin</div><div class="upgrade-text">Limitsiz xüsusiyyətlər, CRM inteqrasiyası, xüsusi domen və daha çox.</div><div class="upgrade-features"><div class="upgrade-feat"><div class="upgrade-feat-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Multi-language profil</div><div class="upgrade-feat"><div class="upgrade-feat-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>CRM inteqrasiya</div><div class="upgrade-feat"><div class="upgrade-feat-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Xüsusi profil linki</div><div class="upgrade-feat"><div class="upgrade-feat-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Priority dəstək</div></div><div class="modal-footer"><button class="btn" onclick="closeModal('upgradeModal')">Sonra</button><button class="btn btn-primary" onclick="closeModal('upgradeModal');showToast('Admin ilə əlaqə saxlayın','success')">Pro-ya keç</button></div></div></div>
 <div class="toast" id="toast"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -479,11 +386,9 @@ import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-ap
 import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import{getDatabase,ref,get,update,remove,push,onValue}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 import{getStorage,ref as sRef,uploadBytes,getDownloadURL}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
-
 const cfg={apiKey:"AIzaSyBx81QDpjHSPvhkmnnSUNkJYMvR_fnRTaU",authDomain:"mycontact-e626e.firebaseapp.com",databaseURL:"https://mycontact-e626e-default-rtdb.firebaseio.com",projectId:"mycontact-e626e",storageBucket:"mycontact-e626e.firebasestorage.app",messagingSenderId:"420594516827",appId:"1:420594516827:web:f30266800c690c6ff9107e"};
 const app=initializeApp(cfg);const auth=getAuth(app);const db=getDatabase(app);const storage=getStorage(app);
-let CU=null,UD=null,activeSocials={},allContacts=[],crmTarget='',_lastPhotoUrl=null,_lastCoverUrl=null,_udLoaded=false;
-const FREE_SCAN_LIMIT=5;
+let CU=null,UD=null,activeSocials={},allContacts=[],crmTarget='',_lastPhotoUrl=null,_lastCoverUrl=null,_udLoaded=false,_selectedDefaultLang='az';
 
 onAuthStateChanged(auth,async u=>{
   if(!u){location.href='index.html';return;}CU=u;
@@ -506,7 +411,7 @@ function loadUD(){
   document.getElementById('sidePlan').textContent=(d.plan||'free').charAt(0).toUpperCase()+(d.plan||'free').slice(1)+' Plan';
   const slug=d.slug||'';
   const link=slug?'cardpro.az/'+slug:'—';
-  ['linkText','overviewLink','wLink'].forEach(id=>document.getElementById(id).textContent=link);
+  ['linkText','overviewLink','wLink'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=link;});
   if(!_udLoaded){
     _udLoaded=true;
     const c=d.card||{};
@@ -517,328 +422,56 @@ function loadUD(){
     document.getElementById('fBio').value=c.bio||'';
     document.getElementById('fPhone').value=c.phone||'';
     document.getElementById('fEmail').value=c.email||d.email||'';
+    document.getElementById('fWhatsapp').value=c.whatsapp||'';
+    document.getElementById('fWhatsappBusiness').value=c.whatsappBusiness||'';
     document.getElementById('fWeb').value=c.web||'';
     document.getElementById('fAddress').value=c.address||'';
-    if(c.photo){
-      _lastPhotoUrl=c.photo;
-      document.getElementById('profilePhoto').innerHTML=`<img src="${c.photo}">`;
-      document.getElementById('sideAvatar').innerHTML=`<img src="${c.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
-    } else {
-      document.getElementById('sideAvatar').textContent=n.charAt(0).toUpperCase();
-      document.getElementById('profilePhoto').innerHTML=`<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--gray)" stroke-width="1.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`;
-    }
-    if(c.cover){
-      _lastCoverUrl=c.cover;
-      const ci=document.getElementById('coverImg');ci.src=c.cover;ci.style.display='block';
-      document.getElementById('coverLabel').style.display='none';
-      document.getElementById('coverEditBtn').style.display='block';
-    }
+    if(c.photo){_lastPhotoUrl=c.photo;document.getElementById('profilePhoto').innerHTML=`<img src="${c.photo}">`;document.getElementById('sideAvatar').innerHTML=`<img src="${c.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;}
+    else{document.getElementById('sideAvatar').textContent=n.charAt(0).toUpperCase();}
+    if(c.cover){_lastCoverUrl=c.cover;const ci=document.getElementById('coverImg');ci.src=c.cover;ci.style.display='block';document.getElementById('coverLabel').style.display='none';document.getElementById('coverEditBtn').style.display='block';}
     if(d.video)document.getElementById('ytLink').value=d.video;
     previewYt();
     activeSocials=d.socials||{};loadSocialUI();
     renderSlugSection(slug,isPro);
-    generateQRCodes(d.card||{},slug);
+    // Default lang
+    _selectedDefaultLang=d.defaultLang||'az';
+    document.querySelectorAll('#defaultLangGrid .lang-card').forEach(el=>el.classList.toggle('selected',el.dataset.lang===_selectedDefaultLang));
   }
   const st=d.stats||{};
   const views=st.views||0,uniqueViews=st.uniqueViews||0,saves=st.saves||0;
-  ['ovViews','wViews'].forEach(id=>document.getElementById(id)&&(document.getElementById(id).textContent=views));
-  ['ovUniqueViews','wUniqueViews'].forEach(id=>document.getElementById(id)&&(document.getElementById(id).textContent=uniqueViews));
-  ['ovSaves','wSaves'].forEach(id=>document.getElementById(id)&&(document.getElementById(id).textContent=saves));
-  document.getElementById('ovContacts')&&(document.getElementById('ovContacts').textContent=allContacts.length);
+  ['ovViews','wViews'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=views;});
+  ['ovUniqueViews','wUniqueViews'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=uniqueViews;});
+  ['ovSaves','wSaves'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=saves;});
   renderCharts(views,uniqueViews,saves,allContacts.length);
   renderActivityFeed(d);
   loadPdfList(d.pdfs||[]);
   loadCrmStatus(d.crm||{},d.plan||'free');
-  updateScanLimit(d.scanCount||0,isPro);
 }
 
-// SCAN LIMIT
-function updateScanLimit(count,isPro){
-  if(isPro){
-    document.getElementById('scanLimitBar').style.display='none';
-    document.getElementById('scanLimitBadge').textContent='∞';
-    document.getElementById('scanLimitBadge').style.background='rgba(201,168,76,.2)';
-    document.getElementById('scanLimitBadge').style.color='#C9A84C';
-    return;
-  }
-  const rem=Math.max(0,FREE_SCAN_LIMIT-count);
-  const pct=Math.min(100,(count/FREE_SCAN_LIMIT)*100);
-  document.getElementById('scanLimitText').textContent=`${count} / ${FREE_SCAN_LIMIT}`;
-  document.getElementById('scanLimitFill').style.width=pct+'%';
-  document.getElementById('scanLimitFill').className='scan-limit-fill'+(count>=FREE_SCAN_LIMIT?' danger':'');
-  document.getElementById('scanLimitBadge').textContent=rem+' qalıb';
-}
+// DEFAULT LANG
+window.selectDefaultLang=function(lang){
+  _selectedDefaultLang=lang;
+  document.querySelectorAll('#defaultLangGrid .lang-card').forEach(el=>el.classList.toggle('selected',el.dataset.lang===lang));
+};
+window.saveDefaultLang=async function(){
+  await update(ref(db,`users/${CU.uid}`),{defaultLang:_selectedDefaultLang});
+  showToast('Default dil saxlanıldı','success');
+};
 
-// SLUG SECTION
+// SLUG
 function renderSlugSection(slug,isPro){
   const el=document.getElementById('slugSection');
-  if(isPro){
-    el.innerHTML=`
-      <div style="display:flex;align-items:center;gap:7px;margin-bottom:.75rem"><span style="font-size:12px;color:var(--gray)">Pro plan — linkinizi istədiyiniz kimi dəyişə bilərsiniz</span><span class="pro-badge">✦ PRO</span></div>
-      <div class="slug-row">
-        <span class="slug-prefix">cardpro.az/</span>
-        <input class="slug-input" id="slugInput" value="${slug}" placeholder="oz-linkiniiz-buraya" maxlength="60">
-      </div>
-      <div style="font-size:11px;color:var(--gray);margin-bottom:.75rem">Yalnız ingilis hərf, rəqəm və tire (-) istifadə edin. Minimum 3, maksimum 60 simvol.</div>
-      <button class="btn btn-primary btn-sm" onclick="saveSlug()">Linki yenilə</button>`;
-  } else {
-    el.innerHTML=`
-      <div style="font-size:13px;color:var(--navy);margin-bottom:.5rem;word-break:break-all"><strong>cardpro.az/${slug||'—'}</strong></div>
-      <div class="lock-msg"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Linki dəyişmək yalnız Pro planda mümkündür</div>
-      <button class="btn btn-sm" style="margin-top:.75rem" onclick="openUpgradeModal()">Pro-ya keç →</button>`;
-  }
+  if(isPro){el.innerHTML=`<div style="display:flex;align-items:center;gap:7px;margin-bottom:.75rem"><span style="font-size:12px;color:var(--gray)">Pro plan — linkinizi dəyişə bilərsiniz</span><span class="pro-badge">✦ PRO</span></div><div class="slug-row"><span class="slug-prefix">cardpro.az/</span><input class="slug-input" id="slugInput" value="${slug}" maxlength="60"></div><div style="font-size:11px;color:var(--gray);margin-bottom:.75rem">Yalnız latın hərf, rəqəm, tire. Min 3, max 60 simvol.</div><button class="btn btn-primary btn-sm" onclick="saveSlug()">Linki yenilə</button>`;}
+  else{el.innerHTML=`<div style="font-size:13px;color:var(--navy);margin-bottom:.5rem;word-break:break-all"><strong>cardpro.az/${slug||'—'}</strong></div><div class="lock-msg"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Linki dəyişmək yalnız Pro planda mümkündür</div><button class="btn btn-sm" style="margin-top:.75rem" onclick="openUpgradeModal()">Pro-ya keç →</button>`;}
 }
-
 window.saveSlug=async function(){
-  const isPro=UD?.plan==='pro'||UD?.plan==='premium';
-  if(!isPro){showToast('Linki dəyişmək yalnız Pro planda mümkündür','error');return;}
+  const isPro=UD?.plan==='pro'||UD?.plan==='premium';if(!isPro){showToast('Linki dəyişmək yalnız Pro planda mümkündür','error');return;}
   const val=document.getElementById('slugInput')?.value.trim().toLowerCase().replace(/[^a-z0-9-]/g,'-');
   if(!val||val.length<3){showToast('Minimum 3 simvol olmalıdır','error');return;}
-  if(val.length>60){showToast('Maksimum 60 simvol olmalıdır','error');return;}
-  await update(ref(db,`users/${CU.uid}`),{slug:val});
-  showToast('Link yeniləndi','success');
+  await update(ref(db,`users/${CU.uid}`),{slug:val});showToast('Link yeniləndi','success');
 };
 
-// ── BUSINESS CARD OCR SCANNER ──────────────────────────────────────
-let camStream=null,ocrResult=null;
-
-window.startCardScanner=async function(){
-  const isPro=UD?.plan==='pro'||UD?.plan==='premium';
-  const count=UD?.scanCount||0;
-  if(!isPro&&count>=FREE_SCAN_LIMIT){openUpgradeModal();return;}
-  try{
-    camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment',width:{ideal:1920},height:{ideal:1080}}});
-    const v=document.getElementById('scannerVideo');
-    v.srcObject=camStream;v.style.display='block';
-    document.getElementById('cameraPlaceholder').style.display='none';
-    document.getElementById('capturedPreview').style.display='none';
-    document.getElementById('startScanBtn').style.display='none';
-    document.getElementById('captureBtn').style.display='inline-flex';
-    document.getElementById('stopScanBtn').style.display='inline-flex';
-    document.getElementById('retakeBtn').style.display='none';
-    document.getElementById('ocrResult').style.display='none';
-    document.getElementById('scannerStatus').textContent='Vizit kartı çərçivəyə tutun, sonra "Şəkil çək"';
-  }catch(e){showToast('Kameraya icazə verilmədi','error');}
-};
-
-window.stopCardScanner=function(){
-  if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null;}
-  const v=document.getElementById('scannerVideo');if(v)v.style.display='none';
-  document.getElementById('cameraPlaceholder').style.display='flex';
-  document.getElementById('startScanBtn').style.display='inline-flex';
-  document.getElementById('captureBtn').style.display='none';
-  document.getElementById('stopScanBtn').style.display='none';
-  document.getElementById('retakeBtn').style.display='none';
-  document.getElementById('scannerStatus').textContent='Başlamaq üçün kameranı açın';
-};
-
-window.retakePhoto=function(){
-  document.getElementById('capturedPreview').style.display='none';
-  document.getElementById('ocrResult').style.display='none';
-  ocrResult=null;
-  startCardScanner();
-};
-
-window.captureAndRead=async function(){
-  const v=document.getElementById('scannerVideo');
-  const c=document.getElementById('scannerCanvas');
-  c.width=v.videoWidth;c.height=v.videoHeight;
-  const ctx=c.getContext('2d');ctx.drawImage(v,0,0);
-
-  // Show captured preview
-  const dataUrl=c.toDataURL('image/jpeg',0.92);
-  const prev=document.getElementById('capturedPreview');
-  prev.src=dataUrl;prev.style.display='block';
-  v.style.display='none';
-
-  // Stop camera
-  if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null;}
-  document.getElementById('captureBtn').style.display='none';
-  document.getElementById('stopScanBtn').style.display='none';
-  document.getElementById('retakeBtn').style.display='inline-flex';
-
-  await processCardImage(dataUrl);
-};
-
-window.readFromGallery=async function(e){
-  const f=e.target.files[0];if(!f)return;
-  const isPro=UD?.plan==='pro'||UD?.plan==='premium';
-  const count=UD?.scanCount||0;
-  if(!isPro&&count>=FREE_SCAN_LIMIT){openUpgradeModal();return;}
-
-  const reader=new FileReader();
-  reader.onload=async ev=>{
-    const dataUrl=ev.target.result;
-    const prev=document.getElementById('capturedPreview');
-    prev.src=dataUrl;prev.style.display='block';
-    document.getElementById('scannerVideo').style.display='none';
-    document.getElementById('cameraPlaceholder').style.display='none';
-    document.getElementById('startScanBtn').style.display='none';
-    document.getElementById('captureBtn').style.display='none';
-    document.getElementById('stopScanBtn').style.display='none';
-    document.getElementById('retakeBtn').style.display='inline-flex';
-    document.getElementById('ocrResult').style.display='none';
-    if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null;}
-    await processCardImage(dataUrl);
-  };
-  reader.readAsDataURL(f);
-};
-
-async function processCardImage(dataUrl){
-  document.getElementById('ocrProcessing').style.display='flex';
-  document.getElementById('scannerStatus').textContent='Məlumatlar oxunur...';
-  document.getElementById('ocrResult').style.display='none';
-  try{
-    const{data:{text}}=await Tesseract.recognize(dataUrl,'eng+tur',{logger:()=>{}});
-    const parsed=parseCardText(text);
-    ocrResult=parsed;
-    showOcrResult(parsed);
-    document.getElementById('ocrProcessing').style.display='none';
-    document.getElementById('scannerStatus').textContent='Məlumatları yoxlayın və əlavə edin';
-  }catch(err){
-    document.getElementById('ocrProcessing').style.display='none';
-    document.getElementById('scannerStatus').textContent='Xəta. Daha aydın şəkil çəkin.';
-    showToast('Oxuma xətası','error');
-  }
-}
-
-function parseCardText(raw){
-  const lines=raw.split('\n').map(l=>l.trim()).filter(l=>l.length>1);
-  const emailM=raw.match(/[\w.+%-]+@[\w.-]+\.[a-z]{2,}/i);
-  const email=emailM?emailM[0]:'';
-  const phoneM=raw.match(/[\+\(]?[\d][\d\s\-\.\(\)]{6,18}/);
-  const phone=phoneM?phoneM[0].trim():'';
-  const webM=raw.match(/(?:https?:\/\/)?(?:www\.)?[\w-]+\.(?:com|az|net|org|io|co|ru|eu|info|biz)(?:\/[\w\-._~:/?#[\]@!$&'()*+,;=%]*)*/i);
-  const web=webM?webM[0].replace(/^https?:\/\//,''):'';
-  const clean=lines.filter(l=>{
-    if(email&&l.toLowerCase().includes(email.toLowerCase()))return false;
-    if(phone&&l.replace(/\s/g,'').includes(phone.replace(/\s/g,'')))return false;
-    if(web&&l.toLowerCase().includes(web.split('/')[0].toLowerCase()))return false;
-    if(l.match(/[\+\(]?[\d][\d\s\-\.\(\)]{6,}/))return false;
-    if(l.match(/[\w.+%-]+@[\w.-]+\.[a-z]{2,}/i))return false;
-    if(l.match(/(?:https?:\/\/)?www\./i))return false;
-    return true;
-  }).filter(l=>l.length>1);
-  return{name:clean[0]||'',position:clean[1]||'',company:clean[2]||'',phone,email,web};
-}
-
-function showOcrResult(d){
-  const fields=[
-    {l:'Ad',k:'name'},{l:'Vəzifə',k:'position'},{l:'Şirkət',k:'company'},
-    {l:'Telefon',k:'phone'},{l:'Email',k:'email'},{l:'Vebsayt',k:'web'},{l:'Ünvan',k:'address'}
-  ].filter(f=>d[f.k]);
-  if(!fields.length){
-    document.getElementById('scannerStatus').textContent='Kart məlumatı tapılmadı. Daha yaxın çəkib yenidən cəhd edin.';
-    return;
-  }
-  document.getElementById('ocrFields').innerHTML=fields.map(f=>
-    `<div class="ocr-field"><span class="ocr-label">${f.l}</span><span class="ocr-val">${d[f.k]}</span></div>`
-  ).join('');
-  document.getElementById('ocrResult').style.display='block';
-}
-
-window.saveOcrContact=async function(){
-  if(!ocrResult||!CU)return;
-  const isPro=UD?.plan==='pro'||UD?.plan==='premium';
-  const count=UD?.scanCount||0;
-  if(!isPro&&count>=FREE_SCAN_LIMIT){openUpgradeModal();return;}
-  try{
-    await push(ref(db,`contacts/${CU.uid}`),{...ocrResult,source:'scan',addedAt:Date.now()});
-    await update(ref(db,`users/${CU.uid}`),{scanCount:(count+1)});
-    showToast('Kontakt əlavə edildi ✓','success');
-    clearOcrResult();
-    setTimeout(()=>showPanel('contacts'),1000);
-  }catch(e){showToast('Xəta baş verdi','error');}
-};
-
-window.exportOcrVcf=function(){
-  if(!ocrResult)return;
-  const v=`BEGIN:VCARD\nVERSION:3.0\nFN:${ocrResult.name||''}\nTEL:${ocrResult.phone||''}\nEMAIL:${ocrResult.email||''}\nORG:${ocrResult.company||''}\nTITLE:${ocrResult.position||''}\nURL:${ocrResult.web||''}\nADR:;;${ocrResult.address||''};;;;\nEND:VCARD`;
-  const b=new Blob([v],{type:'text/vcard'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(ocrResult.name||'contact')+'.vcf';a.click();
-};
-
-window.clearOcrResult=function(){
-  ocrResult=null;
-  document.getElementById('ocrResult').style.display='none';
-  document.getElementById('capturedPreview').style.display='none';
-  document.getElementById('cameraPlaceholder').style.display='flex';
-  document.getElementById('startScanBtn').style.display='inline-flex';
-  document.getElementById('retakeBtn').style.display='none';
-  document.getElementById('scannerStatus').textContent='Başlamaq üçün kameranı açın';
-};
-
-// stopScanner alias for nav switching
-window.stopScanner=window.stopCardScanner;
-window.addManualContact=async function(){
-  const n=document.getElementById('mName').value.trim();if(!n){showToast('Ad daxil edin','error');return;}
-  const c={name:n,position:document.getElementById('mPosition').value.trim(),company:document.getElementById('mCompany').value.trim(),phone:document.getElementById('mPhone').value.trim(),email:document.getElementById('mEmail').value.trim(),web:document.getElementById('mWeb').value.trim(),note:document.getElementById('mNote').value.trim(),source:'manual',addedAt:Date.now()};
-  await push(ref(db,`contacts/${CU.uid}`),c);
-  ['mName','mPosition','mCompany','mPhone','mEmail','mWeb','mNote'].forEach(id=>document.getElementById(id).value='');
-  showToast('Kontakt əlavə edildi','success');showPanel('contacts');
-};
-
-// CONTACTS
-function renderContacts(list){
-  const g=document.getElementById('contactsGrid');
-  if(!list.length){g.innerHTML='<div class="empty-state"><div style="font-size:36px;opacity:.3;margin-bottom:.9rem">📇</div><div style="font-size:14px;color:var(--navy);margin-bottom:3px">Hələ kontakt yoxdur</div><div style="font-size:12px">QR oxuyucu ilə kart skan edin</div></div>';return;}
-  g.innerHTML=list.map(c=>`<div class="contact-card"><div class="contact-av">${(c.name||'?').charAt(0).toUpperCase()}</div><div class="contact-info"><div class="contact-name">${c.name||'—'}</div><div class="contact-meta">${[c.position,c.company,c.phone,c.email].filter(Boolean).join(' · ')}</div></div><span class="contact-source ${c.source==='scan'?'src-scan':'src-manual'}">${c.source==='scan'?'Skan':'Əl ilə'}</span><div class="contact-actions"><button class="btn btn-sm" onclick="openContactModal('${c.id}')">Bax</button><button class="btn btn-sm" onclick="exportContactVcf('${c.id}')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button></div></div>`).join('');
-}
-window.filterContacts=function(q){renderContacts(allContacts.filter(c=>[c.name,c.company,c.email,c.phone,c.position].join(' ').toLowerCase().includes(q.toLowerCase())));};
-window.filterContactsBySource=function(s){renderContacts(s?allContacts.filter(c=>c.source===s):allContacts);};
-window.openContactModal=function(id){
-  const c=allContacts.find(x=>x.id===id);if(!c)return;window._cid=id;
-  document.getElementById('contactModalName').textContent=c.name||'—';
-  document.getElementById('contactModalMeta').textContent=[c.position,c.company].filter(Boolean).join(' · ');
-  const rows=[{l:'Telefon',v:c.phone},{l:'Email',v:c.email},{l:'Şirkət',v:c.company},{l:'Vəzifə',v:c.position},{l:'Vebsayt',v:c.web},{l:'Ünvan',v:c.address},{l:'Qeyd',v:c.note}].filter(r=>r.v);
-  document.getElementById('contactModalFields').innerHTML=rows.map(r=>`<div style="display:flex;gap:9px;padding:7px 0;border-bottom:1px solid var(--gray-light)"><span style="font-size:11px;color:var(--gray);width:55px;flex-shrink:0">${r.l}</span><span style="font-size:13px;color:var(--navy)">${r.v}</span></div>`).join('');
-  document.getElementById('contactModal').classList.add('open');
-};
-window.deleteContact=async function(id){if(!id)return;await remove(ref(db,`contacts/${CU.uid}/${id}`));closeModal('contactModal');showToast('Kontakt silindi');};
-window.exportContactVcf=function(id){
-  const c=allContacts.find(x=>x.id===id);if(!c)return;
-  const v=`BEGIN:VCARD\nVERSION:3.0\nFN:${c.name||''}\nTEL:${c.phone||''}\nEMAIL:${c.email||''}\nORG:${c.company||''}\nTITLE:${c.position||''}\nURL:${c.web||''}\nEND:VCARD`;
-  const b=new Blob([v],{type:'text/vcard'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(c.name||'contact')+'.vcf';a.click();showToast('Kontakt yükləndi');
-};
-
-// CRM
-function loadCrmStatus(crm,plan){
-  const isPro=plan==='pro'||plan==='premium';
-  if(!isPro)document.getElementById('sfLock').style.display='flex';
-  else document.getElementById('sfLock').style.display='none';
-  if(crm.hubspot){document.getElementById('hsDot').className='crm-dot on';document.getElementById('hsStatusText').textContent='Qoşulub';document.getElementById('hsSyncRow').style.display='flex';document.getElementById('hsSyncCount').textContent=(crm.hubspot.syncCount||0)+' sync edilib';document.getElementById('hsCard').classList.add('connected');}
-  if(crm.salesforce&&isPro){document.getElementById('sfDot').className='crm-dot on';document.getElementById('sfStatusText').textContent='Qoşulub';document.getElementById('sfSyncRow').style.display='flex';document.getElementById('sfSyncCount').textContent=(crm.salesforce.syncCount||0)+' sync edilib';document.getElementById('sfCard').classList.add('connected');}
-  if(crm.hubspot||crm.salesforce){document.getElementById('crmLogCard').style.display='block';const log=crm.log||[];document.getElementById('crmLog').innerHTML=log.length?log.slice(-5).reverse().map(l=>`<div style="display:flex;justify-content:space-between"><span>${l.msg}</span><span>${new Date(l.at).toLocaleDateString('az')}</span></div>`).join(''):'<div>Hələ sync edilməyib</div>';}
-}
-window.openCrmModal=function(t){
-  crmTarget=t;const crm=UD?.crm||{};
-  if(t==='hubspot'){document.getElementById('crmModalTitle').textContent='HubSpot';document.getElementById('crmModalSub').textContent='Private App API key daxil edin';document.getElementById('crmModalFields').innerHTML=`<div class="form-group"><label class="form-label">API Key</label><input class="form-input" id="crmKey1" placeholder="pat-na1-..." value="${crm.hubspot?.apiKey||''}"></div><div style="font-size:11px;color:var(--gray);margin-top:-6px">HubSpot → Settings → Private Apps → Create → Scopes: crm.objects.contacts.write</div>`;}
-  else{document.getElementById('crmModalTitle').textContent='Salesforce';document.getElementById('crmModalSub').textContent='Connected App məlumatları';document.getElementById('crmModalFields').innerHTML=`<div class="form-group"><label class="form-label">Instance URL</label><input class="form-input" id="crmKey1" placeholder="https://yourorg.salesforce.com" value="${crm.salesforce?.instanceUrl||''}"></div><div class="form-group"><label class="form-label">Access Token</label><input class="form-input" id="crmKey2" value="${crm.salesforce?.token||''}"></div>`;}
-  document.getElementById('crmModal').classList.add('open');
-};
-window.saveCrmConfig=async function(){
-  const k1=document.getElementById('crmKey1')?.value.trim();if(!k1){showToast('Məlumatları daxil edin','error');return;}
-  const crm=UD?.crm||{};
-  if(crmTarget==='hubspot')crm.hubspot={apiKey:k1,syncCount:crm.hubspot?.syncCount||0};
-  else{const k2=document.getElementById('crmKey2')?.value.trim();crm.salesforce={instanceUrl:k1,token:k2,syncCount:crm.salesforce?.syncCount||0};}
-  await update(ref(db,`users/${CU.uid}`),{crm});showToast('CRM qoşuldu','success');closeModal('crmModal');
-};
-window.syncToHubspot=async function(){
-  const apiKey=UD?.crm?.hubspot?.apiKey;if(!apiKey){showToast('HubSpot qoşulmayıb','error');return;}
-  showToast('HubSpot-a göndərilir...');let count=0;
-  for(const c of allContacts){try{const r=await fetch('https://api.hubapi.com/crm/v3/objects/contacts',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},body:JSON.stringify({properties:{firstname:c.name?.split(' ')[0]||'',lastname:c.name?.split(' ').slice(1).join(' ')||'',phone:c.phone||'',email:c.email||'',company:c.company||'',jobtitle:c.position||''}})});if(r.ok||r.status===409)count++;}catch(e){}}
-  const log=[...(UD?.crm?.log||[]),{msg:`HubSpot: ${count} kontakt`,at:Date.now()}];
-  await update(ref(db,`users/${CU.uid}/crm`),{'hubspot/syncCount':count,log});showToast(`${count} kontakt göndərildi`,'success');
-};
-window.syncToSalesforce=async function(){
-  const sf=UD?.crm?.salesforce;if(!sf?.instanceUrl||!sf?.token){showToast('Salesforce qoşulmayıb','error');return;}
-  showToast('Salesforce-a göndərilir...');let count=0;
-  for(const c of allContacts){try{const r=await fetch(`${sf.instanceUrl}/services/data/v58.0/sobjects/Contact`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+sf.token},body:JSON.stringify({FirstName:c.name?.split(' ')[0]||'',LastName:c.name?.split(' ').slice(1).join(' ')||c.name||'',Phone:c.phone||'',Email:c.email||'',Title:c.position||''})});if(r.ok||r.status===201)count++;}catch(e){}}
-  const log=[...(UD?.crm?.log||[]),{msg:`Salesforce: ${count} kontakt`,at:Date.now()}];
-  await update(ref(db,`users/${CU.uid}/crm`),{'salesforce/syncCount':count,log});showToast(`${count} kontakt göndərildi`,'success');
-};
-window.openUpgradeModal=function(){document.getElementById('upgradeModal').classList.add('open');};
-
-// CARD
+// CARD SAVE
 window.saveCard=async function(){
   const cardFields={
     'card/name':document.getElementById('fName').value.trim(),
@@ -848,134 +481,116 @@ window.saveCard=async function(){
     'card/bio':document.getElementById('fBio').value.trim(),
     'card/phone':document.getElementById('fPhone').value.trim(),
     'card/email':document.getElementById('fEmail').value.trim(),
+    'card/whatsapp':document.getElementById('fWhatsapp').value.trim(),
+    'card/whatsappBusiness':document.getElementById('fWhatsappBusiness').value.trim(),
     'card/web':document.getElementById('fWeb').value.trim(),
     'card/address':document.getElementById('fAddress').value.trim()
   };
   if(_lastPhotoUrl)cardFields['card/photo']=_lastPhotoUrl;
   if(_lastCoverUrl)cardFields['card/cover']=_lastCoverUrl;
   await update(ref(db,`users/${CU.uid}`),cardFields);
-  if(!UD)UD={};if(!UD.card)UD.card={};
-  Object.entries(cardFields).forEach(([k,v])=>{UD.card[k.replace('card/','')]=v;});
-  showToast('Kart saxlanıldı və profil yeniləndi','success');
-  generateQRCodes(UD.card,UD?.slug||'');
+  showToast('Kart saxlanıldı','success');
 };
+
 window.loadCover=async function(e){
   const f=e.target.files[0];if(!f)return;showToast('Yüklənir...');
-  try{
-    const r=sRef(storage,`covers/${CU.uid}`);
-    await uploadBytes(r,f);
-    const url=await getDownloadURL(r);
-    _lastCoverUrl=url;
-    const ci=document.getElementById('coverImg');ci.src=url;ci.style.display='block';
-    document.getElementById('coverLabel').style.display='none';
-    document.getElementById('coverEditBtn').style.display='block';
-    // Dərhal Firebase-ə yaz — ayrıca Saxla tələb etməsin
-    await update(ref(db,`users/${CU.uid}`),{'card/cover':url});
-    if(!UD)UD={};if(!UD.card)UD.card={};
-    UD.card.cover=url;
-    showToast('Cover saxlanıldı','success');
-  }catch(err){showToast('Xəta: '+err.message,'error');}
+  try{const r=sRef(storage,`covers/${CU.uid}`);await uploadBytes(r,f);const url=await getDownloadURL(r);_lastCoverUrl=url;const ci=document.getElementById('coverImg');ci.src=url;ci.style.display='block';document.getElementById('coverLabel').style.display='none';document.getElementById('coverEditBtn').style.display='block';await update(ref(db,`users/${CU.uid}`),{'card/cover':url});showToast('Cover saxlanıldı','success');}
+  catch(err){showToast('Xəta: '+err.message,'error');}
 };
 document.getElementById('coverArea').addEventListener('click',function(e){if(e.target.closest('#coverEditBtn'))return;if(!document.getElementById('coverImg').src||document.getElementById('coverImg').style.display==='none')document.getElementById('coverFile').click();});
 window.loadPhoto=async function(e){
   const f=e.target.files[0];if(!f)return;showToast('Yüklənir...');
-  try{
-    const r=sRef(storage,`photos/${CU.uid}`);
-    await uploadBytes(r,f);
-    const url=await getDownloadURL(r);
-    _lastPhotoUrl=url;
-    document.getElementById('profilePhoto').innerHTML=`<img src="${url}">`;
-    document.getElementById('sideAvatar').innerHTML=`<img src="${url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;
-    // Dərhal Firebase-ə yaz — ayrıca Saxla tələb etməsin
-    await update(ref(db,`users/${CU.uid}`),{'card/photo':url});
-    if(!UD)UD={};if(!UD.card)UD.card={};
-    UD.card.photo=url;
-    showToast('Şəkil saxlanıldı','success');
-  }catch(err){showToast('Xəta: '+err.message,'error');}
+  try{const r=sRef(storage,`photos/${CU.uid}`);await uploadBytes(r,f);const url=await getDownloadURL(r);_lastPhotoUrl=url;document.getElementById('profilePhoto').innerHTML=`<img src="${url}">`;document.getElementById('sideAvatar').innerHTML=`<img src="${url}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;await update(ref(db,`users/${CU.uid}`),{'card/photo':url});showToast('Şəkil saxlanıldı','success');}
+  catch(err){showToast('Xəta: '+err.message,'error');}
 };
+
 // SOCIAL
 function loadSocialUI(){document.querySelectorAll('.soc-item').forEach(el=>el.classList.toggle('on',!!activeSocials[el.dataset.key]));renderSocInputs();}
-function renderSocInputs(){const keys=Object.keys(activeSocials).filter(k=>activeSocials[k]!==false);const lb={instagram:'Instagram',linkedin:'LinkedIn',facebook:'Facebook',twitter:'Twitter/X',tiktok:'TikTok',youtube:'YouTube',telegram:'Telegram',whatsapp:'WhatsApp'};document.getElementById('socInputs').innerHTML=keys.length?keys.map(k=>`<div class="soc-input-row"><span class="soc-input-label">${lb[k]||k}</span><input class="form-input" id="soc_${k}" placeholder="${k}.com/..." value="${typeof activeSocials[k]==='string'?activeSocials[k]:''}"></div>`).join(''):'';}
+function renderSocInputs(){const keys=Object.keys(activeSocials).filter(k=>activeSocials[k]!==false);const lb={instagram:'Instagram',linkedin:'LinkedIn',facebook:'Facebook',twitter:'Twitter/X',tiktok:'TikTok',youtube:'YouTube',telegram:'Telegram',whatsapp:'WhatsApp'};document.getElementById('socInputs').innerHTML=keys.length?keys.map(k=>`<div class="soc-input-row"><span class="soc-input-label">${lb[k]||k}</span><input class="form-input" id="soc_${k}" placeholder="${k}.com/..." value="${typeof activeSocials[k]==='string'?activeSocials[k]:''}"></div>`).join(''):'<div style="font-size:12px;color:var(--gray);text-align:center;padding:.5rem">Yuxarıdan şəbəkə seçin</div>';}
 window.toggleSoc=function(el){const k=el.dataset.key;el.classList.toggle('on');if(el.classList.contains('on'))activeSocials[k]=activeSocials[k]||'';else delete activeSocials[k];renderSocInputs();};
 window.saveSocials=async function(){Object.keys(activeSocials).forEach(k=>{const i=document.getElementById('soc_'+k);if(i)activeSocials[k]=i.value.trim();});await update(ref(db,`users/${CU.uid}`),{socials:activeSocials});showToast('Saxlanıldı','success');};
 
 // MEDIA
 window.previewYt=function(){const v=document.getElementById('ytLink').value.trim();const id=v.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]{11})/)?.[1];document.getElementById('videoPreview').innerHTML=id?`<iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe>`:`<div style="display:flex;flex-direction:column;align-items:center;gap:6px"><div class="play-btn2"><div class="play-tri"></div></div><div style="font-size:11px;color:var(--gray)">Link daxil edin</div></div>`;};
 window.saveVideo=async function(){await update(ref(db,`users/${CU.uid}`),{video:document.getElementById('ytLink').value.trim()});showToast('Video saxlanıldı','success');};
-// PDF LINK
 window.addPdfLink=async function(){
-  const name=document.getElementById('pdfName').value.trim();
-  const url=document.getElementById('pdfUrl').value.trim();
+  const name=document.getElementById('pdfName').value.trim();const url=document.getElementById('pdfUrl').value.trim();
   if(!name||!url){showToast('Ad və link daxil edin','error');return;}
   if(!url.startsWith('http')){showToast('Link http:// ilə başlamalıdır','error');return;}
-  const pdfs=[...(UD?.pdfs||[])];
-  if(pdfs.length>=10){showToast('Maksimum 10 PDF link','error');return;}
+  const pdfs=[...(UD?.pdfs||[])];if(pdfs.length>=10){showToast('Maksimum 10 PDF link','error');return;}
   pdfs.push({name,url,size:'Link'});
   await update(ref(db,`users/${CU.uid}`),{pdfs});
   document.getElementById('pdfName').value='';document.getElementById('pdfUrl').value='';
   showToast('PDF əlavə edildi','success');
 };
-function loadPdfList(pdfs){document.getElementById('pdfList').innerHTML=pdfs.length?pdfs.map((p,i)=>`<div class="pdf-row"><div class="pdf-icon">PDF</div><div class="pdf-meta"><div class="pdf-name">${p.name}</div><div class="pdf-size-t">${p.size}</div></div><button class="btn btn-sm btn-danger" onclick="removePdf(${i})">Sil</button></div>`).join(''):'<div style="font-size:12px;color:var(--gray);text-align:center;padding:9px">PDF yoxdur</div>';}
+function loadPdfList(pdfs){document.getElementById('pdfList').innerHTML=pdfs.length?pdfs.map((p,i)=>`<div class="pdf-row"><div class="pdf-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><div class="pdf-meta"><div class="pdf-name">${p.name}</div><div class="pdf-size-t"><a href="${p.url}" target="_blank" style="color:var(--blue);text-decoration:none;font-size:11px">Linki aç ↗</a></div></div><button class="btn btn-sm btn-danger" onclick="removePdf(${i})">Sil</button></div>`).join(''):'<div style="font-size:12px;color:var(--gray);text-align:center;padding:9px">PDF link yoxdur</div>';}
 window.removePdf=async function(i){const pdfs=[...(UD?.pdfs||[])];pdfs.splice(i,1);await update(ref(db,`users/${CU.uid}`),{pdfs});showToast('PDF silindi');};
+
+// CONTACTS
+function renderContacts(list){
+  const g=document.getElementById('contactsGrid');
+  if(!list.length){g.innerHTML='<div class="empty-state"><div style="font-size:36px;opacity:.3;margin-bottom:.9rem">📇</div><div style="font-size:14px;color:var(--navy);margin-bottom:3px">Hələ kontakt yoxdur</div></div>';return;}
+  g.innerHTML=list.map(c=>`<div class="contact-card"><div class="contact-av">${(c.name||'?').charAt(0).toUpperCase()}</div><div class="contact-info"><div class="contact-name">${c.name||'—'}</div><div class="contact-meta">${[c.position,c.company,c.phone,c.email].filter(Boolean).join(' · ')}</div></div><span class="contact-source src-manual">Əl ilə</span><div class="contact-actions"><button class="btn btn-sm" onclick="openContactModal('${c.id}')">Bax</button><button class="btn btn-sm" onclick="exportContactVcf('${c.id}')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button></div></div>`).join('');
+}
+window.filterContacts=function(q){renderContacts(allContacts.filter(c=>[c.name,c.company,c.email,c.phone].join(' ').toLowerCase().includes(q.toLowerCase())));};
+window.openAddContactModal=function(){document.getElementById('addContactModal').classList.add('open');};
+window.openContactModal=function(id){
+  const c=allContacts.find(x=>x.id===id);if(!c)return;window._cid=id;
+  document.getElementById('contactModalName').textContent=c.name||'—';
+  document.getElementById('contactModalMeta').textContent=[c.position,c.company].filter(Boolean).join(' · ');
+  const rows=[{l:'Telefon',v:c.phone},{l:'Email',v:c.email},{l:'Şirkət',v:c.company},{l:'Vəzifə',v:c.position},{l:'Qeyd',v:c.note}].filter(r=>r.v);
+  document.getElementById('contactModalFields').innerHTML=rows.map(r=>`<div style="display:flex;gap:9px;padding:7px 0;border-bottom:1px solid var(--gray-light)"><span style="font-size:11px;color:var(--gray);width:55px;flex-shrink:0">${r.l}</span><span style="font-size:13px;color:var(--navy)">${r.v}</span></div>`).join('');
+  document.getElementById('contactModal').classList.add('open');
+};
+window.deleteContact=async function(id){if(!id)return;await remove(ref(db,`contacts/${CU.uid}/${id}`));closeModal('contactModal');showToast('Kontakt silindi');};
+window.exportContactVcf=function(id){const c=allContacts.find(x=>x.id===id);if(!c)return;const v=`BEGIN:VCARD\nVERSION:3.0\nFN:${c.name||''}\nTEL:${c.phone||''}\nEMAIL:${c.email||''}\nORG:${c.company||''}\nTITLE:${c.position||''}\nEND:VCARD`;const b=new Blob([v],{type:'text/vcard'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(c.name||'contact')+'.vcf';a.click();showToast('Kontakt yükləndi');};
+window.addManualContact=async function(){
+  const n=document.getElementById('mName').value.trim();if(!n){showToast('Ad daxil edin','error');return;}
+  const c={name:n,position:document.getElementById('mPosition').value.trim(),company:document.getElementById('mCompany').value.trim(),phone:document.getElementById('mPhone').value.trim(),email:document.getElementById('mEmail').value.trim(),note:document.getElementById('mNote').value.trim(),source:'manual',addedAt:Date.now()};
+  await push(ref(db,`contacts/${CU.uid}`),c);
+  ['mName','mPosition','mCompany','mPhone','mEmail','mNote'].forEach(id=>document.getElementById(id).value='');
+  showToast('Kontakt əlavə edildi','success');closeModal('addContactModal');
+};
+
+// CRM
+function loadCrmStatus(crm,plan){
+  const isPro=plan==='pro'||plan==='premium';
+  if(!isPro)document.getElementById('sfLock').style.display='flex';else document.getElementById('sfLock').style.display='none';
+  if(crm.hubspot){document.getElementById('hsDot').className='crm-dot on';document.getElementById('hsStatusText').textContent='Qoşulub';document.getElementById('hsSyncRow').style.display='flex';document.getElementById('hsSyncCount').textContent=(crm.hubspot.syncCount||0)+' sync edilib';document.getElementById('hsCard').classList.add('connected');}
+  if(crm.salesforce&&isPro){document.getElementById('sfDot').className='crm-dot on';document.getElementById('sfStatusText').textContent='Qoşulub';document.getElementById('sfSyncRow').style.display='flex';document.getElementById('sfSyncCount').textContent=(crm.salesforce.syncCount||0)+' sync edilib';document.getElementById('sfCard').classList.add('connected');}
+  if(crm.hubspot||crm.salesforce){document.getElementById('crmLogCard').style.display='block';const log=crm.log||[];document.getElementById('crmLog').innerHTML=log.length?log.slice(-5).reverse().map(l=>`<div style="display:flex;justify-content:space-between"><span>${l.msg}</span><span>${new Date(l.at).toLocaleDateString('az')}</span></div>`).join(''):'<div>Hələ sync edilməyib</div>';}
+}
+window.openCrmModal=function(t){crmTarget=t;const crm=UD?.crm||{};if(t==='hubspot'){document.getElementById('crmModalTitle').textContent='HubSpot';document.getElementById('crmModalSub').textContent='Private App API key daxil edin';document.getElementById('crmModalFields').innerHTML=`<div class="form-group"><label class="form-label">API Key</label><input class="form-input" id="crmKey1" placeholder="pat-na1-..." value="${crm.hubspot?.apiKey||''}"></div>`;}else{document.getElementById('crmModalTitle').textContent='Salesforce';document.getElementById('crmModalSub').textContent='Connected App məlumatları';document.getElementById('crmModalFields').innerHTML=`<div class="form-group"><label class="form-label">Instance URL</label><input class="form-input" id="crmKey1" placeholder="https://yourorg.salesforce.com" value="${crm.salesforce?.instanceUrl||''}"></div><div class="form-group"><label class="form-label">Access Token</label><input class="form-input" id="crmKey2" value="${crm.salesforce?.token||''}"></div>`;}document.getElementById('crmModal').classList.add('open');};
+window.saveCrmConfig=async function(){const k1=document.getElementById('crmKey1')?.value.trim();if(!k1){showToast('Məlumatları daxil edin','error');return;}const crm=UD?.crm||{};if(crmTarget==='hubspot')crm.hubspot={apiKey:k1,syncCount:crm.hubspot?.syncCount||0};else{const k2=document.getElementById('crmKey2')?.value.trim();crm.salesforce={instanceUrl:k1,token:k2,syncCount:crm.salesforce?.syncCount||0};}await update(ref(db,`users/${CU.uid}`),{crm});showToast('CRM qoşuldu','success');closeModal('crmModal');};
+window.syncToHubspot=async function(){const apiKey=UD?.crm?.hubspot?.apiKey;if(!apiKey){showToast('HubSpot qoşulmayıb','error');return;}showToast('HubSpot-a göndərilir...');let count=0;for(const c of allContacts){try{const r=await fetch('https://api.hubapi.com/crm/v3/objects/contacts',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},body:JSON.stringify({properties:{firstname:c.name?.split(' ')[0]||'',lastname:c.name?.split(' ').slice(1).join(' ')||'',phone:c.phone||'',email:c.email||'',company:c.company||'',jobtitle:c.position||''}})});if(r.ok||r.status===409)count++;}catch(e){}}const log=[...(UD?.crm?.log||[]),{msg:`HubSpot: ${count} kontakt`,at:Date.now()}];await update(ref(db,`users/${CU.uid}/crm`),{'hubspot/syncCount':count,log});showToast(`${count} kontakt göndərildi`,'success');};
+window.syncToSalesforce=async function(){const sf=UD?.crm?.salesforce;if(!sf?.instanceUrl||!sf?.token){showToast('Salesforce qoşulmayıb','error');return;}showToast('Salesforce-a göndərilir...');let count=0;for(const c of allContacts){try{const r=await fetch(`${sf.instanceUrl}/services/data/v58.0/sobjects/Contact`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+sf.token},body:JSON.stringify({FirstName:c.name?.split(' ')[0]||'',LastName:c.name?.split(' ').slice(1).join(' ')||c.name||'',Phone:c.phone||'',Email:c.email||'',Title:c.position||''})});if(r.ok||r.status===201)count++;}catch(e){}}const log=[...(UD?.crm?.log||[]),{msg:`Salesforce: ${count} kontakt`,at:Date.now()}];await update(ref(db,`users/${CU.uid}/crm`),{'salesforce/syncCount':count,log});showToast(`${count} kontakt göndərildi`,'success');};
+window.openUpgradeModal=function(){document.getElementById('upgradeModal').classList.add('open');};
 
 // CHARTS
 let _barChart=null,_donutChart=null;
 function renderCharts(views,uniqueViews,saves,contacts){
   if(typeof Chart==='undefined')return;
-  // Bar chart
-  const bCtx=document.getElementById('barChart');
-  if(!bCtx)return;
+  const bCtx=document.getElementById('barChart');if(!bCtx)return;
   if(_barChart)_barChart.destroy();
-  _barChart=new Chart(bCtx,{
-    type:'bar',
-    data:{
-      labels:['Ümumi baxış','Unikal baxış','Saxlayan','Kontaktlar'],
-      datasets:[{
-        data:[views,uniqueViews,saves,contacts],
-        backgroundColor:['rgba(24,95,165,.85)','rgba(79,172,254,.85)','rgba(39,174,96,.85)','rgba(201,168,76,.85)'],
-        borderRadius:8,borderSkipped:false
-      }]
-    },
-    options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.raw+' ədəd'}}},scales:{y:{beginAtZero:true,ticks:{precision:0},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}
-  });
-  // Donut chart
-  const dCtx=document.getElementById('donutChart');
-  if(!dCtx)return;
+  _barChart=new Chart(bCtx,{type:'bar',data:{labels:['Baxış','Unikal','Saxlayan','Kontakt'],datasets:[{data:[views,uniqueViews,saves,contacts],backgroundColor:['rgba(24,95,165,.85)','rgba(79,172,254,.85)','rgba(39,174,96,.85)','rgba(201,168,76,.85)'],borderRadius:8,borderSkipped:false}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}});
+  const dCtx=document.getElementById('donutChart');if(!dCtx)return;
   if(_donutChart)_donutChart.destroy();
   const repeat=Math.max(0,views-uniqueViews);
-  _donutChart=new Chart(dCtx,{
-    type:'doughnut',
-    data:{
-      labels:['Unikal','Təkrar'],
-      datasets:[{data:[uniqueViews||0,repeat||0],backgroundColor:['#185FA5','#4FACFE'],borderWidth:0,hoverOffset:4}]
-    },
-    options:{responsive:false,cutout:'72%',plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.label+': '+ctx.raw}}}}
-  });
+  _donutChart=new Chart(dCtx,{type:'doughnut',data:{labels:['Unikal','Təkrar'],datasets:[{data:[uniqueViews||0,repeat||0],backgroundColor:['#185FA5','#4FACFE'],borderWidth:0,hoverOffset:4}]},options:{responsive:false,cutout:'72%',plugins:{legend:{display:false}}}});
 }
-
 function renderActivityFeed(d){
   const el=document.getElementById('activityFeed');if(!el)return;
   const items=[];
-  if(d.stats?.views)items.push({icon:'👁',text:`Profiliniz ${d.stats.views} dəfə baxılıb`,t:Date.now()-3e5});
-  if(d.stats?.saves)items.push({icon:'💾',text:`${d.stats.saves} nəfər kontaktınızı saxlayıb`,t:Date.now()-6e5});
-  if(allContacts.length)items.push({icon:'📇',text:`${allContacts.length} kontakt qeyd edilib`,t:Date.now()-9e5});
-  if(d.pdfs?.length)items.push({icon:'📄',text:`${d.pdfs.length} PDF sənəd əlavə edilib`,t:Date.now()-12e5});
+  if(d.stats?.views)items.push({icon:'👁',text:`Profiliniz ${d.stats.views} dəfə baxılıb`});
+  if(d.stats?.saves)items.push({icon:'💾',text:`${d.stats.saves} nəfər kontaktınızı saxlayıb`});
+  if(allContacts.length)items.push({icon:'📇',text:`${allContacts.length} kontakt qeyd edilib`});
+  if(d.pdfs?.length)items.push({icon:'📄',text:`${d.pdfs.length} PDF sənəd əlavə edilib`});
   if(!items.length){el.innerHTML='<div style="font-size:12px;color:var(--gray);text-align:center;padding:.9rem">Hələ aktivlik yoxdur</div>';return;}
   el.innerHTML=items.map(i=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--gray-light)"><span style="font-size:18px">${i.icon}</span><span style="font-size:13px;color:var(--navy)">${i.text}</span></div>`).join('');
 }
 
-window.openAddContactModal=function(){showPanel('contacts');};
-
-// QR (only for vCard generation, no panel needed)
-function generateQRCodes(c,slug){
-  const v=`BEGIN:VCARD\nVERSION:3.0\nFN:${c.name||''} ${c.surname||''}\nTITLE:${c.position||''}\nORG:${c.company||''}\nTEL:${c.phone||''}\nEMAIL:${c.email||''}\nURL:${c.web||''}\nEND:VCARD`;
-  ['qrMini','qrBig'].forEach(id=>{const el=document.getElementById(id);if(!el)return;el.innerHTML='';try{new QRCode(el,{text:v,width:id==='qrBig'?200:96,height:id==='qrBig'?200:96,colorDark:'#0a1628',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});}catch(e){}});
-}
-window.downloadQR=function(){const c=document.querySelector('#qrBig canvas');if(!c){showToast('Əvvəlcə kartı doldurun','error');return;}const a=document.createElement('a');a.download='cardpro-qr.png';a.href=c.toDataURL('image/png');a.click();};
 window.copyLink=function(){const s=UD?.slug;if(!s){showToast('Profil linki yoxdur','error');return;}navigator.clipboard.writeText('https://cardpro.az/'+s);showToast('Link kopyalandı','success');};
 window.viewProfile=function(){const s=UD?.slug;if(!s){showToast('Profil linki yoxdur','error');return;}window.open('profile.html?u='+s,'_blank');};
-
-// NAV
 window.showPanel=function(n){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
@@ -988,7 +603,7 @@ window.showPanel=function(n){
 };
 window.closeModal=function(id){document.getElementById(id).classList.remove('open');};
 document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
-window.doLogout=async function(){stopScanner();await signOut(auth);location.href='index.html';};
+window.doLogout=async function(){await signOut(auth);location.href='index.html';};
 function showToast(m,t=''){const el=document.getElementById('toast');el.textContent=m;el.className='toast show '+t;setTimeout(()=>el.className='toast',3000);}
 window.showToast=showToast;
 </script>
