@@ -591,7 +591,6 @@ function loadUD(){
   renderActivityFeed(d);
   loadPdfList(d.pdfs||[]);
   loadCrmStatus(d.crm||{},d.plan||'free');
-  updateScanLimit(d.scanCount||0,isPro);
   renderTemplates();
   loadCustomColors();
   renderSigPreview();
