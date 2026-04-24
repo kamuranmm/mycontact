@@ -79,13 +79,12 @@ body{font-family:'Inter',sans-serif;background:#f0f2f5;min-height:100vh;display:
 .cdot:hover,.cdot.on{transform:scale(1.15);border-color:var(--dark)}
 .cc-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--g);margin-bottom:.75rem}
 .cc-row input[type=color]{width:28px;height:28px;border:none;border-radius:50%;cursor:pointer;padding:0}
-.tmpl-scroll{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding-bottom:4px}
-.to{flex-shrink:0;border:2px solid var(--gl);border-radius:12px;padding:0;text-align:center;cursor:pointer;font-size:9px;color:var(--g);transition:all .2s;font-weight:600;overflow:hidden;background:#fff}
-.to:hover{border-color:var(--p);transform:translateY(-1px);box-shadow:0 4px 12px rgba(24,95,165,.15)}
-.to.on{border-color:var(--p);box-shadow:0 0 0 3px rgba(24,95,165,.12)}
-.to-prev{height:54px;border-radius:0;margin-bottom:0;overflow:hidden;position:relative}
-.to-foot{padding:5px 4px 6px;font-size:9px;font-weight:600;color:var(--g);border-top:1px solid var(--gl)}
-.to.on .to-foot{color:var(--p)}
+.tmpl-scroll{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.tmpl-scroll::-webkit-scrollbar{display:none}
+.to{flex-shrink:0;width:72px;border:2px solid var(--gl);border-radius:10px;padding:5px 4px;text-align:center;cursor:pointer;font-size:9px;color:var(--g);transition:all .15s;font-weight:600}
+.to:hover{border-color:var(--p);color:var(--p)}
+.to.on{border-color:var(--p);color:var(--p)}
+.to-prev{height:36px;border-radius:6px;margin-bottom:3px;overflow:hidden;position:relative}
 
 /* not found */
 .nf{text-align:center;padding:2.5rem 1.25rem;background:#fff;border-radius:20px;width:100%;max-width:430px;margin:0 .75rem}
@@ -104,19 +103,19 @@ body{font-family:'Inter',sans-serif;background:#f0f2f5;min-height:100vh;display:
 .c1-head{height:150px;background:linear-gradient(135deg,var(--p),var(--a));position:relative;overflow:hidden}
 .c1-head img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .c1-body{padding:0 1.25rem 1.5rem}
-.c1-av-wrap{margin-top:-48px;margin-bottom:10px}
-.c1-av{width:90px;height:90px;border-radius:50%;border:4px solid #fff;background:var(--gl);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:32px;color:var(--g);overflow:hidden;box-shadow:0 3px 14px rgba(0,0,0,.13)}
+.c1-av-wrap{margin-top:-46px;margin-bottom:10px;position:relative;z-index:2;width:fit-content}
+.c1-av{width:90px;height:90px;border-radius:50%;border:4px solid #fff;background:var(--gl);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:32px;color:var(--g);overflow:hidden;box-shadow:0 3px 14px rgba(0,0,0,.18);position:relative;z-index:2}
 .c1-av img{width:100%;height:100%;object-fit:cover}
 .c1-name{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--dark);margin-bottom:2px}
 .c1-pos{font-size:13px;color:var(--g);margin-bottom:1px}
 .c1-co{font-size:13px;color:var(--p);font-weight:600;margin-bottom:10px}
 .c1-bio{font-size:13px;color:var(--g);line-height:1.6;margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--gl)}
 .c1-list{display:flex;flex-direction:column;gap:2px;margin-bottom:1rem}
-.c1-row{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:10px;text-decoration:none;cursor:pointer;transition:background .15s;color:inherit}
+.c1-row{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:10px;text-decoration:none;cursor:pointer;transition:background .15s}
 .c1-row:hover{background:var(--s)}
 .c1-ico{width:36px;height:36px;border-radius:9px;background:rgba(24,95,165,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.c1-val{font-size:13px;color:var(--dark);font-weight:500}
-.c1-lbl{font-size:10px;color:var(--g)}
+.c1-val{font-size:13px;color:var(--dark);font-weight:500;display:flex;align-items:center}
+.c1-lbl{display:none}
 .c1-soc{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1rem}
 .c1-sp{display:flex;align-items:center;gap:5px;padding:6px 13px;border-radius:20px;font-size:12px;font-weight:500;text-decoration:none;border:1px solid var(--gl);color:var(--dark);background:#fff}
 .c1-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
@@ -137,10 +136,10 @@ body{font-family:'Inter',sans-serif;background:#f0f2f5;min-height:100vh;display:
 .c2-body{padding:0 1.25rem 1.5rem}
 .c2-bio{font-size:13px;color:var(--g);line-height:1.6;margin-bottom:.9rem;padding-bottom:.9rem;border-bottom:1px solid var(--gl)}
 .c2-list{display:flex;flex-direction:column}
-.c2-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--gl);text-decoration:none;cursor:pointer;color:inherit}
+.c2-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--gl);text-decoration:none;cursor:pointer}
 .c2-row:last-child{border-bottom:none}
 .c2-val{font-size:13px;color:var(--dark);font-weight:500;flex:1}
-.c2-lbl{font-size:10px;color:var(--g)}
+.c2-lbl{display:none}
 .c2-soc{display:flex;flex-wrap:wrap;gap:6px;padding-top:.75rem;border-top:1px solid var(--gl);margin-bottom:1rem}
 .c2-sp{display:flex;align-items:center;gap:4px;padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;text-decoration:none;background:var(--s);color:var(--dark)}
 .c2-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
@@ -166,7 +165,7 @@ body{font-family:'Inter',sans-serif;background:#f0f2f5;min-height:100vh;display:
 .c3-row:hover{background:rgba(255,255,255,.11)}
 .c3-ico{width:32px;height:32px;border-radius:8px;background:rgba(79,172,254,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .c3-val{font-size:13px;color:rgba(255,255,255,.85);font-weight:500}
-.c3-lbl{font-size:10px;color:rgba(255,255,255,.35)}
+.c3-lbl{display:none}
 .c3-soc{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1rem;border-top:1px solid rgba(255,255,255,.07);padding-top:.75rem}
 .c3-sp{display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:9px;font-size:12px;font-weight:500;text-decoration:none;background:rgba(255,255,255,.07);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1)}
 .c3-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
@@ -188,11 +187,11 @@ body{font-family:'Inter',sans-serif;background:#f0f2f5;min-height:100vh;display:
 .c4-co{font-size:13px;color:var(--p);font-weight:600}
 .c4-bio{font-size:13px;color:#888;line-height:1.6;margin-bottom:.9rem}
 .c4-list{display:flex;flex-direction:column;gap:0;margin-bottom:.75rem}
-.c4-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #f0f0f0;cursor:pointer;text-decoration:none;color:inherit}
+.c4-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #f0f0f0;cursor:pointer;text-decoration:none}
 .c4-row:last-child{border-bottom:none}
 .c4-ico{width:38px;height:38px;border-radius:50%;background:color-mix(in srgb,var(--p) 10%,#fff);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .c4-val{font-size:13px;color:var(--dark);font-weight:500;flex:1}
-.c4-lbl{font-size:10px;color:#aaa}
+.c4-lbl{display:none}
 .c4-soc{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1rem}
 .c4-sp{display:flex;align-items:center;gap:5px;padding:6px 13px;border-radius:20px;font-size:12px;font-weight:500;text-decoration:none;border:1.5px solid #eee;color:#333}
 .c4-send{display:flex;align-items:center;gap:7px;padding:12px 22px;border-radius:50px;background:var(--p);color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif}
@@ -268,7 +267,7 @@ body{font-family:'Inter',sans-serif;background:#f0f2f5;min-height:100vh;display:
 .c7-row:hover{background:rgba(255,255,255,.1)}
 .c7-ico{width:32px;height:32px;border-radius:8px;background:rgba(79,172,254,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .c7-val{font-size:13px;color:rgba(255,255,255,.85);font-weight:500;flex:1}
-.c7-lbl{font-size:10px;color:rgba(255,255,255,.3)}
+.c7-lbl{display:none}
 .c7-soc{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:.9rem;border-top:1px solid rgba(255,255,255,.07);padding-top:.75rem}
 .c7-sp{display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:9px;font-size:12px;font-weight:500;text-decoration:none;background:rgba(255,255,255,.07);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1)}
 .c7-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
@@ -300,7 +299,7 @@ body{font-family:'Inter',sans-serif;background:#f0f2f5;min-height:100vh;display:
 .c8-row:last-child{border-bottom:none}
 .c8-ico{width:32px;height:32px;border-radius:8px;background:color-mix(in srgb,var(--p) 8%,#fff);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .c8-val{font-size:13px;color:var(--dark);font-weight:500;flex:1}
-.c8-lbl{font-size:10px;color:#bbb}
+.c8-lbl{display:none}
 .c8-soc{display:flex;flex-wrap:wrap;gap:7px;margin-top:.5rem}
 .c8-sp{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;text-decoration:none;border:1px solid #eee;color:#333;background:#fafafa}
 
@@ -324,7 +323,7 @@ body{font-family:'Inter',sans-serif;background:#f0f2f5;min-height:100vh;display:
 .c9-row:hover{background:rgba(255,255,255,.11)}
 .c9-ico{width:32px;height:32px;border-radius:50%;background:rgba(79,172,254,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .c9-val{font-size:13px;color:rgba(255,255,255,.85);font-weight:500;flex:1}
-.c9-lbl{font-size:10px;color:rgba(255,255,255,.3)}
+.c9-lbl{display:none}
 .c9-soc{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:.9rem;padding-top:.75rem;border-top:1px solid rgba(255,255,255,.07)}
 .c9-sp{display:flex;align-items:center;gap:5px;padding:7px 14px;border-radius:50px;font-size:12px;font-weight:600;text-decoration:none;background:rgba(255,255,255,.08);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.1)}
 .c9-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
@@ -482,226 +481,18 @@ body{font-family:'Inter',sans-serif;background:#f0f2f5;min-height:100vh;display:
     <div class="cc-row"><input type="color" id="cc" value="#185FA5" oninput="setColor(this.value)"><span>Özəl rəng</span></div>
     <div class="fp-title">Dizayn</div>
     <div class="tmpl-scroll">
-
-      <!-- T1 Classic -->
-      <div class="to on" id="t-1" onclick="setTmpl(1)">
-        <div class="to-prev">
-          <svg viewBox="0 0 100 54" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:54px">
-            <rect width="100" height="54" fill="#f8fafc"/>
-            <rect width="100" height="22" fill="#185FA5"/>
-            <circle cx="18" cy="22" r="9" fill="#fff" stroke="#fff" stroke-width="2"/>
-            <circle cx="18" cy="22" r="7" fill="#e0ecf8"/>
-            <rect x="30" y="16" width="30" height="3" rx="1.5" fill="#fff" opacity=".8"/>
-            <rect x="30" y="21" width="20" height="2" rx="1" fill="#fff" opacity=".5"/>
-            <rect x="10" y="36" width="80" height="1.5" rx=".75" fill="#e8edf5"/>
-            <rect x="10" y="41" width="60" height="1.5" rx=".75" fill="#e8edf5"/>
-            <rect x="10" y="46" width="70" height="1.5" rx=".75" fill="#e8edf5"/>
-          </svg>
-        </div>
-        <div class="to-foot">Classic</div>
-      </div>
-
-      <!-- T2 Minimal -->
-      <div class="to" id="t-2" onclick="setTmpl(2)">
-        <div class="to-prev">
-          <svg viewBox="0 0 100 54" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:54px">
-            <rect width="100" height="54" fill="#fff"/>
-            <rect width="100" height="4" fill="#185FA5"/>
-            <rect x="10" y="12" width="18" height="18" rx="4" fill="#e8edf5"/>
-            <rect x="32" y="14" width="35" height="3" rx="1.5" fill="#0a1628" opacity=".7"/>
-            <rect x="32" y="19" width="22" height="2" rx="1" fill="#8A9BB5"/>
-            <rect x="32" y="23" width="18" height="2" rx="1" fill="#185FA5" opacity=".6"/>
-            <rect x="10" y="34" width="80" height="1" rx=".5" fill="#e8edf5"/>
-            <rect x="10" y="38" width="80" height="1" rx=".5" fill="#e8edf5"/>
-            <rect x="10" y="42" width="60" height="1" rx=".5" fill="#e8edf5"/>
-            <rect x="10" y="46" width="70" height="1" rx=".5" fill="#e8edf5"/>
-          </svg>
-        </div>
-        <div class="to-foot">Minimal</div>
-      </div>
-
-      <!-- T3 Bold Dark -->
-      <div class="to" id="t-3" onclick="setTmpl(3)">
-        <div class="to-prev">
-          <svg viewBox="0 0 100 54" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:54px">
-            <rect width="100" height="54" fill="#0d1117"/>
-            <rect x="0" y="0" width="100" height="28" fill="url(#t3g)"/>
-            <defs><linearGradient id="t3g" x1="0" y1="0" x2="100" y2="28" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0a1628"/><stop offset="1" stop-color="#185FA5" stop-opacity=".6"/></linearGradient></defs>
-            <circle cx="18" cy="18" r="8" fill="rgba(255,255,255,.1)" stroke="rgba(255,255,255,.3)" stroke-width="1.5"/>
-            <rect x="30" y="13" width="30" height="3" rx="1.5" fill="#fff" opacity=".8"/>
-            <rect x="30" y="18" width="20" height="2" rx="1" fill="#4FACFE" opacity=".7"/>
-            <rect x="8" y="32" width="84" height="7" rx="3" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.09)" stroke-width=".5"/>
-            <rect x="8" y="42" width="84" height="7" rx="3" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.09)" stroke-width=".5"/>
-          </svg>
-        </div>
-        <div class="to-foot">Bold Dark</div>
-      </div>
-
-      <!-- T4 Wave -->
-      <div class="to" id="t-4" onclick="setTmpl(4)">
-        <div class="to-prev">
-          <svg viewBox="0 0 100 54" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:54px">
-            <rect width="100" height="54" fill="#fff"/>
-            <rect width="100" height="28" fill="#185FA5"/>
-            <circle cx="50" cy="28" r="10" fill="#f8f8f8"/>
-            <path d="M0,24 C17,32 33,20 50,24 C67,28 83,16 100,24 L100,28 L0,28Z" fill="#fff"/>
-            <rect x="4" y="38" width="3" height="14" rx="1.5" fill="#185FA5"/>
-            <rect x="11" y="40" width="28" height="2.5" rx="1.2" fill="#0a1628" opacity=".7"/>
-            <rect x="11" y="44" width="18" height="2" rx="1" fill="#8A9BB5"/>
-            <rect x="48" y="38" width="48" height="1" rx=".5" fill="#e8edf5"/>
-            <rect x="48" y="42" width="40" height="1" rx=".5" fill="#e8edf5"/>
-            <rect x="48" y="46" width="44" height="1" rx=".5" fill="#e8edf5"/>
-          </svg>
-        </div>
-        <div class="to-foot">Wave</div>
-      </div>
-
-      <!-- T5 Team -->
-      <div class="to" id="t-5" onclick="setTmpl(5)">
-        <div class="to-prev">
-          <svg viewBox="0 0 100 54" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:54px">
-            <rect width="100" height="54" fill="#f8fafc"/>
-            <rect width="100" height="18" fill="#7C3AED"/>
-            <circle cx="50" cy="18" r="9" fill="#fff" stroke="#fff" stroke-width="2"/>
-            <circle cx="50" cy="18" r="7" fill="#ede9fe"/>
-            <rect x="30" y="29" width="40" height="2.5" rx="1.2" fill="#0a1628" opacity=".7"/>
-            <rect x="35" y="33" width="30" height="2" rx="1" fill="#7C3AED" opacity=".6"/>
-            <rect x="20" y="39" width="18" height="8" rx="3" fill="#e8e4f8"/>
-            <rect x="41" y="39" width="18" height="8" rx="3" fill="#e8e4f8"/>
-            <rect x="62" y="39" width="18" height="8" rx="3" fill="#e8e4f8"/>
-          </svg>
-        </div>
-        <div class="to-foot">Team</div>
-      </div>
-
-      <!-- T6 Split -->
-      <div class="to" id="t-6" onclick="setTmpl(6)">
-        <div class="to-prev">
-          <svg viewBox="0 0 100 54" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:54px">
-            <rect width="100" height="54" fill="#fff"/>
-            <rect width="36" height="54" fill="#185FA5"/>
-            <rect x="8" y="10" width="20" height="22" rx="3" fill="rgba(255,255,255,.15)" stroke="rgba(255,255,255,.25)" stroke-width="1"/>
-            <rect x="11" y="36" width="14" height="2" rx="1" fill="rgba(255,255,255,.4)"/>
-            <rect x="11" y="40" width="10" height="2" rx="1" fill="rgba(255,255,255,.25)"/>
-            <rect x="44" y="10" width="48" height="2.5" rx="1.2" fill="#0a1628" opacity=".7"/>
-            <rect x="44" y="15" width="35" height="2" rx="1" fill="#8A9BB5"/>
-            <rect x="44" y="22" width="48" height="1" rx=".5" fill="#e8edf5"/>
-            <rect x="44" y="26" width="40" height="1" rx=".5" fill="#e8edf5"/>
-            <rect x="44" y="30" width="44" height="1" rx=".5" fill="#e8edf5"/>
-            <rect x="44" y="34" width="36" height="1" rx=".5" fill="#e8edf5"/>
-          </svg>
-        </div>
-        <div class="to-foot">Split</div>
-      </div>
-
-      <!-- T7 Linko -->
-      <div class="to" id="t-7" onclick="setTmpl(7)">
-        <div class="to-prev">
-          <svg viewBox="0 0 100 54" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:54px">
-            <rect width="100" height="54" fill="#111"/>
-            <rect width="100" height="30" fill="url(#t7g)"/>
-            <defs><linearGradient id="t7g" x1="0" y1="0" x2="0" y2="30" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="transparent"/><stop offset="1" stop-color="#111"/></linearGradient></defs>
-            <rect x="8" y="16" width="30" height="3" rx="1.5" fill="#fff" opacity=".8"/>
-            <rect x="8" y="21" width="20" height="2" rx="1" fill="rgba(255,255,255,.4)"/>
-            <rect x="8" y="32" width="84" height="8" rx="3" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.1)" stroke-width=".5"/>
-            <rect x="8" y="43" width="84" height="8" rx="3" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.1)" stroke-width=".5"/>
-          </svg>
-        </div>
-        <div class="to-foot">Linko</div>
-      </div>
-
-      <!-- T8 Card -->
-      <div class="to" id="t-8" onclick="setTmpl(8)">
-        <div class="to-prev">
-          <svg viewBox="0 0 100 54" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:54px">
-            <rect width="100" height="54" fill="#f0f4f8"/>
-            <rect x="8" y="6" width="84" height="42" rx="5" fill="#fff" stroke="#e8edf5" stroke-width="1"/>
-            <rect x="8" y="6" width="84" height="14" rx="5" fill="#185FA5"/>
-            <rect x="8" y="14" width="84" height="6" fill="#185FA5"/>
-            <circle cx="28" cy="20" r="7" fill="#fff" stroke="#fff" stroke-width="2"/>
-            <circle cx="28" cy="20" r="5" fill="#e0ecf8"/>
-            <rect x="38" y="15" width="30" height="2.5" rx="1.2" fill="#fff" opacity=".8"/>
-            <rect x="38" y="19" width="20" height="2" rx="1" fill="rgba(255,255,255,.55)"/>
-            <rect x="14" y="30" width="72" height="1.5" rx=".75" fill="#e8edf5"/>
-            <rect x="14" y="34" width="55" height="1.5" rx=".75" fill="#e8edf5"/>
-            <rect x="14" y="38" width="65" height="1.5" rx=".75" fill="#e8edf5"/>
-          </svg>
-        </div>
-        <div class="to-foot">Card</div>
-      </div>
-
-      <!-- T9 Linko+ -->
-      <div class="to" id="t-9" onclick="setTmpl(9)">
-        <div class="to-prev">
-          <svg viewBox="0 0 100 54" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:54px">
-            <rect width="100" height="54" fill="#111"/>
-            <rect width="100" height="54" fill="url(#t9g)"/>
-            <defs><linearGradient id="t9g" x1="0" y1="0" x2="0" y2="54" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="transparent"/><stop offset="1" stop-color="rgba(0,0,0,.9)"/></linearGradient></defs>
-            <rect x="8" y="28" width="50" height="3.5" rx="1.75" fill="#fff" opacity=".9"/>
-            <rect x="8" y="33" width="35" height="2.5" rx="1.2" fill="rgba(255,255,255,.5)"/>
-            <rect x="8" y="40" width="40" height="7" rx="3" fill="rgba(255,255,255,.1)"/>
-            <rect x="52" y="40" width="40" height="7" rx="3" fill="rgba(255,255,255,.1)"/>
-          </svg>
-        </div>
-        <div class="to-foot">Linko+</div>
-      </div>
-
-      <!-- T10 Achievement -->
-      <div class="to" id="t-10" onclick="setTmpl(10)">
-        <div class="to-prev">
-          <svg viewBox="0 0 100 54" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:54px">
-            <rect width="100" height="54" fill="#fff"/>
-            <rect width="100" height="22" fill="#185FA5"/>
-            <circle cx="50" cy="22" r="9" fill="#fff" stroke="#fff" stroke-width="2"/>
-            <circle cx="50" cy="22" r="6.5" fill="#e0ecf8"/>
-            <rect x="22" y="33" width="56" height="2.5" rx="1.2" fill="#0a1628" opacity=".7"/>
-            <rect x="30" y="37" width="40" height="2" rx="1" fill="#8A9BB5"/>
-            <rect x="35" y="43" width="30" height="6" rx="3" fill="rgba(24,95,165,.12)"/>
-            <rect x="42" y="45" width="16" height="2" rx="1" fill="#185FA5" opacity=".6"/>
-          </svg>
-        </div>
-        <div class="to-foot">Achiev.</div>
-      </div>
-
-      <!-- T11 HiHello -->
-      <div class="to" id="t-11" onclick="setTmpl(11)">
-        <div class="to-prev">
-          <svg viewBox="0 0 100 54" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:54px">
-            <rect width="100" height="54" fill="#fff"/>
-            <rect width="100" height="20" fill="#185FA5"/>
-            <path d="M0,16 C17,24 33,12 50,16 C67,20 83,8 100,16 L100,20 L0,20Z" fill="#fff"/>
-            <rect x="4" y="24" width="3" height="20" rx="1.5" fill="#185FA5"/>
-            <rect x="11" y="26" width="35" height="3" rx="1.5" fill="#0a1628" opacity=".7"/>
-            <rect x="11" y="31" width="22" height="2" rx="1" fill="#8A9BB5"/>
-            <rect x="11" y="37" width="80" height="1" rx=".5" fill="#e8edf5"/>
-            <rect x="11" y="41" width="65" height="1" rx=".5" fill="#e8edf5"/>
-            <rect x="11" y="45" width="72" height="1" rx=".5" fill="#e8edf5"/>
-          </svg>
-        </div>
-        <div class="to-foot">HiHello</div>
-      </div>
-
-      <!-- T12 Vitawill -->
-      <div class="to" id="t-12" onclick="setTmpl(12)">
-        <div class="to-prev">
-          <svg viewBox="0 0 100 54" xmlns="http://www.w3.org/2000/svg" style="display:block;width:100%;height:54px">
-            <rect width="100" height="54" fill="#f8fafc"/>
-            <rect width="100" height="8" fill="#fff" stroke="#e8edf5" stroke-width=".5"/>
-            <rect x="8" y="2" width="20" height="4" rx="1" fill="#0a1628" opacity=".4"/>
-            <rect width="100" height="8" fill="none"/>
-            <rect y="8" width="100" height="16" fill="#185FA5"/>
-            <circle cx="50" cy="24" r="9" fill="#f8fafc" stroke="#f8fafc" stroke-width="2"/>
-            <circle cx="50" cy="24" r="7" fill="#e0ecf8"/>
-            <rect x="28" y="35" width="44" height="2.5" rx="1.2" fill="#0a1628" opacity=".7"/>
-            <rect x="35" y="39" width="30" height="2" rx="1" fill="#185FA5" opacity=".6"/>
-            <rect x="20" y="44" width="18" height="7" rx="3" fill="rgba(24,95,165,.1)"/>
-            <rect x="41" y="44" width="18" height="7" rx="3" fill="rgba(24,95,165,.1)"/>
-            <rect x="62" y="44" width="18" height="7" rx="3" fill="rgba(24,95,165,.1)"/>
-          </svg>
-        </div>
-        <div class="to-foot">Vitawill</div>
-      </div>
-
+      <div class="to on" id="t-1" onclick="setTmpl(1)"><div class="to-prev" style="background:linear-gradient(135deg,#185FA5,#4FACFE)"></div>Classic</div>
+      <div class="to" id="t-2" onclick="setTmpl(2)"><div class="to-prev" style="border-top:5px solid #185FA5;background:#f4f6fb"></div>Minimal</div>
+      <div class="to" id="t-3" onclick="setTmpl(3)"><div class="to-prev" style="background:#0d1117"></div>Bold</div>
+      <div class="to" id="t-4" onclick="setTmpl(4)"><div class="to-prev" style="background:linear-gradient(180deg,#185FA5 55%,#fff 45%)"></div>Wave</div>
+      <div class="to" id="t-5" onclick="setTmpl(5)"><div class="to-prev" style="background:linear-gradient(180deg,#7C3AED 55%,#fff 45%)"></div>Team</div>
+      <div class="to" id="t-6" onclick="setTmpl(6)"><div class="to-prev" style="background:linear-gradient(90deg,#185FA5 45%,#fff 45%)"></div>Split</div>
+      <div class="to" id="t-7" onclick="setTmpl(7)"><div class="to-prev" style="background:#111"></div>Linko</div>
+      <div class="to" id="t-8" onclick="setTmpl(8)"><div class="to-prev" style="border-top:10px solid #185FA5;background:#fff;border-radius:6px"></div>Card</div>
+      <div class="to" id="t-9" onclick="setTmpl(9)"><div class="to-prev" style="background:#111"></div>Linko+</div>
+      <div class="to" id="t-10" onclick="setTmpl(10)"><div class="to-prev" style="background:linear-gradient(180deg,#185FA5 55%,#fff 45%)"></div>Achiev</div>
+      <div class="to" id="t-11" onclick="setTmpl(11)"><div class="to-prev" style="background:linear-gradient(180deg,#185FA5 60%,#fff 40%)"></div>HiHello</div>
+      <div class="to" id="t-12" onclick="setTmpl(12)"><div class="to-prev" style="background:linear-gradient(180deg,#185FA5 55%,#fff 45%)"></div>Vitawill</div>
     </div>
   </div>
 </div>
@@ -838,8 +629,8 @@ function ytId(u){return u?.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|embed\/
 
 // avatar HTML — tries img, shows letter on error
 function avImg(src,letter,cls,style=''){
-  if(src) return `<img src="${esc(src)}" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;border-radius:inherit" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:inherit">${esc(letter)}</span>`;
-  return `<span style="display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:inherit">${esc(letter)}</span>`;
+  if(src) return `<img src="${esc(src)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-family:'Playfair Display',serif">${esc(letter)}</span>`;
+  return `<span style="display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-family:'Playfair Display',serif">${esc(letter)}</span>`;
 }
 // cover/bg img
 function bgImg(src){
@@ -887,10 +678,10 @@ function cRows(card,cls,icoCls,w=false){
   let r='';
   const ii=w?'W':'';
   const waP=card.whatsapp||card.phone;const waB=card.whatsappBusiness||'';
-  if(card.phone) r+=`<div class="${cls}" onclick="oPh('${esc(card.phone)}','${esc(waP)}','${esc(waB)}')">${ic(icoCls,ico['phone'+ii])}<div><div class="${cls}-val">${esc(card.phone)}</div><div class="${cls}-lbl">${t('phone')}</div></div></div>`;
-  if(card.email) r+=`<div class="${cls}" onclick="oEm('${esc(card.email)}')">${ic(icoCls,ico['email'+ii])}<div><div class="${cls}-val">${esc(card.email)}</div><div class="${cls}-lbl">${t('email')}</div></div></div>`;
-  if(card.web) r+=`<a class="${cls}" href="${htp(card.web)}" target="_blank">${ic(icoCls,ico['web'+ii])}<div><div class="${cls}-val">${esc(card.web)}</div><div class="${cls}-lbl">${t('web')}</div></div></a>`;
-  if(card.address) r+=`<a class="${cls}" href="https://maps.google.com/?q=${encodeURIComponent(card.address)}" target="_blank">${ic(icoCls,ico['loc'+ii])}<div><div class="${cls}-val">${esc(card.address)}</div><div class="${cls}-lbl">${t('addr')}</div></div></a>`;
+  if(card.phone) r+=`<div class="${cls}" onclick="oPh('${esc(card.phone)}','${esc(waP)}','${esc(waB)}')">${ic(icoCls,ico['phone'+ii])}<div class="${cls}-val">${esc(card.phone)}</div></div>`;
+  if(card.email) r+=`<div class="${cls}" onclick="oEm('${esc(card.email)}')">${ic(icoCls,ico['email'+ii])}<div class="${cls}-val">${esc(card.email)}</div></div>`;
+  if(card.web) r+=`<a class="${cls}" href="${htp(card.web)}" target="_blank">${ic(icoCls,ico['web'+ii])}<div class="${cls}-val">${esc(card.web)}</div></a>`;
+  if(card.address) r+=`<a class="${cls}" href="https://maps.google.com/?q=${encodeURIComponent(card.address)}" target="_blank">${ic(icoCls,ico['loc'+ii])}<div class="${cls}-val">${esc(card.address)}</div></a>`;
   return r;
 }
 function ic(cls,svg){return`<div class="${cls}">${svg}</div>`;}
