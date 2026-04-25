@@ -557,7 +557,7 @@ body{font-family:'Inter',sans-serif;background:#f0f2f5;min-height:100vh;display:
 
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getDatabase,ref,get,update}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import{getDatabase,ref,get,update,query,orderByChild,equalTo}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 const cfg={apiKey:"AIzaSyBx81QDpjHSPvhkmnnSUNkJYMvR_fnRTaU",authDomain:"mycontact-e626e.firebaseapp.com",databaseURL:"https://mycontact-e626e-default-rtdb.firebaseio.com",projectId:"mycontact-e626e",storageBucket:"mycontact-e626e.firebasestorage.app",messagingSenderId:"420594516827",appId:"1:420594516827:web:f30266800c690c6ff9107e"};
 const app=initializeApp(cfg);const db=getDatabase(app);
 const slug=new URLSearchParams(location.search).get('u');
@@ -585,14 +585,13 @@ document.addEventListener('click',e=>{if(!e.target.closest('.lang-dropdown'))doc
 async function init(){
   if(!slug){showNF();return;}
   try{
-    const snap=await get(ref(db,'users'));
+    // Yalnız bu slug-a aid istifadəçini çək — bütün users yox
+    const q=query(ref(db,'users'),orderByChild('slug'),equalTo(slug));
+    const snap=await get(q);
     if(!snap.exists()){showNF();return;}
-    const all=snap.val();
-    const entry=Object.entries(all).find(([,u])=>u.slug===slug);
+    const entry=Object.entries(snap.val())[0];
     if(!entry){showNF();return;}
     [PU,PD]=entry;
-    if(PD.status==='blocked'){showBlocked();return;}
-    // Blok yoxlaması
     if(PD.status==='blocked'){showBlocked();return;}
     lang=localStorage.getItem('cp_lang_'+slug)||PD.defaultLang||'az';
     const lm=LM[lang]||LM.az;document.getElementById('lfl').textContent=lm.f;document.getElementById('lco').textContent=lm.c;document.querySelectorAll('.lang-opt').forEach(o=>o.classList.toggle('sel',o.dataset.l===lang));
