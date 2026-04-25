@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CardPro — Admin Panel</title>
+<title>MyContact — Admin Panel</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
@@ -162,7 +162,7 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-brand">
     <div class="brand-mark"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="3" y="6" width="18" height="13" rx="2"/><circle cx="12" cy="13" r="2"/></svg></div>
-    <span class="brand-name">Card<span>Pro</span></span>
+    <span class="brand-name">My<span>Contact</span></span>
   </div>
   <nav class="sidebar-nav">
     <div class="nav-section">Ümumi</div>
@@ -352,8 +352,8 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem">
           <div style="background:var(--white);border-radius:11px;border:1px solid var(--gray-light);padding:1rem">
             <div style="font-size:13px;font-weight:500;margin-bottom:4px">🌐 Subdomain <span style="font-size:10px;background:#f0fdf4;color:var(--success);padding:2px 7px;border-radius:10px;font-weight:600;margin-left:4px">STANDARD</span></div>
-            <div style="font-size:12px;color:var(--gray);margin-bottom:.75rem">brand.cardpro.az — avtomatik aktivdir</div>
-            <div style="font-family:monospace;font-size:12px;background:var(--surface);padding:6px 10px;border-radius:7px;color:var(--blue)">brand.cardpro.az/profil</div>
+            <div style="font-size:12px;color:var(--gray);margin-bottom:.75rem">brand.apps.mycontact.az — avtomatik aktivdir</div>
+            <div style="font-family:monospace;font-size:12px;background:var(--surface);padding:6px 10px;border-radius:7px;color:var(--blue)">brand.apps.mycontact.az/profil</div>
           </div>
           <div style="background:var(--white);border-radius:11px;border:1px solid var(--gray-light);padding:1rem">
             <div style="font-size:13px;font-weight:500;margin-bottom:4px">🔗 Custom Domain <span style="font-size:10px;background:rgba(201,168,76,.15);color:#b45309;padding:2px 7px;border-radius:10px;font-weight:600;margin-left:4px">PRO/BUSINESS</span></div>
@@ -394,7 +394,7 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
           <div class="dns-guide">
             <div><strong>CNAME qeydi (subdomain üçün):</strong></div>
             <div><span class="dns-record">Host: cards (və ya istənilən subdomain)</span></div>
-            <div><span class="dns-record">Value: proxy.cardpro.az</span></div>
+            <div><span class="dns-record">Value: proxy.apps.mycontact.az</span></div>
             <div style="margin-top:.6rem"><strong>A qeydi (kök domain üçün):</strong></div>
             <div><span class="dns-record">Host: @ </span></div>
             <div><span class="dns-record">Value: 76.76.21.21</span></div>
@@ -492,7 +492,7 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
     <input type="hidden" id="editUid">
     <div class="form-group"><label class="form-label">Ad Soyad</label><input class="form-input" id="editName"></div>
     <div class="form-group"><label class="form-label">Şirkət</label><input class="form-input" id="editCompany"></div>
-    <div class="form-group"><label class="form-label">Kart linki</label><div style="display:flex;align-items:center;gap:6px"><span style="font-size:12px;color:var(--gray);white-space:nowrap">cardpro.az/</span><input class="form-input" id="editSlug"></div></div>
+    <div class="form-group"><label class="form-label">Kart linki</label><div style="display:flex;align-items:center;gap:6px"><span style="font-size:12px;color:var(--gray);white-space:nowrap">apps.mycontact.az/</span><input class="form-input" id="editSlug"></div></div>
     <div class="form-group"><label class="form-label">Plan</label>
       <div class="plan-options">
         <div class="plan-opt" onclick="selectEditPlan(this,'free')"><div class="plan-opt-name">🟢 Free</div></div>
@@ -544,7 +544,7 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
     <div class="form-group">
       <label class="form-label" style="display:flex;align-items:center;gap:6px">
         <span style="background:rgba(24,95,165,.12);color:var(--blue);font-size:10px;padding:2px 7px;border-radius:8px;font-weight:600">ADMİN</span>
-        Brand Link (CardPro loqosu profil altında)
+        Brand Link (MyContact loqosu profil altında)
       </label>
       <div style="display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-radius:9px;padding:10px 14px;border:1px solid var(--gray-light)">
         <span style="font-size:13px;color:var(--navy)">Brand linki göstər</span>
@@ -553,7 +553,7 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
           <span id="brandLinkSlider" style="position:absolute;inset:0;border-radius:12px;background:var(--gray-light);transition:.3s;display:flex;align-items:center;padding:2px"></span>
         </label>
       </div>
-      <div style="font-size:11px;color:var(--gray);margin-top:4px">Söndürüldükdə "CardPro ilə yaradılmışdır" linki profil səhifəsindən gizlənir</div>
+      <div style="font-size:11px;color:var(--gray);margin-top:4px">Söndürüldükdə "MyContact ilə yaradılmışdır" linki profil səhifəsindən gizlənir</div>
     </div>
     <div class="modal-footer"><button class="btn btn-danger btn-sm" onclick="deleteUser()">Sil</button><button class="btn" onclick="closeModal('editModal')">Ləğv et</button><button class="btn btn-primary" onclick="saveUser()">Saxla</button></div>
   </div>
@@ -591,8 +591,21 @@ let allUsers=[],selectedPlan='free',selectedEditPlan='free',selectedRole='user',
 
 onAuthStateChanged(auth,async u=>{
   if(!u){location.href='index.html';return;}
-  const s=await get(ref(db,`users/${u.uid}/role`));
-  if(s.val()!=='admin'){location.href='dashboard.html';return;}
+  // Double check — həm client həm DB
+  try{
+    const s=await get(ref(db,`users/${u.uid}`));
+    const data=s.val();
+    if(!data||data.role!=='admin'){
+      alert('Giriş icazəsi yoxdur');
+      await signOut(auth);
+      location.href='index.html';
+      return;
+    }
+  }catch(e){
+    await signOut(auth);
+    location.href='index.html';
+    return;
+  }
   const ns=await get(ref(db,`users/${u.uid}/name`));
   const n=ns.val()||u.email;
   document.getElementById('adminName').textContent=n;
@@ -655,8 +668,8 @@ function renderRecentUsers(){
 function renderUsers(users){
   const tbody=document.getElementById('usersBody');const mc=document.getElementById('usersMobileCards');
   if(!users.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--gray)">Nəticə tapılmadı</td></tr>';mc.innerHTML='';return;}
-  tbody.innerHTML=users.map(u=>`<tr><td><div class="user-cell"><div class="user-av">${u.card?.photo?`<img src="${u.card.photo}">`:(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div></td><td>${planBadge(u.plan)}</td><td>${roleBadge(u.userRole||'user')}</td><td>${statusBadge(u.status)}</td><td style="font-size:12px;color:var(--blue-light)">${u.slug?'cardpro.az/'+u.slug:'—'}</td><td><div class="action-btns"><button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button><button class="btn btn-sm" onclick="toggleBlock('${u.uid}','${u.status||'active'}')">${u.status==='blocked'?'Aktiv et':'Blokla'}</button></div></td></tr>`).join('');
-  mc.innerHTML=users.map(u=>`<div class="mobile-card"><div class="mobile-card-top"><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div><div style="display:flex;gap:4px;flex-wrap:wrap">${planBadge(u.plan)}${roleBadge(u.userRole||'user')}</div></div><div class="mobile-card-meta">${u.slug?'cardpro.az/'+u.slug:'Link yoxdur'}</div><div style="display:flex;gap:5px;margin-top:8px"><button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button><button class="btn btn-sm" onclick="toggleBlock('${u.uid}','${u.status||'active'}')">${u.status==='blocked'?'Aktiv et':'Blokla'}</button></div></div>`).join('');
+  tbody.innerHTML=users.map(u=>`<tr><td><div class="user-cell"><div class="user-av">${u.card?.photo?`<img src="${u.card.photo}">`:(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div></td><td>${planBadge(u.plan)}</td><td>${roleBadge(u.userRole||'user')}</td><td>${statusBadge(u.status)}</td><td style="font-size:12px;color:var(--blue-light)">${u.slug?'apps.mycontact.az/'+u.slug:'—'}</td><td><div class="action-btns"><button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button><button class="btn btn-sm" onclick="toggleBlock('${u.uid}','${u.status||'active'}')">${u.status==='blocked'?'Aktiv et':'Blokla'}</button></div></td></tr>`).join('');
+  mc.innerHTML=users.map(u=>`<div class="mobile-card"><div class="mobile-card-top"><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div><div style="display:flex;gap:4px;flex-wrap:wrap">${planBadge(u.plan)}${roleBadge(u.userRole||'user')}</div></div><div class="mobile-card-meta">${u.slug?'apps.mycontact.az/'+u.slug:'Link yoxdur'}</div><div style="display:flex;gap:5px;margin-top:8px"><button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button><button class="btn btn-sm" onclick="toggleBlock('${u.uid}','${u.status||'active'}')">${u.status==='blocked'?'Aktiv et':'Blokla'}</button></div></div>`).join('');
 }
 
 function renderCards(){
@@ -712,7 +725,7 @@ window.addDomain=async function(){
   // If admin assigned, update their role in users
   if(adminUid){await update(ref(db,`users/${adminUid}`),{domainAdmin:key,domainAdminOf:d});}
   document.getElementById('newDomain').value='';if(document.getElementById('newDomainAdmin'))document.getElementById('newDomainAdmin').value='';
-  showToast(`Domain əlavə edildi. DNS: CNAME → proxy.cardpro.az`,'success');
+  showToast(`Domain əlavə edildi. DNS: CNAME → proxy.apps.mycontact.az`,'success');
   renderDomains();
 };
 window.editDomainAdmin=async function(k){
@@ -796,7 +809,7 @@ window.createUser=async function(){
       company,createdAt:Date.now(),scanCount:0,defaultLang:'az',
       card:{name,surname:sur||'',phone:'',email,web:'',position:'',company,bio:'',address:'',photo:'',cover:''}
     });
-    ok.textContent='Yaradıldı! Link: cardpro.az/'+slug;ok.className='success-box show';
+    ok.textContent='Yaradıldı! Link: apps.mycontact.az/'+slug;ok.className='success-box show';
     showToast('İstifadəçi yaradıldı','success');setTimeout(()=>closeModal('createModal'),2000);
   }catch(e){let m='Xəta baş verdi.';if(e.code==='auth/email-already-in-use')m='Bu email artıq istifadə olunur.';err.textContent=m;err.className='error-box show';}
   btn.disabled=false;btn.textContent='Yarat';
