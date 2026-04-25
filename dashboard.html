@@ -421,13 +421,13 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
             <div style="font-size:12px;color:var(--gray);margin-bottom:1rem">Aktiv elementləri seçin, məlumatları daxil edin</div>
             <div class="sig-drag-list" id="sigBlocks">
               <div class="sig-block" data-key="name"><div class="sig-block-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 00-16 0"/></svg></div><div class="sig-block-label">Ad Soyad</div><button class="sig-block-toggle on" onclick="toggleSigBlock(this,'name')"></button></div>
-              <div class="sig-block" data-key="position"><div class="sig-block-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></div><div class="sig-block-label">Vəzifə / Şirkət <span style="font-size:9px;background:rgba(201,168,76,.2);color:#b45309;padding:1px 5px;border-radius:5px;font-weight:700">PRO</span></div><button class="sig-block-toggle on" onclick="toggleSigBlock(this,'position')"></button></div>
-              <div class="sig-block" data-key="phone"><div class="sig-block-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.73 9.5a2 2 0 011.72-2.18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L9.91 15a16 16 0 006.09 6.09l1.15-1.15a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div><div class="sig-block-label">Telefon <span style="font-size:9px;background:rgba(201,168,76,.2);color:#b45309;padding:1px 5px;border-radius:5px;font-weight:700">PRO</span></div><button class="sig-block-toggle on" onclick="toggleSigBlock(this,'phone')"></button></div>
-              <div class="sig-block" data-key="email"><div class="sig-block-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div class="sig-block-label">E-mail <span style="font-size:9px;background:rgba(201,168,76,.2);color:#b45309;padding:1px 5px;border-radius:5px;font-weight:700">PRO</span></div><button class="sig-block-toggle on" onclick="toggleSigBlock(this,'email')"></button></div>
-              <div class="sig-block" data-key="web"><div class="sig-block-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div><div class="sig-block-label">Vebsayt <span style="font-size:9px;background:rgba(201,168,76,.2);color:#b45309;padding:1px 5px;border-radius:5px;font-weight:700">PRO</span></div><button class="sig-block-toggle" onclick="toggleSigBlock(this,'web')"></button></div>
-              <div class="sig-block" data-key="socials"><div class="sig-block-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div><div class="sig-block-label">Sosial ikonlar <span style="font-size:9px;background:rgba(201,168,76,.2);color:#b45309;padding:1px 5px;border-radius:5px;font-weight:700">PRO</span></div><button class="sig-block-toggle" onclick="toggleSigBlock(this,'socials')"></button></div>
-              <div class="sig-block" data-key="photo"><div class="sig-block-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg></div><div class="sig-block-label">Profil şəkli <span style="font-size:9px;background:rgba(201,168,76,.2);color:#b45309;padding:1px 5px;border-radius:5px;font-weight:700">PRO</span></div><button class="sig-block-toggle" onclick="toggleSigBlock(this,'photo')"></button></div>
-              <div class="sig-block" data-key="cardlink"><div class="sig-block-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><circle cx="12" cy="13" r="2"/></svg></div><div class="sig-block-label">Profil linki (CardPro) <span style="font-size:9px;background:rgba(201,168,76,.2);color:#b45309;padding:1px 5px;border-radius:5px;font-weight:700">PRO</span></div><button class="sig-block-toggle on" onclick="toggleSigBlock(this,'cardlink')"></button></div>
+              <div class="sig-block" data-key="position"><div class="sig-block-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></div><div class="sig-block-label">Vəzifə / Şirkət</div><button class="sig-block-toggle on" onclick="toggleSigBlock(this,'position')"></button></div>
+              <div class="sig-block" data-key="phone"><div class="sig-block-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2A19.79 19.79 0 013.73 9.5a2 2 0 011.72-2.18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L9.91 15a16 16 0 006.09 6.09l1.15-1.15a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div><div class="sig-block-label">Telefon</div><button class="sig-block-toggle on" onclick="toggleSigBlock(this,'phone')"></button></div>
+              <div class="sig-block" data-key="email"><div class="sig-block-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div class="sig-block-label">E-mail</div><button class="sig-block-toggle on" onclick="toggleSigBlock(this,'email')"></button></div>
+              <div class="sig-block" data-key="web"><div class="sig-block-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div><div class="sig-block-label">Vebsayt</div><button class="sig-block-toggle" onclick="toggleSigBlock(this,'web')"></button></div>
+              <div class="sig-block" data-key="socials"><div class="sig-block-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div><div class="sig-block-label">Sosial ikonlar</div><button class="sig-block-toggle" onclick="toggleSigBlock(this,'socials')"></button></div>
+              <div class="sig-block" data-key="photo"><div class="sig-block-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg></div><div class="sig-block-label">Profil şəkli</div><button class="sig-block-toggle" onclick="toggleSigBlock(this,'photo')"></button></div>
+              <div class="sig-block" data-key="cardlink"><div class="sig-block-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><circle cx="12" cy="13" r="2"/></svg></div><div class="sig-block-label">Profil linki (CardPro)</div><button class="sig-block-toggle on" onclick="toggleSigBlock(this,'cardlink')"></button></div>
             </div>
             <div style="display:flex;gap:7px">
               <button class="btn btn-primary" onclick="copySigHtml()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>HTML Kopyala</button>
@@ -524,7 +524,59 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 <div class="modal-overlay" id="crmModal"><div class="modal"><div class="modal-title" id="crmModalTitle">CRM</div><div class="modal-sub" id="crmModalSub"></div><div id="crmModalFields"></div><div class="modal-footer"><button class="btn" onclick="closeModal('crmModal')">Ləğv et</button><button class="btn btn-primary" onclick="saveCrmConfig()">Qoş</button></div></div></div>
 <div class="modal-overlay" id="contactModal"><div class="modal"><div class="modal-title" id="contactModalName">Kontakt</div><div class="modal-sub" id="contactModalMeta"></div><div id="contactModalFields"></div><div class="modal-footer"><button class="btn btn-danger btn-sm" onclick="deleteContact(window._cid)">Sil</button><button class="btn" onclick="closeModal('contactModal')">Bağla</button><button class="btn btn-primary" onclick="exportContactVcf(window._cid)">Telefona saxla</button></div></div></div>
 <div class="modal-overlay" id="addContactModal"><div class="modal"><div class="modal-title">Yeni kontakt</div><div class="modal-sub">Kontakt məlumatlarını daxil edin</div><div class="form-group"><label class="form-label">Ad Soyad *</label><input class="form-input" id="mName" placeholder="Ad Soyad"></div><div class="form-row"><div class="form-group"><label class="form-label">Vəzifə</label><input class="form-input" id="mPosition"></div><div class="form-group"><label class="form-label">Şirkət</label><input class="form-input" id="mCompany"></div></div><div class="form-row"><div class="form-group"><label class="form-label">Telefon</label><input class="form-input" id="mPhone"></div><div class="form-group"><label class="form-label">E-mail</label><input class="form-input" id="mEmail"></div></div><div class="form-group"><label class="form-label">Qeyd</label><input class="form-input" id="mNote" placeholder="Harada tanışlıq..."></div><div class="modal-footer"><button class="btn" onclick="closeModal('addContactModal')">Ləğv et</button><button class="btn btn-primary" onclick="addManualContact()">Əlavə et</button></div></div></div>
-<div class="modal-overlay" id="upgradeModal"><div class="modal upgrade-modal"><div class="upgrade-icon">🚀</div><div class="upgrade-title">Pro-ya keçin</div><div class="upgrade-text">Limitsiz xüsusiyyətlər, CRM inteqrasiyası, xüsusi domen və daha çox.</div><div class="upgrade-features"><div class="upgrade-feat"><div class="upgrade-feat-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Multi-language profil</div><div class="upgrade-feat"><div class="upgrade-feat-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>CRM inteqrasiya</div><div class="upgrade-feat"><div class="upgrade-feat-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Xüsusi profil linki</div><div class="upgrade-feat"><div class="upgrade-feat-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Priority dəstək</div></div><div class="modal-footer"><button class="btn" onclick="closeModal('upgradeModal')">Sonra</button><button class="btn btn-primary" style="flex:2" onclick="requestUpgrade()">Pro-ya keç — ₼50/il →</button></div></div></div>
+<div class="modal-overlay" id="upgradeModal">
+<div class="modal upgrade-modal" style="max-width:460px;text-align:left">
+  <div style="text-align:center;margin-bottom:1.25rem">
+    <div style="font-size:36px;margin-bottom:.4rem">🚀</div>
+    <div class="upgrade-title">Pro Plana Keçin</div>
+    <div style="font-size:13px;color:var(--gray);margin-top:4px">İllik <strong style="color:var(--navy);font-size:20px">₼50</strong> — aylıq cəmi ₼4.17</div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1.25rem">
+    <div style="background:var(--surface);border-radius:10px;padding:12px 14px">
+      <div style="font-size:10px;font-weight:700;color:var(--gray);text-transform:uppercase;letter-spacing:.08em;margin-bottom:9px">Free Plan</div>
+      <div class="upgrade-features" style="margin-bottom:0;gap:6px">
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(39,174,96,.1)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span style="color:#0a1628">Profil kartı</span></div>
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(39,174,96,.1)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span style="color:#0a1628">QR Kod</span></div>
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(39,174,96,.1)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span style="color:#0a1628">Çox dilli profil</span></div>
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(39,174,96,.1)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span style="color:#0a1628">3 Free şablon</span></div>
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(39,174,96,.1)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span style="color:#0a1628">5 kontakt skan</span></div>
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(39,174,96,.1)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span style="color:#0a1628">5 kontakt əlavə</span></div>
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(231,76,60,.08)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><span style="color:#8A9BB5;text-decoration:line-through">Email İmzası elementləri</span></div>
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(231,76,60,.08)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><span style="color:#8A9BB5;text-decoration:line-through">CRM inteqrasiyalar</span></div>
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(231,76,60,.08)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><span style="color:#8A9BB5;text-decoration:line-through">Pro şablonlar (9 ədəd)</span></div>
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(231,76,60,.08)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><span style="color:#8A9BB5;text-decoration:line-through">Username dəyişmə</span></div>
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(231,76,60,.08)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><span style="color:#8A9BB5;text-decoration:line-through">Brand link söndürmə</span></div>
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(231,76,60,.08)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div><span style="color:#8A9BB5;text-decoration:line-through">5+ kontakt skan/əlavə</span></div>
+      </div>
+    </div>
+    <div style="background:linear-gradient(135deg,rgba(24,95,165,.06),rgba(79,172,254,.04));border:1.5px solid rgba(24,95,165,.2);border-radius:10px;padding:12px 14px;position:relative">
+      <div style="position:absolute;top:-9px;right:10px;background:var(--navy);color:#fff;font-size:9px;font-weight:700;padding:3px 10px;border-radius:10px;letter-spacing:.04em">PRO — ₼50/İL</div>
+      <div style="font-size:10px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.08em;margin-bottom:9px">Pro Plan</div>
+      <div class="upgrade-features" style="margin-bottom:0;gap:6px">
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(39,174,96,.1)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span style="color:#0a1628">Profil kartı</span></div>
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(39,174,96,.1)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span style="color:#0a1628">QR Kod</span></div>
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(39,174,96,.1)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span style="color:#0a1628">Çox dilli profil</span></div>
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(39,174,96,.1)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span style="color:#0a1628"><b>12 Pro şablon</b></span></div>
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(39,174,96,.1)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span style="color:#0a1628"><b>Limitsiz kontakt skan</b></span></div>
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(39,174,96,.1)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span style="color:#0a1628"><b>Limitsiz kontakt əlavə</b></span></div>
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(39,174,96,.1)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span style="color:#0a1628"><b>Email İmzası elementləri</b></span></div>
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(39,174,96,.1)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span style="color:#0a1628"><b>CRM inteqrasiyalar</b></span></div>
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(39,174,96,.1)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span style="color:#0a1628"><b>Pro şablonlar (9 ədəd)</b></span></div>
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(39,174,96,.1)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span style="color:#0a1628"><b>Username dəyişmə</b></span></div>
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(39,174,96,.1)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span style="color:#0a1628"><b>Brand link söndürmə</b></span></div>
+        <div class="upgrade-feat"><div class="upgrade-feat-icon" style="background:rgba(39,174,96,.1)"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div><span style="color:#0a1628"><b>Prioritet dəstək</b></span></div>
+      </div>
+    </div>
+  </div>
+  <div style="background:rgba(39,174,96,.06);border:1px solid rgba(39,174,96,.2);border-radius:8px;padding:9px 14px;font-size:12px;color:var(--success);margin-bottom:1.25rem;text-align:center">
+    💡 Ödəniş üçün adminlə əlaqə saxlayın — aktivasiya 24 saat ərzində
+  </div>
+  <div class="modal-footer">
+    <button class="btn" onclick="closeModal('upgradeModal')">Sonra</button>
+    <button class="btn btn-primary" style="flex:2" onclick="requestUpgrade()">Pro-ya keç — ₼50/il →</button>
+  </div>
+</div>
+</div>
 <div class="toast" id="toast"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -545,13 +597,8 @@ onAuthStateChanged(auth,async u=>{
   onValue(ref(db,`users/${u.uid}`),s=>{UD=s.val()||{};loadUD();});
   onValue(ref(db,`contacts/${u.uid}`),s=>{
     const d=s.val()||{};
-    allContacts=Object.entries(d).map(([id,ct])=>{return {id,...ct}}).sort((a,b)=>(b.addedAt||0)-(a.addedAt||0));
+    allContacts=Object.entries(d).map(([id,c])=>({id,...c})).sort((a,b)=>(b.addedAt||0)-(a.addedAt||0));
     renderContacts(allContacts);
-    // Limit badge
-    const isPro2=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
-    const rem=isPro2?'∞':Math.max(0,5-allContacts.length)+' qalıb';
-    const cb=document.getElementById('contactsBadge');
-    if(cb){cb.textContent=allContacts.length;cb.title=rem;}
     document.getElementById('contactsBadge').textContent=allContacts.length;
     document.getElementById('ovContacts').textContent=allContacts.length;
   });
@@ -623,6 +670,9 @@ function renderSlugSection(slug,isPro){
 }
 window.renderBrandSection=function(isPro){
   const el=document.getElementById('brandLinkSection');if(!el)return;
+  const aca=UD?.adminCrmAccess||{};
+  const canManage=isPro||(Object.values(aca).some(v=>v));
+  if(!canManage){el.innerHTML='';return;}
   const brandOn=UD?.brandLink!==false;
   el.innerHTML=`<div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem;margin-top:0">
     <div style="font-size:14px;font-weight:500;color:var(--navy);margin-bottom:4px;display:flex;align-items:center;gap:8px">
@@ -643,8 +693,6 @@ window.renderBrandSection=function(isPro){
     </div>
   </div>`;
   document.getElementById('dashBrandToggle').addEventListener('change',async function(){
-    const isPro2=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
-    if(!isPro2){this.checked=!this.checked;openUpgradeModal();return;}
     const on=this.checked;
     document.getElementById('dashBrandSlider').style.background=on?'var(--navy)':'var(--gray-light)';
     document.getElementById('dashBrandKnob').style.transform=on?'translateX(20px)':'translateX(0)';
@@ -734,11 +782,9 @@ window.openContactModal=function(id){
 window.deleteContact=async function(id){if(!id)return;await remove(ref(db,`contacts/${CU.uid}/${id}`));closeModal('contactModal');showToast('Kontakt silindi');};
 window.exportContactVcf=function(id){const c=allContacts.find(x=>x.id===id);if(!c)return;const v=`BEGIN:VCARD\nVERSION:3.0\nFN:${c.name||''}\nTEL:${c.phone||''}\nEMAIL:${c.email||''}\nORG:${c.company||''}\nTITLE:${c.position||''}\nEND:VCARD`;const b=new Blob([v],{type:'text/vcard'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(c.name||'contact')+'.vcf';a.click();showToast('Kontakt yükləndi');};
 window.addManualContact=async function(){
-  const isPro=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
-  if(!isPro&&allContacts.length>=5){openUpgradeModal();closeModal('addContactModal');return;}
   const n=document.getElementById('mName').value.trim();if(!n){showToast('Ad daxil edin','error');return;}
-  const ct={name:n,position:document.getElementById('mPosition').value.trim(),company:document.getElementById('mCompany').value.trim(),phone:document.getElementById('mPhone').value.trim(),email:document.getElementById('mEmail').value.trim(),note:document.getElementById('mNote').value.trim(),source:'manual',addedAt:Date.now()};
-  await push(ref(db,`contacts/${CU.uid}`),ct);
+  const c={name:n,position:document.getElementById('mPosition').value.trim(),company:document.getElementById('mCompany').value.trim(),phone:document.getElementById('mPhone').value.trim(),email:document.getElementById('mEmail').value.trim(),note:document.getElementById('mNote').value.trim(),source:'manual',addedAt:Date.now()};
+  await push(ref(db,`contacts/${CU.uid}`),c);
   ['mName','mPosition','mCompany','mPhone','mEmail','mNote'].forEach(id=>document.getElementById(id).value='');
   showToast('Kontakt əlavə edildi','success');closeModal('addContactModal');
 };
@@ -775,14 +821,7 @@ window.exportToGoogleContacts=function(){const isPro=UD?.plan==='pro'||UD?.plan=
 
 // ── EMAIL SIGNATURE ───────────────────────────────────────────────────────
 const sigState={name:true,position:true,phone:true,email:true,web:false,socials:false,photo:false,cardlink:true};
-window.toggleSigBlock=function(btn,key){
-  const isPro=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
-  const proKeys=['position','phone','email','web','socials','photo','cardlink'];
-  if(proKeys.includes(key)&&!isPro){
-    openUpgradeModal();return;
-  }
-  btn.classList.toggle('on');sigState[key]=btn.classList.contains('on');renderSigPreview();
-};
+window.toggleSigBlock=function(btn,key){btn.classList.toggle('on');sigState[key]=btn.classList.contains('on');renderSigPreview();};
 window.renderSigPreview=function(){
   const d=UD?.card||{};const slug=UD?.slug||'';const soc=UD?.socials||{};
   let html=`<table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,sans-serif;font-size:13px;color:#0a1628">`;
@@ -1473,6 +1512,8 @@ window.copyLink=function(){const s=UD?.slug;if(!s){showToast('Profil linki yoxdu
 window.viewProfile=function(){const s=UD?.slug;if(!s){showToast('Profil linki yoxdur','error');return;}window.open('profile.html?u='+s,'_blank');};
 window.showPanel=function(n){
   const isPro=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
+  // Pro-only panels
+  if(n==='signature'&&!isPro){openUpgradeModal();return;}
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
   document.getElementById('panel-'+n).classList.add('active');
