@@ -524,7 +524,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 <div class="modal-overlay" id="crmModal"><div class="modal"><div class="modal-title" id="crmModalTitle">CRM</div><div class="modal-sub" id="crmModalSub"></div><div id="crmModalFields"></div><div class="modal-footer"><button class="btn" onclick="closeModal('crmModal')">Ləğv et</button><button class="btn btn-primary" onclick="saveCrmConfig()">Qoş</button></div></div></div>
 <div class="modal-overlay" id="contactModal"><div class="modal"><div class="modal-title" id="contactModalName">Kontakt</div><div class="modal-sub" id="contactModalMeta"></div><div id="contactModalFields"></div><div class="modal-footer"><button class="btn btn-danger btn-sm" onclick="deleteContact(window._cid)">Sil</button><button class="btn" onclick="closeModal('contactModal')">Bağla</button><button class="btn btn-primary" onclick="exportContactVcf(window._cid)">Telefona saxla</button></div></div></div>
 <div class="modal-overlay" id="addContactModal"><div class="modal"><div class="modal-title">Yeni kontakt</div><div class="modal-sub">Kontakt məlumatlarını daxil edin</div><div class="form-group"><label class="form-label">Ad Soyad *</label><input class="form-input" id="mName" placeholder="Ad Soyad"></div><div class="form-row"><div class="form-group"><label class="form-label">Vəzifə</label><input class="form-input" id="mPosition"></div><div class="form-group"><label class="form-label">Şirkət</label><input class="form-input" id="mCompany"></div></div><div class="form-row"><div class="form-group"><label class="form-label">Telefon</label><input class="form-input" id="mPhone"></div><div class="form-group"><label class="form-label">E-mail</label><input class="form-input" id="mEmail"></div></div><div class="form-group"><label class="form-label">Qeyd</label><input class="form-input" id="mNote" placeholder="Harada tanışlıq..."></div><div class="modal-footer"><button class="btn" onclick="closeModal('addContactModal')">Ləğv et</button><button class="btn btn-primary" onclick="addManualContact()">Əlavə et</button></div></div></div>
-<div class="modal-overlay" id="upgradeModal"><div class="modal upgrade-modal"><div class="upgrade-icon">🚀</div><div class="upgrade-title">Pro-ya keçin</div><div class="upgrade-text">Limitsiz xüsusiyyətlər, CRM inteqrasiyası, xüsusi domen və daha çox.</div><div class="upgrade-features"><div class="upgrade-feat"><div class="upgrade-feat-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Multi-language profil</div><div class="upgrade-feat"><div class="upgrade-feat-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>CRM inteqrasiya</div><div class="upgrade-feat"><div class="upgrade-feat-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Xüsusi profil linki</div><div class="upgrade-feat"><div class="upgrade-feat-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Priority dəstək</div></div><div class="modal-footer"><button class="btn" onclick="closeModal('upgradeModal')">Sonra</button><button class="btn btn-primary" onclick="closeModal('upgradeModal');showToast('Admin ilə əlaqə saxlayın','success')">Pro-ya keç</button></div></div></div>
+<div class="modal-overlay" id="upgradeModal"><div class="modal upgrade-modal"><div class="upgrade-icon">🚀</div><div class="upgrade-title">Pro-ya keçin</div><div class="upgrade-text">Limitsiz xüsusiyyətlər, CRM inteqrasiyası, xüsusi domen və daha çox.</div><div class="upgrade-features"><div class="upgrade-feat"><div class="upgrade-feat-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Multi-language profil</div><div class="upgrade-feat"><div class="upgrade-feat-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>CRM inteqrasiya</div><div class="upgrade-feat"><div class="upgrade-feat-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Xüsusi profil linki</div><div class="upgrade-feat"><div class="upgrade-feat-icon"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>Priority dəstək</div></div><div class="modal-footer"><button class="btn" onclick="closeModal('upgradeModal')">Sonra</button><button class="btn btn-primary" style="flex:2" onclick="requestUpgrade()">Pro-ya keç — ₼50/il →</button></div></div></div>
 <div class="toast" id="toast"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -618,20 +618,22 @@ function renderSlugSection(slug,isPro){
 }
 window.renderBrandSection=function(isPro){
   const el=document.getElementById('brandLinkSection');if(!el)return;
+  const aca=UD?.adminCrmAccess||{};
+  const canManage=isPro||(Object.values(aca).some(v=>v));
+  if(!canManage){el.innerHTML='';return;}
   const brandOn=UD?.brandLink!==false;
-  const canManage=isPro||(UD?.adminCrmAccess&&Object.keys(UD.adminCrmAccess).length>0);
-  if(!canManage){
-    el.innerHTML='';return;
-  }
-  el.innerHTML=`<div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
-    <div style="font-size:14px;font-weight:500;color:var(--navy);margin-bottom:4px;display:flex;align-items:center;gap:8px">Brand Link <span style="background:rgba(201,168,76,.2);color:#b45309;font-size:10px;padding:2px 7px;border-radius:8px;font-weight:600">PRO</span></div>
+  el.innerHTML=`<div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem;margin-top:0">
+    <div style="font-size:14px;font-weight:500;color:var(--navy);margin-bottom:4px;display:flex;align-items:center;gap:8px">
+      Brand Link
+      <span style="background:rgba(201,168,76,.2);color:#b45309;font-size:10px;padding:2px 7px;border-radius:8px;font-weight:600">PRO</span>
+    </div>
     <div style="font-size:12px;color:var(--gray);margin-bottom:10px">Profil altındakı "CardPro ilə yaradılmışdır" linkini idarə edin</div>
     <div style="display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-radius:9px;padding:10px 14px;border:1px solid var(--gray-light)">
       <div>
         <div style="font-size:13px;color:var(--navy)">Brand linki göstər</div>
-        <div style="font-size:11px;color:var(--gray);margin-top:2px">${brandOn?'Aktiv':'Deaktiv'}</div>
+        <div style="font-size:11px;color:var(--gray);margin-top:2px" id="brandStatusTxt">${brandOn?'Aktiv — profil altında görünür':'Deaktiv — gizlənib'}</div>
       </div>
-      <label style="position:relative;display:inline-block;width:44px;height:24px;cursor:pointer">
+      <label style="position:relative;display:inline-block;width:44px;height:24px;cursor:pointer;flex-shrink:0">
         <input type="checkbox" id="dashBrandToggle" ${brandOn?'checked':''} style="opacity:0;width:0;height:0;position:absolute">
         <span id="dashBrandSlider" style="position:absolute;inset:0;border-radius:12px;background:${brandOn?'var(--navy)':'var(--gray-light)'};transition:.3s"></span>
         <span id="dashBrandKnob" style="position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2);transition:.3s;transform:${brandOn?'translateX(20px)':'translateX(0)'}"></span>
@@ -642,6 +644,7 @@ window.renderBrandSection=function(isPro){
     const on=this.checked;
     document.getElementById('dashBrandSlider').style.background=on?'var(--navy)':'var(--gray-light)';
     document.getElementById('dashBrandKnob').style.transform=on?'translateX(20px)':'translateX(0)';
+    document.getElementById('brandStatusTxt').textContent=on?'Aktiv — profil altında görünür':'Deaktiv — gizlənib';
     await update(ref(db,`users/${CU.uid}`),{brandLink:on});
     showToast(on?'Brand link aktivləşdirildi':'Brand link gizlədildi','success');
   });
@@ -736,14 +739,12 @@ window.addManualContact=async function(){
 
 // CRM
 function loadCrmStatus(crm,plan){
-  const isPro=plan==='pro'||plan==='premium'||plan==='business';
-  const aca=UD?.adminCrmAccess||{};
-  const canMap={sfLock:!(isPro||aca.salesforce),zohoLock:!(isPro||aca.zoho),pipeLock:!(isPro||aca.pipedrive),gcLock:!isPro,dynLock:!isPro};
-  // HubSpot — Pro + admin grant
-  const hsEl=document.getElementById('sfLock');
-  Object.entries(canMap).forEach(([id,locked])=>{const el=document.getElementById(id);if(el)el.style.display=locked?'flex':'none';});
-  // HubSpot özü ayrı — always visible for admin grant
-  if(aca.hubspot&&!isPro){const hl=document.querySelector('#hsCard .pro-lock-overlay');if(hl)hl.style.display='none';}
+  const isPro=plan==='pro'||plan==='premium';
+  // Show/hide all pro locks
+  ['sfLock','zohoLock','pipeLock','gcLock','dynLock'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.style.display=isPro?'none':'flex';
+  });
   if(crm.hubspot){document.getElementById('hsDot').className='crm-dot on';document.getElementById('hsStatusText').textContent='Qoşulub';document.getElementById('hsSyncRow').style.display='flex';document.getElementById('hsSyncCount').textContent=(crm.hubspot.syncCount||0)+' sync edilib';document.getElementById('hsCard').classList.add('connected');}
   if(crm.salesforce&&isPro){document.getElementById('sfDot').className='crm-dot on';document.getElementById('sfStatusText').textContent='Qoşulub';document.getElementById('sfSyncRow').style.display='flex';document.getElementById('sfSyncCount').textContent=(crm.salesforce.syncCount||0)+' sync edilib';document.getElementById('sfCard').classList.add('connected');}
   if(crm.hubspot||crm.salesforce){document.getElementById('crmLogCard').style.display='block';const log=crm.log||[];document.getElementById('crmLog').innerHTML=log.length?log.slice(-5).reverse().map(l=>`<div style="display:flex;justify-content:space-between"><span>${l.msg}</span><span>${new Date(l.at).toLocaleDateString('az')}</span></div>`).join(''):'<div>Hələ sync edilməyib</div>';}
@@ -1428,7 +1429,7 @@ window.openUpgradeModal=function(){document.getElementById('upgradeModal').class
 window.requestUpgrade=async function(){
   try{
     await update(ref(db,`users/${CU.uid}`),{upgradeRequest:true,upgradeRequestAt:Date.now()});
-    showToast('Sorğunuz göndərildi! Admin sizinlə əlaqə saxlayacaq.','success');
+    showToast('Sorğunuz göndərildi! Admin tezliklə əlaqə saxlayacaq.','success');
     closeModal('upgradeModal');
   }catch(e){showToast('Xəta baş verdi','error');}
 };
@@ -1458,6 +1459,9 @@ function renderActivityFeed(d){
 window.copyLink=function(){const s=UD?.slug;if(!s){showToast('Profil linki yoxdur','error');return;}navigator.clipboard.writeText('https://cardpro.az/'+s);showToast('Link kopyalandı','success');};
 window.viewProfile=function(){const s=UD?.slug;if(!s){showToast('Profil linki yoxdur','error');return;}window.open('profile.html?u='+s,'_blank');};
 window.showPanel=function(n){
+  const isPro=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
+  // Pro-only panels
+  if(n==='signature'&&!isPro){openUpgradeModal();return;}
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
   document.getElementById('panel-'+n).classList.add('active');
