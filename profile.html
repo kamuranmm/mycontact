@@ -592,8 +592,6 @@ async function init(){
     if(!entry){showNF();return;}
     [PU,PD]=entry;
     if(PD.status==='blocked'){showBlocked();return;}
-    // Blok yoxlaması
-    if(PD.status==='blocked'){showBlocked();return;}
     lang=localStorage.getItem('cp_lang_'+slug)||PD.defaultLang||'az';
     const lm=LM[lang]||LM.az;document.getElementById('lfl').textContent=lm.f;document.getElementById('lco').textContent=lm.c;document.querySelectorAll('.lang-opt').forEach(o=>o.classList.toggle('sel',o.dataset.l===lang));
     color=localStorage.getItem('cp_col_'+slug)||'#185FA5';
@@ -605,8 +603,8 @@ async function init(){
     document.getElementById('cardWrap').style.display='block';
     render();buildQR();
     // Brand link
-    const pgfoot=document.getElementById('pgfoot');
-    if(pgfoot)pgfoot.style.display=PD.brandLink===false?'none':'block';
+    const pgEl=document.getElementById('pgfoot');
+    if(pgEl)pgEl.style.display=PD.brandLink===false?'none':'block';
     try{await update(ref(db,`users/${PU}/stats`),{views:((PD.stats?.views||0)+1)});}catch(e){}
   }catch(e){console.error(e);showNF();}
 }
