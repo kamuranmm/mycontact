@@ -225,9 +225,45 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 .toast.success{background:var(--success)}.toast.error{background:var(--error)}
 @keyframes spin{to{transform:rotate(360deg)}}
 @media(max-width:768px){
-  .sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}.sidebar-overlay.open{display:block}.hamburger{display:flex}.main{margin-left:0}.topbar{padding-left:60px}.editor-grid{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}.dash-stats{grid-template-columns:1fr 1fr}.crm-grid{grid-template-columns:1fr}.content{padding:1rem}.link-chip{max-width:130px}.profile-link-box{flex-direction:column;align-items:flex-start}
+  /* Sidebar */
+  .sidebar{transform:translateX(-100%)!important}
+  .sidebar.open{transform:translateX(0)!important}
+  .sidebar-overlay.open{display:block!important}
+  .hamburger{display:flex!important}
+  .main{margin-left:0!important}
+  /* Topbar */
+  .topbar{padding-left:56px!important;height:50px!important}
+  .link-chip{max-width:110px!important;font-size:10px!important}
+  /* Content */
+  .content{padding:.85rem!important}
+  /* İcmal - kartlar alt-alta */
+  .dash-stats{grid-template-columns:1fr!important;gap:10px!important}
+  .profile-link-box{flex-direction:column!important;align-items:flex-start!important;gap:10px!important}
+  /* Editor */
+  .editor-grid{grid-template-columns:1fr!important}
+  .form-row{grid-template-columns:1fr!important}
+  /* CRM */
+  .crm-grid{grid-template-columns:1fr!important}
+  /* Email imzası - tək sütun */
+  .sig-builder{grid-template-columns:1fr!important}
+  /* Şablonlar */
+  .templates-grid{grid-template-columns:repeat(2,1fr)!important}
+  /* right-col */
+  .right-col{grid-template-columns:1fr 1fr!important}
+  /* Contacts */
+  .contacts-toolbar{flex-direction:column!important;gap:8px!important}
+  /* Scanner */
+  .scanner-wrap{max-width:100%!important}
 }
-@media(max-width:480px){.dash-stats{grid-template-columns:1fr 1fr}.lang-grid{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:480px){
+  .dash-stats{grid-template-columns:1fr!important
+  .overview-two-col{grid-template-columns:1fr!important}
+}
+  .lang-grid{grid-template-columns:repeat(3,1fr)!important}
+  .right-col{grid-template-columns:1fr!important}
+  .modal-overlay{align-items:flex-end!important}
+  .modal{width:100%!important;max-width:100%!important;border-radius:18px 18px 0 0!important;position:fixed!important;bottom:0!important;left:0!important;right:0!important;max-height:90vh!important;overflow-y:auto!important;margin:0!important}
+}
 </style>
 </head>
 <body>
@@ -282,7 +318,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
         <div class="dash-stat"><div class="ds-icon" style="background:rgba(39,174,96,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div><div class="ds-num" id="ovSaves">0</div><div class="ds-label">Saxlayanlar</div></div>
         <div class="dash-stat"><div class="ds-icon" style="background:rgba(201,168,76,.1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><div class="ds-num" id="ovContacts">0</div><div class="ds-label">Kontaktlarım</div></div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem" class="overview-two-col">
         <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
           <div style="font-size:13px;font-weight:500;color:var(--navy);margin-bottom:1rem">Statistika xülasəsi</div>
           <canvas id="barChart" height="180"></canvas>
