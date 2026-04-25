@@ -461,7 +461,7 @@ body{font-family:'Inter',sans-serif;background:#f0f2f5;min-height:100vh;display:
   <div style="font-size:13px;color:var(--g)" id="nfS">Bu link mövcud deyil.</div>
 </div>
 
-<div class="pgfoot"><a href="index.html">CardPro</a> <span id="ftxt">ilə yaradılmışdır</span></div>
+<div class="pgfoot" id="pgfoot"><a href="index.html">CardPro</a> <span id="ftxt">ilə yaradılmışdır</span></div>
 
 <!-- FAB -->
 <div class="fab">
@@ -604,6 +604,9 @@ async function init(){
     document.getElementById('lw').style.display='none';
     document.getElementById('cardWrap').style.display='block';
     render();buildQR();
+    // Brand link
+    const pgfoot=document.getElementById('pgfoot');
+    if(pgfoot)pgfoot.style.display=PD.brandLink===false?'none':'block';
     try{await update(ref(db,`users/${PU}/stats`),{views:((PD.stats?.views||0)+1)});}catch(e){}
   }catch(e){console.error(e);showNF();}
 }
