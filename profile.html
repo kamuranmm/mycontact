@@ -585,7 +585,6 @@ document.addEventListener('click',e=>{if(!e.target.closest('.lang-dropdown'))doc
 async function init(){
   if(!slug){showNF();return;}
   try{
-    // Yalnız bu slug-a aid istifadəçini çək — bütün users yox
     const q=query(ref(db,'users'),orderByChild('slug'),equalTo(slug));
     const snap=await get(q);
     if(!snap.exists()){showNF();return;}
@@ -617,16 +616,7 @@ function showBlocked(){
   </div>`;
   el.style.display='block';
 }
-function showBlocked(){
-  document.getElementById('lw').style.display='none';
-  const el=document.getElementById('nfCard');
-  el.innerHTML=`<div style="text-align:center;padding:3rem 1.5rem">
-    <div style="font-size:48px;margin-bottom:1rem">🔒</div>
-    <div style="font-family:'Playfair Display',serif;font-size:22px;color:#0a1628;margin-bottom:8px">Bu profil deaktivdir</div>
-    <div style="font-size:13px;color:#8A9BB5">Bu vizit kart müvəqqəti olaraq dayandırılmışdır.</div>
-  </div>`;
-  el.style.display='block';
-}
+
 
 // ── COLOR & TEMPLATE ───────────────────────────────────────────────────────
 function applyColor(c){
