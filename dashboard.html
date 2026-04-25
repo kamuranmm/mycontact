@@ -670,20 +670,17 @@ function renderSlugSection(slug,isPro){
 }
 window.renderBrandSection=function(isPro){
   const el=document.getElementById('brandLinkSection');if(!el)return;
-  const aca=UD?.adminCrmAccess||{};
-  const canManage=isPro||(Object.values(aca).some(v=>v));
-  if(!canManage){el.innerHTML='';return;}
   const brandOn=UD?.brandLink!==false;
   el.innerHTML=`<div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem;margin-top:0">
     <div style="font-size:14px;font-weight:500;color:var(--navy);margin-bottom:4px;display:flex;align-items:center;gap:8px">
       Brand Link
       <span style="background:rgba(201,168,76,.2);color:#b45309;font-size:10px;padding:2px 7px;border-radius:8px;font-weight:600">PRO</span>
     </div>
-    <div style="font-size:12px;color:var(--gray);margin-bottom:10px">Profil altındakı "CardPro ilə yaradılmışdır" linkini idarə edin</div>
+    <div style="font-size:12px;color:var(--gray);margin-bottom:10px">Profil altındakı "CardPro ilə yaradılmışdır" linkini söndürüb yandırın</div>
     <div style="display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-radius:9px;padding:10px 14px;border:1px solid var(--gray-light)">
       <div>
         <div style="font-size:13px;color:var(--navy)">Brand linki göstər</div>
-        <div style="font-size:11px;color:var(--gray);margin-top:2px" id="brandStatusTxt">${brandOn?'Aktiv — profil altında görünür':'Deaktiv — gizlənib'}</div>
+        <div style="font-size:11px;color:var(--gray);margin-top:2px" id="brandStatusTxt">${brandOn?'Aktiv':'Deaktiv'}</div>
       </div>
       <label style="position:relative;display:inline-block;width:44px;height:24px;cursor:pointer;flex-shrink:0">
         <input type="checkbox" id="dashBrandToggle" ${brandOn?'checked':''} style="opacity:0;width:0;height:0;position:absolute">
@@ -693,10 +690,16 @@ window.renderBrandSection=function(isPro){
     </div>
   </div>`;
   document.getElementById('dashBrandToggle').addEventListener('change',async function(){
+    const isProNow=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
+    if(!isProNow){
+      this.checked=!this.checked;
+      openUpgradeModal();
+      return;
+    }
     const on=this.checked;
     document.getElementById('dashBrandSlider').style.background=on?'var(--navy)':'var(--gray-light)';
     document.getElementById('dashBrandKnob').style.transform=on?'translateX(20px)':'translateX(0)';
-    document.getElementById('brandStatusTxt').textContent=on?'Aktiv — profil altında görünür':'Deaktiv — gizlənib';
+    document.getElementById('brandStatusTxt').textContent=on?'Aktiv':'Deaktiv';
     await update(ref(db,`users/${CU.uid}`),{brandLink:on});
     showToast(on?'Brand link aktivləşdirildi':'Brand link gizlədildi','success');
   });
@@ -821,7 +824,12 @@ window.exportToGoogleContacts=function(){const isPro=UD?.plan==='pro'||UD?.plan=
 
 // ── EMAIL SIGNATURE ───────────────────────────────────────────────────────
 const sigState={name:true,position:true,phone:true,email:true,web:false,socials:false,photo:false,cardlink:true};
-window.toggleSigBlock=function(btn,key){btn.classList.toggle('on');sigState[key]=btn.classList.contains('on');renderSigPreview();};
+window.toggleSigBlock=function(btn,key){
+  const isPro=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
+  const proKeys=['position','phone','email','web','socials','photo','cardlink'];
+  if(proKeys.includes(key)&&!isPro){openUpgradeModal();return;}
+  btn.classList.toggle('on');sigState[key]=btn.classList.contains('on');renderSigPreview();
+};
 window.renderSigPreview=function(){
   const d=UD?.card||{};const slug=UD?.slug||'';const soc=UD?.socials||{};
   let html=`<table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,sans-serif;font-size:13px;color:#0a1628">`;
