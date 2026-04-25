@@ -126,6 +126,17 @@ tbody tr:hover td{background:#fafbfd}
 .mobile-card{display:none;background:var(--white);border:1px solid var(--gray-light);border-radius:11px;padding:1rem;margin-bottom:8px}
 .mobile-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .mobile-card-meta{font-size:12px;color:var(--gray);margin-top:4px;line-height:1.5}
+#brandLinkToggle:checked + #brandLinkSlider{background:var(--blue)}
+#brandLinkSlider::after{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2);transition:.3s;top:2px;left:2px}
+#brandLinkToggle:checked + #brandLinkSlider::after{transform:translateX(18px)}
+.toggle-wrap{position:relative;display:inline-block;width:42px;height:24px}
+.toggle-wrap input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;border-radius:12px;background:var(--gray-light);transition:.3s;cursor:pointer}
+.toggle-slider::after{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2);transition:.3s;top:2px;left:2px}
+input:checked+.toggle-slider{background:var(--blue)}
+input:checked+.toggle-slider::after{transform:translateX(18px)}
+.crm-access-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:8px;font-size:10px;font-weight:600;background:rgba(39,174,96,.12);color:var(--success)}
+.crm-access-badge.off{background:var(--surface);color:var(--gray)}
 .toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--navy);color:var(--white);padding:11px 16px;border-radius:10px;font-size:13px;z-index:999;transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none;max-width:280px}
 .toast.show{transform:translateY(0);opacity:1}
 .toast.success{background:var(--success)}.toast.error{background:var(--error)}
@@ -500,6 +511,50 @@ tbody tr:hover td{background:#fafbfd}
     </div>
     <div class="form-group"><label class="form-label">Status</label><select class="form-input" id="editStatus"><option value="active">Aktiv</option><option value="blocked">Bloklu</option></select></div>
     <div class="form-group"><label class="form-label">Default dil</label><select class="form-input" id="editDefaultLang"><option value="az">🇦🇿 Azərbaycan</option><option value="en">🇬🇧 English</option><option value="ru">🇷🇺 Русский</option><option value="tr">🇹🇷 Türkçe</option><option value="zh">🇨🇳 中文</option><option value="ar">🇸🇦 العربية</option><option value="de">🇩🇪 Deutsch</option><option value="es">🇪🇸 Español</option></select></div>
+    <!-- ADMIN CRM ACCESS -->
+    <div class="form-group">
+      <label class="form-label" style="display:flex;align-items:center;gap:6px">
+        <span style="background:rgba(24,95,165,.12);color:var(--blue);font-size:10px;padding:2px 7px;border-radius:8px;font-weight:600">ADMİN</span>
+        CRM Xüsusi Giriş (Pulsuz, Admin tərəfindən verilir)
+      </label>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:4px">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--navy)">
+          <input type="checkbox" id="crmHsAccess" style="width:16px;height:16px;accent-color:var(--blue)">
+          <span style="width:28px;height:28px;border-radius:7px;background:#FF7A59;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">HS</span>
+          HubSpot girişi aktiv et
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--navy)">
+          <input type="checkbox" id="crmSfAccess" style="width:16px;height:16px;accent-color:var(--blue)">
+          <span style="width:28px;height:28px;border-radius:7px;background:#00A1E0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">SF</span>
+          Salesforce girişi aktiv et
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--navy)">
+          <input type="checkbox" id="crmZohoAccess" style="width:16px;height:16px;accent-color:var(--blue)">
+          <span style="width:28px;height:28px;border-radius:7px;background:#E42527;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">ZO</span>
+          Zoho CRM girişi aktiv et
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--navy)">
+          <input type="checkbox" id="crmPipeAccess" style="width:16px;height:16px;accent-color:var(--blue)">
+          <span style="width:28px;height:28px;border-radius:7px;background:#1A7F4B;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">PD</span>
+          Pipedrive girişi aktiv et
+        </label>
+      </div>
+    </div>
+    <!-- BRAND LINK -->
+    <div class="form-group">
+      <label class="form-label" style="display:flex;align-items:center;gap:6px">
+        <span style="background:rgba(24,95,165,.12);color:var(--blue);font-size:10px;padding:2px 7px;border-radius:8px;font-weight:600">ADMİN</span>
+        Brand Link (CardPro loqosu profil altında)
+      </label>
+      <div style="display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-radius:9px;padding:10px 14px;border:1px solid var(--gray-light)">
+        <span style="font-size:13px;color:var(--navy)">Brand linki göstər</span>
+        <label style="position:relative;display:inline-block;width:42px;height:24px;cursor:pointer">
+          <input type="checkbox" id="brandLinkToggle" style="opacity:0;width:0;height:0">
+          <span id="brandLinkSlider" style="position:absolute;inset:0;border-radius:12px;background:var(--gray-light);transition:.3s;display:flex;align-items:center;padding:2px"></span>
+        </label>
+      </div>
+      <div style="font-size:11px;color:var(--gray);margin-top:4px">Söndürüldükdə "CardPro ilə yaradılmışdır" linki profil səhifəsindən gizlənir</div>
+    </div>
     <div class="modal-footer"><button class="btn btn-danger btn-sm" onclick="deleteUser()">Sil</button><button class="btn" onclick="closeModal('editModal')">Ləğv et</button><button class="btn btn-primary" onclick="saveUser()">Saxla</button></div>
   </div>
 </div>
@@ -765,6 +820,19 @@ window.openEditModal=function(uid){
   document.querySelectorAll('#editRoleOpts .role-opt').forEach(o=>o.classList.remove('selected'));
   if(ri>=0)document.querySelectorAll('#editRoleOpts .role-opt')[ri].classList.add('selected');
   document.getElementById('editErr').className='error-box';
+  // CRM access
+  const ca=u.adminCrmAccess||{};
+  document.getElementById('crmHsAccess').checked=!!ca.hubspot;
+  document.getElementById('crmSfAccess').checked=!!ca.salesforce;
+  document.getElementById('crmZohoAccess').checked=!!ca.zoho;
+  document.getElementById('crmPipeAccess').checked=!!ca.pipedrive;
+  // Brand link toggle
+  const bl=document.getElementById('brandLinkToggle');
+  const bs=document.getElementById('brandLinkSlider');
+  const brandOn=u.brandLink!==false;
+  bl.checked=brandOn;
+  bs.style.background=brandOn?'var(--blue)':'var(--gray-light)';
+  bl.onchange=function(){bs.style.background=this.checked?'var(--blue)':'var(--gray-light)';};
   document.getElementById('editModal').classList.add('open');
 };
 
@@ -777,7 +845,14 @@ window.saveUser=async function(){
   const defaultLang=document.getElementById('editDefaultLang').value;
   if(!name||!slug){document.getElementById('editErr').textContent='Ad və link boş ola bilməz.';document.getElementById('editErr').className='error-box show';return;}
   const parts=name.trim().split(' ');
-  await update(ref(db,`users/${uid}`),{name,slug,plan:selectedEditPlan,status,userRole:selectedEditRole,company,defaultLang,'card/name':parts[0]||'','card/surname':parts.slice(1).join(' ')||'','card/company':company});
+  const adminCrmAccess={
+    hubspot:document.getElementById('crmHsAccess').checked,
+    salesforce:document.getElementById('crmSfAccess').checked,
+    zoho:document.getElementById('crmZohoAccess').checked,
+    pipedrive:document.getElementById('crmPipeAccess').checked,
+  };
+  const brandLink=document.getElementById('brandLinkToggle').checked;
+  await update(ref(db,`users/${uid}`),{name,slug,plan:selectedEditPlan,status,userRole:selectedEditRole,company,defaultLang,'card/name':parts[0]||'','card/surname':parts.slice(1).join(' ')||'','card/company':company,adminCrmAccess,brandLink});
   showToast('Dəyişikliklər saxlanıldı','success');closeModal('editModal');
 };
 
