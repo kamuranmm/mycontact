@@ -324,26 +324,15 @@
     margin-top: 1.5rem;
   }
 
-  .cf-turnstile { margin: 0.5rem 0; }
-  .attempt-warn {
-    background: #fff7ed;
-    border: 1px solid #fed7aa;
-    color: #c2410c;
-    font-size: 12px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    display: none;
-    align-items: center;
-    gap: 6px;
-  }
-  .attempt-warn.show { display: flex; }
+  @media (max-width: 768px) {
     body { flex-direction: column; }
     .left { width: 100%; padding: 2rem; min-height: 260px; }
     .hero h1 { font-size: 28px; }
     .stats-row { display: none; }
     .right { padding: 2rem 1.5rem; }
   }
+  .attempt-warn{background:#fff7ed;border:1px solid #fed7aa;color:#c2410c;font-size:12px;padding:9px 12px;border-radius:8px;margin-bottom:1rem;display:none;align-items:center;gap:6px}
+  .attempt-warn.show{display:flex}
 </style>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 </head>
@@ -412,10 +401,7 @@
     <div class="login-sub">Hesabınıza daxil olun</div>
 
     <div class="error-msg" id="errorMsg"></div>
-    <div class="attempt-warn" id="attemptWarn">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      <span id="attemptWarnTxt"></span>
-    </div>
+    <div class="attempt-warn" id="attemptWarn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span id="attemptWarnTxt"></span></div>
 
     <div class="form-group">
       <label class="form-label">Email ünvanı</label>
@@ -427,9 +413,7 @@
       <input type="password" class="form-input" id="passInput" placeholder="••••••••" autocomplete="current-password">
     </div>
 
-    <!-- Cloudflare Turnstile - görünməz CAPTCHA -->
-    <div id="cf-turnstile-wrap"></div>
-
+    <div id="cf-turnstile-wrap" style="margin:0.75rem 0 0.25rem"></div>
     <button class="btn-login" id="loginBtn" onclick="doLogin()">
       <span class="btn-text">Daxil ol</span>
       <div class="spinner"></div>
@@ -463,101 +447,55 @@
   const auth = getAuth(app);
   const db = getDatabase(app);
 
-  // ── Cloudflare Turnstile ──
-  // BURAYA ÖZ SITE KEY-İNİ YAZ (Cloudflare → Turnstile → Site Key)
-  const TURNSTILE_SITE_KEY = '0x4AAAAAADD1DxxfxSthx3HI';
-  let turnstileToken = null;
-  let turnstileWidgetId = null;
+  // ── Turnstile ──
+  const SITE_KEY = '0x4AAAAAADD1DxxfxSthx3HI';
+  let tsToken = null, tsId = null;
 
-  function initTurnstile() {
-    if (!window.turnstile) { setTimeout(initTurnstile, 200); return; }
-    turnstileWidgetId = window.turnstile.render('#cf-turnstile-wrap', {
-      sitekey: TURNSTILE_SITE_KEY,
+  function initTS() {
+    if (!window.turnstile) { setTimeout(initTS, 200); return; }
+    tsId = window.turnstile.render('#cf-turnstile-wrap', {
+      sitekey: SITE_KEY,
       theme: 'light',
-      size: 'invisible',
-      callback: function(token) { turnstileToken = token; },
-      'error-callback': function() { turnstileToken = null; },
-      'expired-callback': function() { turnstileToken = null; resetTurnstile(); }
+      callback: t => { tsToken = t; },
+      'error-callback': () => { tsToken = null; },
+      'expired-callback': () => { tsToken = null; if(tsId!==null) window.turnstile.reset(tsId); }
     });
   }
+  window.addEventListener('load', initTS);
 
-  function resetTurnstile() {
-    if (window.turnstile && turnstileWidgetId !== null) {
-      window.turnstile.reset(turnstileWidgetId);
-      turnstileToken = null;
-    }
-  }
+  // ── Rate limiting ──
+  const RL = 'mc_attempts';
+  const MAX = 5, LOCK = 15 * 60 * 1000;
+  const getA = () => { try { return JSON.parse(localStorage.getItem(RL))||{c:0,lu:0}; } catch { return {c:0,lu:0}; } };
+  const saveA = d => localStorage.setItem(RL, JSON.stringify(d));
+  const clearA = () => localStorage.removeItem(RL);
 
-  window.addEventListener('load', initTurnstile);
-
-  // ── Rate limiting (localStorage) ──
-  const RL_KEY = 'mc_login_attempts';
-  const MAX_ATTEMPTS = 5;
-  const LOCKOUT_MS = 15 * 60 * 1000; // 15 dəqiqə
-
-  function getAttempts() {
-    try { return JSON.parse(localStorage.getItem(RL_KEY)) || {count:0, lastAttempt:0, lockedUntil:0}; }
-    catch { return {count:0, lastAttempt:0, lockedUntil:0}; }
-  }
-
-  function saveAttempts(data) {
-    localStorage.setItem(RL_KEY, JSON.stringify(data));
-  }
-
-  function isLocked() {
-    const a = getAttempts();
-    if (a.lockedUntil && Date.now() < a.lockedUntil) return a.lockedUntil;
-    return false;
-  }
-
-  function recordFail() {
-    const a = getAttempts();
-    a.count++;
-    a.lastAttempt = Date.now();
-    if (a.count >= MAX_ATTEMPTS) a.lockedUntil = Date.now() + LOCKOUT_MS;
-    saveAttempts(a);
-    return a;
-  }
-
-  function clearAttempts() {
-    localStorage.removeItem(RL_KEY);
-  }
-
-  function showWarn(txt) {
-    const el = document.getElementById('attemptWarn');
-    document.getElementById('attemptWarnTxt').textContent = txt;
-    el.classList.add('show');
-  }
-
-  function hideWarn() {
-    document.getElementById('attemptWarn').classList.remove('show');
-  }
-
-  // Kilidli qalıbsa sayaç göstər
-  function checkLockUI() {
-    const until = isLocked();
-    if (until) {
-      const remaining = Math.ceil((until - Date.now()) / 60000);
-      showWarn(`Çox cəhd edildi. ${remaining} dəqiqə gözləyin.`);
-      document.getElementById('loginBtn').disabled = true;
-      setTimeout(checkLockUI, 10000);
+  function checkLock() {
+    const a = getA();
+    const btn = document.getElementById('loginBtn');
+    const warn = document.getElementById('attemptWarn');
+    const warnTxt = document.getElementById('attemptWarnTxt');
+    if (a.lu && Date.now() < a.lu) {
+      const min = Math.ceil((a.lu - Date.now()) / 60000);
+      warnTxt.textContent = `Çox cəhd edildi. ${min} dəqiqə gözləyin.`;
+      warn.classList.add('show');
+      btn.disabled = true;
+      setTimeout(checkLock, 15000);
     } else {
-      document.getElementById('loginBtn').disabled = false;
-      const a = getAttempts();
-      if (a.count > 0 && a.count < MAX_ATTEMPTS) {
-        showWarn(`${MAX_ATTEMPTS - a.count} cəhdiniz qalıb.`);
-      } else { hideWarn(); }
+      btn.disabled = false;
+      if (a.c > 0 && a.c < MAX) {
+        warnTxt.textContent = `${MAX - a.c} cəhdiniz qalıb.`;
+        warn.classList.add('show');
+      }
     }
   }
+  checkLock();
 
-  checkLockUI();
-
-  // ── Auth state ──
-  onAuthStateChanged(auth, async (user) => {
+  // ── Auth redirect ──
+  onAuthStateChanged(auth, async user => {
     if (user) {
-      const snap = await get(ref(db, `users/${user.uid}/role`));
-      const role = snap.val();
-      window.location.href = role === 'admin' ? 'admin.html' : 'dashboard.html';
+      const s = await get(ref(db, `users/${user.uid}/role`));
+      window.location.href = s.val() === 'admin' ? 'admin.html' : 'dashboard.html';
     }
   });
 
@@ -567,14 +505,16 @@
     const pass = document.getElementById('passInput').value;
     const btn = document.getElementById('loginBtn');
     const err = document.getElementById('errorMsg');
+    const warn = document.getElementById('attemptWarn');
+    const warnTxt = document.getElementById('attemptWarnTxt');
 
     err.classList.remove('show');
 
-    // Kilidli?
-    const until = isLocked();
-    if (until) {
-      const remaining = Math.ceil((until - Date.now()) / 60000);
-      showWarn(`Çox cəhd edildi. ${remaining} dəqiqə gözləyin.`);
+    const a = getA();
+    if (a.lu && Date.now() < a.lu) {
+      const min = Math.ceil((a.lu - Date.now()) / 60000);
+      warnTxt.textContent = `Çox cəhd edildi. ${min} dəqiqə gözləyin.`;
+      warn.classList.add('show');
       return;
     }
 
@@ -584,20 +524,10 @@
       return;
     }
 
-    // Turnstile yoxlaması
-    if (!turnstileToken) {
-      // Token gəlməyibsə execute et
-      if (window.turnstile && turnstileWidgetId !== null) {
-        window.turnstile.execute(turnstileWidgetId);
-        // 2 saniyə gözlə
-        await new Promise(r => setTimeout(r, 2000));
-      }
-      if (!turnstileToken) {
-        err.textContent = 'Təhlükəsizlik yoxlaması tamamlanmadı. Yenidən cəhd edin.';
-        err.classList.add('show');
-        resetTurnstile();
-        return;
-      }
+    if (!tsToken) {
+      err.textContent = 'Zəhmət olmasa təhlükəsizlik yoxlamasını tamamlayın.';
+      err.classList.add('show');
+      return;
     }
 
     btn.classList.add('loading');
@@ -605,32 +535,32 @@
 
     try {
       const cred = await signInWithEmailAndPassword(auth, email, pass);
-      clearAttempts();
-      const snap = await get(ref(db, `users/${cred.user.uid}/role`));
-      const role = snap.val();
-      window.location.href = role === 'admin' ? 'admin.html' : 'dashboard.html';
+      clearA();
+      const s = await get(ref(db, `users/${cred.user.uid}/role`));
+      window.location.href = s.val() === 'admin' ? 'admin.html' : 'dashboard.html';
     } catch (e) {
       let msg = 'Giriş uğursuz oldu.';
-      if (e.code === 'auth/user-not-found' || e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') {
-        msg = 'Email və ya şifrə yanlışdır.';
-      } else if (e.code === 'auth/too-many-requests') {
-        msg = 'Çox cəhd edildi. Bir az gözləyin.';
-      }
+      if (e.code === 'auth/user-not-found' || e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') msg = 'Email və ya şifrə yanlışdır.';
+      else if (e.code === 'auth/too-many-requests') msg = 'Çox cəhd edildi. Bir az gözləyin.';
       err.textContent = msg;
       err.classList.add('show');
       btn.classList.remove('loading');
 
-      // Uğursuz cəhdi qeydə al
-      const a = recordFail();
-      if (a.lockedUntil) {
-        showWarn('Çox cəhd edildi. 15 dəqiqə gözləyin.');
+      const na = getA();
+      na.c++;
+      if (na.c >= MAX) na.lu = Date.now() + LOCK;
+      saveA(na);
+      if (na.lu) {
+        warnTxt.textContent = 'Çox cəhd edildi. 15 dəqiqə gözləyin.';
+        warn.classList.add('show');
         btn.disabled = true;
       } else {
         btn.disabled = false;
-        showWarn(`${MAX_ATTEMPTS - a.count} cəhdiniz qalıb.`);
+        warnTxt.textContent = `${MAX - na.c} cəhdiniz qalıb.`;
+        warn.classList.add('show');
       }
-
-      resetTurnstile();
+      tsToken = null;
+      if (tsId !== null) window.turnstile.reset(tsId);
     }
   };
 
