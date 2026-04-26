@@ -881,8 +881,9 @@ window.addManualContact=async function(){
   await push(ref(db,`contacts/${CU.uid}`),c);
   ['mName','mPosition','mCompany','mPhone','mEmail','mNote'].forEach(id=>document.getElementById(id).value='');
   showToast('Kontakt əlavə edildi','success');closeModal('addContactModal');
-  // Auto-trigger Zapier
+  // Auto-sync
   triggerZapierContact(c);
+  syncContactToHubspot(c);
 };
 
 // CRM
@@ -914,28 +915,27 @@ window.openCrmModal=function(t){crmTarget=t;const crm=UD?.crm||{};
   document.getElementById('crmModal').classList.add('open');
 };
 window.syncToHubspot=async function(){
-  const webhookUrl="https://hooks.zapier.com/hooks/catch/920102/uv2o5cx/";
+  const token=UD?.crm?.hubspot?.apiKey;
+  if(!token){showToast('Əvvəlcə HubSpot token daxil edin','error');openCrmModal('hubspot');return;}
   if(!allContacts.length){showToast('Göndəriləcək kontakt yoxdur','error');return;}
   showToast('HubSpot-a göndərilir...');
   let count=0,errors=0;
   for(const ct of allContacts){
     try{
-      const r=await fetch(webhookUrl,{
+      const r=await fetch('https://api.hubapi.com/crm/v3/objects/contacts',{
         method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+        body:JSON.stringify({properties:{
           firstname:ct.name?.split(' ')[0]||'',
           lastname:ct.name?.split(' ').slice(1).join(' ')||'',
           phone:ct.phone||'',
           email:ct.email||'',
           company:ct.company||'',
-          jobtitle:ct.position||'',
-          source:'MyContact',
-          timestamp:Date.now()
-        })
+          jobtitle:ct.position||''
+        }})
       });
-      if(r.ok)count++;
-      else{errors++;console.error('Zapier:',r.status);}
+      if(r.ok||r.status===409)count++; // 409 = artıq mövcuddur
+      else{errors++;const e=await r.json();console.error('HubSpot err:',e);}
     }catch(e){errors++;console.error(e);}
   }
   const log=[...(UD?.crm?.log||[]),{msg:`HubSpot: ${count} kontakt`,at:Date.now()}];
@@ -943,8 +943,28 @@ window.syncToHubspot=async function(){
   const el=document.getElementById('hsSyncCount');
   if(el)el.textContent=count+' sync edilib';
   if(count>0)showToast(`${count} kontakt HubSpot-a göndərildi ✓`,'success');
-  else showToast('Xəta baş verdi','error');
+  else showToast('Xəta baş verdi — token yoxlanın','error');
 };
+
+// Yeni kontakt əlavə olunanda HubSpot-a avtomatik göndər
+async function syncContactToHubspot(contact){
+  const token=UD?.crm?.hubspot?.apiKey;
+  if(!token)return;
+  try{
+    await fetch('https://api.hubapi.com/crm/v3/objects/contacts',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+      body:JSON.stringify({properties:{
+        firstname:contact.name?.split(' ')[0]||'',
+        lastname:contact.name?.split(' ').slice(1).join(' ')||'',
+        phone:contact.phone||'',
+        email:contact.email||'',
+        company:contact.company||'',
+        jobtitle:contact.position||''
+      }})
+    });
+  }catch(e){console.warn('HubSpot auto-sync xətası:',e);}
+}
 window.renderSigPreview=function(){
   if(typeof sigState==='undefined'){sigState={name:true,position:true,phone:true,email:true,web:false,socials:false,photo:false,cardlink:true};}
   const d=UD?.card||{};const slug=UD?.slug||'';const soc=UD?.socials||{};
