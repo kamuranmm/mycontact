@@ -288,7 +288,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
     <div class="nav-item" onclick="showPanel('customize')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 010 20"/></svg>Dizayn</div>
     <div class="nav-section">İnteqrasiya</div>
     <div class="nav-item" onclick="showPanel('crm')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>CRM<span class="nav-pro">PRO</span></div>
-    <div class="nav-item" onclick="showPanel('zapier')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Make.com</div>
+    <div class="nav-item" onclick="showPanel('zapier')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Automation</div>
     <div class="nav-item" onclick="showPanel('settings')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Ayarlar</div>
   </nav>
   <div class="sidebar-footer">
@@ -427,7 +427,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
       <div style="max-width:700px">
         <div class="contacts-toolbar">
           <input class="search-input" type="text" placeholder="Ad, şirkət, email ilə axtar..." oninput="filterContacts(this.value)">
-          <button class="btn btn-sm" onclick="sendAllContactsToMake()" id="makeBulkBtn" style="border-color:rgba(255,74,0,.3);color:#FF4A00;background:rgba(255,74,0,.04);white-space:nowrap"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Make-ə göndər</button>
+          <button class="btn btn-sm" onclick="sendAllContactsToAuto()" id="autoBulkBtn" style="border-color:rgba(255,74,0,.3);color:#FF4A00;background:rgba(255,74,0,.04);white-space:nowrap"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Webhook-a göndər</button>
           <button class="btn btn-primary btn-sm" onclick="openAddContactModal()">+ Yeni kontakt</button>
         </div>
         <div class="contacts-grid" id="contactsGrid"><div class="empty-state"><div style="font-size:36px;opacity:.3;margin-bottom:.9rem">📇</div><div style="font-size:14px;color:var(--navy);margin-bottom:3px">Hələ kontakt yoxdur</div><div style="font-size:12px">Kontakt əlavə etmək üçün "+ Yeni kontakt" düyməsinə basın</div></div></div>
@@ -565,28 +565,28 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8l4 4-4 4"/></svg>
           </div>
           <div>
-            <div style="font-size:14px;font-weight:500;color:var(--navy);margin-bottom:3px">Make.com İnteqrasiyası</div>
-            <div style="font-size:12px;color:var(--gray);line-height:1.5">Kontaktlarınızı HubSpot, Salesforce, Google Sheets və digər xidmətlərə avtomatik göndərin.</div>
+            <div style="font-size:14px;font-weight:500;color:var(--navy);margin-bottom:3px">Automation Webhook</div>
+            <div style="font-size:12px;color:var(--gray);line-height:1.5">Make.com, n8n və digər automation platformalarına qoşulun. Hər yeni kontakt avtomatik göndərilir.</div>
           </div>
         </div>
 
         <!-- Webhook URL -->
         <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
           <div style="font-size:14px;font-weight:500;color:var(--navy);margin-bottom:.25rem">Webhook URL</div>
-          <div style="font-size:12px;color:var(--gray);margin-bottom:1rem">Make.com-dan alınan webhook URL-i aşağıya yapışdırın.</div>
+          <div style="font-size:12px;color:var(--gray);margin-bottom:1rem">Make.com, n8n və digər automation platformalarından alınan webhook URL-i yapışdırın.</div>
           <div class="form-group" style="margin-bottom:0">
-            <label class="form-label">Make.com Webhook URL</label>
+            <label class="form-label">Automation Webhook URL</label>
             <div style="display:flex;gap:8px;align-items:center">
-              <input class="form-input" id="makeWebhookInput" placeholder="https://hook.eu1.make.com/..." style="flex:1">
-              <div id="makeStatusDot" style="width:10px;height:10px;border-radius:50%;background:var(--gray-light);flex-shrink:0;transition:background .3s"></div>
+              <input class="form-input" id="automationWebhookInput" placeholder="https://hook.eu1.make.com/..." style="flex:1">
+              <div id="autoStatusDot" style="width:10px;height:10px;border-radius:50%;background:var(--gray-light);flex-shrink:0;transition:background .3s"></div>
             </div>
-            <div id="makeUrlError" style="font-size:11px;color:var(--error);margin-top:5px;display:none">Make.com webhook URL daxil edin</div>
+            <div id="autoUrlError" style="font-size:11px;color:var(--error);margin-top:5px;display:none">Make.com webhook URL daxil edin</div>
           </div>
           <div style="display:flex;gap:8px;margin-top:1rem;justify-content:flex-end">
-            <button class="btn" onclick="testMakeWebhook()" id="makeTestBtn">
+            <button class="btn" onclick="testAutoWebhook()" id="autoTestBtn">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>Test et
             </button>
-            <button class="btn btn-primary" onclick="saveMakeWebhook()">
+            <button class="btn btn-primary" onclick="saveAutoWebhook()">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Saxla
             </button>
           </div>
@@ -597,14 +597,14 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
           <div style="font-size:13px;font-weight:500;color:var(--navy);margin-bottom:.9rem">Hansı xidmətə qoşmaq istəyirsiniz?</div>
 
           <!-- Tabs -->
-          <div style="display:flex;gap:6px;margin-bottom:1rem" id="makeGuideTabs">
-            <button onclick="showMakeGuide('hubspot')" id="makeTab-hubspot" style="padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid #FF7A59;background:rgba(255,122,89,.1);color:#FF7A59;font-family:'DM Sans',sans-serif">🟠 HubSpot</button>
-            <button onclick="showMakeGuide('salesforce')" id="makeTab-salesforce" style="padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--surface);color:var(--gray);font-family:'DM Sans',sans-serif">🔵 Salesforce</button>
-            <button onclick="showMakeGuide('sheets')" id="makeTab-sheets" style="padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--surface);color:var(--gray);font-family:'DM Sans',sans-serif">🟢 Google Sheets</button>
+          <div style="display:flex;gap:6px;margin-bottom:1rem" id="autoGuideTabs">
+            <button onclick="showAutoGuide('hubspot')" id="autoTab-hubspot" style="padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid #FF7A59;background:rgba(255,122,89,.1);color:#FF7A59;font-family:'DM Sans',sans-serif">🟠 HubSpot</button>
+            <button onclick="showAutoGuide('salesforce')" id="autoTab-salesforce" style="padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--surface);color:var(--gray);font-family:'DM Sans',sans-serif">🔵 Salesforce</button>
+            <button onclick="showAutoGuide('sheets')" id="autoTab-sheets" style="padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--surface);color:var(--gray);font-family:'DM Sans',sans-serif">🟢 Google Sheets</button>
           </div>
 
           <!-- HubSpot Guide -->
-          <div id="makeGuide-hubspot">
+          <div id="autoGuide-hubspot">
             <div style="display:flex;flex-direction:column;gap:10px">
               <div style="display:flex;gap:10px;align-items:flex-start">
                 <div style="width:22px;height:22px;border-radius:50%;background:rgba(255,122,89,.15);color:#FF7A59;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
@@ -634,7 +634,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
           </div>
 
           <!-- Salesforce Guide -->
-          <div id="makeGuide-salesforce" style="display:none">
+          <div id="autoGuide-salesforce" style="display:none">
             <div style="display:flex;flex-direction:column;gap:10px">
               <div style="display:flex;gap:10px;align-items:flex-start">
                 <div style="width:22px;height:22px;border-radius:50%;background:rgba(0,161,224,.15);color:#00A1E0;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
@@ -660,7 +660,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
           </div>
 
           <!-- Google Sheets Guide -->
-          <div id="makeGuide-sheets" style="display:none">
+          <div id="autoGuide-sheets" style="display:none">
             <div style="display:flex;flex-direction:column;gap:10px">
               <div style="display:flex;gap:10px;align-items:flex-start">
                 <div style="width:22px;height:22px;border-radius:50%;background:rgba(39,174,96,.15);color:var(--success);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
@@ -764,7 +764,7 @@ import{getDatabase,ref,get,update,remove,push,onValue}from"https://www.gstatic.c
 import{getStorage,ref as sRef,uploadBytes,getDownloadURL}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 const cfg={apiKey:"AIzaSyBx81QDpjHSPvhkmnnSUNkJYMvR_fnRTaU",authDomain:"mycontact-e626e.firebaseapp.com",databaseURL:"https://mycontact-e626e-default-rtdb.firebaseio.com",projectId:"mycontact-e626e",storageBucket:"mycontact-e626e.firebasestorage.app",messagingSenderId:"420594516827",appId:"1:420594516827:web:f30266800c690c6ff9107e"};
 const app=initializeApp(cfg);const auth=getAuth(app);const db=getDatabase(app);const storage=getStorage(app);
-let CU=null,UD=null,activeSocials={},allContacts=[],crmTarget='',_lastPhotoUrl=null,_lastCoverUrl=null,_udLoaded=false,_selectedDefaultLang='az',_cachedMakeUrl=null;
+let CU=null,UD=null,activeSocials={},allContacts=[],crmTarget='',_lastPhotoUrl=null,_lastCoverUrl=null,_udLoaded=false,_selectedDefaultLang='az',_cachedAutoUrl=null;
 let sigState={name:true,position:true,phone:true,email:true,web:false,socials:false,photo:false,cardlink:true};
 
 onAuthStateChanged(auth,async u=>{
@@ -773,7 +773,7 @@ onAuthStateChanged(auth,async u=>{
   if(s.val()==='admin'){location.href='admin.html';return;}
   onValue(ref(db,`users/${u.uid}`),s=>{
     UD=s.val()||{};
-    _cachedMakeUrl=UD.makeWebhook||null;
+    _cachedAutoUrl=UD.automationWebhook||null;
     loadUD();
   });
   onValue(ref(db,`contacts/${u.uid}`),s=>{
@@ -969,7 +969,7 @@ window.addManualContact=async function(){
   ['mName','mPosition','mCompany','mPhone','mEmail','mNote'].forEach(id=>document.getElementById(id).value='');
   showToast('Kontakt əlavə edildi','success');closeModal('addContactModal');
   // Auto-sync
-  triggerMakeContact(c);
+  triggerAutoContact(c);
   syncContactToHubspot(c);
 };
 
@@ -1748,11 +1748,11 @@ window.showPanel=function(n){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
   document.getElementById('panel-'+n).classList.add('active');
-  const t={overview:'İcmal',editor:'Kartımı redaktə et',social:'Sosial şəbəkələr',media:'PDF və Video',contacts:'Kontaktlarım',crm:'CRM İnteqrasiya',scanner:'Vizit Kart Oxuyucu',signature:'Email İmzası Builder',customize:'Dizayn & Şablonlar',settings:'Ayarlar',zapier:'Make.com İnteqrasiyası'};
+  const t={overview:'İcmal',editor:'Kartımı redaktə et',social:'Sosial şəbəkələr',media:'PDF və Video',contacts:'Kontaktlarım',crm:'CRM İnteqrasiya',scanner:'Vizit Kart Oxuyucu',signature:'Email İmzası Builder',customize:'Dizayn & Şablonlar',settings:'Ayarlar',zapier:'Automation Webhook'};
   document.getElementById('topbarTitle').textContent=t[n]||n;
   if(n==='signature'){document.querySelectorAll('#sigBlocks .sig-block-toggle').forEach(btn=>{const key=btn.closest('[data-key]')?.dataset.key;if(key)sigState[key]=btn.classList.contains('on');});setTimeout(renderSigPreview,100);}
   if(n==='customize'){renderTemplates();loadCustomColors();}
-  if(n==='zapier'){loadMakeWebhook();}
+  if(n==='zapier'){loadAutoWebhook();}
   closeSidebar();
 };
 window.closeModal=function(id){document.getElementById(id).classList.remove('open');};
@@ -1761,10 +1761,10 @@ window.doLogout=async function(){await signOut(auth);location.href='index.html';
 function showToast(m,t=''){const el=document.getElementById('toast');el.textContent=m;el.className='toast show '+t;setTimeout(()=>el.className='toast',3000);}
 window.showToast=showToast;
 
-window.showMakeGuide=function(tab){
+window.showAutoGuide=function(tab){
   ['hubspot','salesforce','sheets'].forEach(t=>{
-    const guide=document.getElementById('makeGuide-'+t);
-    const btn=document.getElementById('makeTab-'+t);
+    const guide=document.getElementById('autoGuide-'+t);
+    const btn=document.getElementById('autoTab-'+t);
     if(!guide||!btn)return;
     const colors={hubspot:'#FF7A59',salesforce:'#00A1E0',sheets:'#27ae60'};
     if(t===tab){
@@ -1781,85 +1781,89 @@ window.showMakeGuide=function(tab){
   });
 };
 function hexToRgb(hex){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return r+','+g+','+b;}
-function isValidMakeUrl(url){return url&&url.trim().startsWith('https://');}
+function isValidAutoUrl(url){
+  if(!url)return false;
+  const u=url.trim();
+  return u.startsWith('https://');
+}
 
-async function getMakeWebhookUrl(){
-  if(_cachedMakeUrl&&isValidMakeUrl(_cachedMakeUrl))return _cachedMakeUrl.trim();
+async function getAutoWebhookUrl(){
+  if(_cachedAutoUrl&&isValidAutoUrl(_cachedAutoUrl))return _cachedAutoUrl.trim();
   if(!CU)return null;
-  try{const snap=await get(ref(db,`users/${CU.uid}/makeWebhook`));const url=snap.val();_cachedMakeUrl=url;return isValidMakeUrl(url)?url.trim():null;}
+  try{const snap=await get(ref(db,`users/${CU.uid}/automationWebhook`));const url=snap.val();_cachedAutoUrl=url;return isValidAutoUrl(url)?url.trim():null;}
   catch(e){return null;}
 }
 
-async function triggerMakeContact(contact){
-  const url=await getMakeWebhookUrl();
+async function triggerAutoContact(contact){
+  const url=await getAutoWebhookUrl();
   if(!url)return;
-  const payload={name:contact.name||'',email:contact.email||'',phone:contact.phone||'',company:contact.company||'',position:contact.position||'',savedAt:new Date(contact.addedAt||Date.now()).toISOString()};
+  const payload={name:contact.name||'',email:contact.email||'',phone:contact.phone||'',company:contact.company||'',position:contact.position||'',note:contact.note||'',savedAt:new Date(contact.addedAt||Date.now()).toISOString()};
   try{
-    await fetch(url,{method:'POST',body:JSON.stringify(payload)});
-  }catch(e){console.warn('Zapier trigger xətası:',e);}
+    await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  }catch(e){console.warn('Make trigger xətası:',e);}
 }
 
-window.sendAllContactsToMake=async function(){
-  const url=await getMakeWebhookUrl();
-  if(!url){showToast('Əvvəlcə Make.com webhook URL qoşun','error');showPanel('zapier');return;}
+window.sendAllContactsToAuto=async function(){
+  const url=await getAutoWebhookUrl();
+  if(!url){showToast('Əvvəlcə Automation webhook URL qoşun','error');showPanel('zapier');return;}
   if(!allContacts.length){showToast('Göndəriləcək kontakt yoxdur','error');return;}
-  const btn=document.getElementById('makeBulkBtn');
+  const btn=document.getElementById('autoBulkBtn');
   btn.disabled=true;btn.textContent='Göndərilir...';
   let ok=0,fail=0;
   for(const ct of allContacts){
     const payload={name:ct.name||'',email:ct.email||'',phone:ct.phone||'',company:ct.company||'',position:ct.position||'',savedAt:new Date(ct.addedAt||Date.now()).toISOString()};
-    try{await fetch(url,{method:'POST',body:JSON.stringify(payload)});ok++;}
+    try{await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});ok++;}
     catch(e){fail++;}
     await new Promise(r=>setTimeout(r,300)); // rate limit üçün
   }
-  btn.disabled=false;btn.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Make-ə göndər';
-  showToast(`${ok} kontakt Make.com-a göndərildi`+(fail?` (${fail} xəta)`:''),'success');
+  btn.disabled=false;btn.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Webhook-a göndər';
+  showToast(`${ok} kontakt göndərildi`+(fail?` (${fail} xəta)`:''),'success');
 };
 
-async function loadMakeWebhook(){
+async function loadAutoWebhook(){
   if(!CU)return;
   try{
-    const snap=await get(ref(db,`users/${CU.uid}/makeWebhook`));
+    const snap=await get(ref(db,`users/${CU.uid}/automationWebhook`));
     const url=snap.val()||'';
-    const inp=document.getElementById('makeWebhookInput');
+    const inp=document.getElementById('automationWebhookInput');
     if(inp)inp.value=url;
-    updateMakeDot(url);
+    updateAutoDot(url);
   }catch(e){console.error('zapier load',e);}
 }
 
-function updateMakeDot(url){
-  const dot=document.getElementById('makeStatusDot');
+function updateAutoDot(url){
+  const dot=document.getElementById('autoStatusDot');
   if(!dot)return;
-  dot.style.background=isValidMakeUrl(url)?'var(--success)':'var(--gray-light)';
+  dot.style.background=isValidAutoUrl(url)?'var(--success)':'var(--gray-light)';
 }
 
-window.saveMakeWebhook=async function(){
+window.saveAutoWebhook=async function(){
   if(!CU){showToast('Giriş tələb olunur','error');return;}
-  const inp=document.getElementById('makeWebhookInput');
-  const errEl=document.getElementById('makeUrlError');
+  const inp=document.getElementById('automationWebhookInput');
+  const errEl=document.getElementById('autoUrlError');
   const url=inp.value.trim();
-  if(!isValidMakeUrl(url)){
+  if(!isValidAutoUrl(url)){
     if(errEl)errEl.style.display='block';
     inp.style.borderColor='var(--error)';
-    showToast('Düzgün Make.com webhook URL daxil edin','error');
+    showToast('Düzgün webhook URL daxil edin','error');
     return;
   }
   if(errEl)errEl.style.display='none';
   inp.style.borderColor='';
   try{
-    await update(ref(db,`users/${CU.uid}`),{makeWebhook:url});
-    _cachedMakeUrl=url;
-    updateMakeDot(url);
-    showToast('Make.com webhook saxlanıldı ✓','success');
+    await update(ref(db,`users/${CU.uid}`),{automationWebhook:url});
+    _cachedAutoUrl=url;
+    updateAutoDot(url);
+    showToast('Automation webhook saxlanıldı ✓','success');
   }catch(e){showToast('Xəta: '+e.message,'error');}
 };
 
-window.testMakeWebhook=async function(){
+window.testAutoWebhook=async function(){
   if(!CU){showToast('Giriş tələb olunur','error');return;}
-  const inp=document.getElementById('makeWebhookInput');
-  const errEl=document.getElementById('makeUrlError');
+  const inp=document.getElementById('automationWebhookInput');
+  const errEl=document.getElementById('autoUrlError');
   const url=inp.value.trim();
-  if(!isValidMakeUrl(url)){
+  if(!isValidAutoUrl(url)){
     if(errEl)errEl.style.display='block';
     inp.style.borderColor='var(--error)';
     showToast('Əvvəlcə düzgün URL daxil edin','error');
@@ -1867,13 +1871,13 @@ window.testMakeWebhook=async function(){
   }
   if(errEl)errEl.style.display='none';
   inp.style.borderColor='';
-  const btn=document.getElementById('makeTestBtn');
+  const btn=document.getElementById('autoTestBtn');
   const orig=btn.innerHTML;
   btn.disabled=true;btn.innerHTML='Göndərilir...';
   const payload={name:'Test Contact',email:'test@example.com',phone:'+994 55 000 00 00',company:'MyContact',savedAt:new Date().toISOString()};
   try{
-    await fetch(url,{method:'POST',body:JSON.stringify(payload)});
-    showToast('Test data Make.com-a göndərildi ✓','success');
+    await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    showToast('Test data göndərildi ✓','success');
   }catch(e){showToast('Göndərilə bilmədi: '+e.message,'error');}
   finally{btn.disabled=false;btn.innerHTML=orig;}
 };
