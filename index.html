@@ -324,7 +324,20 @@
     margin-top: 1.5rem;
   }
 
-  @media (max-width: 768px) {
+  .cf-turnstile { margin: 0.5rem 0; }
+  .attempt-warn {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #c2410c;
+    font-size: 12px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    display: none;
+    align-items: center;
+    gap: 6px;
+  }
+  .attempt-warn.show { display: flex; }
     body { flex-direction: column; }
     .left { width: 100%; padding: 2rem; min-height: 260px; }
     .hero h1 { font-size: 28px; }
@@ -332,6 +345,7 @@
     .right { padding: 2rem 1.5rem; }
   }
 </style>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 </head>
 <body>
 
@@ -398,6 +412,10 @@
     <div class="login-sub">Hesabınıza daxil olun</div>
 
     <div class="error-msg" id="errorMsg"></div>
+    <div class="attempt-warn" id="attemptWarn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span id="attemptWarnTxt"></span>
+    </div>
 
     <div class="form-group">
       <label class="form-label">Email ünvanı</label>
@@ -408,6 +426,9 @@
       <label class="form-label">Şifrə</label>
       <input type="password" class="form-input" id="passInput" placeholder="••••••••" autocomplete="current-password">
     </div>
+
+    <!-- Cloudflare Turnstile - görünməz CAPTCHA -->
+    <div id="cf-turnstile-wrap"></div>
 
     <button class="btn-login" id="loginBtn" onclick="doLogin()">
       <span class="btn-text">Daxil ol</span>
@@ -442,18 +463,105 @@
   const auth = getAuth(app);
   const db = getDatabase(app);
 
+  // ── Cloudflare Turnstile ──
+  // BURAYA ÖZ SITE KEY-İNİ YAZ (Cloudflare → Turnstile → Site Key)
+  const TURNSTILE_SITE_KEY = '0x4AAAAAADD1DxxfxSthx3HI';
+  let turnstileToken = null;
+  let turnstileWidgetId = null;
+
+  function initTurnstile() {
+    if (!window.turnstile) { setTimeout(initTurnstile, 200); return; }
+    turnstileWidgetId = window.turnstile.render('#cf-turnstile-wrap', {
+      sitekey: TURNSTILE_SITE_KEY,
+      theme: 'light',
+      size: 'invisible',
+      callback: function(token) { turnstileToken = token; },
+      'error-callback': function() { turnstileToken = null; },
+      'expired-callback': function() { turnstileToken = null; resetTurnstile(); }
+    });
+  }
+
+  function resetTurnstile() {
+    if (window.turnstile && turnstileWidgetId !== null) {
+      window.turnstile.reset(turnstileWidgetId);
+      turnstileToken = null;
+    }
+  }
+
+  window.addEventListener('load', initTurnstile);
+
+  // ── Rate limiting (localStorage) ──
+  const RL_KEY = 'mc_login_attempts';
+  const MAX_ATTEMPTS = 5;
+  const LOCKOUT_MS = 15 * 60 * 1000; // 15 dəqiqə
+
+  function getAttempts() {
+    try { return JSON.parse(localStorage.getItem(RL_KEY)) || {count:0, lastAttempt:0, lockedUntil:0}; }
+    catch { return {count:0, lastAttempt:0, lockedUntil:0}; }
+  }
+
+  function saveAttempts(data) {
+    localStorage.setItem(RL_KEY, JSON.stringify(data));
+  }
+
+  function isLocked() {
+    const a = getAttempts();
+    if (a.lockedUntil && Date.now() < a.lockedUntil) return a.lockedUntil;
+    return false;
+  }
+
+  function recordFail() {
+    const a = getAttempts();
+    a.count++;
+    a.lastAttempt = Date.now();
+    if (a.count >= MAX_ATTEMPTS) a.lockedUntil = Date.now() + LOCKOUT_MS;
+    saveAttempts(a);
+    return a;
+  }
+
+  function clearAttempts() {
+    localStorage.removeItem(RL_KEY);
+  }
+
+  function showWarn(txt) {
+    const el = document.getElementById('attemptWarn');
+    document.getElementById('attemptWarnTxt').textContent = txt;
+    el.classList.add('show');
+  }
+
+  function hideWarn() {
+    document.getElementById('attemptWarn').classList.remove('show');
+  }
+
+  // Kilidli qalıbsa sayaç göstər
+  function checkLockUI() {
+    const until = isLocked();
+    if (until) {
+      const remaining = Math.ceil((until - Date.now()) / 60000);
+      showWarn(`Çox cəhd edildi. ${remaining} dəqiqə gözləyin.`);
+      document.getElementById('loginBtn').disabled = true;
+      setTimeout(checkLockUI, 10000);
+    } else {
+      document.getElementById('loginBtn').disabled = false;
+      const a = getAttempts();
+      if (a.count > 0 && a.count < MAX_ATTEMPTS) {
+        showWarn(`${MAX_ATTEMPTS - a.count} cəhdiniz qalıb.`);
+      } else { hideWarn(); }
+    }
+  }
+
+  checkLockUI();
+
+  // ── Auth state ──
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       const snap = await get(ref(db, `users/${user.uid}/role`));
       const role = snap.val();
-      if (role === 'admin') {
-        window.location.href = 'admin.html';
-      } else {
-        window.location.href = 'dashboard.html';
-      }
+      window.location.href = role === 'admin' ? 'admin.html' : 'dashboard.html';
     }
   });
 
+  // ── Login ──
   window.doLogin = async function() {
     const email = document.getElementById('emailInput').value.trim();
     const pass = document.getElementById('passInput').value;
@@ -462,10 +570,34 @@
 
     err.classList.remove('show');
 
+    // Kilidli?
+    const until = isLocked();
+    if (until) {
+      const remaining = Math.ceil((until - Date.now()) / 60000);
+      showWarn(`Çox cəhd edildi. ${remaining} dəqiqə gözləyin.`);
+      return;
+    }
+
     if (!email || !pass) {
       err.textContent = 'Email və şifrəni daxil edin.';
       err.classList.add('show');
       return;
+    }
+
+    // Turnstile yoxlaması
+    if (!turnstileToken) {
+      // Token gəlməyibsə execute et
+      if (window.turnstile && turnstileWidgetId !== null) {
+        window.turnstile.execute(turnstileWidgetId);
+        // 2 saniyə gözlə
+        await new Promise(r => setTimeout(r, 2000));
+      }
+      if (!turnstileToken) {
+        err.textContent = 'Təhlükəsizlik yoxlaması tamamlanmadı. Yenidən cəhd edin.';
+        err.classList.add('show');
+        resetTurnstile();
+        return;
+      }
     }
 
     btn.classList.add('loading');
@@ -473,13 +605,10 @@
 
     try {
       const cred = await signInWithEmailAndPassword(auth, email, pass);
+      clearAttempts();
       const snap = await get(ref(db, `users/${cred.user.uid}/role`));
       const role = snap.val();
-      if (role === 'admin') {
-        window.location.href = 'admin.html';
-      } else {
-        window.location.href = 'dashboard.html';
-      }
+      window.location.href = role === 'admin' ? 'admin.html' : 'dashboard.html';
     } catch (e) {
       let msg = 'Giriş uğursuz oldu.';
       if (e.code === 'auth/user-not-found' || e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') {
@@ -490,7 +619,18 @@
       err.textContent = msg;
       err.classList.add('show');
       btn.classList.remove('loading');
-      btn.disabled = false;
+
+      // Uğursuz cəhdi qeydə al
+      const a = recordFail();
+      if (a.lockedUntil) {
+        showWarn('Çox cəhd edildi. 15 dəqiqə gözləyin.');
+        btn.disabled = true;
+      } else {
+        btn.disabled = false;
+        showWarn(`${MAX_ATTEMPTS - a.count} cəhdiniz qalıb.`);
+      }
+
+      resetTurnstile();
     }
   };
 
