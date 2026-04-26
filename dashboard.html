@@ -288,6 +288,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
     <div class="nav-item" onclick="showPanel('customize')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 010 20"/></svg>Dizayn</div>
     <div class="nav-section">İnteqrasiya</div>
     <div class="nav-item" onclick="showPanel('crm')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>CRM<span class="nav-pro">PRO</span></div>
+    <div class="nav-item" onclick="showPanel('zapier')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Zapier</div>
     <div class="nav-item" onclick="showPanel('settings')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Ayarlar</div>
   </nav>
   <div class="sidebar-footer">
@@ -549,6 +550,61 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
             <div class="lang-card" data-lang="es" onclick="selectDefaultLang('es')"><div class="lang-flag">🇪🇸</div><div class="lang-name">Español</div></div>
           </div>
           <div style="margin-top:.9rem;display:flex;justify-content:flex-end"><button class="btn btn-primary" onclick="saveDefaultLang()">Saxla</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ZAPIER INTEGRATION -->
+    <div class="panel" id="panel-zapier">
+      <div style="max-width:580px;display:flex;flex-direction:column;gap:1rem">
+        <div style="background:linear-gradient(135deg,rgba(255,74,0,.06),rgba(255,74,0,.02));border:1.5px solid rgba(255,74,0,.15);border-radius:13px;padding:1.1rem 1.25rem;display:flex;align-items:center;gap:12px">
+          <div style="width:42px;height:42px;border-radius:10px;background:#FF4A00;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <div>
+            <div style="font-size:14px;font-weight:500;color:var(--navy);margin-bottom:3px">Zapier İnteqrasiyası</div>
+            <div style="font-size:12px;color:var(--gray);line-height:1.5">Hər yeni kontakt əlavə olunanda avtomatik olaraq Zapier vasitəsilə istənilən xidmətə göndərin.</div>
+          </div>
+        </div>
+        <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
+          <div style="font-size:14px;font-weight:500;color:var(--navy);margin-bottom:.25rem">Webhook URL</div>
+          <div style="font-size:12px;color:var(--gray);margin-bottom:1rem">Zapier-də "Webhooks by Zapier" triggerindən alınan URL-i aşağıya yapışdırın.</div>
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">Zapier Webhook URL</label>
+            <div style="display:flex;gap:8px;align-items:center">
+              <input class="form-input" id="zapierWebhookInput" placeholder="https://hooks.zapier.com/hooks/catch/..." style="flex:1">
+              <div id="zapierStatusDot" style="width:10px;height:10px;border-radius:50%;background:var(--gray-light);flex-shrink:0;transition:background .3s"></div>
+            </div>
+            <div id="zapierUrlError" style="font-size:11px;color:var(--error);margin-top:5px;display:none">URL <strong>https://hooks.zapier.com/hooks/catch/</strong> ilə başlamalıdır</div>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:1rem;justify-content:flex-end">
+            <button class="btn" onclick="testZapierWebhook()" id="zapierTestBtn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Test Zapier
+            </button>
+            <button class="btn btn-primary" onclick="saveZapierWebhook()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Saxla
+            </button>
+          </div>
+        </div>
+        <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
+          <div style="font-size:13px;font-weight:500;color:var(--navy);margin-bottom:.75rem">Necə işləyir?</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;gap:10px;align-items:flex-start">
+              <div style="width:22px;height:22px;border-radius:50%;background:rgba(255,74,0,.1);color:#FF4A00;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">1</div>
+              <div style="font-size:12px;color:var(--gray);line-height:1.5">Zapier-də yeni Zap yaradın → Trigger: <strong style="color:var(--navy)">Webhooks by Zapier → Catch Hook</strong></div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start">
+              <div style="width:22px;height:22px;border-radius:50%;background:rgba(255,74,0,.1);color:#FF4A00;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">2</div>
+              <div style="font-size:12px;color:var(--gray);line-height:1.5">Zapier-dən alınan webhook URL-i yuxarıdakı inputa yapışdırın</div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start">
+              <div style="width:22px;height:22px;border-radius:50%;background:rgba(255,74,0,.1);color:#FF4A00;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">3</div>
+              <div style="font-size:12px;color:var(--gray);line-height:1.5">"Test Zapier" düyməsinə basın — data alındıqdan sonra Action tərəfini qoşun (Gmail, Sheets, Slack və s.)</div>
+            </div>
+          </div>
+          <div style="margin-top:.9rem;padding:.75rem;background:var(--surface);border-radius:8px;font-size:11px;color:var(--gray);line-height:1.5">
+            <strong style="color:var(--navy)">Göndərilən data formatı:</strong> <code style="background:rgba(24,95,165,.07);padding:1px 5px;border-radius:4px;font-size:10px">name, email, phone, company, savedAt</code>
+          </div>
         </div>
       </div>
     </div>
@@ -1582,10 +1638,11 @@ window.showPanel=function(n){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
   document.getElementById('panel-'+n).classList.add('active');
-  const t={overview:'İcmal',editor:'Kartımı redaktə et',social:'Sosial şəbəkələr',media:'PDF və Video',contacts:'Kontaktlarım',crm:'CRM İnteqrasiya',scanner:'Vizit Kart Oxuyucu',signature:'Email İmzası Builder',customize:'Dizayn & Şablonlar',settings:'Ayarlar'};
+  const t={overview:'İcmal',editor:'Kartımı redaktə et',social:'Sosial şəbəkələr',media:'PDF və Video',contacts:'Kontaktlarım',crm:'CRM İnteqrasiya',scanner:'Vizit Kart Oxuyucu',signature:'Email İmzası Builder',customize:'Dizayn & Şablonlar',settings:'Ayarlar',zapier:'Zapier İnteqrasiyası'};
   document.getElementById('topbarTitle').textContent=t[n]||n;
   if(n==='signature'){document.querySelectorAll('#sigBlocks .sig-block-toggle').forEach(btn=>{const key=btn.closest('[data-key]')?.dataset.key;if(key)sigState[key]=btn.classList.contains('on');});setTimeout(renderSigPreview,100);}
   if(n==='customize'){renderTemplates();loadCustomColors();}
+  if(n==='zapier'){loadZapierWebhook();}
   closeSidebar();
 };
 window.closeModal=function(id){document.getElementById(id).classList.remove('open');};
@@ -1593,6 +1650,70 @@ document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click
 window.doLogout=async function(){await signOut(auth);location.href='index.html';};
 function showToast(m,t=''){const el=document.getElementById('toast');el.textContent=m;el.className='toast show '+t;setTimeout(()=>el.className='toast',3000);}
 window.showToast=showToast;
+
+// ── ZAPIER ──
+function isValidZapierUrl(url){return url&&url.trim().startsWith('https://hooks.zapier.com/hooks/catch/');}
+
+async function loadZapierWebhook(){
+  if(!CU)return;
+  try{
+    const snap=await get(ref(db,`users/${CU.uid}/zapierWebhook`));
+    const url=snap.val()||'';
+    const inp=document.getElementById('zapierWebhookInput');
+    if(inp)inp.value=url;
+    updateZapierDot(url);
+  }catch(e){console.error('zapier load',e);}
+}
+
+function updateZapierDot(url){
+  const dot=document.getElementById('zapierStatusDot');
+  if(!dot)return;
+  dot.style.background=isValidZapierUrl(url)?'var(--success)':'var(--gray-light)';
+}
+
+window.saveZapierWebhook=async function(){
+  if(!CU){showToast('Giriş tələb olunur','error');return;}
+  const inp=document.getElementById('zapierWebhookInput');
+  const errEl=document.getElementById('zapierUrlError');
+  const url=inp.value.trim();
+  if(!isValidZapierUrl(url)){
+    if(errEl)errEl.style.display='block';
+    inp.style.borderColor='var(--error)';
+    showToast('Düzgün Zapier URL daxil edin','error');
+    return;
+  }
+  if(errEl)errEl.style.display='none';
+  inp.style.borderColor='';
+  try{
+    await update(ref(db,`users/${CU.uid}`),{zapierWebhook:url});
+    updateZapierDot(url);
+    showToast('Zapier webhook saxlanıldı ✓','success');
+  }catch(e){showToast('Xəta: '+e.message,'error');}
+};
+
+window.testZapierWebhook=async function(){
+  if(!CU){showToast('Giriş tələb olunur','error');return;}
+  const inp=document.getElementById('zapierWebhookInput');
+  const errEl=document.getElementById('zapierUrlError');
+  const url=inp.value.trim();
+  if(!isValidZapierUrl(url)){
+    if(errEl)errEl.style.display='block';
+    inp.style.borderColor='var(--error)';
+    showToast('Əvvəlcə düzgün URL daxil edin','error');
+    return;
+  }
+  if(errEl)errEl.style.display='none';
+  inp.style.borderColor='';
+  const btn=document.getElementById('zapierTestBtn');
+  const orig=btn.innerHTML;
+  btn.disabled=true;btn.innerHTML='Göndərilir...';
+  const payload={name:'Test Contact',email:'test@example.com',phone:'+994 55 000 00 00',company:'MyContact',savedAt:new Date().toISOString()};
+  try{
+    await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),mode:'no-cors'});
+    showToast('Test data göndərildi ✓','success');
+  }catch(e){showToast('Göndərilə bilmədi: '+e.message,'error');}
+  finally{btn.disabled=false;btn.innerHTML=orig;}
+};
 </script>
 <script>
 function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open');}
