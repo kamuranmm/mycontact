@@ -437,7 +437,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
       <div style="max-width:700px">
         <div style="margin-bottom:1.25rem"><div style="font-size:15px;font-weight:500;color:var(--navy);margin-bottom:3px">CRM İnteqrasiya</div><div style="font-size:13px;color:var(--gray)">Kontaktlarınızı avtomatik CRM sistemlərinə göndərin</div></div>
         <div class="crm-grid">
-          <div class="crm-card" id="hsCard"><div class="crm-logo crm-hs">HS</div><div class="crm-name">HubSpot</div><div class="crm-desc">Kontaktları HubSpot CRM-ə göndərin. Zapier webhook ilə qoşulun.</div><div class="crm-status"><div class="crm-dot off" id="hsDot"></div><span id="hsStatusText">Qoşulmayıb</span></div><button class="btn btn-sm" onclick="openCrmModal('hubspot')">Qoş</button><div class="crm-sync-row" id="hsSyncRow" style="display:none"><span id="hsSyncCount">0 sync edilib</span><button class="btn btn-sm btn-success" onclick="syncToHubspot()">Sync et</button></div></div>
+          <div class="crm-card" id="hsCard"><div class="crm-logo crm-hs">HS</div><div class="crm-name">HubSpot</div><div class="crm-desc">Kontaktları HubSpot CRM-ə göndərin. API key ilə qoşulun.</div><div class="crm-status"><div class="crm-dot off" id="hsDot"></div><span id="hsStatusText">Qoşulmayıb</span></div><button class="btn btn-sm" onclick="openCrmModal('hubspot')">Qoş</button><div class="crm-sync-row" id="hsSyncRow" style="display:none"><span id="hsSyncCount">0 sync edilib</span><button class="btn btn-sm btn-success" onclick="syncToHubspot()">Sync et</button></div></div>
           <div class="crm-card" id="sfCard"><div class="crm-logo crm-sf">SF</div><div class="crm-name">Salesforce</div><div class="crm-desc">Kontaktları Salesforce-a göndərin. Token ilə qoşulun.</div><div class="crm-status"><div class="crm-dot off" id="sfDot"></div><span id="sfStatusText">Qoşulmayıb</span></div><button class="btn btn-sm" onclick="openCrmModal('salesforce')">Qoş</button><div class="crm-sync-row" id="sfSyncRow" style="display:none"><span id="sfSyncCount">0 sync edilib</span><button class="btn btn-sm btn-success" onclick="syncToSalesforce()">Sync et</button></div><div class="pro-lock-overlay" id="sfLock" style="display:none"><div style="font-size:22px">🔒</div><div class="pro-lock-text">Pro planda mövcuddur</div><button class="pro-lock-btn" onclick="openUpgradeModal()">Pro-ya keç</button></div></div>
           <div class="crm-card" id="zohoCard" style="position:relative"><div class="crm-logo" style="background:#E42527">ZO</div><div class="crm-name">Zoho CRM</div><div class="crm-desc">Kontaktları Zoho CRM-ə göndərin. OAuth token ilə.</div><div class="crm-status"><div class="crm-dot off" id="zohoDot"></div><span id="zohoStatusText">Qoşulmayıb</span></div><button class="btn btn-sm" onclick="openCrmModal('zoho')">Qoş</button><div class="crm-sync-row" id="zohoSyncRow" style="display:none"><span id="zohoSyncCount">0 sync edilib</span><button class="btn btn-sm btn-success" onclick="syncToZoho()">Sync et</button></div><div class="pro-lock-overlay" id="zohoLock"><div style="font-size:22px">🔒</div><div class="pro-lock-text">Pro planda mövcuddur</div><button class="pro-lock-btn" onclick="openUpgradeModal()">Pro-ya keç</button></div></div>
           <div class="crm-card" id="pipeCard"><div class="crm-logo" style="background:#1A7F4B">PD</div><div class="crm-name">Pipedrive</div><div class="crm-desc">Kontaktları Pipedrive-a göndərin. API token ilə.</div><div class="crm-status"><div class="crm-dot off" id="pipeDot"></div><span id="pipeStatusText">Qoşulmayıb</span></div><button class="btn btn-sm" onclick="openCrmModal('pipedrive')">Qoş</button><div class="crm-sync-row" id="pipeSyncRow" style="display:none"><span id="pipeSyncCount">0 sync edilib</span><button class="btn btn-sm btn-success" onclick="syncToPipedrive()">Sync et</button></div><div class="pro-lock-overlay" id="pipeLock"><div style="font-size:22px">🔒</div><div class="pro-lock-text">Pro planda mövcuddur</div><button class="pro-lock-btn" onclick="openUpgradeModal()">Pro-ya keç</button></div></div>
@@ -817,10 +817,21 @@ window.openContactModal=function(id){
 };
 window.deleteContact=async function(id){if(!id)return;await remove(ref(db,`contacts/${CU.uid}/${id}`));closeModal('contactModal');showToast('Kontakt silindi');};
 window.exportContactVcf=function(id){const c=allContacts.find(x=>x.id===id);if(!c)return;const v=`BEGIN:VCARD\nVERSION:3.0\nFN:${c.name||''}\nTEL:${c.phone||''}\nEMAIL:${c.email||''}\nORG:${c.company||''}\nTITLE:${c.position||''}\nEND:VCARD`;const b=new Blob([v],{type:'text/vcard'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(c.name||'contact')+'.vcf';a.click();showToast('Kontakt yükləndi');};
+window.sendToZapier=async function(data){
+  try{
+    await fetch("https://hooks.zapier.com/hooks/catch/920102/uv2o5cx/",{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(data)
+    });
+  }catch(e){console.log("Zapier error",e);}
+};
+
 window.addManualContact=async function(){
   const n=document.getElementById('mName').value.trim();if(!n){showToast('Ad daxil edin','error');return;}
   const c={name:n,position:document.getElementById('mPosition').value.trim(),company:document.getElementById('mCompany').value.trim(),phone:document.getElementById('mPhone').value.trim(),email:document.getElementById('mEmail').value.trim(),note:document.getElementById('mNote').value.trim(),source:'manual',addedAt:Date.now()};
   await push(ref(db,`contacts/${CU.uid}`),c);
+  window.sendToZapier({...c,timestamp:Date.now(),addedBy:CU?.uid});
   ['mName','mPosition','mCompany','mPhone','mEmail','mNote'].forEach(id=>document.getElementById(id).value='');
   showToast('Kontakt əlavə edildi','success');closeModal('addContactModal');
 };
@@ -839,7 +850,7 @@ function loadCrmStatus(crm,plan){
 }
 window.openCrmModal=function(t){crmTarget=t;const crm=UD?.crm||{};
   const configs={
-    hubspot:{title:'HubSpot (Zapier)',sub:'Zapier Webhook URL daxil edin',html:`<div class="form-group"><label class="form-label">Zapier Webhook URL</label><input class="form-input" id="crmKey1" placeholder="https://hooks.zapier.com/hooks/catch/..." value="${crm.hubspot?.apiKey||''}"></div><div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:10px 12px;font-size:12px;color:#92400e;margin-top:6px;line-height:1.7"><b>🔗 5 dəqiqəlik qoşulma:</b><br>1. <b>zapier.com</b> → Create Zap<br>2. Trigger: <b>Webhooks by Zapier</b> → Catch Hook<br>3. Webhook URL-i buraya yapışdır<br>4. Action: <b>HubSpot</b> → Create/Update Contact<br>5. HubSpot hesabını qoş → Zap aktiv et</div>`},
+    hubspot:{title:'HubSpot',sub:'Private App API key daxil edin',html:`<div class="form-group"><label class="form-label">API Key</label><input class="form-input" id="crmKey1" placeholder="pat-na1-..." value="${crm.hubspot?.apiKey||''}"></div>`},
     salesforce:{title:'Salesforce',sub:'Connected App məlumatları',html:`<div class="form-group"><label class="form-label">Instance URL</label><input class="form-input" id="crmKey1" placeholder="https://yourorg.salesforce.com" value="${crm.salesforce?.instanceUrl||''}"></div><div class="form-group"><label class="form-label">Access Token</label><input class="form-input" id="crmKey2" value="${crm.salesforce?.token||''}"></div>`},
     zoho:{title:'Zoho CRM',sub:'OAuth Access Token daxil edin',html:`<div class="form-group"><label class="form-label">Access Token</label><input class="form-input" id="crmKey1" placeholder="1000.xxxx..." value="${crm.zoho?.token||''}"></div><div style="font-size:11px;color:var(--gray);margin-top:-6px">Zoho → API Console → Self Client → Scope: ZohoCRM.modules.contacts.CREATE</div>`},
     pipedrive:{title:'Pipedrive',sub:'API Token daxil edin',html:`<div class="form-group"><label class="form-label">API Token</label><input class="form-input" id="crmKey1" placeholder="xxxx..." value="${crm.pipedrive?.token||''}"></div><div style="font-size:11px;color:var(--gray);margin-top:-6px">Pipedrive → Settings → Personal preferences → API</div>`},
@@ -849,35 +860,19 @@ window.openCrmModal=function(t){crmTarget=t;const crm=UD?.crm||{};
   document.getElementById('crmModalTitle').textContent=c.title;document.getElementById('crmModalSub').textContent=c.sub;document.getElementById('crmModalFields').innerHTML=c.html;
   document.getElementById('crmModal').classList.add('open');
 };
-window.syncToHubspot=async function(){
-  const webhookUrl=UD?.crm?.hubspot?.apiKey;
-  if(!webhookUrl||!webhookUrl.startsWith('http')){showToast('Zapier webhook URL daxil edin','error');return;}
-  if(!allContacts.length){showToast('Göndəriləcək kontakt yoxdur','error');return;}
-  showToast('HubSpot-a göndərilir...');
-  let count=0,errors=0;
-  for(const ct of allContacts){
-    try{
-      const r=await fetch(webhookUrl,{
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({
-          firstname:ct.name?.split(' ')[0]||'',
-          lastname:ct.name?.split(' ').slice(1).join(' ')||'',
-          phone:ct.phone||'',
-          email:ct.email||'',
-          company:ct.company||'',
-          jobtitle:ct.position||'',
-          source:'MyContact'
-        })
-      });
-      if(r.ok||r.status===200)count++;
-      else{errors++;console.error('Zapier:',r.status);}
-    }catch(e){errors++;console.error(e);}
-  }
-  const log=[...(UD?.crm?.log||[]),{msg:`HubSpot: ${count} kontakt`,at:Date.now()}];
-  await update(ref(db,`users/${CU.uid}/crm`),{'hubspot/syncCount':count,log});
-  if(count>0)showToast(`${count} kontakt HubSpot-a göndərildi ✓`,'success');
-  else showToast('Xəta — Zapier URL-i yoxlayın','error');
+window.syncToHubspot=async function(){const apiKey=UD?.crm?.hubspot?.apiKey;if(!apiKey){showToast('HubSpot qoşulmayıb','error');return;}showToast('HubSpot-a göndərilir...');let count=0;for(const c of allContacts){try{const r=await fetch('https://api.hubapi.com/crm/v3/objects/contacts',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},body:JSON.stringify({properties:{firstname:c.name?.split(' ')[0]||'',lastname:c.name?.split(' ').slice(1).join(' ')||'',phone:c.phone||'',email:c.email||'',company:c.company||'',jobtitle:c.position||''}})});if(r.ok||r.status===409)count++;}catch(e){}}const log=[...(UD?.crm?.log||[]),{msg:`HubSpot: ${count} kontakt`,at:Date.now()}];await update(ref(db,`users/${CU.uid}/crm`),{'hubspot/syncCount':count,log});showToast(`${count} kontakt göndərildi`,'success');};
+window.syncToSalesforce=async function(){const sf=UD?.crm?.salesforce;if(!sf?.instanceUrl||!sf?.token){showToast('Salesforce qoşulmayıb','error');return;}showToast('Salesforce-a göndərilir...');let count=0;for(const c of allContacts){try{const r=await fetch(`${sf.instanceUrl}/services/data/v58.0/sobjects/Contact`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+sf.token},body:JSON.stringify({FirstName:c.name?.split(' ')[0]||'',LastName:c.name?.split(' ').slice(1).join(' ')||c.name||'',Phone:c.phone||'',Email:c.email||'',Title:c.position||''})});if(r.ok||r.status===201)count++;}catch(e){}}const log=[...(UD?.crm?.log||[]),{msg:`Salesforce: ${count} kontakt`,at:Date.now()}];await update(ref(db,`users/${CU.uid}/crm`),{'salesforce/syncCount':count,log});showToast(`${count} kontakt göndərildi`,'success');};
+window.syncToZoho=async function(){const z=UD?.crm?.zoho;if(!z?.token){showToast('Zoho qoşulmayıb','error');return;}showToast('Zoho-ya göndərilir...');let count=0;for(const c of allContacts){try{const r=await fetch('https://www.zohoapis.com/crm/v3/Contacts',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Zoho-oauthtoken '+z.token},body:JSON.stringify({data:[{First_Name:c.name?.split(' ')[0]||'',Last_Name:c.name?.split(' ').slice(1).join(' ')||c.name||'',Phone:c.phone||'',Email:c.email||'',Account_Name:c.company||'',Title:c.position||''}]})});if(r.ok)count++;}catch(e){}}showToast(`${count} kontakt Zoho-ya göndərildi`,'success');};
+window.syncToPipedrive=async function(){const p=UD?.crm?.pipedrive;if(!p?.token){showToast('Pipedrive qoşulmayıb','error');return;}showToast('Pipedrive-a göndərilir...');let count=0;for(const c of allContacts){try{const r=await fetch(`https://api.pipedrive.com/v1/persons?api_token=${p.token}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:c.name||'',phone:[{value:c.phone||'',primary:true}],email:[{value:c.email||'',primary:true}]})});if(r.ok)count++;}catch(e){}}showToast(`${count} kontakt Pipedrive-a göndərildi`,'success');};
+window.exportToGoogleContacts=function(){const isPro=UD?.plan==='pro'||UD?.plan==='premium';if(!isPro){openUpgradeModal();return;}let vcf='';for(const c of allContacts){vcf+=`BEGIN:VCARD\nVERSION:3.0\nFN:${c.name||''}\nTEL:${c.phone||''}\nEMAIL:${c.email||''}\nORG:${c.company||''}\nTITLE:${c.position||''}\nEND:VCARD\n\n`;}const b=new Blob([vcf],{type:'text/vcard'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='contacts.vcf';a.click();showToast('VCF yükləndi — Google Contacts-a import edin','success');};
+
+// ── EMAIL SIGNATURE ───────────────────────────────────────────────────────
+const sigState={name:true,position:true,phone:true,email:true,web:false,socials:false,photo:false,cardlink:true};
+window.toggleSigBlock=function(btn,key){
+  const isPro=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
+  const proKeys=['position','phone','email','web','socials','photo','cardlink'];
+  if(proKeys.includes(key)&&!isPro){openUpgradeModal();return;}
+  btn.classList.toggle('on');sigState[key]=btn.classList.contains('on');renderSigPreview();
 };
 window.renderSigPreview=function(){
   const d=UD?.card||{};const slug=UD?.slug||'';const soc=UD?.socials||{};
