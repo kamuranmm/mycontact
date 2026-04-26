@@ -625,7 +625,7 @@ import{getStorage,ref as sRef,uploadBytes,getDownloadURL}from"https://www.gstati
 const cfg={apiKey:"AIzaSyBx81QDpjHSPvhkmnnSUNkJYMvR_fnRTaU",authDomain:"mycontact-e626e.firebaseapp.com",databaseURL:"https://mycontact-e626e-default-rtdb.firebaseio.com",projectId:"mycontact-e626e",storageBucket:"mycontact-e626e.firebasestorage.app",messagingSenderId:"420594516827",appId:"1:420594516827:web:f30266800c690c6ff9107e"};
 const app=initializeApp(cfg);const auth=getAuth(app);const db=getDatabase(app);const storage=getStorage(app);
 let CU=null,UD=null,activeSocials={},allContacts=[],crmTarget='',_lastPhotoUrl=null,_lastCoverUrl=null,_udLoaded=false,_selectedDefaultLang='az';
-let sigState={name:true,position:false,phone:false,email:false,web:false,socials:false,photo:false,cardlink:true};
+let sigState={name:true,position:true,phone:true,email:true,web:false,socials:false,photo:false,cardlink:true};
 
 onAuthStateChanged(auth,async u=>{
   if(!u){location.href='index.html';return;}CU=u;
@@ -887,7 +887,7 @@ window.syncToHubspot=async function(){
   else showToast('Xəta baş verdi','error');
 };
 window.renderSigPreview=function(){
-  if(typeof sigState==='undefined'){sigState={name:true,position:false,phone:false,email:false,web:false,socials:false,photo:false,cardlink:true};}
+  if(typeof sigState==='undefined'){sigState={name:true,position:true,phone:true,email:true,web:false,socials:false,photo:false,cardlink:true};}
   const d=UD?.card||{};const slug=UD?.slug||'';const soc=UD?.socials||{};
   let html=`<table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,sans-serif;font-size:13px;color:#0a1628">`;
   if(sigState.photo&&d.photo)html+=`<tr><td style="padding-bottom:10px"><img src="${d.photo}" width="64" height="64" style="border-radius:50%;object-fit:cover"></td></tr>`;
@@ -1584,7 +1584,7 @@ window.showPanel=function(n){
   document.getElementById('panel-'+n).classList.add('active');
   const t={overview:'İcmal',editor:'Kartımı redaktə et',social:'Sosial şəbəkələr',media:'PDF və Video',contacts:'Kontaktlarım',crm:'CRM İnteqrasiya',scanner:'Vizit Kart Oxuyucu',signature:'Email İmzası Builder',customize:'Dizayn & Şablonlar',settings:'Ayarlar'};
   document.getElementById('topbarTitle').textContent=t[n]||n;
-  if(n==='signature')setTimeout(renderSigPreview,100);
+  if(n==='signature'){document.querySelectorAll('#sigBlocks .sig-block-toggle').forEach(btn=>{const key=btn.closest('[data-key]')?.dataset.key;if(key)sigState[key]=btn.classList.contains('on');});setTimeout(renderSigPreview,100);}
   if(n==='customize'){renderTemplates();loadCustomColors();}
   closeSidebar();
 };
