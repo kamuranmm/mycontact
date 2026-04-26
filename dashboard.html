@@ -817,21 +817,10 @@ window.openContactModal=function(id){
 };
 window.deleteContact=async function(id){if(!id)return;await remove(ref(db,`contacts/${CU.uid}/${id}`));closeModal('contactModal');showToast('Kontakt silindi');};
 window.exportContactVcf=function(id){const c=allContacts.find(x=>x.id===id);if(!c)return;const v=`BEGIN:VCARD\nVERSION:3.0\nFN:${c.name||''}\nTEL:${c.phone||''}\nEMAIL:${c.email||''}\nORG:${c.company||''}\nTITLE:${c.position||''}\nEND:VCARD`;const b=new Blob([v],{type:'text/vcard'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(c.name||'contact')+'.vcf';a.click();showToast('Kontakt yükləndi');};
-window.sendToZapier=async function(data){
-  try{
-    await fetch("https://hooks.zapier.com/hooks/catch/920102/uv2o5cx/",{
-      method:"POST",
-      headers:{"Content-Type":"application/json"},
-      body:JSON.stringify(data)
-    });
-  }catch(e){console.log("Zapier error",e);}
-};
-
 window.addManualContact=async function(){
   const n=document.getElementById('mName').value.trim();if(!n){showToast('Ad daxil edin','error');return;}
   const c={name:n,position:document.getElementById('mPosition').value.trim(),company:document.getElementById('mCompany').value.trim(),phone:document.getElementById('mPhone').value.trim(),email:document.getElementById('mEmail').value.trim(),note:document.getElementById('mNote').value.trim(),source:'manual',addedAt:Date.now()};
   await push(ref(db,`contacts/${CU.uid}`),c);
-  window.sendToZapier({...c,timestamp:Date.now(),addedBy:CU?.uid});
   ['mName','mPosition','mCompany','mPhone','mEmail','mNote'].forEach(id=>document.getElementById(id).value='');
   showToast('Kontakt əlavə edildi','success');closeModal('addContactModal');
 };
@@ -844,7 +833,11 @@ function loadCrmStatus(crm,plan){
     const el=document.getElementById(id);
     if(el)el.style.display=isPro?'none':'flex';
   });
-  if(crm.hubspot){document.getElementById('hsDot').className='crm-dot on';document.getElementById('hsStatusText').textContent='Qoşulub';document.getElementById('hsSyncRow').style.display='flex';document.getElementById('hsSyncCount').textContent=(crm.hubspot.syncCount||0)+' sync edilib';document.getElementById('hsCard').classList.add('connected');}
+  // HubSpot — Zapier webhook sabit qoşulub
+  document.getElementById('hsDot').className='crm-dot on';
+  document.getElementById('hsStatusText').textContent='Qoşulub (Zapier)';
+  document.getElementById('hsSyncRow').style.display='flex';
+  if(true){document.getElementById('hsSyncCount').textContent=(crm.hubspot.syncCount||0)+' sync edilib';document.getElementById('hsCard').classList.add('connected');}
   if(crm.salesforce&&isPro){document.getElementById('sfDot').className='crm-dot on';document.getElementById('sfStatusText').textContent='Qoşulub';document.getElementById('sfSyncRow').style.display='flex';document.getElementById('sfSyncCount').textContent=(crm.salesforce.syncCount||0)+' sync edilib';document.getElementById('sfCard').classList.add('connected');}
   if(crm.hubspot||crm.salesforce){document.getElementById('crmLogCard').style.display='block';const log=crm.log||[];document.getElementById('crmLog').innerHTML=log.length?log.slice(-5).reverse().map(l=>`<div style="display:flex;justify-content:space-between"><span>${l.msg}</span><span>${new Date(l.at).toLocaleDateString('az')}</span></div>`).join(''):'<div>Hələ sync edilməyib</div>';}
 }
@@ -860,19 +853,37 @@ window.openCrmModal=function(t){crmTarget=t;const crm=UD?.crm||{};
   document.getElementById('crmModalTitle').textContent=c.title;document.getElementById('crmModalSub').textContent=c.sub;document.getElementById('crmModalFields').innerHTML=c.html;
   document.getElementById('crmModal').classList.add('open');
 };
-window.syncToHubspot=async function(){const apiKey=UD?.crm?.hubspot?.apiKey;if(!apiKey){showToast('HubSpot qoşulmayıb','error');return;}showToast('HubSpot-a göndərilir...');let count=0;for(const c of allContacts){try{const r=await fetch('https://api.hubapi.com/crm/v3/objects/contacts',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},body:JSON.stringify({properties:{firstname:c.name?.split(' ')[0]||'',lastname:c.name?.split(' ').slice(1).join(' ')||'',phone:c.phone||'',email:c.email||'',company:c.company||'',jobtitle:c.position||''}})});if(r.ok||r.status===409)count++;}catch(e){}}const log=[...(UD?.crm?.log||[]),{msg:`HubSpot: ${count} kontakt`,at:Date.now()}];await update(ref(db,`users/${CU.uid}/crm`),{'hubspot/syncCount':count,log});showToast(`${count} kontakt göndərildi`,'success');};
-window.syncToSalesforce=async function(){const sf=UD?.crm?.salesforce;if(!sf?.instanceUrl||!sf?.token){showToast('Salesforce qoşulmayıb','error');return;}showToast('Salesforce-a göndərilir...');let count=0;for(const c of allContacts){try{const r=await fetch(`${sf.instanceUrl}/services/data/v58.0/sobjects/Contact`,{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+sf.token},body:JSON.stringify({FirstName:c.name?.split(' ')[0]||'',LastName:c.name?.split(' ').slice(1).join(' ')||c.name||'',Phone:c.phone||'',Email:c.email||'',Title:c.position||''})});if(r.ok||r.status===201)count++;}catch(e){}}const log=[...(UD?.crm?.log||[]),{msg:`Salesforce: ${count} kontakt`,at:Date.now()}];await update(ref(db,`users/${CU.uid}/crm`),{'salesforce/syncCount':count,log});showToast(`${count} kontakt göndərildi`,'success');};
-window.syncToZoho=async function(){const z=UD?.crm?.zoho;if(!z?.token){showToast('Zoho qoşulmayıb','error');return;}showToast('Zoho-ya göndərilir...');let count=0;for(const c of allContacts){try{const r=await fetch('https://www.zohoapis.com/crm/v3/Contacts',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Zoho-oauthtoken '+z.token},body:JSON.stringify({data:[{First_Name:c.name?.split(' ')[0]||'',Last_Name:c.name?.split(' ').slice(1).join(' ')||c.name||'',Phone:c.phone||'',Email:c.email||'',Account_Name:c.company||'',Title:c.position||''}]})});if(r.ok)count++;}catch(e){}}showToast(`${count} kontakt Zoho-ya göndərildi`,'success');};
-window.syncToPipedrive=async function(){const p=UD?.crm?.pipedrive;if(!p?.token){showToast('Pipedrive qoşulmayıb','error');return;}showToast('Pipedrive-a göndərilir...');let count=0;for(const c of allContacts){try{const r=await fetch(`https://api.pipedrive.com/v1/persons?api_token=${p.token}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:c.name||'',phone:[{value:c.phone||'',primary:true}],email:[{value:c.email||'',primary:true}]})});if(r.ok)count++;}catch(e){}}showToast(`${count} kontakt Pipedrive-a göndərildi`,'success');};
-window.exportToGoogleContacts=function(){const isPro=UD?.plan==='pro'||UD?.plan==='premium';if(!isPro){openUpgradeModal();return;}let vcf='';for(const c of allContacts){vcf+=`BEGIN:VCARD\nVERSION:3.0\nFN:${c.name||''}\nTEL:${c.phone||''}\nEMAIL:${c.email||''}\nORG:${c.company||''}\nTITLE:${c.position||''}\nEND:VCARD\n\n`;}const b=new Blob([vcf],{type:'text/vcard'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='contacts.vcf';a.click();showToast('VCF yükləndi — Google Contacts-a import edin','success');};
-
-// ── EMAIL SIGNATURE ───────────────────────────────────────────────────────
-const sigState={name:true,position:true,phone:true,email:true,web:false,socials:false,photo:false,cardlink:true};
-window.toggleSigBlock=function(btn,key){
-  const isPro=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
-  const proKeys=['position','phone','email','web','socials','photo','cardlink'];
-  if(proKeys.includes(key)&&!isPro){openUpgradeModal();return;}
-  btn.classList.toggle('on');sigState[key]=btn.classList.contains('on');renderSigPreview();
+window.syncToHubspot=async function(){
+  const webhookUrl="https://hooks.zapier.com/hooks/catch/920102/uv2o5cx/";
+  if(!allContacts.length){showToast('Göndəriləcək kontakt yoxdur','error');return;}
+  showToast('HubSpot-a göndərilir...');
+  let count=0,errors=0;
+  for(const ct of allContacts){
+    try{
+      const r=await fetch(webhookUrl,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          firstname:ct.name?.split(' ')[0]||'',
+          lastname:ct.name?.split(' ').slice(1).join(' ')||'',
+          phone:ct.phone||'',
+          email:ct.email||'',
+          company:ct.company||'',
+          jobtitle:ct.position||'',
+          source:'MyContact',
+          timestamp:Date.now()
+        })
+      });
+      if(r.ok)count++;
+      else{errors++;console.error('Zapier:',r.status);}
+    }catch(e){errors++;console.error(e);}
+  }
+  const log=[...(UD?.crm?.log||[]),{msg:`HubSpot: ${count} kontakt`,at:Date.now()}];
+  await update(ref(db,`users/${CU.uid}/crm`),{'hubspot/syncCount':count,log});
+  const el=document.getElementById('hsSyncCount');
+  if(el)el.textContent=count+' sync edilib';
+  if(count>0)showToast(`${count} kontakt HubSpot-a göndərildi ✓`,'success');
+  else showToast('Xəta baş verdi','error');
 };
 window.renderSigPreview=function(){
   const d=UD?.card||{};const slug=UD?.slug||'';const soc=UD?.socials||{};
