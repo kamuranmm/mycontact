@@ -625,6 +625,7 @@ import{getStorage,ref as sRef,uploadBytes,getDownloadURL}from"https://www.gstati
 const cfg={apiKey:"AIzaSyBx81QDpjHSPvhkmnnSUNkJYMvR_fnRTaU",authDomain:"mycontact-e626e.firebaseapp.com",databaseURL:"https://mycontact-e626e-default-rtdb.firebaseio.com",projectId:"mycontact-e626e",storageBucket:"mycontact-e626e.firebasestorage.app",messagingSenderId:"420594516827",appId:"1:420594516827:web:f30266800c690c6ff9107e"};
 const app=initializeApp(cfg);const auth=getAuth(app);const db=getDatabase(app);const storage=getStorage(app);
 let CU=null,UD=null,activeSocials={},allContacts=[],crmTarget='',_lastPhotoUrl=null,_lastCoverUrl=null,_udLoaded=false,_selectedDefaultLang='az';
+let sigState={name:true,position:false,phone:false,email:false,web:false,socials:false,photo:false,cardlink:true};
 
 onAuthStateChanged(auth,async u=>{
   if(!u){location.href='index.html';return;}CU=u;
@@ -815,7 +816,18 @@ window.openContactModal=function(id){
   document.getElementById('contactModalFields').innerHTML=rows.map(r=>`<div style="display:flex;gap:9px;padding:7px 0;border-bottom:1px solid var(--gray-light)"><span style="font-size:11px;color:var(--gray);width:55px;flex-shrink:0">${r.l}</span><span style="font-size:13px;color:var(--navy)">${r.v}</span></div>`).join('');
   document.getElementById('contactModal').classList.add('open');
 };
-window.deleteContact=async function(id){if(!id)return;await remove(ref(db,`contacts/${CU.uid}/${id}`));closeModal('contactModal');showToast('Kontakt silindi');};
+window.deleteContact=async function(id){
+  if(!id){showToast('Kontakt tapılmadı','error');return;}
+  if(!CU?.uid){showToast('Giriş tələb olunur','error');return;}
+  try{
+    await remove(ref(db,`contacts/${CU.uid}/${id}`));
+    closeModal('contactModal');
+    showToast('Kontakt silindi','success');
+  }catch(e){
+    console.error('Sil xəta:',e);
+    showToast('Silinə bilmədi: '+e.message,'error');
+  }
+};
 window.exportContactVcf=function(id){const c=allContacts.find(x=>x.id===id);if(!c)return;const v=`BEGIN:VCARD\nVERSION:3.0\nFN:${c.name||''}\nTEL:${c.phone||''}\nEMAIL:${c.email||''}\nORG:${c.company||''}\nTITLE:${c.position||''}\nEND:VCARD`;const b=new Blob([v],{type:'text/vcard'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(c.name||'contact')+'.vcf';a.click();showToast('Kontakt yükləndi');};
 window.addManualContact=async function(){
   const n=document.getElementById('mName').value.trim();if(!n){showToast('Ad daxil edin','error');return;}
