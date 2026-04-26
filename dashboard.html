@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CardPro — Dashboard</title>
+<title>mycontact — Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -463,7 +463,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
               <div class="sig-block" data-key="web"><div class="sig-block-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg></div><div class="sig-block-label">Vebsayt</div><button class="sig-block-toggle" onclick="toggleSigBlock(this,'web')"></button></div>
               <div class="sig-block" data-key="socials"><div class="sig-block-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></div><div class="sig-block-label">Sosial ikonlar</div><button class="sig-block-toggle" onclick="toggleSigBlock(this,'socials')"></button></div>
               <div class="sig-block" data-key="photo"><div class="sig-block-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg></div><div class="sig-block-label">Profil şəkli</div><button class="sig-block-toggle" onclick="toggleSigBlock(this,'photo')"></button></div>
-              <div class="sig-block" data-key="cardlink"><div class="sig-block-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><circle cx="12" cy="13" r="2"/></svg></div><div class="sig-block-label">Profil linki (CardPro)</div><button class="sig-block-toggle on" onclick="toggleSigBlock(this,'cardlink')"></button></div>
+              <div class="sig-block" data-key="cardlink"><div class="sig-block-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><circle cx="12" cy="13" r="2"/></svg></div><div class="sig-block-label">Profil linki</div><button class="sig-block-toggle on" onclick="toggleSigBlock(this,'cardlink')"></button></div>
             </div>
             <div style="display:flex;gap:7px">
               <button class="btn btn-primary" onclick="copySigHtml()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>HTML Kopyala</button>
@@ -511,7 +511,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
             <div style="font-size:13px;font-weight:500;color:var(--navy);margin-bottom:.9rem">Real-time Preview</div>
             <div class="preview-card" id="colorPreviewCard">
               <div class="preview-cover" id="previewCover" style="background:linear-gradient(135deg,#185FA5,#378ADD)">
-                <div style="font-family:'DM Serif Display',serif;font-size:14px;color:white;opacity:.8">CardPro</div>
+                <div style="font-family:'DM Serif Display',serif;font-size:14px;color:white;opacity:.8">mycontact</div>
               </div>
               <div class="preview-body">
                 <div class="preview-name" id="previewName" style="color:#0a1628">Ad Soyad</div>
@@ -647,7 +647,7 @@ function loadUD(){
   document.getElementById('sideName').textContent=n;
   document.getElementById('sidePlan').textContent=(d.plan||'free').charAt(0).toUpperCase()+(d.plan||'free').slice(1)+' Plan';
   const slug=d.slug||'';
-  const link=slug?'cardpro.az/'+slug:'—';
+  const link=slug?'apps.mycontact.az/'+slug:'—';
   ['linkText','overviewLink','wLink'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=link;});
   if(!_udLoaded){
     _udLoaded=true;
@@ -702,8 +702,8 @@ window.saveDefaultLang=async function(){
 // SLUG
 function renderSlugSection(slug,isPro){
   const el=document.getElementById('slugSection');
-  if(isPro){el.innerHTML=`<div style="display:flex;align-items:center;gap:7px;margin-bottom:.75rem"><span style="font-size:12px;color:var(--gray)">Pro plan — linkinizi dəyişə bilərsiniz</span><span class="pro-badge">✦ PRO</span></div><div class="slug-row"><span class="slug-prefix">cardpro.az/</span><input class="slug-input" id="slugInput" value="${slug}" maxlength="60"></div><div style="font-size:11px;color:var(--gray);margin-bottom:.75rem">Yalnız latın hərf, rəqəm, tire. Min 3, max 60 simvol.</div><button class="btn btn-primary btn-sm" onclick="saveSlug()">Linki yenilə</button>`;}
-  else{el.innerHTML=`<div style="font-size:13px;color:var(--navy);margin-bottom:.5rem;word-break:break-all"><strong>cardpro.az/${slug||'—'}</strong></div><div class="lock-msg"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Linki dəyişmək yalnız Pro planda mümkündür</div><button class="btn btn-sm" style="margin-top:.75rem" onclick="openUpgradeModal()">Pro-ya keç →</button>`;}
+  if(isPro){el.innerHTML=`<div style="display:flex;align-items:center;gap:7px;margin-bottom:.75rem"><span style="font-size:12px;color:var(--gray)">Pro plan — linkinizi dəyişə bilərsiniz</span><span class="pro-badge">✦ PRO</span></div><div class="slug-row"><span class="slug-prefix">apps.mycontact.az/</span><input class="slug-input" id="slugInput" value="${slug}" maxlength="60"></div><div style="font-size:11px;color:var(--gray);margin-bottom:.75rem">Yalnız latın hərf, rəqəm, tire. Min 3, max 60 simvol.</div><button class="btn btn-primary btn-sm" onclick="saveSlug()">Linki yenilə</button>`;}
+  else{el.innerHTML=`<div style="font-size:13px;color:var(--navy);margin-bottom:.5rem;word-break:break-all"><strong>apps.mycontact.az/${slug||'—'}</strong></div><div class="lock-msg"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Linki dəyişmək yalnız Pro planda mümkündür</div><button class="btn btn-sm" style="margin-top:.75rem" onclick="openUpgradeModal()">Pro-ya keç →</button>`;}
 }
 window.renderBrandSection=function(isPro){
   const el=document.getElementById('brandLinkSection');if(!el)return;
@@ -714,7 +714,7 @@ window.renderBrandSection=function(isPro){
       Brand Link
       <span style="background:rgba(201,168,76,.2);color:#b45309;font-size:10px;padding:2px 7px;border-radius:8px;font-weight:600">PRO</span>
     </div>
-    <div style="font-size:12px;color:var(--gray);margin-bottom:10px">Profil altındakı "CardPro ilə yaradılmışdır" linkini idarə edin</div>
+    <div style="font-size:12px;color:var(--gray);margin-bottom:10px">Profil altındakı "mycontact ilə yaradılmışdır" linkini idarə edin</div>
     <div style="display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-radius:9px;padding:10px 14px;border:1px solid var(--gray-light)">
       <div>
         <div style="font-size:13px;color:var(--navy)">Brand linki göstər</div>
@@ -816,7 +816,7 @@ window.openContactModal=function(id){
   document.getElementById('contactModalFields').innerHTML=rows.map(r=>`<div style="display:flex;gap:9px;padding:7px 0;border-bottom:1px solid var(--gray-light)"><span style="font-size:11px;color:var(--gray);width:55px;flex-shrink:0">${r.l}</span><span style="font-size:13px;color:var(--navy)">${r.v}</span></div>`).join('');
   document.getElementById('contactModal').classList.add('open');
 };
-window.deleteContact=async function(id){if(!id)return;await remove(ref(db,`contacts/${CU.uid}/${id}`));closeModal('contactModal');showToast('Kontakt silindi');};
+window.deleteContact=async function(id){if(!id){showToast('Kontakt tapılmadı','error');return;}try{await remove(ref(db,`contacts/${CU.uid}/${id}`));allContacts=allContacts.filter(c=>c.id!==id);closeModal('contactModal');renderContacts(allContacts);showToast('Kontakt silindi','success');}catch(e){showToast('Xəta: '+e.message,'error');}};
 window.exportContactVcf=function(id){const c=allContacts.find(x=>x.id===id);if(!c)return;const v=`BEGIN:VCARD\nVERSION:3.0\nFN:${c.name||''}\nTEL:${c.phone||''}\nEMAIL:${c.email||''}\nORG:${c.company||''}\nTITLE:${c.position||''}\nEND:VCARD`;const b=new Blob([v],{type:'text/vcard'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(c.name||'contact')+'.vcf';a.click();showToast('Kontakt yükləndi');};
 window.addManualContact=async function(){
   const n=document.getElementById('mName').value.trim();if(!n){showToast('Ad daxil edin','error');return;}
@@ -897,12 +897,13 @@ window.renderSigPreview=function(){
   if(sigState.email&&d.email)html+=`<tr><td style="padding-bottom:3px"><a href="mailto:${d.email}" style="color:#185FA5;text-decoration:none">✉️ ${d.email}</a></td></tr>`;
   if(sigState.web&&d.web)html+=`<tr><td style="padding-bottom:6px"><a href="${d.web.startsWith('http')?d.web:'https://'+d.web}" style="color:#185FA5;text-decoration:none">🌐 ${d.web}</a></td></tr>`;
   if(sigState.socials){const s=Object.entries(soc).filter(([,v])=>v).map(([k,v])=>`<a href="${v.startsWith('http')?v:'https://'+v}" style="margin-right:6px;color:#185FA5;font-size:11px;text-decoration:none">${k}</a>`).join('');if(s)html+=`<tr><td style="padding-bottom:6px">${s}</td></tr>`;}
-  if(sigState.cardlink&&slug)html+=`<tr><td style="padding-top:6px;border-top:1px solid #E8EDF5"><a href="https://cardpro.az/${slug}" style="display:inline-block;background:#185FA5;color:#fff;padding:5px 12px;border-radius:6px;font-size:11px;text-decoration:none;margin-top:4px">🪪 CardPro Profilim</a></td></tr>`;
+  if(sigState.cardlink&&slug)html+=`<tr><td style="padding-top:6px;border-top:1px solid #E8EDF5"><a href="https://apps.mycontact.az/${slug}" style="display:inline-block;background:#185FA5;color:#fff;padding:5px 12px;border-radius:6px;font-size:11px;text-decoration:none;margin-top:4px">🪪 Profilim</a></td></tr>`;
   html+=`</table>`;
   document.getElementById('sigPreview').innerHTML=html;
   return html;
 };
 window.copySigHtml=function(){const html=renderSigPreview();navigator.clipboard.writeText(html);showToast('HTML kopyalandı! Gmail/Outlook-a yapışdırın','success');};
+window.toggleSigBlock=function(btn,key){btn.classList.toggle('on');sigState[key]=btn.classList.contains('on');renderSigPreview();};
 
 // ── TEMPLATES ─────────────────────────────────────────────────────────────
 // tmplNum → profile.html-in t1..t12 sistemi ilə sinxronizasiya
@@ -1573,7 +1574,7 @@ function renderActivityFeed(d){
   el.innerHTML=items.map(i=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--gray-light)"><span style="font-size:18px">${i.icon}</span><span style="font-size:13px;color:var(--navy)">${i.text}</span></div>`).join('');
 }
 
-window.copyLink=function(){const s=UD?.slug;if(!s){showToast('Profil linki yoxdur','error');return;}navigator.clipboard.writeText('https://cardpro.az/'+s);showToast('Link kopyalandı','success');};
+window.copyLink=function(){const s=UD?.slug;if(!s){showToast('Profil linki yoxdur','error');return;}navigator.clipboard.writeText('https://apps.mycontact.az/'+s);showToast('Link kopyalandı','success');};
 window.viewProfile=function(){const s=UD?.slug;if(!s){showToast('Profil linki yoxdur','error');return;}window.open('profile.html?u='+s,'_blank');};
 window.showPanel=function(n){
   const isPro=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
