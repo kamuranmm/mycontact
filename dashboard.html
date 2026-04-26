@@ -1687,6 +1687,8 @@ window.sendAllContactsToZapier=async function(){
   btn.disabled=false;btn.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Zapier-ə göndər';
   showToast(`${ok} kontakt Zapier-ə göndərildi`+(fail?` (${fail} xəta)`:''),'success');
 };
+
+async function loadZapierWebhook(){
   if(!CU)return;
   try{
     const snap=await get(ref(db,`users/${CU.uid}/zapierWebhook`));
