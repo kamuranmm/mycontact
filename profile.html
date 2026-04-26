@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CardPro</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.1.1/tesseract.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--p:#185FA5;--a:#4FACFE;--dark:#0a1628;--w:#fff;--g:#8A9BB5;--gl:#E8EDF5;--s:#f4f6fb}
+body{font-family:'Inter',sans-serif;background:#f0f2f5;min-height:100vh;display:flex;flex-direction:column;align-items:stretch;padding:0}
+
+/* topbar */
+.topbar{width:100%;max-width:600px;display:flex;align-items:center;justify-content:space-between;padding:.7rem .75rem;margin-bottom:.4rem}
+.brand{display:flex;align-items:center;gap:7px;font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:700;color:var(--dark);text-decoration:none}
+.brand-mark{width:26px;height:26px;background:linear-gradient(135deg,var(--p),var(--a));border-radius:7px;display:flex;align-items:center;justify-content:center}
+.lang-dropdown{position:relative}
+.lang-btn{padding:5px 10px;border:1.5px solid var(--gl);border-radius:20px;font-size:11px;font-weight:500;color:var(--g);cursor:pointer;background:#fff;display:flex;align-items:center;gap:5px}
+.lang-menu{display:none;position:absolute;top:calc(100%+6px);right:0;background:#fff;border-radius:12px;border:1px solid var(--gl);box-shadow:0 8px 24px rgba(0,0,0,.12);z-index:100;min-width:150px;padding:.35rem}
+.lang-menu.open{display:block}
+.lang-opt{padding:7px 10px;border-radius:8px;font-size:13px;color:var(--dark);cursor:pointer;display:flex;align-items:center;gap:8px}
+.lang-opt:hover{background:var(--s)}
+.lang-opt.sel{color:var(--p);font-weight:600}
+
+/* loading */
+.loader-wrap{position:fixed;inset:0;background:#fff;display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:12px}
+.spin{width:34px;height:34px;border:3px solid var(--gl);border-top-color:var(--p);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* toast */
+.toast{position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dark);color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;z-index:9999;opacity:0;transition:all .3s;pointer-events:none;white-space:nowrap}
+.toast.on{transform:translateX(-50%) translateY(0);opacity:1}
+
+/* modals */
+.mo{position:fixed;inset:0;background:rgba(10,22,40,.6);z-index:300;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.mo.open{opacity:1;pointer-events:all}
+.mo-box{background:#fff;border-radius:20px 20px 0 0;padding:1.5rem;width:100%;max-width:600px;transform:translateY(20px);transition:transform .25s;max-height:92vh;overflow-y:auto}
+.mo.open .mo-box{transform:translateY(0)}
+.mo-title{font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;color:var(--dark);margin-bottom:3px}
+.mo-sub{font-size:12px;color:var(--g);margin-bottom:1rem}
+.mo-close{margin-top:.75rem;width:100%;padding:12px;background:var(--s);border:none;border-radius:12px;font-size:13px;font-weight:500;cursor:pointer;color:var(--dark);font-family:'Inter',sans-serif}
+.copt{display:flex;align-items:center;gap:11px;padding:13px 14px;border:1.5px solid var(--gl);border-radius:12px;margin-bottom:8px;cursor:pointer;text-decoration:none;transition:all .15s}
+.copt:hover{border-color:var(--p)}
+.copt-ico{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.copt-lbl{font-size:13px;font-weight:600;color:var(--dark)}
+.copt-sub{font-size:11px;color:var(--g)}
+
+/* scanner modal */
+.cam-box{width:100%;aspect-ratio:4/3;background:#0a1628;border-radius:14px;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center;margin-bottom:.75rem}
+#scanVid{width:100%;height:100%;object-fit:cover;display:none}
+#scanPrev{width:100%;height:100%;object-fit:cover;display:none;position:absolute;inset:0}
+.cam-ph{display:flex;flex-direction:column;align-items:center;gap:10px;color:rgba(255,255,255,.4);text-align:center;padding:1rem;font-size:12px}
+.scan-frm{position:absolute;inset:16px;border:2px dashed rgba(79,172,254,.4);border-radius:8px;pointer-events:none}
+.sc{position:absolute;width:22px;height:22px;border-color:#4FACFE;border-style:solid;border-width:0}
+.sc-tl{top:16px;left:16px;border-top-width:3px;border-left-width:3px;border-radius:3px 0 0 0}
+.sc-tr{top:16px;right:16px;border-top-width:3px;border-right-width:3px;border-radius:0 3px 0 0}
+.sc-bl{bottom:16px;left:16px;border-bottom-width:3px;border-left-width:3px;border-radius:0 0 0 3px}
+.sc-br{bottom:16px;right:16px;border-bottom-width:3px;border-right-width:3px;border-radius:0 0 3px 0}
+.ocr-ov{position:absolute;inset:0;background:rgba(10,22,40,.75);display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.ocr-sp{width:36px;height:36px;border:3px solid rgba(255,255,255,.2);border-top-color:#4FACFE;border-radius:50%;animation:spin .7s linear infinite}
+.ocr-res{background:var(--s);border-radius:11px;padding:.9rem;border:1px solid var(--gl);margin-top:.75rem;display:none}
+.ocr-f{display:flex;gap:9px;padding:5px 0;border-bottom:1px solid var(--gl);align-items:center}
+.ocr-f:last-child{border-bottom:none}
+.ocr-l{font-size:11px;color:var(--g);width:55px;flex-shrink:0}
+.ocr-i{flex:1;padding:4px 8px;font-size:13px;border:1.5px solid var(--gl);border-radius:7px;font-family:'Inter',sans-serif;outline:none;background:#fff}
+.ocr-i:focus{border-color:var(--p)}
+
+/* fab */
+.fab{position:fixed;bottom:80px;right:16px;z-index:200}
+.fab-btn{width:46px;height:46px;border-radius:50%;background:var(--p);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 18px rgba(0,0,0,.22);transition:transform .2s}
+.fab-btn:hover{transform:scale(1.08)}
+.fab-panel{display:none;position:absolute;bottom:56px;right:0;background:#fff;border-radius:18px;padding:1.1rem;box-shadow:0 8px 36px rgba(0,0,0,.14);width:220px;border:1px solid var(--gl)}
+.fab-panel.open{display:block}
+.fp-title{font-size:10px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:.07em;margin-bottom:.5rem}
+.cdots{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:.75rem}
+.cdot{width:26px;height:26px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:transform .15s;flex-shrink:0}
+.cdot:hover,.cdot.on{transform:scale(1.15);border-color:var(--dark)}
+.cc-row{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--g);margin-bottom:.75rem}
+.cc-row input[type=color]{width:28px;height:28px;border:none;border-radius:50%;cursor:pointer;padding:0}
+.tmpl-scroll{display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+.tmpl-scroll::-webkit-scrollbar{display:none}
+.to{flex-shrink:0;width:72px;border:2px solid var(--gl);border-radius:10px;padding:5px 4px;text-align:center;cursor:pointer;font-size:9px;color:var(--g);transition:all .15s;font-weight:600}
+.to:hover{border-color:var(--p);color:var(--p)}
+.to.on{border-color:var(--p);color:var(--p)}
+.to-prev{height:36px;border-radius:6px;margin-bottom:3px;overflow:hidden;position:relative}
+
+/* not found */
+.nf{text-align:center;padding:2.5rem 1.25rem;background:#fff;border-radius:20px;width:100%;max-width:600px;margin:0 .75rem}
+/* footer */
+.lang-overlay{position:absolute;top:10px;right:10px;z-index:10}
+.lang-btn{display:flex;align-items:center;gap:4px;background:rgba(0,0,0,.35);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:5px 10px;font-size:12px;font-weight:500;color:#fff;cursor:pointer;gap:5px}
+.lang-menu{position:absolute;top:calc(100% + 6px);right:0;background:#fff;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.15);padding:4px;min-width:150px;display:none;z-index:20}
+.lang-menu.open{display:block}
+.lang-opt{padding:7px 12px;border-radius:7px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px}
+.lang-opt:hover{background:#f5f5f5}
+.lang-opt.sel{background:#e8f0fa;color:var(--p);font-weight:500}
+.pgfoot{width:100%;max-width:600px;text-align:center;padding:.9rem;font-size:11px;color:var(--g)}
+.pgfoot a{color:var(--p);text-decoration:none}
+
+/* ─── action buttons shared ─── */
+.abtn{padding:13px;border-radius:13px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;border:none;transition:all .15s}
+
+/* ════════════════════════════════════════
+   T1 — CLASSIC
+   Round cover photo, gradient header
+════════════════════════════════════════ */
+.c1{width:100%;max-width:600px;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 4px 28px rgba(10,22,40,.1);margin:0 .75rem}
+.c1-head{height:150px;background:linear-gradient(135deg,var(--p),var(--a));position:relative;overflow:hidden}
+.c1-head img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.c1-body{padding:0 1.25rem 1.5rem}
+.c1-av-wrap{margin-top:-50px;margin-bottom:10px;position:relative;z-index:2}
+.c1-av{width:90px;height:90px;border-radius:50%;border:4px solid #fff;background:var(--gl);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:32px;color:var(--g);overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.18);position:relative;z-index:2}
+.c1-av img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}
+.c1-name{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--dark);margin-bottom:2px}
+.c1-pos{font-size:13px;color:var(--g);margin-bottom:1px}
+.c1-co{font-size:13px;color:var(--p);font-weight:600;margin-bottom:10px}
+.c1-bio{font-size:13px;color:var(--g);line-height:1.6;margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--gl)}
+.c1-list{display:flex;flex-direction:column;gap:2px;margin-bottom:1rem}
+.c1-row{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:10px;text-decoration:none;cursor:pointer;transition:background .15s;color:var(--dark)}
+.c1-row:hover{background:var(--s)}
+.c1-ico{width:36px;height:36px;border-radius:9px;background:rgba(24,95,165,.08);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.c1-val{font-size:13px;color:var(--dark);font-weight:500}
+.c1-lbl{display:none}
+.c1-soc{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1rem}
+.c1-sp{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;font-size:12px;font-weight:500;text-decoration:none;border:1px solid var(--gl);color:#fff;background:var(--soc-color,#888);flex-shrink:0;transition:transform .15s}.c1-sp:hover{transform:scale(1.08)}
+.c1-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.c1-scan{grid-column:span 2;background:var(--s);color:var(--dark);border:1px solid var(--gl);margin-top:4px}
+
+/* ════════════════════════════════════════
+   T2 — MINIMAL STRIPE
+   White card, colored top accent, horizontal avatar+name
+════════════════════════════════════════ */
+.c2{width:100%;max-width:600px;background:#fff;border-radius:0;overflow:hidden;box-shadow:none;margin:0;border-bottom:1px solid var(--gl)}
+.c2-stripe{height:6px;background:linear-gradient(90deg,var(--p),var(--a))}
+.c2-hero{display:flex;align-items:center;gap:14px;padding:1.5rem 1.25rem 1rem}
+.c2-av{width:74px;height:74px;border-radius:14px;background:var(--gl);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:26px;color:var(--g);overflow:hidden;flex-shrink:0}
+.c2-av img{width:100%;height:100%;object-fit:cover;border-radius:12px}
+.c2-name{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:var(--dark);margin-bottom:2px}
+.c2-pos{font-size:12px;color:var(--g)}
+.c2-co{font-size:12px;color:var(--p);font-weight:600}
+.c2-body{padding:0 1.25rem 1.5rem}
+.c2-bio{font-size:13px;color:var(--g);line-height:1.6;margin-bottom:.9rem;padding-bottom:.9rem;border-bottom:1px solid var(--gl)}
+.c2-list{display:flex;flex-direction:column}
+.c2-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--gl);text-decoration:none;cursor:pointer;color:inherit}
+.c2-row:last-child{border-bottom:none}
+.c2-val{font-size:13px;color:var(--dark);font-weight:500;flex:1}
+.c2-lbl{display:none}
+.c2-soc{display:flex;flex-wrap:wrap;gap:6px;padding-top:.75rem;border-top:1px solid var(--gl);margin-bottom:1rem}
+.c2-sp{display:flex;align-items:center;gap:4px;padding:5px 10px;border-radius:6px;font-size:11px;font-weight:600;text-decoration:none;background:var(--s);color:var(--dark)}
+.c2-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+
+/* ════════════════════════════════════════
+   T3 — BOLD DARK
+   Full dark, glass rows, accent gradient
+════════════════════════════════════════ */
+.c3{width:100%;max-width:600px;background:#0d1117;border-radius:22px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.35);margin:0 .75rem}
+.c3-head{min-height:210px;background:linear-gradient(160deg,#0a1628,var(--p) 70%,var(--a) 100%);position:relative;overflow:hidden;padding:1.5rem 1.25rem 1.5rem;display:flex;flex-direction:column;justify-content:flex-end}
+.c3-head img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.25}
+.c3-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(13,17,23,.95) 0%,transparent 55%)}
+.c3-content{position:relative;z-index:2}
+.c3-av{width:70px;height:70px;border-radius:50%;border:3px solid rgba(255,255,255,.4);background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:26px;color:rgba(255,255,255,.8);overflow:hidden;margin-bottom:10px}
+.c3-av img{width:100%;height:100%;object-fit:cover}
+.c3-name{font-family:'Space Grotesk',sans-serif;font-size:23px;font-weight:700;color:#fff;margin-bottom:3px}
+.c3-pos{font-size:12px;color:rgba(255,255,255,.6)}
+.c3-co{font-size:13px;color:var(--a);font-weight:600}
+.c3-body{padding:1.1rem 1.25rem 1.5rem}
+.c3-bio{font-size:13px;color:rgba(255,255,255,.45);line-height:1.6;margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,.08)}
+.c3-list{display:flex;flex-direction:column;gap:8px;margin-bottom:1rem}
+.c3-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);cursor:pointer;text-decoration:none;transition:all .15s;color:inherit}
+.c3-row:hover{background:rgba(255,255,255,.11)}
+.c3-ico{width:32px;height:32px;border-radius:8px;background:rgba(79,172,254,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.c3-val{font-size:13px;color:rgba(255,255,255,.85);font-weight:500}
+.c3-lbl{display:none}
+.c3-soc{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1rem;border-top:1px solid rgba(255,255,255,.07);padding-top:.75rem}
+.c3-sp{display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:9px;font-size:12px;font-weight:500;text-decoration:none;background:rgba(255,255,255,.07);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1)}
+.c3-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.c3-scan{grid-column:span 2;background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1);margin-top:4px}
+
+/* ════════════════════════════════════════
+   T4 — WAVE (şəkil 2 — HiHello)
+   Big portrait photo + wave SVG + clean list
+════════════════════════════════════════ */
+.c4{width:100%;max-width:600px;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 4px 28px rgba(10,22,40,.1);margin:0 .75rem}
+.c4-photo{width:100%;height:280px;background:linear-gradient(180deg,var(--p) 0%,var(--a) 100%);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:80px;color:rgba(255,255,255,.2)}
+.c4-photo img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
+.c4-photo img.av{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
+.c4-wave{display:block;margin-top:-1px;width:100%}
+.c4-body{padding:.25rem 1.25rem 1.5rem}
+.c4-nameblock{padding-left:12px;border-left:5px solid var(--p);margin-bottom:.9rem}
+.c4-name{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--dark);margin-bottom:2px}
+.c4-pos{font-size:13px;color:#777}
+.c4-co{font-size:13px;color:var(--p);font-weight:600}
+.c4-bio{font-size:13px;color:#888;line-height:1.6;margin-bottom:.9rem}
+.c4-list{display:flex;flex-direction:column;gap:0;margin-bottom:.75rem}
+.c4-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #f0f0f0;cursor:pointer;text-decoration:none;color:inherit}
+.c4-row:last-child{border-bottom:none}
+.c4-ico{width:38px;height:38px;border-radius:50%;background:color-mix(in srgb,var(--p) 10%,#fff);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.c4-val{font-size:13px;color:var(--dark);font-weight:500;flex:1}
+.c4-lbl{display:none}
+.c4-soc{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:1rem}
+.c4-sp{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;text-decoration:none;color:#fff;flex-shrink:0;transition:transform .15s}.c4-sp:hover{transform:scale(1.08)}
+.c4-send{display:flex;align-items:center;gap:7px;padding:12px 22px;border-radius:50px;background:var(--p);color:#fff;border:none;font-size:13px;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif}
+
+/* ════════════════════════════════════════
+   T5 — TEAM / VITAWILL (şəkil 3)
+   Colored hero, avatar breaks boundary, icon actions row
+════════════════════════════════════════ */
+.c5{width:100%;max-width:600px;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 4px 28px rgba(10,22,40,.1);margin:0 .75rem}
+.c5-head{background:var(--p);padding:1.5rem 1.25rem 4rem;position:relative;text-align:center}
+.c5-head::after{content:'';position:absolute;bottom:0;left:0;right:0;height:32px;background:#fff;border-radius:22px 22px 0 0}
+.c5-share{position:absolute;top:1rem;right:1.25rem;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;cursor:pointer;border:none}
+.c5-av-wrap{display:flex;justify-content:center;margin-top:-3.5rem;position:relative;z-index:2;margin-bottom:.6rem}
+.c5-av{width:104px;height:104px;border-radius:50%;border:5px solid #fff;background:var(--gl);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:36px;color:var(--g);overflow:hidden;box-shadow:0 4px 18px rgba(0,0,0,.15)}
+.c5-av img{width:100%;height:100%;object-fit:cover}
+.c5-body{padding:0 1.25rem 1.5rem;text-align:center}
+.c5-name{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:700;color:var(--dark);margin-bottom:3px}
+.c5-pos{font-size:13px;color:#777;margin-bottom:1px}
+.c5-co{font-size:13px;color:var(--p);font-weight:600;margin-bottom:.75rem}
+.c5-bio{font-size:13px;color:#888;line-height:1.6;margin-bottom:.75rem;text-align:left}
+.c5-icorow{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:.9rem 0;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;margin-bottom:.9rem}
+.c5-icoitem{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;text-decoration:none}
+.c5-ico{width:48px;height:48px;border-radius:14px;background:#f5f5f5;display:flex;align-items:center;justify-content:center}
+.c5-ilbl{font-size:10px;color:#777;font-weight:600}
+.c5-links{display:flex;flex-direction:column;gap:0;text-align:left}
+.c5-lrow{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid #f5f5f5;text-decoration:none;cursor:pointer}
+.c5-lrow:last-child{border-bottom:none}
+.c5-lico{width:34px;height:34px;border-radius:9px;background:color-mix(in srgb,var(--p) 9%,#fff);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.c5-lval{font-size:13px;color:var(--dark);font-weight:500;flex:1}
+.c5-llbl{font-size:10px;color:#bbb}
+
+/* ════════════════════════════════════════
+   T6 — SPLIT (şəkil 4 birinci)
+   Colored left panel + white right
+════════════════════════════════════════ */
+.c6{width:100%;max-width:600px;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 4px 28px rgba(10,22,40,.1);display:flex;min-height:520px;margin:0 .75rem}
+.c6-left{width:42%;background:var(--p);display:flex;flex-direction:column;align-items:center;padding:1.5rem .75rem 1.25rem;flex-shrink:0}
+.c6-photo{width:88px;height:108px;border-radius:16px;border:3px solid rgba(255,255,255,.35);background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:32px;color:rgba(255,255,255,.6);margin-bottom:.9rem;overflow:hidden}
+.c6-photo img{width:100%;height:100%;object-fit:cover}
+.c6-btnrow{display:flex;flex-direction:column;gap:9px;width:100%;align-items:center}
+.c6-ibtn{width:44px;height:44px;border-radius:12px;background:rgba(255,255,255,.15);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
+.c6-ibtn:hover{background:rgba(255,255,255,.25)}
+.c6-socdots{display:flex;flex-direction:column;gap:8px;margin-top:auto;align-items:center}
+.c6-sdot{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:9px;font-weight:800;color:#fff}
+.c6-right{flex:1;padding:1.4rem 1.1rem;display:flex;flex-direction:column;overflow:hidden}
+.c6-name{font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;color:var(--dark);margin-bottom:3px;line-height:1.2}
+.c6-pos{font-size:12px;color:#888;margin-bottom:1px}
+.c6-co{font-size:12px;color:var(--p);font-weight:600;margin-bottom:.8rem}
+.c6-bio{font-size:12px;color:#888;line-height:1.5;margin-bottom:.75rem;padding-bottom:.75rem;border-bottom:1px solid #f0f0f0}
+.c6-list{display:flex;flex-direction:column;gap:0;flex:1}
+.c6-row{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #f7f7f7;cursor:pointer;text-decoration:none}
+.c6-row:last-child{border-bottom:none}
+.c6-val{font-size:12px;color:var(--dark);font-weight:500;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.c6-lbl{font-size:9px;color:#bbb}
+
+/* ════════════════════════════════════════
+   T7 — LINKO (şəkil 1 — dark full)
+   Portrait photo fills top half, overlay name, pill links
+════════════════════════════════════════ */
+.c7{width:100%;max-width:600px;background:#111;border-radius:22px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.4);margin:0 .75rem}
+.c7-img{width:100%;height:260px;position:relative;overflow:hidden;background:linear-gradient(135deg,#1e293b,var(--p));display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:72px;color:rgba(255,255,255,.15)}
+.c7-img img.bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
+.c7-img img.av{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
+.c7-grad{position:absolute;bottom:0;left:0;right:0;height:65%;background:linear-gradient(to top,#111,transparent)}
+.c7-nameblock{position:absolute;bottom:0;left:0;right:0;padding:1.1rem 1.25rem}
+.c7-name{font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;color:#fff;margin-bottom:3px}
+.c7-pos{font-size:12px;color:rgba(255,255,255,.65)}
+.c7-co{font-size:12px;color:var(--a);font-weight:600}
+.c7-body{padding:1rem 1.25rem 1.5rem}
+.c7-bio{font-size:13px;color:rgba(255,255,255,.4);line-height:1.6;margin-bottom:.9rem;padding-bottom:.9rem;border-bottom:1px solid rgba(255,255,255,.08)}
+.c7-list{display:flex;flex-direction:column;gap:8px;margin-bottom:.9rem}
+.c7-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);cursor:pointer;text-decoration:none;transition:all .15s;color:inherit}
+.c7-row:hover{background:rgba(255,255,255,.1)}
+.c7-ico{width:32px;height:32px;border-radius:8px;background:rgba(79,172,254,.18);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.c7-val{font-size:13px;color:rgba(255,255,255,.85);font-weight:500;flex:1}
+.c7-lbl{display:none}
+.c7-soc{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:.9rem;border-top:1px solid rgba(255,255,255,.07);padding-top:.75rem}
+.c7-sp{display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:9px;font-size:12px;font-weight:500;text-decoration:none;background:rgba(255,255,255,.07);color:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.1)}
+.c7-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.c7-scan{grid-column:span 2;background:rgba(255,255,255,.05);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.09);margin-top:4px}
+
+/* ════════════════════════════════════════
+   T8 — CARD (şəkil 4 son — corporate)
+   Header bar + logo + circular action icons
+════════════════════════════════════════ */
+.c8{width:100%;max-width:600px;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 4px 28px rgba(10,22,40,.1);margin:0 .75rem}
+.c8-top{background:var(--p);padding:.9rem 1.25rem;display:flex;align-items:center;justify-content:space-between}
+.c8-logo{display:flex;align-items:center;gap:9px}
+.c8-circle{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:14px;color:#fff;font-weight:700}
+.c8-brand{font-size:14px;color:rgba(255,255,255,.85);font-weight:600}
+.c8-hero{display:flex;align-items:center;gap:1rem;padding:1.4rem 1.25rem 1rem;border-bottom:1px solid var(--gl)}
+.c8-av{width:82px;height:82px;border-radius:50%;border:3px solid var(--p);background:var(--gl);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:30px;color:var(--g);overflow:hidden;flex-shrink:0}
+.c8-av img{width:100%;height:100%;object-fit:cover}
+.c8-name{font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:var(--dark);margin-bottom:3px}
+.c8-pos{font-size:12px;color:#888;margin-bottom:1px}
+.c8-co{font-size:12px;color:var(--p);font-weight:600}
+.c8-actbar{display:flex;justify-content:space-around;padding:.9rem 1.25rem;border-bottom:1px solid var(--gl)}
+.c8-acti{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;text-decoration:none}
+.c8-aci-c{width:48px;height:48px;border-radius:50%;background:color-mix(in srgb,var(--p) 10%,#fff);border:1.5px solid color-mix(in srgb,var(--p) 20%,#fff);display:flex;align-items:center;justify-content:center}
+.c8-aci-l{font-size:9px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.c8-body{padding:.75rem 1.25rem 1.5rem}
+.c8-sec{font-size:10px;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:.07em;margin:.75rem 0 .4rem}
+.c8-list{display:flex;flex-direction:column}
+.c8-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f7f7f7;cursor:pointer;text-decoration:none;color:inherit}
+.c8-row:last-child{border-bottom:none}
+.c8-ico{width:32px;height:32px;border-radius:8px;background:color-mix(in srgb,var(--p) 8%,#fff);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.c8-val{font-size:13px;color:var(--dark);font-weight:500;flex:1}
+.c8-lbl{display:none}
+.c8-soc{display:flex;flex-wrap:wrap;gap:7px;margin-top:.5rem}
+.c8-sp{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;text-decoration:none;border:1px solid #eee;color:#333;background:#fafafa}
+
+/* ════════════════════════════════════════
+   T9 — LINKO FULL (Şəkil 1 — Linko)
+   Tam ekran foto, dark gradient overlay, ad aşağıda
+════════════════════════════════════════ */
+.c9{width:100%;max-width:600px;background:#111;border-radius:22px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.45);margin:0 .75rem}
+.c9-hero{width:100%;height:320px;position:relative;overflow:hidden;background:linear-gradient(135deg,#0a1628,var(--p));display:flex;align-items:center;justify-content:center}
+.c9-hero img.av{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
+.c9-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.92) 0%,rgba(0,0,0,.3) 50%,transparent 100%)}
+.c9-info{position:absolute;bottom:0;left:0;right:0;padding:1.25rem}
+.c9-name{font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:800;color:#fff;line-height:1.1;margin-bottom:4px}
+.c9-pos{font-size:13px;color:rgba(255,255,255,.65);margin-bottom:1px}
+.c9-co{font-size:13px;color:var(--a);font-weight:600}
+.c9-ph{position:absolute;top:14px;right:14px;display:flex;gap:8px}
+.c9-pill{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:20px;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);font-size:11px;font-weight:700;color:#fff;cursor:pointer;text-decoration:none}
+.c9-body{padding:1rem 1.25rem 1.5rem;background:#111}
+.c9-list{display:flex;flex-direction:column;gap:7px;margin-bottom:.9rem}
+.c9-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:50px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);cursor:pointer;text-decoration:none;transition:all .15s;color:inherit}
+.c9-row:hover{background:rgba(255,255,255,.11)}
+.c9-ico{width:32px;height:32px;border-radius:50%;background:rgba(79,172,254,.2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.c9-val{font-size:13px;color:rgba(255,255,255,.85);font-weight:500;flex:1}
+.c9-lbl{display:none}
+.c9-soc{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:.9rem;padding-top:.75rem;border-top:1px solid rgba(255,255,255,.07)}
+.c9-sp{display:flex;align-items:center;gap:5px;padding:7px 14px;border-radius:50px;font-size:12px;font-weight:600;text-decoration:none;background:rgba(255,255,255,.08);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.1)}
+.c9-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+
+/* ════════════════════════════════════════
+   T10 — ACHIEVEMENT (Şəkil 2 — Kevin Smith)
+   Rəngli üst, böyük foto sol-mərkəz, achievement badge
+════════════════════════════════════════ */
+.c10{width:100%;max-width:600px;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 6px 32px rgba(10,22,40,.12);margin:0 .75rem}
+.c10-header{background:var(--p);padding:1.5rem 1.25rem 3.5rem;position:relative;text-align:center;overflow:hidden}
+.c10-header::before{content:'';position:absolute;top:-30px;right:-30px;width:130px;height:130px;border-radius:50%;background:rgba(255,255,255,.07)}
+.c10-header::after{content:'';position:absolute;bottom:-20px;left:-20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.05)}
+.c10-brand{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.5rem}
+.c10-av-wrap{display:flex;justify-content:center;margin-top:-3rem;position:relative;z-index:2;margin-bottom:.5rem}
+.c10-av{width:120px;height:140px;border-radius:18px;border:4px solid #fff;background:var(--gl);overflow:hidden;box-shadow:0 6px 24px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:42px;color:var(--g)}
+.c10-av img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.c10-body{padding:.25rem 1.25rem 1.5rem;text-align:center}
+.c10-name{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:800;color:var(--dark);margin-bottom:3px;line-height:1.2}
+.c10-pos{font-size:13px;color:#888;margin-bottom:8px}
+.c10-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:50px;background:color-mix(in srgb,var(--p) 10%,#fff);border:1.5px solid color-mix(in srgb,var(--p) 25%,#fff);font-size:11px;font-weight:700;color:var(--p);margin-bottom:1rem;text-transform:uppercase;letter-spacing:.06em}
+.c10-bio{font-size:13px;color:#888;line-height:1.6;margin-bottom:.9rem;text-align:left}
+.c10-icorow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:.9rem 0;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;margin-bottom:.9rem}
+.c10-icoitem{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;text-decoration:none}
+.c10-ico{width:46px;height:46px;border-radius:13px;background:#f5f5f5;display:flex;align-items:center;justify-content:center}
+.c10-ilbl{font-size:9px;color:#999;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.c10-list{display:flex;flex-direction:column;gap:0;text-align:left}
+.c10-row{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid #f5f5f5;text-decoration:none;cursor:pointer;color:inherit}
+.c10-row:last-child{border-bottom:none}
+.c10-lico{width:34px;height:34px;border-radius:9px;background:color-mix(in srgb,var(--p) 9%,#fff);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.c10-val{font-size:13px;color:var(--dark);font-weight:500;flex:1}
+.c10-lbl{display:none}
+
+/* ════════════════════════════════════════
+   T11 — HIHELLO (Şəkil 3 — HiHello Networking)
+   Böyük foto + organik dalğa kənarı + sol accent xətt
+════════════════════════════════════════ */
+.c11{width:100%;max-width:600px;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 4px 28px rgba(10,22,40,.1);margin:0 .75rem}
+.c11-photo{width:100%;height:300px;background:var(--p);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:80px;color:rgba(255,255,255,.2)}
+.c11-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}
+.c11-wave{display:block;width:100%;margin-top:-2px}
+.c11-body{padding:.1rem 1.25rem 1.5rem}
+.c11-nameblock{display:flex;gap:12px;align-items:flex-start;margin-bottom:.9rem}
+.c11-accent{width:4px;border-radius:4px;background:linear-gradient(180deg,var(--p),var(--a));flex-shrink:0;align-self:stretch;min-height:40px}
+.c11-ninfo{}
+.c11-name{font-family:'Space Grotesk',sans-serif;font-size:23px;font-weight:800;color:var(--dark);margin-bottom:3px;line-height:1.2}
+.c11-pos{font-size:13px;color:#666;margin-bottom:1px}
+.c11-co{font-size:13px;color:var(--p);font-weight:700}
+.c11-bio{font-size:13px;color:#888;line-height:1.6;margin-bottom:.9rem}
+.c11-list{display:flex;flex-direction:column;margin-bottom:.9rem}
+.c11-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #f0f0f0;text-decoration:none;cursor:pointer;color:inherit}
+.c11-row:last-child{border-bottom:none}
+.c11-ico{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;background:color-mix(in srgb,var(--p) 10%,#fff)}
+.c11-val{font-size:13px;color:var(--dark);font-weight:500;flex:1}
+.c11-lbl{display:none}
+.c11-soc{display:flex;flex-direction:column;gap:0;margin-bottom:1rem}
+.c11-srow{display:flex;align-items:center;gap:11px;padding:10px 13px;border-radius:11px;text-decoration:none;margin-bottom:6px;border:1.5px solid #eeeeee;transition:all .15s;font-size:13px;font-weight:500;color:var(--dark)}
+.c11-srow:hover{border-color:var(--p);background:color-mix(in srgb,var(--p) 4%,#fff)}
+.c11-sdot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.c11-send{display:flex;align-items:center;justify-content:center;gap:7px;padding:13px;border-radius:50px;background:var(--p);color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;width:100%;font-family:'Inter',sans-serif}
+
+/* ════════════════════════════════════════
+   T12 — VITAWILL (Şəkil 4 — Vitawill team)
+   Rəngli hero band, avatar üstdən çıxır, icon grid, links section
+════════════════════════════════════════ */
+.c12{width:100%;max-width:600px;background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 4px 28px rgba(10,22,40,.1);margin:0 .75rem}
+.c12-topbar{background:#fff;padding:.7rem 1.25rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #f5f5f5}
+.c12-brand{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--dark)}
+.c12-share{width:32px;height:32px;border-radius:50%;background:var(--s);display:flex;align-items:center;justify-content:center;cursor:pointer;border:none}
+.c12-hero{background:var(--p);padding:1.5rem 1.25rem 5rem;position:relative;overflow:visible}
+.c12-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:28px;background:#fff;border-radius:22px 22px 0 0}
+.c12-av-wrap{display:flex;justify-content:center;margin-top:-4.5rem;position:relative;z-index:3;margin-bottom:.5rem}
+.c12-av{width:110px;height:110px;border-radius:50%;border:5px solid #fff;background:var(--gl);overflow:hidden;box-shadow:0 5px 22px rgba(0,0,0,.18);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:38px;color:var(--g)}
+.c12-av img{width:100%;height:100%;object-fit:cover}
+.c12-body{padding:0 1.25rem 1.5rem;text-align:center}
+.c12-name{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:800;color:var(--dark);margin-bottom:3px}
+.c12-pos{font-size:13px;color:#888;margin-bottom:1px}
+.c12-co{font-size:13px;color:var(--p);font-weight:700;margin-bottom:.75rem}
+.c12-actgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:.9rem 0;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0;margin-bottom:1rem}
+.c12-acti{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;text-decoration:none}
+.c12-aci-c{width:52px;height:52px;border-radius:15px;background:color-mix(in srgb,var(--p) 8%,#fff);border:1.5px solid color-mix(in srgb,var(--p) 18%,#fff);display:flex;align-items:center;justify-content:center;transition:all .15s}
+.c12-acti:hover .c12-aci-c{background:color-mix(in srgb,var(--p) 15%,#fff)}
+.c12-aci-l{font-size:9px;color:#999;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.c12-sec{font-size:10px;font-weight:700;color:#ccc;text-transform:uppercase;letter-spacing:.08em;margin:.75rem 0 .4rem;text-align:left}
+.c12-links{display:flex;flex-direction:column;gap:0;text-align:left}
+.c12-lrow{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid #f7f7f7;text-decoration:none;cursor:pointer}
+.c12-lrow:last-child{border-bottom:none}
+.c12-lico{width:36px;height:36px;border-radius:10px;background:color-mix(in srgb,var(--p) 8%,#fff);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.c12-val{font-size:13px;color:var(--dark);font-weight:500;flex:1}
+.c12-lbl{display:none}
+.c12-qr-row{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:.75rem;padding:.6rem .9rem;border-radius:12px;border:1.5px dashed #ddd;cursor:pointer}
+.c12-qrlbl{font-size:12px;color:#aaa;font-weight:500}
+
+/* shared video/pdf */
+.vframe{width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;background:var(--s);margin-bottom:1rem}
+.vframe iframe{width:100%;height:100%;border:none}
+.pdfs{margin-bottom:1rem}
+.pdf-item{display:flex;align-items:center;gap:11px;padding:11px 13px;border:1px solid var(--gl);border-radius:12px;text-decoration:none;margin-bottom:7px;background:#fff;position:relative;overflow:hidden;transition:all .18s}
+.pdf-item::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--p),var(--a))}
+.pdf-item:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(24,95,165,.1)}
+.pdf-ico{width:38px;height:38px;border-radius:9px;background:linear-gradient(135deg,#fef2f2,#fde8e8);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;font-size:8px;font-weight:800;color:#e74c3c}
+/* dark pdf */
+.pdf-dark{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.09)}
+.pdf-dark::before{display:none}
+.pdf-dark-name{font-size:13px;color:rgba(255,255,255,.85);font-weight:500;flex:1}
+
+@media(max-width:640px){
+  body{align-items:stretch!important}
+  .c1,.c2,.c3,.c4,.c5,.c6,.c7,.c8,.c9,.c10,.c11,.c12{
+    max-width:100%!important;width:100%!important;
+    margin:0!important;border-radius:0!important;box-shadow:none!important;
+  }
+  .c1-head,.c2-head,.c3-head,.c4-head,.c5-head,.c6-head,
+  .c7-head,.c8-head,.c9-head,.c10-head,.c11-head,.c12-head{
+    border-radius:0!important;
+  }
+  .nf,.pgfoot{max-width:100%!important;margin:0!important;border-radius:0!important}
+}
+</style>
+</head>
+<body>
+
+<div class="loader-wrap" id="lw"><div class="spin"></div><div style="font-size:13px;color:var(--g)">Yüklənir...</div></div>
+
+
+
+<div id="cardWrap" style="width:100%;max-width:600px;padding:0 .75rem;display:none"></div>
+<div class="nf" id="nfCard" style="display:none">
+  <div style="font-size:40px;margin-bottom:.9rem">🪪</div>
+  <div style="font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;color:var(--dark);margin-bottom:7px" id="nfT">Profil tapılmadı</div>
+  <div style="font-size:13px;color:var(--g)" id="nfS">Bu link mövcud deyil.</div>
+</div>
+
+<div class="pgfoot" id="pgfoot"><a href="index.html">CardPro</a> <span id="ftxt">ilə yaradılmışdır</span></div>
+
+<!-- FAB -->
+<div class="fab">
+  <button class="fab-btn" onclick="tgFab()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 010 20"/></svg></button>
+  <div class="fab-panel" id="fabPanel">
+    <div class="fp-title">Rəng</div>
+    <div class="cdots">
+      <div class="cdot on" style="background:#185FA5" data-c="#185FA5" onclick="setColor('#185FA5')"></div>
+      <div class="cdot" style="background:#7C3AED" data-c="#7C3AED" onclick="setColor('#7C3AED')"></div>
+      <div class="cdot" style="background:#059669" data-c="#059669" onclick="setColor('#059669')"></div>
+      <div class="cdot" style="background:#DC2626" data-c="#DC2626" onclick="setColor('#DC2626')"></div>
+      <div class="cdot" style="background:#D97706" data-c="#D97706" onclick="setColor('#D97706')"></div>
+      <div class="cdot" style="background:#0891B2" data-c="#0891B2" onclick="setColor('#0891B2')"></div>
+      <div class="cdot" style="background:#BE185D" data-c="#BE185D" onclick="setColor('#BE185D')"></div>
+      <div class="cdot" style="background:#111827" data-c="#111827" onclick="setColor('#111827')"></div>
+    </div>
+    <div class="cc-row"><input type="color" id="cc" value="#185FA5" oninput="setColor(this.value)"><span>Özəl rəng</span></div>
+    <div class="fp-title">Dizayn</div>
+    <div class="tmpl-scroll">
+      <div class="to on" id="t-1" onclick="setTmpl(1)"><div class="to-prev" style="background:linear-gradient(135deg,#185FA5,#4FACFE)"></div>Classic</div>
+      <div class="to" id="t-2" onclick="setTmpl(2)"><div class="to-prev" style="border-top:5px solid #185FA5;background:#f4f6fb"></div>Minimal</div>
+      <div class="to" id="t-3" onclick="setTmpl(3)"><div class="to-prev" style="background:#0d1117"></div>Bold</div>
+      <div class="to" id="t-4" onclick="setTmpl(4)"><div class="to-prev" style="background:linear-gradient(180deg,#185FA5 55%,#fff 45%)"></div>Wave</div>
+      <div class="to" id="t-5" onclick="setTmpl(5)"><div class="to-prev" style="background:linear-gradient(180deg,#7C3AED 55%,#fff 45%)"></div>Team</div>
+      <div class="to" id="t-6" onclick="setTmpl(6)"><div class="to-prev" style="background:linear-gradient(90deg,#185FA5 45%,#fff 45%)"></div>Split</div>
+      <div class="to" id="t-7" onclick="setTmpl(7)"><div class="to-prev" style="background:#111"></div>Linko</div>
+      <div class="to" id="t-8" onclick="setTmpl(8)"><div class="to-prev" style="border-top:10px solid #185FA5;background:#fff;border-radius:6px"></div>Card</div>
+      <div class="to" id="t-9" onclick="setTmpl(9)"><div class="to-prev" style="background:#111"></div>Linko+</div>
+      <div class="to" id="t-10" onclick="setTmpl(10)"><div class="to-prev" style="background:linear-gradient(180deg,#185FA5 55%,#fff 45%)"></div>Achiev</div>
+      <div class="to" id="t-11" onclick="setTmpl(11)"><div class="to-prev" style="background:linear-gradient(180deg,#185FA5 60%,#fff 40%)"></div>HiHello</div>
+      <div class="to" id="t-12" onclick="setTmpl(12)"><div class="to-prev" style="background:linear-gradient(180deg,#185FA5 55%,#fff 45%)"></div>Vitawill</div>
+    </div>
+  </div>
+</div>
+
+<!-- PHONE MODAL -->
+<div class="mo" id="moPhone"><div class="mo-box">
+  <div class="mo-title" id="mPhT">Zəng et</div>
+  <div class="mo-sub" id="mPhN"></div>
+  <a class="copt" id="mPhCall" href="#"><div class="copt-ico" style="background:rgba(24,95,165,.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.73 9.5a19.79 19.79 0 01-3-8.59A2 2 0 012.7 1h3.09a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.73a16 16 0 006.29 6.29l1.1-1.1a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg></div><div><div class="copt-lbl" id="mPhLbl">Zəng et</div><div class="copt-sub" id="mPhNum"></div></div></a>
+  <a class="copt" id="mWaP" href="#" target="_blank"><div class="copt-ico" style="background:rgba(37,211,102,.12)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#25D366" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></div><div><div class="copt-lbl" id="mWaPL">Şəxsi WA</div><div class="copt-sub" id="mWaPN"></div></div></a>
+  <a class="copt" id="mWaB" href="#" target="_blank" style="display:none"><div class="copt-ico" style="background:rgba(0,168,132,.12)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00A884" stroke-width="1.8"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg></div><div><div class="copt-lbl" id="mWaBL">Biznes WA</div><div class="copt-sub" id="mWaBN"></div></div></a>
+  <button class="mo-close" id="mPhClose" onclick="cmo('moPhone')">Bağla</button>
+</div></div>
+
+<!-- EMAIL MODAL -->
+<div class="mo" id="moEmail"><div class="mo-box">
+  <div class="mo-title" id="mEmT">E-mail</div>
+  <div class="mo-sub" id="mEmA" style="word-break:break-all;font-size:13px;color:var(--dark)"></div>
+  <a class="copt" id="mEmLink" href="#"><div class="copt-ico" style="background:rgba(24,95,165,.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><div class="copt-lbl" id="mEmSL">E-mail göndər</div><div class="copt-sub" id="mEmSS">Mail tətbiqini aç</div></div></a>
+  <div class="copt" onclick="cpEmail()"><div class="copt-ico" style="background:rgba(39,174,96,.1)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg></div><div><div class="copt-lbl" id="mEmCL">E-maili kopyala</div><div class="copt-sub" id="mEmCS">Mübadilə buferinə</div></div></div>
+  <button class="mo-close" id="mEmClose" onclick="cmo('moEmail')">Bağla</button>
+</div></div>
+
+<!-- QR MODAL -->
+<div class="mo" id="moQr"><div class="mo-box" style="text-align:center">
+  <div class="mo-title" style="text-align:left">QR Kod</div>
+  <div class="mo-sub" style="text-align:left;margin-bottom:1.25rem">Skan edin — profil açılacaq</div>
+  <div style="display:inline-block;padding:14px;background:#fff;border-radius:14px;border:1px solid var(--gl);box-shadow:0 2px 12px rgba(0,0,0,.07)"><div id="qrc"></div></div>
+  <div style="margin-top:1rem"><button onclick="dlQr()" style="padding:10px 24px;border-radius:10px;background:var(--p);color:#fff;border:none;cursor:pointer;font-size:13px;font-weight:600;font-family:'Inter',sans-serif">⬇ Yüklə</button></div>
+  <button class="mo-close" onclick="cmo('moQr')">Bağla</button>
+</div></div>
+
+<!-- SCANNER MODAL -->
+<div class="mo" id="moScan"><div class="mo-box">
+  <div class="mo-title">📇 Vizit Kart Skan</div>
+  <div class="mo-sub">Kartı çərçivəyə tutun</div>
+  <div class="cam-box">
+    <video id="scanVid" autoplay playsinline></video>
+    <img id="scanPrev" alt="">
+    <div class="cam-ph" id="camPh"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1.5"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>Kameranı açın</div>
+    <div class="scan-frm"><div class="sc sc-tl"></div><div class="sc sc-tr"></div><div class="sc sc-bl"></div><div class="sc sc-br"></div></div>
+    <div class="ocr-ov" id="ocrOv"><div class="ocr-sp"></div><div style="color:#fff;font-size:13px" id="ocrPct">Oxunur...</div></div>
+  </div>
+  <div style="font-size:11px;color:var(--g);text-align:center;margin-bottom:.75rem" id="scanSt">Başlamaq üçün kameranı açın</div>
+  <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:.75rem">
+    <button class="abtn" style="flex:1;background:var(--p);color:#fff" id="stBtn" onclick="stScan()">📷 Kamera</button>
+    <button class="abtn" style="flex:1;background:var(--p);color:#fff;display:none" id="cpBtn" onclick="cpCard()">Şəkil çək</button>
+    <button class="abtn" style="background:var(--s);color:var(--dark);display:none" id="spBtn" onclick="spScan()">Dayandır</button>
+    <button class="abtn" style="background:var(--s);color:var(--dark);display:none" id="rtBtn" onclick="rtScan()">Yenidən</button>
+    <label class="abtn" style="background:var(--s);color:var(--dark);flex:1;cursor:pointer">🖼 Qalereyadan<input type="file" accept="image/*" style="display:none" onchange="galScan(event)"></label>
+  </div>
+  <canvas id="scCv" style="display:none"></canvas>
+  <div class="ocr-res" id="ocrRes"><div style="font-size:12px;font-weight:700;color:#27ae60;margin-bottom:.6rem">✓ Tapıldı — düzəldin</div><div id="ocrFlds"></div></div>
+  <div id="ocrActs" style="display:none;margin-top:.75rem;display:flex;gap:7px;flex-wrap:wrap">
+    <button class="abtn" style="flex:1;background:var(--p);color:#fff" onclick="svScan()">✓ VCF Yüklə</button>
+    <button class="abtn" style="background:var(--s);color:var(--dark)" onclick="rstScan()">Sıfırla</button>
+  </div>
+  <button class="mo-close" onclick="clScanMo()">Bağla</button>
+</div></div>
+
+<div class="toast" id="tst"></div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getDatabase,ref,get,update,query,orderByChild,equalTo}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+const cfg={apiKey:"AIzaSyBx81QDpjHSPvhkmnnSUNkJYMvR_fnRTaU",authDomain:"mycontact-e626e.firebaseapp.com",databaseURL:"https://mycontact-e626e-default-rtdb.firebaseio.com",projectId:"mycontact-e626e",storageBucket:"mycontact-e626e.firebasestorage.app",messagingSenderId:"420594516827",appId:"1:420594516827:web:f30266800c690c6ff9107e"};
+const app=initializeApp(cfg);const db=getDatabase(app);
+const slug=new URLSearchParams(location.search).get('u');
+let PD=null,PU=null,vc='',ce='',tmpl=1,color='#185FA5',_cs=null,_ocr=null;
+
+// ── I18N ──────────────────────────────────────────────────────────────────
+const TR={
+  az:{save:'Kontaktı saxla',share:'Paylaş',scan:'Vizit Kart Skan',docs:'Sənədlər',phone:'Telefon',email:'E-mail',web:'Veb sayt',addr:'Ünvan',call:'Zəng et',waP:'Şəxsi WhatsApp',waB:'Biznes WhatsApp',sendMail:'E-mail göndər',copyMail:'E-maili kopyala',copied:'Kopyalandı ✓',saved:'Kontakt yükləndi',shared:'Link kopyalandı',clickOpen:'Açmaq üçün klik edin',ko:'Kontakt saxla',anrufen:'Zəng',termin:'QR Kod'},
+  en:{save:'Save Contact',share:'Share',scan:'Scan Card',docs:'Documents',phone:'Phone',email:'Email',web:'Website',addr:'Address',call:'Call',waP:'Personal WhatsApp',waB:'Business WhatsApp',sendMail:'Send Email',copyMail:'Copy email',copied:'Copied ✓',saved:'Contact saved',shared:'Link copied',clickOpen:'Click to open',ko:'Save Contact',anrufen:'Call',termin:'QR Code'},
+  ru:{save:'Сохранить',share:'Поделиться',scan:'Сканировать',docs:'Документы',phone:'Телефон',email:'Email',web:'Сайт',addr:'Адрес',call:'Позвонить',waP:'Личный WA',waB:'Бизнес WA',sendMail:'Отправить email',copyMail:'Копировать email',copied:'Скопировано ✓',saved:'Контакт сохранён',shared:'Ссылка скопирована',clickOpen:'Нажмите для открытия',ko:'Сохранить',anrufen:'Позвонить',termin:'QR Код'},
+  tr:{save:'Kaydet',share:'Paylaş',scan:'Kartvizit Tara',docs:'Belgeler',phone:'Telefon',email:'E-posta',web:'Website',addr:'Adres',call:'Ara',waP:'Kişisel WA',waB:'İş WA',sendMail:'E-posta Gönder',copyMail:'E-postayı kopyala',copied:'Kopyalandı ✓',saved:'Kaydedildi',shared:'Bağlantı kopyalandı',clickOpen:'Açmak için tıkla',ko:'Kaydet',anrufen:'Ara',termin:'QR Kod'},
+  zh:{save:'保存联系人',share:'分享',scan:'扫名片',docs:'文档',phone:'电话',email:'邮箱',web:'网站',addr:'地址',call:'拨打',waP:'个人WA',waB:'商务WA',sendMail:'发送邮件',copyMail:'复制邮箱',copied:'已复制 ✓',saved:'已保存',shared:'链接已复制',clickOpen:'点击打开',ko:'保存',anrufen:'拨打',termin:'二维码'},
+  ar:{save:'حفظ',share:'مشاركة',scan:'مسح البطاقة',docs:'المستندات',phone:'الهاتف',email:'البريد',web:'الموقع',addr:'العنوان',call:'اتصال',waP:'واتساب شخصي',waB:'واتساب أعمال',sendMail:'إرسال بريد',copyMail:'نسخ البريد',copied:'تم النسخ ✓',saved:'تم الحفظ',shared:'تم نسخ الرابط',clickOpen:'انقر للفتح',ko:'حفظ',anrufen:'اتصال',termin:'رمز QR'},
+  de:{save:'Speichern',share:'Teilen',scan:'Visitenkarte scannen',docs:'Dokumente',phone:'Telefon',email:'E-Mail',web:'Website',addr:'Adresse',call:'Anrufen',waP:'WhatsApp privat',waB:'WhatsApp Business',sendMail:'E-Mail senden',copyMail:'E-Mail kopieren',copied:'Kopiert ✓',saved:'Gespeichert',shared:'Link kopiert',clickOpen:'Klicken zum Öffnen',ko:'Kontakt speichern',anrufen:'Anrufen',termin:'QR-Code'},
+  es:{save:'Guardar',share:'Compartir',scan:'Escanear tarjeta',docs:'Documentos',phone:'Teléfono',email:'Correo',web:'Sitio web',addr:'Dirección',call:'Llamar',waP:'WhatsApp personal',waB:'WhatsApp empresarial',sendMail:'Enviar correo',copyMail:'Copiar correo',copied:'Copiado ✓',saved:'Guardado',shared:'Enlace copiado',clickOpen:'Clic para abrir',ko:'Guardar contacto',anrufen:'Llamar',termin:'Código QR'}
+};
+const LM={az:{f:'🇦🇿',c:'AZ'},en:{f:'🇬🇧',c:'EN'},ru:{f:'🇷🇺',c:'RU'},tr:{f:'🇹🇷',c:'TR'},zh:{f:'🇨🇳',c:'ZH'},ar:{f:'🇸🇦',c:'AR'},de:{f:'🇩🇪',c:'DE'},es:{f:'🇪🇸',c:'ES'}};
+let lang='az';
+function t(k){return(TR[lang]||TR.az)[k]||k;}
+window.setLang=function(l){lang=l;const m=LM[l]||LM.az;document.getElementById('lfl').textContent=m.f;document.getElementById('lco').textContent=m.c;document.querySelectorAll('.lang-opt').forEach(o=>o.classList.toggle('sel',o.dataset.l===l));document.getElementById('lmenu').classList.remove('open');localStorage.setItem('cp_lang_'+slug,l);if(PD)render();};
+window.tgLang=function(){document.getElementById('lmenu').classList.toggle('open');};
+document.addEventListener('click',e=>{if(!e.target.closest('.lang-dropdown'))document.getElementById('lmenu').classList.remove('open');});
+
+// ── LOAD ───────────────────────────────────────────────────────────────────
+async function init(){
+  if(!slug){showNF();return;}
+  try{
+    const q=query(ref(db,'users'),orderByChild('slug'),equalTo(slug));
+    const snap=await get(q);
+    if(!snap.exists()){showNF();return;}
+    const entry=Object.entries(snap.val())[0];
+    if(!entry){showNF();return;}
+    [PU,PD]=entry;
+    if(PD.status==='blocked'){showBlocked();return;}
+    lang=localStorage.getItem('cp_lang_'+slug)||PD.defaultLang||'az';
+    const lm=LM[lang]||LM.az;document.getElementById('lfl').textContent=lm.f;document.getElementById('lco').textContent=lm.c;document.querySelectorAll('.lang-opt').forEach(o=>o.classList.toggle('sel',o.dataset.l===lang));
+    color=localStorage.getItem('cp_col_'+slug)||'#185FA5';
+    // tmplNum — dashboard-dan seçilmiş şablon (1-12), lokal override var ise onu götür
+    const savedTmpl=parseInt(localStorage.getItem('cp_tmpl_'+slug)||PD.tmplNum||PD.template||'1');
+    tmpl=isNaN(savedTmpl)?1:Math.min(Math.max(savedTmpl,1),12);
+    applyColor(color);
+    document.getElementById('lw').style.display='none';
+    document.getElementById('cardWrap').style.display='block';
+    render();buildQR();
+    // Lang overlay — cover üzərinə inject et
+    setTimeout(()=>{
+      const head=document.querySelector('[class^="c"][class$="-head"],.c1-head,.c2-head,.c3-head,.c4-head,.c5-head,.c6-head,.c7-head,.c8-head,.c9-head,.c10-head,.c11-head,.c12-head');
+      if(head&&!head.querySelector('.lang-ov')){
+        head.style.position='relative';
+        const ov=document.createElement('div');
+        ov.className='lang-ov';
+        ov.style.cssText='position:absolute;top:10px;right:10px;z-index:10';
+        ov.innerHTML=`<button onclick="tgLang()" style="display:flex;align-items:center;gap:5px;background:rgba(0,0,0,.4);backdrop-filter:blur(8px);border:1.5px solid rgba(255,255,255,.25);border-radius:20px;padding:5px 11px;font-size:12px;color:#fff;cursor:pointer"><span id="lfl">🇦🇿</span><span style="font-weight:600;margin:0 2px" id="lco">AZ</span><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button><div class="lang-menu" id="lmenu" style="position:absolute;top:calc(100% + 6px);right:0;background:#fff;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,.15);padding:5px;min-width:160px;display:none;z-index:20"><div class="lang-opt sel" onclick="setLang('az')" style="padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px">🇦🇿 Azərbaycan</div><div class="lang-opt" onclick="setLang('en')" style="padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px">🇬🇧 English</div><div class="lang-opt" onclick="setLang('ru')" style="padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px">🇷🇺 Русский</div><div class="lang-opt" onclick="setLang('tr')" style="padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px">🇹🇷 Türkçe</div><div class="lang-opt" onclick="setLang('zh')" style="padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px">🇨🇳 中文</div><div class="lang-opt" onclick="setLang('ar')" style="padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px">🇸🇦 العربية</div><div class="lang-opt" onclick="setLang('de')" style="padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px">🇩🇪 Deutsch</div><div class="lang-opt" onclick="setLang('es')" style="padding:8px 12px;border-radius:8px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px">🇪🇸 Español</div></div>`;
+        head.prepend(ov);
+      }
+      // Aktiv dili göstər
+      const sl=localStorage.getItem('pl')||'az';
+      const lfl=document.getElementById('lfl');const lco=document.getElementById('lco');
+      const flags={az:'🇦🇿',en:'🇬🇧',ru:'🇷🇺',tr:'🇹🇷',zh:'🇨🇳',ar:'🇸🇦',de:'🇩🇪',es:'🇪🇸'};
+      if(lfl)lfl.textContent=flags[sl]||'🇦🇿';
+      if(lco)lco.textContent=sl.toUpperCase();
+    },100);
+    // Brand link
+    const pgEl=document.getElementById('pgfoot');
+    if(pgEl)pgEl.style.display=PD.brandLink===false?'none':'block';
+    try{await update(ref(db,`users/${PU}/stats`),{views:((PD.stats?.views||0)+1)});}catch(e){}
+  }catch(e){console.error(e);showNF();}
+}
+function showNF(){document.getElementById('lw').style.display='none';document.getElementById('nfCard').style.display='block';}
+function showBlocked(){
+  document.getElementById('lw').style.display='none';
+  const el=document.getElementById('nfCard');
+  el.innerHTML=`<div style="text-align:center;padding:3rem 1.5rem">
+    <div style="font-size:48px;margin-bottom:1rem">🔒</div>
+    <div style="font-family:'Playfair Display',serif;font-size:22px;color:#0a1628;margin-bottom:8px">Bu profil deaktivdir</div>
+    <div style="font-size:13px;color:#8A9BB5">Bu vizit kart müvəqqəti olaraq dayandırılmışdır.</div>
+  </div>`;
+  el.style.display='block';
+}
+
+
+// ── COLOR & TEMPLATE ───────────────────────────────────────────────────────
+function applyColor(c){
+  color=c;
+  document.documentElement.style.setProperty('--p',c);
+  // derive accent: lighten
+  try{const r=parseInt(c.slice(1,3),16),g=parseInt(c.slice(3,5),16),b=parseInt(c.slice(5,7),16);const mx=v=>Math.round(v+(255-v)*.3);document.documentElement.style.setProperty('--a',`rgb(${mx(r)},${mx(g)},${mx(b)})`);}catch(e){}
+  document.getElementById('cc').value=c;
+  document.querySelectorAll('.cdot').forEach(d=>d.classList.toggle('on',d.dataset.c===c));
+}
+window.setColor=function(c){applyColor(c);localStorage.setItem('cp_col_'+slug,c);if(PD)render();};
+window.setTmpl=function(n){tmpl=n;localStorage.setItem('cp_tmpl_'+slug,n);document.querySelectorAll('.to').forEach(t=>t.classList.remove('on'));document.getElementById('t-'+n)?.classList.add('on');if(PD)render();};
+window.tgFab=function(){document.getElementById('fabPanel').classList.toggle('open');};
+document.addEventListener('click',e=>{if(!e.target.closest('.fab'))document.getElementById('fabPanel').classList.remove('open');});
+// set active template button on load
+function initTmplBtns(){document.querySelectorAll('.to').forEach(t=>t.classList.remove('on'));document.getElementById('t-'+tmpl)?.classList.add('on');}
+
+// ── HELPERS ────────────────────────────────────────────────────────────────
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+function htp(u){if(!u)return'#';return u.startsWith('http')?u:'https://'+u;}
+function ytId(u){return u?.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|embed\/)([a-zA-Z0-9_-]{11})/)?.[1];}
+
+// avatar HTML — tries img, shows letter on error
+function avImg(src,letter,cls,style=''){
+  if(src) return `<img src="${esc(src)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span style="display:none;width:100%;height:100%;align-items:center;justify-content:center;font-family:'Playfair Display',serif">${esc(letter)}</span>`;
+  return `<span style="display:flex;width:100%;height:100%;align-items:center;justify-content:center;font-family:'Playfair Display',serif">${esc(letter)}</span>`;
+}
+// cover/bg img
+function bgImg(src){
+  if(!src)return'';
+  return `<img class="bg" src="${esc(src)}" onerror="this.style.display='none'">`;
+}
+// avatar portrait (full height cover replacement when no cover img)
+function avPortrait(photo,name){
+  if(photo)return `<img class="av" src="${esc(photo)}" onerror="this.style.display='none'">`;
+  return `<span style="font-family:'Playfair Display',serif;font-size:72px;color:rgba(255,255,255,.2)">${esc((name||'?').charAt(0).toUpperCase())}</span>`;
+}
+
+// icons (inline svg)
+const ico={
+  phone:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--p)" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.73 9.5a19.79 19.79 0 01-3-8.59A2 2 0 012.7 1h3.09a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.73a16 16 0 006.29 6.29l1.1-1.1a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>`,
+  phoneW:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.73 9.5a19.79 19.79 0 01-3-8.59A2 2 0 012.7 1h3.09a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 8.73a16 16 0 006.29 6.29l1.1-1.1a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>`,
+  email:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--p)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>`,
+  emailW:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>`,
+  web:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--p)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>`,
+  webW:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>`,
+  loc:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--p)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+  locW:`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+  save:`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>`,
+  shr:`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>`,
+  scan:`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>`,
+  qr:`<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h7v7"/><path d="M14 18h3v3"/></svg>`
+};
+
+const socCol={instagram:'#C13584',linkedin:'#0077B5',facebook:'#1877F2',twitter:'#1DA1F2',tiktok:'#000',youtube:'#FF0000',telegram:'#2CA5E0',whatsapp:'#25D366'};
+const socLab={instagram:'Instagram',linkedin:'LinkedIn',facebook:'Facebook',twitter:'X',tiktok:'TikTok',youtube:'YouTube',telegram:'Telegram',whatsapp:'WhatsApp'};
+const socIco={'instagram':`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>`,'linkedin':`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>`,'facebook':`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>`,'twitter':`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/></svg>`,'tiktok':`<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V9.15a8.16 8.16 0 004.77 1.52V7.22a4.85 4.85 0 01-1-.53z"/></svg>`,'youtube':`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22.54 6.42a2.78 2.78 0 00-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 00-1.95 1.96A29 29 0 001 12a29 29 0 00.46 5.58A2.78 2.78 0 003.41 19.6C5.12 20.05 12 20.05 12 20.05s6.88 0 8.59-.46a2.78 2.78 0 001.95-1.95A29 29 0 0023 12a29 29 0 00-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>`,'telegram':`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`,'whatsapp':`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>`};
+
+// ── RENDER DISPATCHER ──────────────────────────────────────────────────────
+function render(){
+  initTmplBtns();
+  const d=PD;const card=d.card||{};
+  const name=`${card.name||''} ${card.surname||''}`.trim()||d.name||'';
+  buildVC(d,name);
+  const fns=[null,t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12];
+  const fn=fns[tmpl]||t1;
+  document.getElementById('cardWrap').innerHTML=fn(d,card,name);
+}
+
+// ── CONTACTS ROWS helper ───────────────────────────────────────────────────
+function cRows(card,cls,icoCls,w=false){
+  let r='';
+  const ii=w?'W':'';
+  const waP=card.whatsapp||card.phone;const waB=card.whatsappBusiness||'';
+  if(card.phone) r+=`<div class="${cls}" onclick="oPh('${esc(card.phone)}','${esc(waP)}','${esc(waB)}')">${ic(icoCls,ico['phone'+ii])}<div class="${cls}-val">${esc(card.phone)}</div></div>`;
+  if(card.email) r+=`<div class="${cls}" onclick="oEm('${esc(card.email)}')">${ic(icoCls,ico['email'+ii])}<div class="${cls}-val">${esc(card.email)}</div></div>`;
+  if(card.web) r+=`<a class="${cls}" href="${htp(card.web)}" target="_blank">${ic(icoCls,ico['web'+ii])}<div class="${cls}-val">${esc(card.web)}</div></a>`;
+  if(card.address) r+=`<a class="${cls}" href="https://maps.google.com/?q=${encodeURIComponent(card.address)}" target="_blank">${ic(icoCls,ico['loc'+ii])}<div class="${cls}-val">${esc(card.address)}</div></a>`;
+  return r;
+}
+function ic(cls,svg){return`<div class="${cls}">${svg}</div>`;}
+
+function socPills(d,cls,spCls){
+  const s=d.socials||{};const k=Object.keys(s).filter(x=>s[x]);if(!k.length)return'';
+  return`<div class="${cls}">${k.map(x=>`<a class="${spCls}" href="${htp(s[x])}" target="_blank" title="${socLab[x]||x}" style="background:${socCol[x]||'#888'};color:#fff">${socIco[x]||'<span>'+x.substring(0,2).toUpperCase()+'</span>'}</a>`).join('')}</div>`;
+}
+function videoH(d,dark=false){
+  const id=ytId(d.video||'');if(!id)return'';
+  return`<div class="vframe"${dark?' style="border-radius:12px;overflow:hidden"':''}><iframe src="https://www.youtube.com/embed/${id}" allowfullscreen></iframe></div>`;
+}
+function pdfsH(d,dark=false){
+  const ps=d.pdfs||[];if(!ps.length)return'';
+  if(dark) return`<div class="pdfs">${ps.map(p=>`<a class="pdf-item pdf-dark" href="${p.url}" target="_blank"><div class="pdf-ico">PDF</div><div><div class="pdf-dark-name">${esc(p.name)}</div><div style="font-size:11px;color:rgba(255,255,255,.3)">${t('clickOpen')}</div></div></a>`).join('')}</div>`;
+  return`<div class="pdfs">${ps.map(p=>`<a class="pdf-item" href="${p.url}" target="_blank"><div class="pdf-ico">PDF</div><div><div style="font-size:13px;color:var(--dark);font-weight:500">${esc(p.name)}</div><div style="font-size:11px;color:#aaa">${t('clickOpen')}</div></div></a>`).join('')}</div>`;
+}
+function qrBtn(dark=false){
+  if(dark) return`<button onclick="document.getElementById('moQr').classList.add('open')" style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);cursor:pointer;font-size:13px;color:rgba(255,255,255,.7);font-family:'Inter',sans-serif;font-weight:500;width:100%;margin-bottom:1rem;transition:all .15s">${ico.qr} QR Kod</button>`;
+  return`<button onclick="document.getElementById('moQr').classList.add('open')" style="display:flex;align-items:center;gap:8px;padding:10px 14px;border-radius:10px;background:var(--s);border:1px solid var(--gl);cursor:pointer;font-size:13px;color:var(--dark);font-family:'Inter',sans-serif;font-weight:500;width:100%;margin-bottom:1rem">${ico.qr} QR Kod</button>`;
+}
+function actBtns(pr='var(--p)',sc='var(--s)',txt='#fff',stxt='var(--dark)',scanBg='var(--s)',scanTxt='var(--dark)',border=''){
+  return`<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px"><button class="abtn" style="background:${pr};color:${txt}${border}" onclick="svContact()">${ico.save} ${t('save')}</button><button class="abtn" style="background:${sc};color:${stxt}${border}" onclick="shProfile()">${ico.shr} ${t('share')}</button><button class="abtn" style="background:${scanBg};color:${scanTxt};grid-column:span 2;margin-top:4px${border?';'+border:''}" onclick="document.getElementById('moScan').classList.add('open');rstScan()">${ico.scan} ${t('scan')}</button></div>`;
+}
+
+// ── T1 CLASSIC ────────────────────────────────────────────────────────────
+function t1(d,c,name){
+  return`<div class="c1">
+  <div class="c1-head" style="position:relative">${bgImg(c.cover||c.photo)}</div>
+  <div class="c1-body">
+    <div class="c1-av-wrap"><div class="c1-av">${avImg(c.photo,name.charAt(0).toUpperCase())}</div></div>
+    <div class="c1-name">${esc(name)||'—'}</div>
+    ${c.position?`<div class="c1-pos">${esc(c.position)}</div>`:''}
+    ${c.company?`<div class="c1-co">${esc(c.company)}</div>`:''}
+    ${c.bio?`<div class="c1-bio">${esc(c.bio)}</div>`:''}
+    <div class="c1-list">${cRows(c,'c1-row','c1-ico')}</div>
+    ${socPills(d,'c1-soc','c1-sp')}
+    ${videoH(d)}${pdfsH(d)}${qrBtn()}
+    ${actBtns()}
+  </div></div>`;
+}
+
+// ── T2 MINIMAL ────────────────────────────────────────────────────────────
+function t2(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
+  let rows='';
+  if(c.phone) rows+=`<div class="c2-row" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ico.phone}<div><div class="c2-val">${esc(c.phone)}</div><div class="c2-lbl">${t('phone')}</div></div><svg style="margin-left:auto;opacity:.3" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>`;
+  if(c.email) rows+=`<div class="c2-row" onclick="oEm('${esc(c.email)}')">${ico.email}<div><div class="c2-val">${esc(c.email)}</div><div class="c2-lbl">${t('email')}</div></div><svg style="margin-left:auto;opacity:.3" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>`;
+  if(c.web) rows+=`<a class="c2-row" href="${htp(c.web)}" target="_blank">${ico.web}<div><div class="c2-val">${esc(c.web)}</div><div class="c2-lbl">${t('web')}</div></div></a>`;
+  if(c.address) rows+=`<a class="c2-row" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ico.loc}<div><div class="c2-val">${esc(c.address)}</div><div class="c2-lbl">${t('addr')}</div></div></a>`;
+  return`<div class="c2">
+  <div class="c2-stripe"></div>
+  <div class="c2-hero">
+    <div class="c2-av">${avImg(c.photo,name.charAt(0).toUpperCase())}</div>
+    <div><div class="c2-name">${esc(name)||'—'}</div>${c.position?`<div class="c2-pos">${esc(c.position)}</div>`:''}${c.company?`<div class="c2-co">${esc(c.company)}</div>`:''}</div>
+  </div>
+  <div class="c2-body">
+    ${c.bio?`<div class="c2-bio">${esc(c.bio)}</div>`:''}
+    <div class="c2-list">${rows}</div>
+    ${socPills(d,'c2-soc','c2-sp')}
+    ${videoH(d)}${pdfsH(d)}${qrBtn()}
+    <div class="c2-actions"><button class="abtn" style="background:var(--p);color:#fff" onclick="svContact()">${ico.save} ${t('save')}</button><button class="abtn" style="background:var(--s);color:var(--dark)" onclick="shProfile()">${ico.shr} ${t('share')}</button></div>
+    <button class="abtn" style="width:100%;margin-top:8px;background:var(--s);color:var(--dark)" onclick="document.getElementById('moScan').classList.add('open');rstScan()">${ico.scan} ${t('scan')}</button>
+  </div></div>`;
+}
+
+// ── T3 BOLD DARK ──────────────────────────────────────────────────────────
+function t3(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
+  let rows='';
+  if(c.phone) rows+=`<div class="c3-row" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ic('c3-ico',ico.phoneW)}<div><div class="c3-val">${esc(c.phone)}</div><div class="c3-lbl">${t('phone')}</div></div></div>`;
+  if(c.email) rows+=`<div class="c3-row" onclick="oEm('${esc(c.email)}')">${ic('c3-ico',ico.emailW)}<div><div class="c3-val">${esc(c.email)}</div><div class="c3-lbl">${t('email')}</div></div></div>`;
+  if(c.web) rows+=`<a class="c3-row" href="${htp(c.web)}" target="_blank">${ic('c3-ico',ico.webW)}<div><div class="c3-val">${esc(c.web)}</div><div class="c3-lbl">${t('web')}</div></div></a>`;
+  if(c.address) rows+=`<a class="c3-row" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ic('c3-ico',ico.locW)}<div><div class="c3-val">${esc(c.address)}</div><div class="c3-lbl">${t('addr')}</div></div></a>`;
+  const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
+  return`<div class="c3">
+  <div class="c3-head" style="position:relative"><div class="lang-overlay" style="position:absolute;top:10px;right:10px;z-index:10"><button class="lang-btn" onclick="tgLang()" style="display:flex;align-items:center;gap:4px;background:rgba(0,0,0,.35);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:5px 10px;font-size:12px;color:#fff;cursor:pointer;border:none"><span id="lfl">🇦🇿</span><span id="lco" style="font-weight:500">AZ</span><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg></button><div class="lang-menu" id="lmenu" style="position:absolute;top:calc(100% + 6px);right:0;background:#fff;border-radius:10px;box-shadow:0 4px 20px rgba(0,0,0,.15);padding:4px;min-width:150px;display:none;z-index:20"><div class="lang-opt sel" onclick="setLang('az')" style="padding:7px 12px;border-radius:7px;cursor:pointer;font-size:13px">🇦🇿 AZ</div><div class="lang-opt" onclick="setLang('en')" style="padding:7px 12px;border-radius:7px;cursor:pointer;font-size:13px">🇬🇧 EN</div><div class="lang-opt" onclick="setLang('ru')" style="padding:7px 12px;border-radius:7px;cursor:pointer;font-size:13px">🇷🇺 RU</div><div class="lang-opt" onclick="setLang('tr')" style="padding:7px 12px;border-radius:7px;cursor:pointer;font-size:13px">🇹🇷 TR</div></div></div>${bgImg(c.cover)}<div class="c3-overlay"></div>
+    <div class="c3-content"><div class="c3-av">${avImg(c.photo,name.charAt(0).toUpperCase())}</div>
+    <div class="c3-name">${esc(name)||'—'}</div>${c.position?`<div class="c3-pos">${esc(c.position)}</div>`:''}${c.company?`<div class="c3-co">${esc(c.company)}</div>`:''}</div>
+  </div>
+  <div class="c3-body">
+    ${c.bio?`<div class="c3-bio">${esc(c.bio)}</div>`:''}
+    <div class="c3-list">${rows}</div>
+    ${sk.length?`<div class="c3-soc">${sk.map(x=>`<a class="c3-sp" href="${htp(soc[x])}" target="_blank">${socIco[x]||'<span>'+x.substring(0,2).toUpperCase()+'</span>'}</a>`).join('')}</div>`:''}
+    ${videoH(d,true)}${pdfsH(d,true)}${qrBtn(true)}
+    ${actBtns('var(--a)','rgba(255,255,255,.1)','#0a1628','rgba(255,255,255,.8)','rgba(255,255,255,.06)','rgba(255,255,255,.6)',';border:1px solid rgba(255,255,255,.1)')}
+  </div></div>`;
+}
+
+// ── T4 WAVE ───────────────────────────────────────────────────────────────
+function t4(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
+  let rows='';
+  if(c.phone) rows+=`<div class="c4-row" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ic('c4-ico',ico.phone)}<div><div class="c4-val">${esc(c.phone)}</div><div class="c4-lbl">${t('phone')}</div></div></div>`;
+  if(c.email) rows+=`<div class="c4-row" onclick="oEm('${esc(c.email)}')">${ic('c4-ico',ico.email)}<div><div class="c4-val">${esc(c.email)}</div><div class="c4-lbl">${t('email')}</div></div></div>`;
+  if(c.web) rows+=`<a class="c4-row" href="${htp(c.web)}" target="_blank">${ic('c4-ico',ico.web)}<div><div class="c4-val">${esc(c.web)}</div><div class="c4-lbl">${t('web')}</div></div></a>`;
+  if(c.address) rows+=`<a class="c4-row" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ic('c4-ico',ico.loc)}<div><div class="c4-val">${esc(c.address)}</div><div class="c4-lbl">${t('addr')}</div></div></a>`;
+  return`<div class="c4">
+  <div class="c4-photo">${avPortrait(c.photo||c.cover,name)}</div>
+  <svg viewBox="0 0 430 44" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="display:block;width:100%;height:44px;margin-top:-1px"><path d="M0,22 C72,44 144,0 216,22 C288,44 360,0 430,22 L430,44 L0,44 Z" fill="#fff"/></svg>
+  <div class="c4-body">
+    <div class="c4-nameblock"><div class="c4-name">${esc(name)||'—'}</div>${c.position?`<div class="c4-pos">${esc(c.position)}</div>`:''}${c.company?`<div class="c4-co">${esc(c.company)}</div>`:''}</div>
+    ${c.bio?`<div class="c4-bio">${esc(c.bio)}</div>`:''}
+    <div class="c4-list">${rows}</div>
+    ${socPills(d,'c4-soc','c4-sp')}
+    ${videoH(d)}${pdfsH(d)}${qrBtn()}
+    <div style="display:flex;gap:9px;flex-wrap:wrap"><button class="c4-send" onclick="svContact()">${ico.save} ${t('save')}</button><button class="abtn" style="flex:1;background:var(--s);color:var(--dark)" onclick="shProfile()">${ico.shr}</button><button class="abtn" style="background:var(--s);color:var(--dark)" onclick="document.getElementById('moScan').classList.add('open');rstScan()">${ico.scan}</button></div>
+  </div></div>`;
+}
+
+// ── T5 TEAM ───────────────────────────────────────────────────────────────
+function t5(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
+  let lrows='';
+  if(c.phone) lrows+=`<div class="c5-lrow" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ic('c5-lico',ico.phone)}<div><div class="c5-lval">${esc(c.phone)}</div><div class="c5-llbl">${t('phone')}</div></div></div>`;
+  if(c.email) lrows+=`<div class="c5-lrow" onclick="oEm('${esc(c.email)}')">${ic('c5-lico',ico.email)}<div><div class="c5-lval">${esc(c.email)}</div><div class="c5-llbl">${t('email')}</div></div></div>`;
+  if(c.web) lrows+=`<a class="c5-lrow" href="${htp(c.web)}" target="_blank">${ic('c5-lico',ico.web)}<div><div class="c5-lval">${esc(c.web)}</div><div class="c5-llbl">${t('web')}</div></div></a>`;
+  if(c.address) lrows+=`<a class="c5-lrow" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ic('c5-lico',ico.loc)}<div><div class="c5-lval">${esc(c.address)}</div><div class="c5-llbl">${t('addr')}</div></div></a>`;
+  const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
+  return`<div class="c5">
+  <div class="c5-head" style="position:relative" style="background:var(--p)">
+    <button class="c5-share" onclick="shProfile()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>
+  </div>
+  <div class="c5-body">
+    <div class="c5-av-wrap"><div class="c5-av">${avImg(c.photo,name.charAt(0).toUpperCase())}</div></div>
+    <div class="c5-name">${esc(name)||'—'}</div>
+    ${c.position?`<div class="c5-pos">${esc(c.position)}</div>`:''}
+    ${c.company?`<div class="c5-co">${esc(c.company)}</div>`:''}
+    ${c.bio?`<div class="c5-bio">${esc(c.bio)}</div>`:''}
+    <div class="c5-icorow">
+      <div class="c5-icoitem" onclick="svContact()"><div class="c5-ico">${ico.save}</div><span class="c5-ilbl">${t('ko')}</span></div>
+      ${c.phone?`<a class="c5-icoitem" href="tel:${c.phone}"><div class="c5-ico">${ico.phone}</div><span class="c5-ilbl">${t('anrufen')}</span></a>`:'<div></div>'}
+      <div class="c5-icoitem" onclick="document.getElementById('moQr').classList.add('open')"><div class="c5-ico">${ico.qr}</div><span class="c5-ilbl">${t('termin')}</span></div>
+    </div>
+    <div style="text-align:left;font-size:10px;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.5rem">Əlaqə</div>
+    <div class="c5-links">${lrows}</div>
+    ${sk.length?`<div style="font-size:10px;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:.07em;margin:.75rem 0 .5rem">Sosial</div><div style="display:flex;flex-wrap:wrap;gap:6px">${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" title="${socLab[x]||x}" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:${socCol[x]||'#888'};color:#fff;text-decoration:none">${socIco[x]||'<span>'+x.substring(0,2).toUpperCase()+'</span>'}</a>`).join('')}</div>`:''}
+    ${videoH(d)}${pdfsH(d)}${qrBtn()}
+    <button class="abtn" style="width:100%;background:var(--s);color:var(--dark)" onclick="document.getElementById('moScan').classList.add('open');rstScan()">${ico.scan} ${t('scan')}</button>
+  </div></div>`;
+}
+
+// ── T6 SPLIT ──────────────────────────────────────────────────────────────
+function t6(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
+  const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
+  let rows='';
+  if(c.phone) rows+=`<div class="c6-row" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ico.phone}<div><div class="c6-val">${esc(c.phone)}</div><div class="c6-lbl">${t('phone')}</div></div></div>`;
+  if(c.email) rows+=`<div class="c6-row" onclick="oEm('${esc(c.email)}')">${ico.email}<div><div class="c6-val">${esc(c.email)}</div><div class="c6-lbl">${t('email')}</div></div></div>`;
+  if(c.web) rows+=`<a class="c6-row" href="${htp(c.web)}" target="_blank">${ico.web}<div><div class="c6-val">${esc(c.web)}</div><div class="c6-lbl">${t('web')}</div></div></a>`;
+  if(c.address) rows+=`<a class="c6-row" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ico.loc}<div><div class="c6-val">${esc(c.address)}</div><div class="c6-lbl">${t('addr')}</div></div></a>`;
+  const sdots=sk.slice(0,5).map(x=>`<a class="c6-sdot" href="${htp(soc[x])}" target="_blank" style="background:${socCol[x]||'#888'}">${(socLab[x]||x).substring(0,2).toUpperCase()}</a>`).join('');
+  return`<div class="c6">
+  <div class="c6-left" style="background:var(--p)">
+    <div class="c6-photo">${c.photo?`<img src="${esc(c.photo)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`:(name||'?').charAt(0).toUpperCase()}</div>
+    <div class="c6-btnrow">
+      ${c.phone?`<a class="c6-ibtn" href="tel:${c.phone}">${ico.phoneW}</a>`:''}
+      ${c.email?`<a class="c6-ibtn" href="mailto:${c.email}">${ico.emailW}</a>`:''}
+      <button class="c6-ibtn" onclick="svContact()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg></button>
+      <button class="c6-ibtn" onclick="document.getElementById('moQr').classList.add('open')">${ico.qr.replace('var(--p)','rgba(255,255,255,.8)').replace('currentColor','rgba(255,255,255,.8)')}</button>
+      <button class="c6-ibtn" onclick="document.getElementById('moScan').classList.add('open');rstScan()">${ico.scan.replace('currentColor','rgba(255,255,255,.8)')}</button>
+    </div>
+    ${sdots?`<div class="c6-socdots" style="margin-top:auto">${sdots}</div>`:''}
+  </div>
+  <div class="c6-right">
+    <div class="c6-name">${esc(name)||'—'}</div>
+    ${c.position?`<div class="c6-pos">${esc(c.position)}</div>`:''}
+    ${c.company?`<div class="c6-co">${esc(c.company)}</div>`:''}
+    ${c.bio?`<div class="c6-bio">${esc(c.bio)}</div>`:''}
+    <div class="c6-list">${rows}</div>
+    ${pdfsH(d)}${videoH(d)}
+  </div></div>`;
+}
+
+// ── T7 LINKO ──────────────────────────────────────────────────────────────
+function t7(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
+  const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
+  let rows='';
+  if(c.phone) rows+=`<div class="c7-row" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ic('c7-ico',ico.phoneW)}<div><div class="c7-val">${esc(c.phone)}</div><div class="c7-lbl">${t('phone')}</div></div></div>`;
+  if(c.email) rows+=`<div class="c7-row" onclick="oEm('${esc(c.email)}')">${ic('c7-ico',ico.emailW)}<div><div class="c7-val">${esc(c.email)}</div><div class="c7-lbl">${t('email')}</div></div></div>`;
+  if(c.web) rows+=`<a class="c7-row" href="${htp(c.web)}" target="_blank">${ic('c7-ico',ico.webW)}<div><div class="c7-val">${esc(c.web)}</div><div class="c7-lbl">${t('web')}</div></div></a>`;
+  if(c.address) rows+=`<a class="c7-row" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ic('c7-ico',ico.locW)}<div><div class="c7-val">${esc(c.address)}</div><div class="c7-lbl">${t('addr')}</div></div></a>`;
+  return`<div class="c7">
+  <div class="c7-img">${avPortrait(c.photo||c.cover,name)}<div class="c7-grad"></div>
+    <div class="c7-nameblock"><div class="c7-name">${esc(name)||'—'}</div>${c.position?`<div class="c7-pos">${esc(c.position)}</div>`:''}${c.company?`<div class="c7-co">${esc(c.company)}</div>`:''}</div>
+  </div>
+  <div class="c7-body">
+    ${c.bio?`<div class="c7-bio">${esc(c.bio)}</div>`:''}
+    <div class="c7-list">${rows}</div>
+    ${sk.length?`<div class="c7-soc">${sk.map(x=>`<a class="c7-sp" href="${htp(soc[x])}" target="_blank">${socIco[x]||'<span>'+x.substring(0,2).toUpperCase()+'</span>'}</a>`).join('')}</div>`:''}
+    ${videoH(d,true)}${pdfsH(d,true)}${qrBtn(true)}
+    ${actBtns('var(--a)','rgba(255,255,255,.09)','#111','rgba(255,255,255,.8)','rgba(255,255,255,.05)','rgba(255,255,255,.6)',';border:1px solid rgba(255,255,255,.1)')}
+  </div></div>`;
+}
+
+// ── T8 CARD ───────────────────────────────────────────────────────────────
+function t8(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
+  const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
+  let rows='';
+  if(c.phone) rows+=`<div class="c8-row" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ic('c8-ico',ico.phone)}<div><div class="c8-val">${esc(c.phone)}</div><div class="c8-lbl">${t('phone')}</div></div><svg style="margin-left:auto;opacity:.25" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>`;
+  if(c.email) rows+=`<div class="c8-row" onclick="oEm('${esc(c.email)}')">${ic('c8-ico',ico.email)}<div><div class="c8-val">${esc(c.email)}</div><div class="c8-lbl">${t('email')}</div></div><svg style="margin-left:auto;opacity:.25" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>`;
+  if(c.web) rows+=`<a class="c8-row" href="${htp(c.web)}" target="_blank">${ic('c8-ico',ico.web)}<div><div class="c8-val">${esc(c.web)}</div><div class="c8-lbl">${t('web')}</div></div></a>`;
+  if(c.address) rows+=`<a class="c8-row" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ic('c8-ico',ico.loc)}<div><div class="c8-val">${esc(c.address)}</div><div class="c8-lbl">${t('addr')}</div></div></a>`;
+  return`<div class="c8">
+  <div class="c8-top" style="background:var(--p)">
+    <div class="c8-logo"><div class="c8-circle">${(c.company||'C').charAt(0).toUpperCase()}</div><span class="c8-brand">${esc(c.company||'CardPro')}</span></div>
+    <button onclick="shProfile()" style="background:rgba(255,255,255,.15);border:none;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer">${ico.shr.replace('currentColor','rgba(255,255,255,.8)')}</button>
+  </div>
+  <div class="c8-hero">
+    <div class="c8-av">${avImg(c.photo,name.charAt(0).toUpperCase())}</div>
+    <div><div class="c8-name">${esc(name)||'—'}</div>${c.position?`<div class="c8-pos">${esc(c.position)}</div>`:''}${c.company?`<div class="c8-co">${esc(c.company)}</div>`:''}</div>
+  </div>
+  <div class="c8-actbar">
+    <div class="c8-acti" onclick="svContact()"><div class="c8-aci-c">${ico.save.replace('currentColor','var(--p)')}</div><span class="c8-aci-l">${t('ko')}</span></div>
+    ${c.phone?`<a class="c8-acti" href="tel:${c.phone}"><div class="c8-aci-c">${ico.phone}</div><span class="c8-aci-l">${t('anrufen')}</span></a>`:''}
+    <div class="c8-acti" onclick="document.getElementById('moQr').classList.add('open')"><div class="c8-aci-c">${ico.qr.replace('currentColor','var(--p)')}</div><span class="c8-aci-l">${t('termin')}</span></div>
+    <div class="c8-acti" onclick="document.getElementById('moScan').classList.add('open');rstScan()"><div class="c8-aci-c">${ico.scan.replace('currentColor','var(--p)')}</div><span class="c8-aci-l">Skan</span></div>
+  </div>
+  <div class="c8-body">
+    ${c.bio?`<div style="font-size:13px;color:#777;line-height:1.6;margin-bottom:.75rem;padding-bottom:.75rem;border-bottom:1px solid #f5f5f5">${esc(c.bio)}</div>`:''}
+    <div class="c8-sec">Əlaqə</div><div class="c8-list">${rows}</div>
+    ${sk.length?`<div class="c8-sec" style="margin-top:.75rem">Sosial</div><div class="c8-soc">${sk.map(x=>`<a class="c8-sp" href="${htp(soc[x])}" target="_blank">${socIco[x]||'<span>'+x.substring(0,2).toUpperCase()+'</span>'}</a>`).join('')}</div>`:''}
+    ${videoH(d)}${pdfsH(d)}
+  </div></div>`;
+}
+
+// ── T9 LINKO FULL ─────────────────────────────────────────────────────────
+function t9(d,c,name){
+  let rows='';
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
+  if(c.phone) rows+=`<div class="c9-row" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ic('c9-ico',ico.phoneW)}<div><div class="c9-val">${esc(c.phone)}</div><div class="c9-lbl">${t('phone')}</div></div></div>`;
+  if(c.email) rows+=`<div class="c9-row" onclick="oEm('${esc(c.email)}')">${ic('c9-ico',ico.emailW)}<div><div class="c9-val">${esc(c.email)}</div><div class="c9-lbl">${t('email')}</div></div></div>`;
+  if(c.web) rows+=`<a class="c9-row" href="${htp(c.web)}" target="_blank">${ic('c9-ico',ico.webW)}<div><div class="c9-val">${esc(c.web)}</div><div class="c9-lbl">${t('web')}</div></div></a>`;
+  if(c.address) rows+=`<a class="c9-row" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ic('c9-ico',ico.locW)}<div><div class="c9-val">${esc(c.address)}</div><div class="c9-lbl">${t('addr')}</div></div></a>`;
+  const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
+  return`<div class="c9">
+  <div class="c9-hero">
+    ${c.photo?`<img class="av" src="${esc(c.photo)}" onerror="this.style.display='none'">`:`<span style="font-size:80px;font-family:'Playfair Display',serif;color:rgba(255,255,255,.2)">${(name||'?').charAt(0).toUpperCase()}</span>`}
+    <div class="c9-grad"></div>
+    <div class="c9-ph">
+      <a class="c9-pill" onclick="svContact()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>${t('save')}</a>
+      <a class="c9-pill" onclick="shProfile()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>${t('share')}</a>
+    </div>
+    <div class="c9-info">
+      <div class="c9-name">${esc(name)||'—'}</div>
+      ${c.position?`<div class="c9-pos">${esc(c.position)}</div>`:''}
+      ${c.company?`<div class="c9-co">${esc(c.company)}</div>`:''}
+    </div>
+  </div>
+  <div class="c9-body">
+    ${c.bio?`<div style="font-size:13px;color:rgba(255,255,255,.4);line-height:1.6;margin-bottom:.9rem;padding-bottom:.9rem;border-bottom:1px solid rgba(255,255,255,.08)">${esc(c.bio)}</div>`:''}
+    <div class="c9-list">${rows}</div>
+    ${sk.length?`<div class="c9-soc">${sk.map(x=>`<a class="c9-sp" href="${htp(soc[x])}" target="_blank">${socIco[x]||'<span>'+x.substring(0,2).toUpperCase()+'</span>'}</a>`).join('')}</div>`:''}
+    ${videoH(d,true)}${pdfsH(d,true)}${qrBtn(true)}
+    <div class="c9-actions">
+      <button class="abtn" style="background:rgba(255,255,255,.09);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.12)" onclick="document.getElementById('moScan').classList.add('open');rstScan()">${ico.scan} ${t('scan')}</button>
+      <button class="abtn" style="background:var(--p);color:#fff" onclick="svContact()">${ico.save} ${t('save')}</button>
+    </div>
+  </div></div>`;
+}
+
+// ── T10 ACHIEVEMENT ────────────────────────────────────────────────────────
+function t10(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
+  let rows='';
+  if(c.phone) rows+=`<div class="c10-row" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ic('c10-lico',ico.phone)}<div><div class="c10-val">${esc(c.phone)}</div><div class="c10-lbl">${t('phone')}</div></div></div>`;
+  if(c.email) rows+=`<div class="c10-row" onclick="oEm('${esc(c.email)}')">${ic('c10-lico',ico.email)}<div><div class="c10-val">${esc(c.email)}</div><div class="c10-lbl">${t('email')}</div></div></div>`;
+  if(c.web) rows+=`<a class="c10-row" href="${htp(c.web)}" target="_blank">${ic('c10-lico',ico.web)}<div><div class="c10-val">${esc(c.web)}</div><div class="c10-lbl">${t('web')}</div></div></a>`;
+  if(c.address) rows+=`<a class="c10-row" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ic('c10-lico',ico.loc)}<div><div class="c10-val">${esc(c.address)}</div><div class="c10-lbl">${t('addr')}</div></div></a>`;
+  const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
+  return`<div class="c10">
+  <div class="c10-header">
+    ${c.company?`<div class="c10-brand">${esc(c.company)}</div>`:''}
+  </div>
+  <div class="c10-av-wrap"><div class="c10-av">${avImg(c.photo,(name||'?').charAt(0).toUpperCase())}</div></div>
+  <div class="c10-body">
+    <div class="c10-name">${esc(name)||'—'}</div>
+    ${c.position?`<div class="c10-pos">${esc(c.position)}</div>`:''}
+    ${c.position||c.company?`<div class="c10-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>${esc(c.position||c.company)}</div>`:''}
+    ${c.bio?`<div class="c10-bio">${esc(c.bio)}</div>`:''}
+    <div class="c10-icorow">
+      <div class="c10-icoitem" onclick="svContact()"><div class="c10-ico">${ico.save.replace('currentColor','var(--p)')}</div><span class="c10-ilbl">${t('ko')}</span></div>
+      ${c.phone?`<a class="c10-icoitem" href="tel:${c.phone}"><div class="c10-ico">${ico.phone}</div><span class="c10-ilbl">${t('anrufen')}</span></a>`:`<div class="c10-icoitem"><div class="c10-ico" style="opacity:.3">${ico.phone}</div><span class="c10-ilbl">—</span></div>`}
+      <div class="c10-icoitem" onclick="document.getElementById('moQr').classList.add('open')"><div class="c10-ico">${ico.qr.replace('currentColor','var(--p)')}</div><span class="c10-ilbl">QR</span></div>
+      <div class="c10-icoitem" onclick="shProfile()"><div class="c10-ico">${ico.shr.replace('currentColor','var(--p)')}</div><span class="c10-ilbl">${t('share')}</span></div>
+    </div>
+    <div class="c10-list">${rows}</div>
+    ${sk.length?`<div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:.75rem;padding-top:.75rem;border-top:1px solid #f5f5f5">${sk.map(x=>`<a style="display:flex;align-items:center;gap:5px;padding:6px 13px;border-radius:20px;font-size:12px;font-weight:500;text-decoration:none;border:1px solid #eee;color:#333" href="${htp(soc[x])}" target="_blank"><span style="width:7px;height:7px;border-radius:50%;background:${socCol[x]||'#888'};display:inline-block"></span>${socLab[x]||x}</a>`).join('')}</div>`:''}
+    ${videoH(d)}${pdfsH(d)}
+    <div style="margin-top:.9rem">${actBtns()}</div>
+  </div></div>`;
+}
+
+// ── T11 HIHELLO ────────────────────────────────────────────────────────────
+function t11(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
+  let rows='';
+  if(c.phone) rows+=`<div class="c11-row" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ic('c11-ico',ico.phone)}<div><div class="c11-val">${esc(c.phone)}</div><div class="c11-lbl">${t('phone')}</div></div></div>`;
+  if(c.email) rows+=`<div class="c11-row" onclick="oEm('${esc(c.email)}')">${ic('c11-ico',ico.email)}<div><div class="c11-val">${esc(c.email)}</div><div class="c11-lbl">${t('email')}</div></div></div>`;
+  if(c.web) rows+=`<a class="c11-row" href="${htp(c.web)}" target="_blank">${ic('c11-ico',ico.web)}<div><div class="c11-val">${esc(c.web)}</div><div class="c11-lbl">${t('web')}</div></div></a>`;
+  if(c.address) rows+=`<a class="c11-row" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ic('c11-ico',ico.loc)}<div><div class="c11-val">${esc(c.address)}</div><div class="c11-lbl">${t('addr')}</div></div></a>`;
+  const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
+  // wave SVG with accent color
+  const waveColor=encodeURIComponent(getComputedStyle(document.documentElement).getPropertyValue('--p').trim()||'#185FA5');
+  return`<div class="c11">
+  <div class="c11-photo">
+    ${c.photo?`<img src="${esc(c.photo)}" onerror="this.style.display='none'">`:`<span>${(name||'?').charAt(0).toUpperCase()}</span>`}
+  </div>
+  <svg class="c11-wave" viewBox="0 0 430 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0 C80,38 160,42 220,28 C280,14 360,0 430,32 L430,0 Z" fill="var(--p)"/><path d="M0,32 C80,10 160,44 220,30 C280,16 360,2 430,40 L430,40 L0,40 Z" fill="#fff"/></svg>
+  <div class="c11-body">
+    <div class="c11-nameblock"><div class="c11-accent"></div><div class="c11-ninfo"><div class="c11-name">${esc(name)||'—'}</div>${c.position?`<div class="c11-pos">${esc(c.position)}</div>`:''}${c.company?`<div class="c11-co">${esc(c.company)}</div>`:''}</div></div>
+    ${c.bio?`<div class="c11-bio">${esc(c.bio)}</div>`:''}
+    <div class="c11-list">${rows}</div>
+    ${sk.length?`<div class="c11-soc">${sk.map(x=>`<a class="c11-srow" href="${htp(soc[x])}" target="_blank"><span class="c11-sdot" style="background:${socCol[x]||'#888'}"></span>${socLab[x]||x}</a>`).join('')}</div>`:''}
+    ${videoH(d)}${pdfsH(d)}${qrBtn()}
+    <button class="c11-send" onclick="svContact()">${ico.save} ${t('save')}</button>
+    <button class="abtn" style="width:100%;margin-top:8px;background:var(--s);color:var(--dark)" onclick="document.getElementById('moScan').classList.add('open');rstScan()">${ico.scan} ${t('scan')}</button>
+  </div></div>`;
+}
+
+// ── T12 VITAWILL ───────────────────────────────────────────────────────────
+function t12(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
+  let rows='';
+  if(c.phone) rows+=`<div class="c12-lrow" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ic('c12-lico',ico.phone)}<div><div class="c12-val">${esc(c.phone)}</div><div class="c12-lbl">${t('phone')}</div></div></div>`;
+  if(c.email) rows+=`<div class="c12-lrow" onclick="oEm('${esc(c.email)}')">${ic('c12-lico',ico.email)}<div><div class="c12-val">${esc(c.email)}</div><div class="c12-lbl">${t('email')}</div></div></div>`;
+  if(c.web) rows+=`<a class="c12-lrow" href="${htp(c.web)}" target="_blank">${ic('c12-lico',ico.web)}<div><div class="c12-val">${esc(c.web)}</div><div class="c12-lbl">${t('web')}</div></div></a>`;
+  if(c.address) rows+=`<a class="c12-lrow" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ic('c12-lico',ico.loc)}<div><div class="c12-val">${esc(c.address)}</div><div class="c12-lbl">${t('addr')}</div></div></a>`;
+  const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
+  return`<div class="c12">
+  <div class="c12-topbar">
+    <div class="c12-brand">${c.company?esc(c.company):'CardPro'}</div>
+    <button class="c12-share" onclick="shProfile()">${ico.shr.replace('currentColor','var(--p)')}</button>
+  </div>
+  <div class="c12-hero"></div>
+  <div class="c12-av-wrap"><div class="c12-av">${avImg(c.photo,(name||'?').charAt(0).toUpperCase())}</div></div>
+  <div class="c12-body">
+    <div class="c12-name">${esc(name)||'—'}</div>
+    ${c.position?`<div class="c12-pos">${esc(c.position)}</div>`:''}
+    ${c.company?`<div class="c12-co">${esc(c.company)}</div>`:''}
+    <div class="c12-actgrid">
+      <div class="c12-acti" onclick="svContact()"><div class="c12-aci-c">${ico.save.replace('currentColor','var(--p)')}</div><span class="c12-aci-l">${t('ko')}</span></div>
+      ${c.phone?`<a class="c12-acti" href="tel:${c.phone}"><div class="c12-aci-c">${ico.phone}</div><span class="c12-aci-l">${t('anrufen')}</span></a>`:`<div class="c12-acti" style="opacity:.3"><div class="c12-aci-c">${ico.phone}</div><span class="c12-aci-l">—</span></div>`}
+      <div class="c12-acti" onclick="document.getElementById('moQr').classList.add('open')"><div class="c12-aci-c">${ico.qr.replace('currentColor','var(--p)')}</div><span class="c12-aci-l">QR</span></div>
+    </div>
+    ${c.bio?`<div style="font-size:13px;color:#888;line-height:1.6;margin-bottom:.75rem;text-align:left">${esc(c.bio)}</div>`:''}
+    ${rows?`<div class="c12-sec">Əlaqə</div><div class="c12-links">${rows}</div>`:''}
+    ${sk.length?`<div class="c12-sec" style="margin-top:.75rem">Sosial</div><div class="c12-links">${sk.map(x=>`<a class="c12-lrow" href="${htp(soc[x])}" target="_blank">${ic('c12-lico',`<span style="width:9px;height:9px;border-radius:50%;background:${socCol[x]||'#888'};display:inline-block"></span>`)}<div><div class="c12-val">${socLab[x]||x}</div></div></a>`).join('')}</div>`:''}
+    ${videoH(d)}${pdfsH(d)}
+    <div class="c12-qr-row" onclick="document.getElementById('moScan').classList.add('open');rstScan()">${ico.scan.replace('currentColor','#bbb')}<span class="c12-qrlbl">${t('scan')}</span></div>
+    <button class="abtn" style="width:100%;margin-top:.75rem;background:var(--p);color:#fff" onclick="svContact()">${ico.save} ${t('save')}</button>
+  </div></div>`;
+}
+
+// ── QR ─────────────────────────────────────────────────────────────────────
+let qrDone=false;
+function buildQR(){if(qrDone)return;qrDone=true;const el=document.getElementById('qrc');el.innerHTML='';if(typeof QRCode==='undefined')return;new QRCode(el,{text:location.href,width:180,height:180,colorDark:'#0a1628',colorLight:'#ffffff',correctLevel:QRCode.CorrectLevel.M});}
+window.dlQr=function(){const cv=document.querySelector('#qrc canvas');const im=document.querySelector('#qrc img');const s=cv?cv.toDataURL():im?.src;if(!s)return;const a=document.createElement('a');a.href=s;a.download='qr.png';a.click();};
+
+// ── CONTACT / SHARE ─────────────────────────────────────────────────────────
+function buildVC(d,name){const c=d.card||{};vc=`BEGIN:VCARD\nVERSION:3.0\nFN:${name}\nN:${c.surname||''};${c.name||''};;;\nTITLE:${c.position||''}\nORG:${c.company||''}\nTEL;TYPE=CELL:${c.phone||''}\nEMAIL:${c.email||''}\nURL:${c.web||''}\nADR;TYPE=WORK:;;${c.address||''};;;;\nEND:VCARD`;}
+window.svContact=function(){if(!vc)return;const b=new Blob([vc],{type:'text/vcard'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(PD?.card?.name||'contact')+'.vcf';a.click();showT(t('saved'));};
+window.shProfile=function(){if(navigator.share)navigator.share({url:location.href});else{navigator.clipboard.writeText(location.href);showT(t('shared'));}};
+
+// ── PHONE MODAL ─────────────────────────────────────────────────────────────
+window.oPh=function(ph,waP,waB){
+  document.getElementById('mPhCall').href='tel:'+ph;document.getElementById('mPhNum').textContent=ph;document.getElementById('mPhLbl').textContent=t('call');document.getElementById('mPhT').textContent=t('call');
+  document.getElementById('mWaP').href='https://wa.me/'+(waP||ph).replace(/\D/g,'');document.getElementById('mWaPL').textContent=t('waP');document.getElementById('mWaPN').textContent=waP||ph;
+  const wb=document.getElementById('mWaB');if(waB&&waB!==waP&&waB!==ph){wb.href='https://wa.me/'+waB.replace(/\D/g,'');document.getElementById('mWaBL').textContent=t('waB');document.getElementById('mWaBN').textContent=waB;wb.style.display='flex';}else wb.style.display='none';
+  document.getElementById('mPhClose').textContent=t('close')||'Bağla';document.getElementById('moPhone').classList.add('open');
+};
+window.oEm=function(em){ce=em;document.getElementById('mEmA').textContent=em;document.getElementById('mEmLink').href='mailto:'+em;document.getElementById('mEmT').textContent=t('email');document.getElementById('mEmSL').textContent=t('sendMail');document.getElementById('mEmSS').textContent='Mail app';document.getElementById('mEmCL').textContent=t('copyMail');document.getElementById('mEmCS').textContent='Clipboard';document.getElementById('mEmClose').textContent=t('close')||'Bağla';document.getElementById('moEmail').classList.add('open');};
+window.cpEmail=function(){navigator.clipboard.writeText(ce);showT(t('copied'));cmo('moEmail');};
+window.cmo=function(id){document.getElementById(id).classList.remove('open');};
+document.querySelectorAll('.mo').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+
+// ── SCANNER ─────────────────────────────────────────────────────────────────
+window.stScan=async function(){try{_cs=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment',width:{ideal:1920}}});const v=document.getElementById('scanVid');v.srcObject=_cs;v.style.display='block';document.getElementById('camPh').style.display='none';document.getElementById('scanPrev').style.display='none';document.getElementById('stBtn').style.display='none';document.getElementById('cpBtn').style.display='flex';document.getElementById('spBtn').style.display='flex';document.getElementById('rtBtn').style.display='none';document.getElementById('scanSt').textContent='Kartı çərçivəyə tutun → Şəkil çək';}catch(e){showT('Kameraya icazə verilmədi');}};
+window.spScan=function(){if(_cs){_cs.getTracks().forEach(t=>t.stop());_cs=null;}const v=document.getElementById('scanVid');v.style.display='none';v.srcObject=null;document.getElementById('camPh').style.display='flex';document.getElementById('stBtn').style.display='flex';document.getElementById('cpBtn').style.display='none';document.getElementById('spBtn').style.display='none';document.getElementById('scanSt').textContent='Başlamaq üçün kameranı açın';};
+window.cpCard=async function(){const v=document.getElementById('scanVid');const cv=document.getElementById('scCv');cv.width=v.videoWidth;cv.height=v.videoHeight;cv.getContext('2d').drawImage(v,0,0);const du=cv.toDataURL('image/jpeg',.95);const p=document.getElementById('scanPrev');p.src=du;p.style.display='block';v.style.display='none';if(_cs){_cs.getTracks().forEach(t=>t.stop());_cs=null;}document.getElementById('cpBtn').style.display='none';document.getElementById('spBtn').style.display='none';document.getElementById('rtBtn').style.display='flex';await doOcr(du);};
+window.rtScan=function(){document.getElementById('scanPrev').style.display='none';document.getElementById('ocrRes').style.display='none';document.getElementById('ocrActs').style.display='none';_ocr=null;stScan();};
+window.galScan=async function(e){const f=e.target.files[0];if(!f)return;spScan();const r=new FileReader();r.onload=async ev=>{const du=ev.target.result;const p=document.getElementById('scanPrev');p.src=du;p.style.display='block';document.getElementById('camPh').style.display='none';document.getElementById('stBtn').style.display='none';document.getElementById('rtBtn').style.display='flex';await doOcr(du);};r.readAsDataURL(f);};
+async function doOcr(du){document.getElementById('ocrOv').style.display='flex';document.getElementById('scanSt').textContent='Oxunur...';document.getElementById('ocrRes').style.display='none';try{const{data:{text}}=await Tesseract.recognize(du,'eng+aze+rus+tur',{logger:m=>{if(m.status==='recognizing text')document.getElementById('ocrPct').textContent='Oxunur... '+Math.round(m.progress*100)+'%';}}).catch(()=>Tesseract.recognize(du,'eng',{logger:()=>{}}));_ocr=parseOcr(text);showOcr(_ocr);document.getElementById('ocrOv').style.display='none';document.getElementById('scanSt').textContent='Yoxlayın, lazım olarsa düzəldin';document.getElementById('ocrActs').style.display='flex';}catch(e){document.getElementById('ocrOv').style.display='none';document.getElementById('scanSt').textContent='Xəta. Daha aydın şəkil çəkin.';}}
+function parseOcr(raw){const lines=raw.split('\n').map(l=>l.trim()).filter(l=>l.length>1);const em=raw.match(/[\w.+%-]+@[\w.-]+\.[a-z]{2,}/i);const email=em?em[0].toLowerCase():'';const phs=raw.match(/(?:\+?\d[\d\s\-\.]{7,17})/g)||[];const phone=phs.find(p=>p.replace(/\D/g,'').length>=7)||'';const wm=raw.match(/(?:https?:\/\/)?(?:www\.)?[\w-]+\.(?:com|az|net|org|io|co|ru|eu)(?:\/[^\s,]*)*/i);const web=wm?wm[0]:'';const clean=lines.filter(l=>{if(email&&l.toLowerCase().includes(email))return false;if(phone&&l.replace(/[^\d]/g,'').includes(phone.replace(/[^\d]/g,'')))return false;if(web&&l.toLowerCase().includes(web.split('/')[0].replace(/https?:\/\//,'')))return false;if(l.match(/^\+?\d[\d\s\-\.]{5,}/))return false;if(l.match(/[\w.+%-]+@/))return false;if(l.match(/https?:|www\./))return false;return l.length>2;});const pw=/müdir|director|manager|ceo|cto|mütəxəssis|engineer|koordinator|specialist/i;let name='',position='',company='';if(clean[0])name=clean[0];if(clean[1]){if(pw.test(clean[1])){position=clean[1];company=clean[2]||'';}else{company=clean[1];position=clean[2]||'';}}return{name,position,company,phone,email,web};}
+function showOcr(d){const map={name:'Ad',position:'Vəzifə',company:'Şirkət',phone:'Telefon',email:'Email',web:'Vebsayt'};document.getElementById('ocrFlds').innerHTML=Object.entries(map).map(([k,l])=>`<div class="ocr-f"><span class="ocr-l">${l}</span><input class="ocr-i" id="oi_${k}" value="${esc(d[k]||'')}" oninput="_ocr['${k}']=this.value"></div>`).join('');document.getElementById('ocrRes').style.display='block';}
+window.svScan=function(){if(!_ocr)return;Object.keys(_ocr).forEach(k=>{const e=document.getElementById('oi_'+k);if(e)_ocr[k]=e.value.trim();});const v=`BEGIN:VCARD\nVERSION:3.0\nFN:${_ocr.name||''}\nN:;;${_ocr.name||''};;;\nTEL:${_ocr.phone||''}\nEMAIL:${_ocr.email||''}\nORG:${_ocr.company||''}\nTITLE:${_ocr.position||''}\nURL:${_ocr.web||''}\nEND:VCARD`;const b=new Blob([v],{type:'text/vcard'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(_ocr.name||'contact')+'.vcf';a.click();showT('Kontakt yükləndi');};
+window.rstScan=function(){_ocr=null;spScan();document.getElementById('scanPrev').style.display='none';document.getElementById('ocrRes').style.display='none';document.getElementById('ocrActs').style.display='none';document.getElementById('rtBtn').style.display='none';document.getElementById('stBtn').style.display='flex';document.getElementById('scanSt').textContent='Başlamaq üçün kameranı açın';};
+window.clScanMo=function(){spScan();document.getElementById('moScan').classList.remove('open');};
+
+function showT(m){const e=document.getElementById('tst');e.textContent=m;e.classList.add('on');setTimeout(()=>e.classList.remove('on'),3000);}
+
+init();
+</script>
+</body>
+</html>
