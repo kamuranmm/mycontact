@@ -555,58 +555,141 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
       </div>
     </div>
 
-    <!-- ZAPIER INTEGRATION -->
+    <!-- MAKE.COM INTEGRATION -->
     <div class="panel" id="panel-zapier">
-      <div style="max-width:580px;display:flex;flex-direction:column;gap:1rem">
-        <div style="background:linear-gradient(135deg,rgba(255,74,0,.06),rgba(255,74,0,.02));border:1.5px solid rgba(255,74,0,.15);border-radius:13px;padding:1.1rem 1.25rem;display:flex;align-items:center;gap:12px">
+      <div style="max-width:620px;display:flex;flex-direction:column;gap:1rem">
+
+        <!-- Header -->
+        <div style="background:linear-gradient(135deg,rgba(109,31,255,.06),rgba(109,31,255,.02));border:1.5px solid rgba(109,31,255,.15);border-radius:13px;padding:1.1rem 1.25rem;display:flex;align-items:center;gap:12px">
           <div style="width:42px;height:42px;border-radius:10px;background:#6d1fff;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 12h8M12 8l4 4-4 4"/></svg>
           </div>
           <div>
             <div style="font-size:14px;font-weight:500;color:var(--navy);margin-bottom:3px">Make.com İnteqrasiyası</div>
-            <div style="font-size:12px;color:var(--gray);line-height:1.5">Hər yeni kontakt əlavə olunanda avtomatik olaraq Make.com vasitəsilə istənilən xidmətə göndərin.</div>
+            <div style="font-size:12px;color:var(--gray);line-height:1.5">Kontaktlarınızı HubSpot, Salesforce, Google Sheets və digər xidmətlərə avtomatik göndərin.</div>
           </div>
         </div>
+
+        <!-- Webhook URL -->
         <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
           <div style="font-size:14px;font-weight:500;color:var(--navy);margin-bottom:.25rem">Webhook URL</div>
           <div style="font-size:12px;color:var(--gray);margin-bottom:1rem">Make.com-dan alınan webhook URL-i aşağıya yapışdırın.</div>
           <div class="form-group" style="margin-bottom:0">
             <label class="form-label">Make.com Webhook URL</label>
             <div style="display:flex;gap:8px;align-items:center">
-              <input class="form-input" id="zapierWebhookInput" placeholder="https://hooks.zapier.com/hooks/catch/..." style="flex:1">
+              <input class="form-input" id="zapierWebhookInput" placeholder="https://hook.eu1.make.com/..." style="flex:1">
               <div id="zapierStatusDot" style="width:10px;height:10px;border-radius:50%;background:var(--gray-light);flex-shrink:0;transition:background .3s"></div>
             </div>
-            <div id="zapierUrlError" style="font-size:11px;color:var(--error);margin-top:5px;display:none">Zapier və ya Make.com webhook URL daxil edin</div>
+            <div id="zapierUrlError" style="font-size:11px;color:var(--error);margin-top:5px;display:none">Make.com webhook URL daxil edin</div>
           </div>
           <div style="display:flex;gap:8px;margin-top:1rem;justify-content:flex-end">
             <button class="btn" onclick="testZapierWebhook()" id="zapierTestBtn">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Test Zapier
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>Test et
             </button>
             <button class="btn btn-primary" onclick="saveZapierWebhook()">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Saxla
             </button>
           </div>
         </div>
+
+        <!-- Tabbed Guide -->
         <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
-          <div style="font-size:13px;font-weight:500;color:var(--navy);margin-bottom:.75rem">Necə işləyir?</div>
-          <div style="display:flex;flex-direction:column;gap:10px">
-            <div style="display:flex;gap:10px;align-items:flex-start">
-              <div style="width:22px;height:22px;border-radius:50%;background:rgba(255,74,0,.1);color:#FF4A00;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">1</div>
-              <div style="font-size:12px;color:var(--gray);line-height:1.5">Make.com-da yeni Scenario yaradın → Trigger: <strong style="color:var(--navy)">Webhooks → Custom webhook</strong></div>
-            </div>
-            <div style="display:flex;gap:10px;align-items:flex-start">
-              <div style="width:22px;height:22px;border-radius:50%;background:rgba(255,74,0,.1);color:#FF4A00;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">2</div>
-              <div style="font-size:12px;color:var(--gray);line-height:1.5">Make.com-dan alınan webhook URL-i yuxarıdakı inputa yapışdırın</div>
-            </div>
-            <div style="display:flex;gap:10px;align-items:flex-start">
-              <div style="width:22px;height:22px;border-radius:50%;background:rgba(255,74,0,.1);color:#FF4A00;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">3</div>
-              <div style="font-size:12px;color:var(--gray);line-height:1.5">"Test et" düyməsinə basın — data gəldikdən sonra Make-də Action əlavə edin (HubSpot, Sheets, Gmail və s.)</div>
+          <div style="font-size:13px;font-weight:500;color:var(--navy);margin-bottom:.9rem">Hansı xidmətə qoşmaq istəyirsiniz?</div>
+
+          <!-- Tabs -->
+          <div style="display:flex;gap:6px;margin-bottom:1rem" id="makeGuideTabs">
+            <button onclick="showMakeGuide('hubspot')" id="makeTab-hubspot" style="padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid #FF7A59;background:rgba(255,122,89,.1);color:#FF7A59;font-family:'DM Sans',sans-serif">🟠 HubSpot</button>
+            <button onclick="showMakeGuide('salesforce')" id="makeTab-salesforce" style="padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--surface);color:var(--gray);font-family:'DM Sans',sans-serif">🔵 Salesforce</button>
+            <button onclick="showMakeGuide('sheets')" id="makeTab-sheets" style="padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--surface);color:var(--gray);font-family:'DM Sans',sans-serif">🟢 Google Sheets</button>
+          </div>
+
+          <!-- HubSpot Guide -->
+          <div id="makeGuide-hubspot">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="width:22px;height:22px;border-radius:50%;background:rgba(255,122,89,.15);color:#FF7A59;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+                <div style="font-size:12px;color:var(--gray);line-height:1.6"><a href="https://make.com" target="_blank" style="color:var(--blue)">make.com</a>-da qeydiyyat edin (pulsuzdur) → <strong style="color:var(--navy)">Create a scenario</strong></div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="width:22px;height:22px;border-radius:50%;background:rgba(255,122,89,.15);color:#FF7A59;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
+                <div style="font-size:12px;color:var(--gray);line-height:1.6">Trigger: <strong style="color:var(--navy)">Webhooks → Custom webhook</strong> → <strong style="color:var(--navy)">Add</strong> → URL kopyalayın</div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="width:22px;height:22px;border-radius:50%;background:rgba(255,122,89,.15);color:#FF7A59;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
+                <div style="font-size:12px;color:var(--gray);line-height:1.6">URL-i yuxarıdakı inputa yapışdırın → <strong style="color:var(--navy)">Saxla</strong> → <strong style="color:var(--navy)">Test et</strong></div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="width:22px;height:22px;border-radius:50%;background:rgba(255,122,89,.15);color:#FF7A59;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div>
+                <div style="font-size:12px;color:var(--gray);line-height:1.6">Make-də <strong style="color:var(--navy)">+</strong> → <strong style="color:var(--navy)">HubSpot CRM → Create/Update a Contact</strong> seçin</div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="width:22px;height:22px;border-radius:50%;background:rgba(255,122,89,.15);color:#FF7A59;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">5</div>
+                <div style="font-size:12px;color:var(--gray);line-height:1.6">HubSpot hesabınıza qoşun → Sahələri birləşdirin:<br><code style="background:var(--surface);padding:4px 8px;border-radius:6px;font-size:11px;display:inline-block;margin-top:4px">name → firstname &nbsp;|&nbsp; email → email &nbsp;|&nbsp; phone → phone &nbsp;|&nbsp; company → company</code></div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="width:22px;height:22px;border-radius:50%;background:rgba(255,122,89,.15);color:#FF7A59;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">6</div>
+                <div style="font-size:12px;color:var(--gray);line-height:1.6">Scenario-nu <strong style="color:var(--navy)">ON</strong> edin → <strong style="color:var(--navy)">Save</strong> edin ✓</div>
+              </div>
             </div>
           </div>
-          <div style="margin-top:.9rem;padding:.75rem;background:var(--surface);border-radius:8px;font-size:11px;color:var(--gray);line-height:1.5">
-            <strong style="color:var(--navy)">Göndərilən data formatı:</strong> <code style="background:rgba(24,95,165,.07);padding:1px 5px;border-radius:4px;font-size:10px">name, email, phone, company, savedAt</code>
+
+          <!-- Salesforce Guide -->
+          <div id="makeGuide-salesforce" style="display:none">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="width:22px;height:22px;border-radius:50%;background:rgba(0,161,224,.15);color:#00A1E0;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+                <div style="font-size:12px;color:var(--gray);line-height:1.6"><a href="https://make.com" target="_blank" style="color:var(--blue)">make.com</a>-da qeydiyyat edin → <strong style="color:var(--navy)">Create a scenario</strong></div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="width:22px;height:22px;border-radius:50%;background:rgba(0,161,224,.15);color:#00A1E0;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
+                <div style="font-size:12px;color:var(--gray);line-height:1.6">Trigger: <strong style="color:var(--navy)">Webhooks → Custom webhook</strong> → URL kopyalayın → dashboard-a yapışdırın</div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="width:22px;height:22px;border-radius:50%;background:rgba(0,161,224,.15);color:#00A1E0;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
+                <div style="font-size:12px;color:var(--gray);line-height:1.6">Make-də <strong style="color:var(--navy)">+</strong> → <strong style="color:var(--navy)">Salesforce → Create a Record → Contact</strong></div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="width:22px;height:22px;border-radius:50%;background:rgba(0,161,224,.15);color:#00A1E0;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div>
+                <div style="font-size:12px;color:var(--gray);line-height:1.6">Salesforce hesabınıza qoşun → Sahələri birləşdirin:<br><code style="background:var(--surface);padding:4px 8px;border-radius:6px;font-size:11px;display:inline-block;margin-top:4px">name → FirstName &nbsp;|&nbsp; email → Email &nbsp;|&nbsp; phone → Phone &nbsp;|&nbsp; company → AccountName</code></div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="width:22px;height:22px;border-radius:50%;background:rgba(0,161,224,.15);color:#00A1E0;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">5</div>
+                <div style="font-size:12px;color:var(--gray);line-height:1.6">Scenario-nu <strong style="color:var(--navy)">ON</strong> edin → <strong style="color:var(--navy)">Save</strong> edin ✓</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Google Sheets Guide -->
+          <div id="makeGuide-sheets" style="display:none">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="width:22px;height:22px;border-radius:50%;background:rgba(39,174,96,.15);color:var(--success);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div>
+                <div style="font-size:12px;color:var(--gray);line-height:1.6">Google Sheets-də yeni cədvəl yaradın. Sütunlar: <code style="background:var(--surface);padding:2px 6px;border-radius:4px;font-size:11px">Ad | Email | Telefon | Şirkət | Tarix</code></div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="width:22px;height:22px;border-radius:50%;background:rgba(39,174,96,.15);color:var(--success);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div>
+                <div style="font-size:12px;color:var(--gray);line-height:1.6"><a href="https://make.com" target="_blank" style="color:var(--blue)">make.com</a>-da scenario yaradın → Trigger: <strong style="color:var(--navy)">Webhooks → Custom webhook</strong> → URL kopyalayın</div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="width:22px;height:22px;border-radius:50%;background:rgba(39,174,96,.15);color:var(--success);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div>
+                <div style="font-size:12px;color:var(--gray);line-height:1.6">Make-də <strong style="color:var(--navy)">+</strong> → <strong style="color:var(--navy)">Google Sheets → Add a Row</strong></div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="width:22px;height:22px;border-radius:50%;background:rgba(39,174,96,.15);color:var(--success);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div>
+                <div style="font-size:12px;color:var(--gray);line-height:1.6">Google hesabınıza qoşun → Cədvəli seçin → Sütunları birləşdirin:<br><code style="background:var(--surface);padding:4px 8px;border-radius:6px;font-size:11px;display:inline-block;margin-top:4px">name → Ad &nbsp;|&nbsp; email → Email &nbsp;|&nbsp; phone → Telefon &nbsp;|&nbsp; company → Şirkət &nbsp;|&nbsp; savedAt → Tarix</code></div>
+              </div>
+              <div style="display:flex;gap:10px;align-items:flex-start">
+                <div style="width:22px;height:22px;border-radius:50%;background:rgba(39,174,96,.15);color:var(--success);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">5</div>
+                <div style="font-size:12px;color:var(--gray);line-height:1.6">Scenario-nu <strong style="color:var(--navy)">ON</strong> edin → <strong style="color:var(--navy)">Save</strong> edin ✓</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="margin-top:1rem;padding:.75rem;background:var(--surface);border-radius:8px;font-size:11px;color:var(--gray);line-height:1.5">
+            <strong style="color:var(--navy)">Göndərilən data:</strong> <code style="background:rgba(24,95,165,.07);padding:1px 5px;border-radius:4px;font-size:10px">name, email, phone, company, position, savedAt</code>
           </div>
         </div>
+
       </div>
     </div>
 
@@ -1674,7 +1757,26 @@ window.doLogout=async function(){await signOut(auth);location.href='index.html';
 function showToast(m,t=''){const el=document.getElementById('toast');el.textContent=m;el.className='toast show '+t;setTimeout(()=>el.className='toast',3000);}
 window.showToast=showToast;
 
-// ── ZAPIER ──
+window.showMakeGuide=function(tab){
+  ['hubspot','salesforce','sheets'].forEach(t=>{
+    const guide=document.getElementById('makeGuide-'+t);
+    const btn=document.getElementById('makeTab-'+t);
+    if(!guide||!btn)return;
+    const colors={hubspot:'#FF7A59',salesforce:'#00A1E0',sheets:'#27ae60'};
+    if(t===tab){
+      guide.style.display='block';
+      btn.style.borderColor=colors[t];
+      btn.style.background='rgba('+hexToRgb(colors[t])+',.1)';
+      btn.style.color=colors[t];
+    }else{
+      guide.style.display='none';
+      btn.style.borderColor='var(--gray-light)';
+      btn.style.background='var(--surface)';
+      btn.style.color='var(--gray)';
+    }
+  });
+};
+function hexToRgb(hex){const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);return r+','+g+','+b;}
 function isValidZapierUrl(url){return url&&(url.trim().startsWith('https://hooks.zapier.com/hooks/catch/')||url.trim().startsWith('https://hook.eu1.make.com/')||url.trim().startsWith('https://hook.eu2.make.com/')||url.trim().startsWith('https://hook.us1.make.com/'));}
 
 async function getZapierWebhookUrl(){
