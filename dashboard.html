@@ -360,15 +360,46 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
               <div class="form-row"><div class="form-group"><label class="form-label">Ad</label><input class="form-input" id="fName"></div><div class="form-group"><label class="form-label">Soyad</label><input class="form-input" id="fSurname"></div></div>
               <div class="form-group"><label class="form-label">Vəzifə</label><input class="form-input" id="fPosition"></div>
               <div class="form-group"><label class="form-label">Şirkət</label><input class="form-input" id="fCompany"></div>
-              <div class="form-group"><label class="form-label">Bio</label><textarea class="form-input" id="fBio"></textarea></div>
-              <div class="form-row"><div class="form-group"><label class="form-label">Telefon</label><input class="form-input" id="fPhone" placeholder="+994..."></div><div class="form-group"><label class="form-label">E-mail</label><input class="form-input" id="fEmail" placeholder="siz@email.com"></div></div>
-              <!-- NEW: WhatsApp fields -->
+              <div class="form-group"><label class="form-label">Bio <span style="font-size:10px;color:var(--gray)">(haqqında)</span></label><textarea class="form-input" id="fBio" placeholder="Özünüz haqqında qısa məlumat..." style="height:80px"></textarea></div>
+
+              <!-- Telefon + əlavə -->
+              <div class="form-group">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+                  <label class="form-label" style="margin-bottom:0">Telefon</label>
+                  <button type="button" onclick="toggleExtraPhone()" style="background:none;border:none;cursor:pointer;color:var(--blue);font-size:18px;line-height:1;padding:0" title="Əlavə nömrə">+</button>
+                </div>
+                <input class="form-input" id="fPhone" placeholder="+994...">
+                <div id="fPhone2Wrap" style="display:none;margin-top:6px">
+                  <input class="form-input" id="fPhone2" placeholder="Əlavə telefon +994...">
+                </div>
+              </div>
+
+              <!-- Email + əlavə -->
+              <div class="form-group">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+                  <label class="form-label" style="margin-bottom:0">E-mail</label>
+                  <button type="button" onclick="toggleExtraEmail()" style="background:none;border:none;cursor:pointer;color:var(--blue);font-size:18px;line-height:1;padding:0" title="Əlavə email">+</button>
+                </div>
+                <input class="form-input" id="fEmail" placeholder="siz@email.com">
+                <div id="fEmail2Wrap" style="display:none;margin-top:6px">
+                  <input class="form-input" id="fEmail2" placeholder="Əlavə email...">
+                </div>
+              </div>
+
+              <!-- WhatsApp fields -->
               <div class="form-row">
                 <div class="form-group"><label class="form-label">Şəxsi WhatsApp <span style="font-size:10px;color:var(--gray)">(boş = telefon nömrəsi)</span></label><input class="form-input" id="fWhatsapp" placeholder="+994..."></div>
                 <div class="form-group"><label class="form-label">Biznes WhatsApp <span style="font-size:10px;color:var(--gray)">(optional)</span></label><input class="form-input" id="fWhatsappBusiness" placeholder="+994..."></div>
               </div>
               <div class="form-group"><label class="form-label">Vebsayt</label><input class="form-input" id="fWeb"></div>
-              <div class="form-group"><label class="form-label">Ünvan</label><input class="form-input" id="fAddress"></div>
+
+              <!-- Location -->
+              <div class="form-group">
+                <label class="form-label">Ünvan <span style="font-size:10px;color:var(--gray)">(xəritəyə link üçün)</span></label>
+                <input class="form-input" id="fAddress" placeholder="Bakı, Azərbaycan" style="margin-bottom:6px">
+                <input class="form-input" id="fMapUrl" placeholder="Google Maps linki (isteğe bağlı): https://maps.google.com/..." style="font-size:12px">
+              </div>
+
               <div class="save-bar"><button class="btn btn-primary" onclick="saveCard()">Yadda saxla və profili yenilə</button></div>
             </div>
           </div>
@@ -426,7 +457,8 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
       <div style="max-width:700px">
         <div class="contacts-toolbar">
           <input class="search-input" type="text" placeholder="Ad, şirkət, email ilə axtar..." oninput="filterContacts(this.value)">
-          <button class="btn btn-sm" onclick="sendAllContactsToAuto()" id="autoBulkBtn" style="border-color:rgba(255,74,0,.3);color:#FF4A00;background:rgba(255,74,0,.04);white-space:nowrap"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Webhook-a göndər</button>
+          <div id="contactLimitBadge" style="display:none;font-size:11px;color:var(--gray);white-space:nowrap;align-self:center;padding:4px 8px;background:var(--surface);border-radius:8px;border:1px solid var(--gray-light)"></div>
+          <button class="btn btn-sm" onclick="sendAllContactsToAuto()" id="autoBulkBtn" style="border-color:rgba(24,95,165,.3);color:var(--blue);background:rgba(24,95,165,.04);white-space:nowrap"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>CRM-ə göndər</button>
           <button class="btn btn-primary btn-sm" onclick="openAddContactModal()">+ Yeni kontakt</button>
         </div>
         <div class="contacts-grid" id="contactsGrid"><div class="empty-state"><div style="font-size:36px;opacity:.3;margin-bottom:.9rem">📇</div><div style="font-size:14px;color:var(--navy);margin-bottom:3px">Hələ kontakt yoxdur</div><div style="font-size:12px">Kontakt əlavə etmək üçün "+ Yeni kontakt" düyməsinə basın</div></div></div>
@@ -760,14 +792,21 @@ onAuthStateChanged(auth,async u=>{
     renderContacts(allContacts);
     document.getElementById('contactsBadge').textContent=allContacts.length;
     document.getElementById('ovContacts').textContent=allContacts.length;
+    // Limit badge
+    const isPro=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
+    const badge=document.getElementById('contactLimitBadge');
+    if(badge){if(!isPro){badge.style.display='block';badge.innerHTML=allContacts.length>=5?`<span style="color:var(--error)">⚠️ ${allContacts.length}/5 — <a href="#" onclick="openUpgradeModal();return false" style="color:var(--blue)">Pro-ya keç</a></span>`:`${allContacts.length}/5 kontakt`;}else{badge.style.display='none';}}
   });
 });
 
 function loadUD(){
   const d=UD,n=d.name||d.email||'?';
-  const isPro=d.plan==='pro'||d.plan==='premium';
+  const isPro=d.plan==='pro'||d.plan==='premium'||d.plan==='business';
   document.getElementById('sideName').textContent=n;
   document.getElementById('sidePlan').textContent=(d.plan||'free').charAt(0).toUpperCase()+(d.plan||'free').slice(1)+' Plan';
+  // Plan dəyişdikdə limit badge-i yenilə
+  const badge=document.getElementById('contactLimitBadge');
+  if(badge){if(!isPro){badge.style.display='block';badge.innerHTML=allContacts.length>=5?`<span style="color:var(--error)">⚠️ ${allContacts.length}/5 — <a href="#" onclick="openUpgradeModal();return false" style="color:var(--blue)">Pro-ya keç</a></span>`:`${allContacts.length}/5 kontakt`;}else{badge.style.display='none';}}
   const slug=d.slug||'';
   const link=slug?'apps.mycontact.az/'+slug:'—';
   ['linkText','overviewLink','wLink'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=link;});
@@ -781,10 +820,13 @@ function loadUD(){
     document.getElementById('fBio').value=c.bio||'';
     document.getElementById('fPhone').value=c.phone||'';
     document.getElementById('fEmail').value=c.email||d.email||'';
+    if(c.phone2){document.getElementById('fPhone2').value=c.phone2;document.getElementById('fPhone2Wrap').style.display='block';}
+    if(c.email2){document.getElementById('fEmail2').value=c.email2;document.getElementById('fEmail2Wrap').style.display='block';}
     document.getElementById('fWhatsapp').value=c.whatsapp||'';
     document.getElementById('fWhatsappBusiness').value=c.whatsappBusiness||'';
     document.getElementById('fWeb').value=c.web||'';
     document.getElementById('fAddress').value=c.address||'';
+    document.getElementById('fMapUrl').value=c.mapUrl||'';
     if(c.photo){_lastPhotoUrl=c.photo;document.getElementById('profilePhoto').innerHTML=`<img src="${c.photo}">`;document.getElementById('sideAvatar').innerHTML=`<img src="${c.photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%">`;}
     else{document.getElementById('sideAvatar').textContent=n.charAt(0).toUpperCase();}
     if(c.cover){_lastCoverUrl=c.cover;const ci=document.getElementById('coverImg');ci.src=c.cover;ci.style.display='block';document.getElementById('coverLabel').style.display='none';document.getElementById('coverEditBtn').style.display='block';}
@@ -876,11 +918,14 @@ window.saveCard=async function(){
     'card/company':document.getElementById('fCompany').value.trim(),
     'card/bio':document.getElementById('fBio').value.trim(),
     'card/phone':document.getElementById('fPhone').value.trim(),
+    'card/phone2':document.getElementById('fPhone2').value.trim(),
     'card/email':document.getElementById('fEmail').value.trim(),
+    'card/email2':document.getElementById('fEmail2').value.trim(),
     'card/whatsapp':document.getElementById('fWhatsapp').value.trim(),
     'card/whatsappBusiness':document.getElementById('fWhatsappBusiness').value.trim(),
     'card/web':document.getElementById('fWeb').value.trim(),
-    'card/address':document.getElementById('fAddress').value.trim()
+    'card/address':document.getElementById('fAddress').value.trim(),
+    'card/mapUrl':document.getElementById('fMapUrl').value.trim()
   };
   if(_lastPhotoUrl)cardFields['card/photo']=_lastPhotoUrl;
   if(_lastCoverUrl)cardFields['card/cover']=_lastCoverUrl;
@@ -940,13 +985,23 @@ window.openContactModal=function(id){
 };
 window.deleteContact=async function(id){if(!id){showToast('Kontakt tapılmadı','error');return;}try{await remove(ref(db,`contacts/${CU.uid}/${id}`));allContacts=allContacts.filter(c=>c.id!==id);closeModal('contactModal');renderContacts(allContacts);showToast('Kontakt silindi','success');}catch(e){showToast('Xəta: '+e.message,'error');}};
 window.exportContactVcf=function(id){const c=allContacts.find(x=>x.id===id);if(!c)return;const v=`BEGIN:VCARD\nVERSION:3.0\nFN:${c.name||''}\nTEL:${c.phone||''}\nEMAIL:${c.email||''}\nORG:${c.company||''}\nTITLE:${c.position||''}\nEND:VCARD`;const b=new Blob([v],{type:'text/vcard'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=(c.name||'contact')+'.vcf';a.click();showToast('Kontakt yükləndi');};
+window.toggleExtraPhone=function(){const w=document.getElementById('fPhone2Wrap');w.style.display=w.style.display==='none'?'block':'none';};
+window.toggleExtraEmail=function(){const w=document.getElementById('fEmail2Wrap');w.style.display=w.style.display==='none'?'block':'none';};
+
 window.addManualContact=async function(){
   const n=document.getElementById('mName').value.trim();if(!n){showToast('Ad daxil edin','error');return;}
+  const isPro=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
+  const LIMIT=5;
+  if(!isPro&&allContacts.length>=LIMIT){
+    closeModal('addContactModal');
+    showToast(`Free planda ${LIMIT} kontakt limiti. Pro-ya keçin!`,'error');
+    setTimeout(()=>openUpgradeModal(),800);
+    return;
+  }
   const c={name:n,position:document.getElementById('mPosition').value.trim(),company:document.getElementById('mCompany').value.trim(),phone:document.getElementById('mPhone').value.trim(),email:document.getElementById('mEmail').value.trim(),note:document.getElementById('mNote').value.trim(),source:'manual',addedAt:Date.now()};
   await push(ref(db,`contacts/${CU.uid}`),c);
   ['mName','mPosition','mCompany','mPhone','mEmail','mNote'].forEach(id=>document.getElementById(id).value='');
   showToast('Kontakt əlavə edildi','success');closeModal('addContactModal');
-  // Auto-sync
   triggerAutoContact(c);
   syncContactToHubspot(c);
 };
