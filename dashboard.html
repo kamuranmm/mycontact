@@ -427,6 +427,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
       <div style="max-width:700px">
         <div class="contacts-toolbar">
           <input class="search-input" type="text" placeholder="Ad, şirkət, email ilə axtar..." oninput="filterContacts(this.value)">
+          <button class="btn btn-sm" onclick="sendAllContactsToZapier()" id="zapierBulkBtn" style="border-color:rgba(255,74,0,.3);color:#FF4A00;background:rgba(255,74,0,.04);white-space:nowrap"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Zapier-ə göndər</button>
           <button class="btn btn-primary btn-sm" onclick="openAddContactModal()">+ Yeni kontakt</button>
         </div>
         <div class="contacts-grid" id="contactsGrid"><div class="empty-state"><div style="font-size:36px;opacity:.3;margin-bottom:.9rem">📇</div><div style="font-size:14px;color:var(--navy);margin-bottom:3px">Hələ kontakt yoxdur</div><div style="font-size:12px">Kontakt əlavə etmək üçün "+ Yeni kontakt" düyməsinə basın</div></div></div>
@@ -880,6 +881,8 @@ window.addManualContact=async function(){
   await push(ref(db,`contacts/${CU.uid}`),c);
   ['mName','mPosition','mCompany','mPhone','mEmail','mNote'].forEach(id=>document.getElementById(id).value='');
   showToast('Kontakt əlavə edildi','success');closeModal('addContactModal');
+  // Auto-trigger Zapier
+  triggerZapierContact(c);
 };
 
 // CRM
@@ -1654,7 +1657,36 @@ window.showToast=showToast;
 // ── ZAPIER ──
 function isValidZapierUrl(url){return url&&url.trim().startsWith('https://hooks.zapier.com/hooks/catch/');}
 
-async function loadZapierWebhook(){
+async function getZapierWebhookUrl(){
+  if(!CU)return null;
+  try{const snap=await get(ref(db,`users/${CU.uid}/zapierWebhook`));const url=snap.val();return isValidZapierUrl(url)?url.trim():null;}
+  catch(e){return null;}
+}
+
+async function triggerZapierContact(contact){
+  const url=await getZapierWebhookUrl();
+  if(!url)return; // webhook qoşulmayıbsa səssiz keç
+  const payload={name:contact.name||'',email:contact.email||'',phone:contact.phone||'',company:contact.company||'',position:contact.position||'',savedAt:new Date(contact.addedAt||Date.now()).toISOString()};
+  try{await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),mode:'no-cors'});}
+  catch(e){console.warn('Zapier trigger xətası:',e);}
+}
+
+window.sendAllContactsToZapier=async function(){
+  const url=await getZapierWebhookUrl();
+  if(!url){showToast('Əvvəlcə Zapier webhook URL qoşun','error');showPanel('zapier');return;}
+  if(!allContacts.length){showToast('Göndəriləcək kontakt yoxdur','error');return;}
+  const btn=document.getElementById('zapierBulkBtn');
+  btn.disabled=true;btn.textContent='Göndərilir...';
+  let ok=0,fail=0;
+  for(const ct of allContacts){
+    const payload={name:ct.name||'',email:ct.email||'',phone:ct.phone||'',company:ct.company||'',position:ct.position||'',savedAt:new Date(ct.addedAt||Date.now()).toISOString()};
+    try{await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),mode:'no-cors'});ok++;}
+    catch(e){fail++;}
+    await new Promise(r=>setTimeout(r,300)); // rate limit üçün
+  }
+  btn.disabled=false;btn.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Zapier-ə göndər';
+  showToast(`${ok} kontakt Zapier-ə göndərildi`+(fail?` (${fail} xəta)`:''),'success');
+};
   if(!CU)return;
   try{
     const snap=await get(ref(db,`users/${CU.uid}/zapierWebhook`));
