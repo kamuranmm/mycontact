@@ -500,6 +500,19 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
         <div class="plan-opt" onclick="selectEditPlan(this,'premium')"><div class="plan-opt-name">⭐ Premium</div></div>
         <div class="plan-opt" onclick="selectEditPlan(this,'business')"><div class="plan-opt-name">🟣 Business</div></div>
       </div>
+      <div id="proDurationWrap" style="display:none;margin-top:8px;background:rgba(24,95,165,.05);border:1px solid rgba(24,95,165,.15);border-radius:9px;padding:10px 12px">
+        <label style="font-size:12px;color:var(--navy);font-weight:500;display:block;margin-bottom:6px">Pro müddəti</label>
+        <div style="display:flex;gap:7px;flex-wrap:wrap">
+          <button type="button" onclick="setProDuration(7)" class="dur-btn" style="padding:5px 10px;border-radius:7px;font-size:12px;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--white);font-family:'DM Sans',sans-serif">7 gün</button>
+          <button type="button" onclick="setProDuration(30)" class="dur-btn" style="padding:5px 10px;border-radius:7px;font-size:12px;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--white);font-family:'DM Sans',sans-serif">1 ay</button>
+          <button type="button" onclick="setProDuration(90)" class="dur-btn" style="padding:5px 10px;border-radius:7px;font-size:12px;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--white);font-family:'DM Sans',sans-serif">3 ay</button>
+          <button type="button" onclick="setProDuration(180)" class="dur-btn" style="padding:5px 10px;border-radius:7px;font-size:12px;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--white);font-family:'DM Sans',sans-serif">6 ay</button>
+          <button type="button" onclick="setProDuration(365)" class="dur-btn" style="padding:5px 10px;border-radius:7px;font-size:12px;cursor:pointer;border:1.5px solid var(--blue);background:rgba(24,95,165,.08);color:var(--blue);font-family:'DM Sans',sans-serif">1 il</button>
+          <button type="button" onclick="setProDuration(0)" class="dur-btn" style="padding:5px 10px;border-radius:7px;font-size:12px;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--white);font-family:'DM Sans',sans-serif">Limitsiz</button>
+        </div>
+        <div id="proDurationLabel" style="font-size:11px;color:var(--gray);margin-top:6px">Seçin</div>
+        <input type="hidden" id="proDurationDays" value="">
+      </div>
     </div>
     <div class="form-group"><label class="form-label">Rol</label>
       <div class="role-options" id="editRoleOpts">
@@ -774,7 +787,21 @@ window.showPanel=function(n){
 };
 
 window.selectPlan=function(el,p){selectedPlan=p;document.querySelectorAll('#createModal .plan-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');};
-window.selectEditPlan=function(el,p){selectedEditPlan=p;document.querySelectorAll('#editModal .plan-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');};
+window.selectEditPlan=function(el,p){
+  selectedEditPlan=p;
+  document.querySelectorAll('#editModal .plan-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  const wrap=document.getElementById('proDurationWrap');
+  if(wrap)wrap.style.display=(p==='pro'||p==='premium'||p==='business')?'block':'none';
+};
+window.setProDuration=function(days){
+  document.getElementById('proDurationDays').value=days;
+  document.querySelectorAll('.dur-btn').forEach(b=>b.style.borderColor='var(--gray-light)');
+  event.target.style.borderColor='var(--blue)';
+  const label=document.getElementById('proDurationLabel');
+  if(days===0)label.textContent='Limitsiz — müddətsiz aktiv';
+  else label.textContent=`${days} gün — bitmə tarixi: ${new Date(Date.now()+days*86400000).toLocaleDateString('az')}`;
+};
 window.selectRole=function(el,r,containerId){
   const container=document.getElementById(containerId);
   container.querySelectorAll('.role-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');
@@ -846,6 +873,14 @@ window.openEditModal=function(uid){
   bl.checked=brandOn;
   bs.style.background=brandOn?'var(--blue)':'var(--gray-light)';
   bl.onchange=function(){bs.style.background=this.checked?'var(--blue)':'var(--gray-light)';};
+  // Duration wrap
+  const isPro=selectedEditPlan==='pro'||selectedEditPlan==='premium'||selectedEditPlan==='business';
+  const wrap=document.getElementById('proDurationWrap');
+  if(wrap)wrap.style.display=isPro?'block':'none';
+  // Reset duration
+  document.getElementById('proDurationDays').value='';
+  document.getElementById('proDurationLabel').textContent=u.proExpiry?`Mövcud bitmə tarixi: ${new Date(u.proExpiry).toLocaleDateString('az')}`:'Yeni müddət seçin';
+  document.querySelectorAll('.dur-btn').forEach(b=>b.style.borderColor='var(--gray-light)');
   document.getElementById('editModal').classList.add('open');
 };
 
@@ -865,7 +900,18 @@ window.saveUser=async function(){
     pipedrive:document.getElementById('crmPipeAccess').checked,
   };
   const brandLink=document.getElementById('brandLinkToggle').checked;
-  await update(ref(db,`users/${uid}`),{name,slug,plan:selectedEditPlan,status,userRole:selectedEditRole,company,defaultLang,'card/name':parts[0]||'','card/surname':parts.slice(1).join(' ')||'','card/company':company,adminCrmAccess,brandLink});
+  const isPro=selectedEditPlan==='pro'||selectedEditPlan==='premium'||selectedEditPlan==='business';
+  const daysVal=document.getElementById('proDurationDays').value;
+  let proExpiry=null;
+  if(isPro&&daysVal!==''){
+    proExpiry=daysVal==='0'?null:Date.now()+parseInt(daysVal)*86400000;
+  }
+  // Free-yə keçdikdə brandLink avtomatik aktiv olsun
+  const finalBrandLink=!isPro?true:brandLink;
+  const updateData={name,slug,plan:selectedEditPlan,status,userRole:selectedEditRole,company,defaultLang,'card/name':parts[0]||'','card/surname':parts.slice(1).join(' ')||'','card/company':company,adminCrmAccess,brandLink:finalBrandLink};
+  if(isPro&&daysVal!=='')updateData.proExpiry=proExpiry;
+  if(!isPro)updateData.proExpiry=null;
+  await update(ref(db,`users/${uid}`),updateData);
   showToast('Dəyişikliklər saxlanıldı','success');closeModal('editModal');
 };
 
