@@ -1665,10 +1665,11 @@ async function getZapierWebhookUrl(){
 
 async function triggerZapierContact(contact){
   const url=await getZapierWebhookUrl();
-  if(!url)return; // webhook qoşulmayıbsa səssiz keç
+  if(!url)return;
   const payload={name:contact.name||'',email:contact.email||'',phone:contact.phone||'',company:contact.company||'',position:contact.position||'',savedAt:new Date(contact.addedAt||Date.now()).toISOString()};
-  try{await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),mode:'no-cors'});}
-  catch(e){console.warn('Zapier trigger xətası:',e);}
+  try{
+    await fetch(url,{method:'POST',body:JSON.stringify(payload)});
+  }catch(e){console.warn('Zapier trigger xətası:',e);}
 }
 
 window.sendAllContactsToZapier=async function(){
@@ -1680,7 +1681,7 @@ window.sendAllContactsToZapier=async function(){
   let ok=0,fail=0;
   for(const ct of allContacts){
     const payload={name:ct.name||'',email:ct.email||'',phone:ct.phone||'',company:ct.company||'',position:ct.position||'',savedAt:new Date(ct.addedAt||Date.now()).toISOString()};
-    try{await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),mode:'no-cors'});ok++;}
+    try{await fetch(url,{method:'POST',body:JSON.stringify(payload)});ok++;}
     catch(e){fail++;}
     await new Promise(r=>setTimeout(r,300)); // rate limit üçün
   }
@@ -1743,7 +1744,7 @@ window.testZapierWebhook=async function(){
   btn.disabled=true;btn.innerHTML='Göndərilir...';
   const payload={name:'Test Contact',email:'test@example.com',phone:'+994 55 000 00 00',company:'MyContact',savedAt:new Date().toISOString()};
   try{
-    await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),mode:'no-cors'});
+    await fetch(url,{method:'POST',body:JSON.stringify(payload)});
     showToast('Test data göndərildi ✓','success');
   }catch(e){showToast('Göndərilə bilmədi: '+e.message,'error');}
   finally{btn.disabled=false;btn.innerHTML=orig;}
