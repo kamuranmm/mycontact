@@ -576,7 +576,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
               <input class="form-input" id="zapierWebhookInput" placeholder="https://hooks.zapier.com/hooks/catch/..." style="flex:1">
               <div id="zapierStatusDot" style="width:10px;height:10px;border-radius:50%;background:var(--gray-light);flex-shrink:0;transition:background .3s"></div>
             </div>
-            <div id="zapierUrlError" style="font-size:11px;color:var(--error);margin-top:5px;display:none">URL <strong>https://hooks.zapier.com/hooks/catch/</strong> ilə başlamalıdır</div>
+            <div id="zapierUrlError" style="font-size:11px;color:var(--error);margin-top:5px;display:none">Zapier və ya Make.com webhook URL daxil edin</div>
           </div>
           <div style="display:flex;gap:8px;margin-top:1rem;justify-content:flex-end">
             <button class="btn" onclick="testZapierWebhook()" id="zapierTestBtn">
@@ -1655,7 +1655,7 @@ function showToast(m,t=''){const el=document.getElementById('toast');el.textCont
 window.showToast=showToast;
 
 // ── ZAPIER ──
-function isValidZapierUrl(url){return url&&url.trim().startsWith('https://hooks.zapier.com/hooks/catch/');}
+function isValidZapierUrl(url){return url&&(url.trim().startsWith('https://hooks.zapier.com/hooks/catch/')||url.trim().startsWith('https://hook.eu1.make.com/')||url.trim().startsWith('https://hook.eu2.make.com/')||url.trim().startsWith('https://hook.us1.make.com/'));}
 
 async function getZapierWebhookUrl(){
   if(!CU)return null;
