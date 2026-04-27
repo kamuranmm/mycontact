@@ -505,14 +505,70 @@ let PD=null,PU=null,vc='',ce='',tmpl=1,color='#185FA5',_cs=null,_ocr=null;
 
 // ── I18N ──────────────────────────────────────────────────────────────────
 const TR={
-  az:{save:'Kontaktı saxla',share:'Paylaş',scan:'Vizit Kart Skan',docs:'Sənədlər',phone:'Telefon',email:'E-mail',web:'Veb sayt',addr:'Ünvan',call:'Zəng et',waP:'Şəxsi WhatsApp',waB:'Biznes WhatsApp',sendMail:'E-mail göndər',copyMail:'E-maili kopyala',copied:'Kopyalandı ✓',saved:'Kontakt yükləndi',shared:'Link kopyalandı',clickOpen:'Açmaq üçün klik edin',ko:'Kontakt saxla',anrufen:'Zəng',termin:'QR Kod'},
-  en:{save:'Save Contact',share:'Share',scan:'Scan Card',docs:'Documents',phone:'Phone',email:'Email',web:'Website',addr:'Address',call:'Call',waP:'Personal WhatsApp',waB:'Business WhatsApp',sendMail:'Send Email',copyMail:'Copy email',copied:'Copied ✓',saved:'Contact saved',shared:'Link copied',clickOpen:'Click to open',ko:'Save Contact',anrufen:'Call',termin:'QR Code'},
-  ru:{save:'Сохранить',share:'Поделиться',scan:'Сканировать',docs:'Документы',phone:'Телефон',email:'Email',web:'Сайт',addr:'Адрес',call:'Позвонить',waP:'Личный WA',waB:'Бизнес WA',sendMail:'Отправить email',copyMail:'Копировать email',copied:'Скопировано ✓',saved:'Контакт сохранён',shared:'Ссылка скопирована',clickOpen:'Нажмите для открытия',ko:'Сохранить',anrufen:'Позвонить',termin:'QR Код'},
-  tr:{save:'Kaydet',share:'Paylaş',scan:'Kartvizit Tara',docs:'Belgeler',phone:'Telefon',email:'E-posta',web:'Website',addr:'Adres',call:'Ara',waP:'Kişisel WA',waB:'İş WA',sendMail:'E-posta Gönder',copyMail:'E-postayı kopyala',copied:'Kopyalandı ✓',saved:'Kaydedildi',shared:'Bağlantı kopyalandı',clickOpen:'Açmak için tıkla',ko:'Kaydet',anrufen:'Ara',termin:'QR Kod'},
-  zh:{save:'保存联系人',share:'分享',scan:'扫名片',docs:'文档',phone:'电话',email:'邮箱',web:'网站',addr:'地址',call:'拨打',waP:'个人WA',waB:'商务WA',sendMail:'发送邮件',copyMail:'复制邮箱',copied:'已复制 ✓',saved:'已保存',shared:'链接已复制',clickOpen:'点击打开',ko:'保存',anrufen:'拨打',termin:'二维码'},
-  ar:{save:'حفظ',share:'مشاركة',scan:'مسح البطاقة',docs:'المستندات',phone:'الهاتف',email:'البريد',web:'الموقع',addr:'العنوان',call:'اتصال',waP:'واتساب شخصي',waB:'واتساب أعمال',sendMail:'إرسال بريد',copyMail:'نسخ البريد',copied:'تم النسخ ✓',saved:'تم الحفظ',shared:'تم نسخ الرابط',clickOpen:'انقر للفتح',ko:'حفظ',anrufen:'اتصال',termin:'رمز QR'},
-  de:{save:'Speichern',share:'Teilen',scan:'Visitenkarte scannen',docs:'Dokumente',phone:'Telefon',email:'E-Mail',web:'Website',addr:'Adresse',call:'Anrufen',waP:'WhatsApp privat',waB:'WhatsApp Business',sendMail:'E-Mail senden',copyMail:'E-Mail kopieren',copied:'Kopiert ✓',saved:'Gespeichert',shared:'Link kopiert',clickOpen:'Klicken zum Öffnen',ko:'Kontakt speichern',anrufen:'Anrufen',termin:'QR-Code'},
-  es:{save:'Guardar',share:'Compartir',scan:'Escanear tarjeta',docs:'Documentos',phone:'Teléfono',email:'Correo',web:'Sitio web',addr:'Dirección',call:'Llamar',waP:'WhatsApp personal',waB:'WhatsApp empresarial',sendMail:'Enviar correo',copyMail:'Copiar correo',copied:'Copiado ✓',saved:'Guardado',shared:'Enlace copiado',clickOpen:'Clic para abrir',ko:'Guardar contacto',anrufen:'Llamar',termin:'Código QR'}
+  az:{save:'Kontaktı saxla',share:'Paylaş',scan:'Vizit Kart Skan',docs:'Sənədlər',
+    phone:'Telefon',email:'E-mail',web:'Veb sayt',addr:'Ünvan',call:'Zəng et',
+    waP:'Şəxsi WhatsApp',waB:'Biznes WhatsApp',sendMail:'E-mail göndər',
+    copyMail:'E-maili kopyala',copied:'Kopyalandı ✓',saved:'Kontakt yükləndi',
+    shared:'Link kopyalandı',clickOpen:'Açmaq üçün klik edin',
+    ko:'Kontakt saxla',anrufen:'Zəng',termin:'QR Kod',
+    pos:'Vəzifə',co:'Şirkət',bio:t('bio'),loc:'Ünvan',sec:'Əlaqə',
+    about:'Haqqımda',socials:'Sosial şəbəkələr',contact:'Əlaqə'},
+  en:{save:'Save Contact',share:'Share',scan:'Scan Card',docs:'Documents',
+    phone:'Phone',email:'Email',web:'Website',addr:'Address',call:'Call',
+    waP:'Personal WhatsApp',waB:'Business WhatsApp',sendMail:'Send Email',
+    copyMail:'Copy email',copied:'Copied ✓',saved:'Contact saved',
+    shared:'Link copied',clickOpen:'Click to open',
+    ko:'Save Contact',anrufen:'Call',termin:'QR Code',
+    pos:'Position',co:'Company',bio:'About',loc:'Address',sec:'Contact',
+    about:'About me',socials:'Social media',contact:'Contact'},
+  ru:{save:'Сохранить',share:'Поделиться',scan:'Сканировать',docs:'Документы',
+    phone:'Телефон',email:'Email',web:'Сайт',addr:'Адрес',call:'Позвонить',
+    waP:'Личный WA',waB:'Бизнес WA',sendMail:'Отправить email',
+    copyMail:'Копировать email',copied:'Скопировано ✓',saved:'Контакт сохранён',
+    shared:'Ссылка скопирована',clickOpen:'Нажмите для открытия',
+    ko:'Сохранить',anrufen:'Позвонить',termin:'QR Код',
+    pos:'Должность',co:'Компания',bio:'О себе',loc:'Адрес',sec:'Контакт',
+    about:'Обо мне',socials:'Соцсети',contact:'Контакт'},
+  tr:{save:'Kaydet',share:'Paylaş',scan:'Kartvizit Tara',docs:'Belgeler',
+    phone:'Telefon',email:'E-posta',web:'Website',addr:'Adres',call:'Ara',
+    waP:'Kişisel WA',waB:'İş WA',sendMail:'E-posta Gönder',
+    copyMail:'E-postayı kopyala',copied:'Kopyalandı ✓',saved:'Kaydedildi',
+    shared:'Bağlantı kopyalandı',clickOpen:'Açmak için tıkla',
+    ko:'Kaydet',anrufen:'Ara',termin:'QR Kod',
+    pos:'Pozisyon',co:'Şirket',bio:'Hakkında',loc:'Adres',sec:'İletişim',
+    about:'Hakkımda',socials:'Sosyal medya',contact:'İletişim'},
+  zh:{save:'保存联系人',share:'分享',scan:'扫名片',docs:'文档',
+    phone:'电话',email:'邮箱',web:'网站',addr:'地址',call:'拨打',
+    waP:'个人WA',waB:'商务WA',sendMail:'发送邮件',
+    copyMail:'复制邮箱',copied:'已复制 ✓',saved:'已保存',
+    shared:'链接已复制',clickOpen:'点击打开',
+    ko:'保存',anrufen:'拨打',termin:'二维码',
+    pos:'职位',co:'公司',bio:'简介',loc:'地址',sec:'联系方式',
+    about:'关于我',socials:'社交媒体',contact:'联系'},
+  ar:{save:'حفظ',share:'مشاركة',scan:'مسح البطاقة',docs:'المستندات',
+    phone:'الهاتف',email:'البريد',web:'الموقع',addr:'العنوان',call:'اتصال',
+    waP:'واتساب شخصي',waB:'واتساب أعمال',sendMail:'إرسال بريد',
+    copyMail:'نسخ البريد',copied:'تم النسخ ✓',saved:'تم الحفظ',
+    shared:'تم نسخ الرابط',clickOpen:'انقر للفتح',
+    ko:'حفظ',anrufen:'اتصال',termin:'رمز QR',
+    pos:'المنصب',co:'الشركة',bio:'نبذة',loc:'العنوان',sec:'تواصل',
+    about:'عني',socials:'التواصل',contact:'تواصل'},
+  de:{save:'Speichern',share:'Teilen',scan:'Visitenkarte scannen',docs:'Dokumente',
+    phone:'Telefon',email:'E-Mail',web:'Website',addr:'Adresse',call:'Anrufen',
+    waP:'WhatsApp privat',waB:'WhatsApp Business',sendMail:'E-Mail senden',
+    copyMail:'E-Mail kopieren',copied:'Kopiert ✓',saved:'Gespeichert',
+    shared:'Link kopiert',clickOpen:'Klicken zum Öffnen',
+    ko:'Kontakt speichern',anrufen:'Anrufen',termin:'QR-Code',
+    pos:'Position',co:'Unternehmen',bio:'Über mich',loc:'Adresse',sec:'Kontakt',
+    about:'Über mich',socials:'Soziale Medien',contact:'Kontakt'},
+  es:{save:'Guardar',share:'Compartir',scan:'Escanear tarjeta',docs:'Documentos',
+    phone:'Teléfono',email:'Correo',web:'Sitio web',addr:'Dirección',call:'Llamar',
+    waP:'WhatsApp personal',waB:'WhatsApp empresarial',sendMail:'Enviar correo',
+    copyMail:'Copiar correo',copied:'Copiado ✓',saved:'Guardado',
+    shared:'Enlace copiado',clickOpen:'Clic para abrir',
+    ko:'Guardar contacto',anrufen:'Llamar',termin:'Código QR',
+    pos:'Cargo',co:'Empresa',bio:'Sobre mí',loc:'Dirección',sec:'Contacto',
+    about:'Sobre mí',socials:'Redes sociales',contact:'Contacto'}
 };
 const LM={az:{f:'🇦🇿',c:'AZ'},en:{f:'🇬🇧',c:'EN'},ru:{f:'🇷🇺',c:'RU'},tr:{f:'🇹🇷',c:'TR'},zh:{f:'🇨🇳',c:'ZH'},ar:{f:'🇸🇦',c:'AR'},de:{f:'🇩🇪',c:'DE'},es:{f:'🇪🇸',c:'ES'}};
 let lang='az';
@@ -523,10 +579,21 @@ document.addEventListener('click',e=>{if(!e.target.closest('.lang-dropdown')){co
 
 // ── LOAD ───────────────────────────────────────────────────────────────────
 
-// ── postMessage: dashboard iframe-dən anlıq rəng ──────────────────────────
+// ── postMessage: dashboard iframe-dən anlıq rəng/şablon ───────────────────
 window.addEventListener('message',function(e){
   if(!e.data||typeof e.data!=='object')return;
-  if(e.data.type==='setColor'&&e.data.color){applyColor(e.data.color);if(PD)render();}
+  if(e.data.type==='setColor'&&e.data.color){
+    applyColor(e.data.color);if(PD)render();
+  }
+  if(e.data.type==='setColors'){
+    const dd=e.data;
+    if(dd.btn)document.documentElement.style.setProperty('--p',dd.btn);
+    if(dd.cover1&&dd.cover2)document.documentElement.style.setProperty('--a',dd.cover2);
+    if(PD)render();
+  }
+  if(e.data.type==='setTmpl'&&e.data.tmpl){
+    tmpl=parseInt(e.data.tmpl);if(PD)render();
+  }
 });
 async function init(){
   if(!slug){
