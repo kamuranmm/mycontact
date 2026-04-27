@@ -590,7 +590,8 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
               <div class="color-row" style="padding:10px 12px;border-bottom:1px solid var(--gray-light)"><div class="color-row-label">Cover başlanğıc</div><div class="color-row-input"><input type="color" id="c_cover1" value="#185FA5" class="color-swatch" oninput="onDetailColor()"><span style="font-size:11px;color:var(--gray);font-family:monospace" id="c_cover1_hex">#185FA5</span></div></div>
               <div class="color-row" style="padding:10px 12px;border-bottom:1px solid var(--gray-light)"><div class="color-row-label">Cover son</div><div class="color-row-input"><input type="color" id="c_cover2" value="#378ADD" class="color-swatch" oninput="onDetailColor()"><span style="font-size:11px;color:var(--gray);font-family:monospace" id="c_cover2_hex">#378ADD</span></div></div>
               <div class="color-row" style="padding:10px 12px;border-bottom:1px solid var(--gray-light)"><div class="color-row-label">Mətn rəngi</div><div class="color-row-input"><input type="color" id="c_text" value="#0a1628" class="color-swatch" oninput="onDetailColor()"><span style="font-size:11px;color:var(--gray);font-family:monospace" id="c_text_hex">#0a1628</span></div></div>
-              <div class="color-row" style="padding:10px 12px"><div class="color-row-label">İkon arxa fonu</div><div class="color-row-input"><input type="color" id="c_iconbg" value="#EFF6FF" class="color-swatch" oninput="onDetailColor()"><span style="font-size:11px;color:var(--gray);font-family:monospace" id="c_iconbg_hex">#EFF6FF</span></div></div>
+              <div class="color-row" style="padding:10px 12px;border-bottom:1px solid var(--gray-light)"><div class="color-row-label">İkon arxa fonu</div><div class="color-row-input"><input type="color" id="c_iconbg" value="#EFF6FF" class="color-swatch" oninput="onDetailColor()"><span style="font-size:11px;color:var(--gray);font-family:monospace" id="c_iconbg_hex">#EFF6FF</span></div></div>
+              <div class="color-row" style="padding:10px 12px"><div class="color-row-label">Arxa fon rəngi</div><div class="color-row-input"><input type="color" id="c_bg" value="#f0f2f5" class="color-swatch" oninput="onDetailColor()"><span style="font-size:11px;color:var(--gray);font-family:monospace" id="c_bg_hex">#f0f2f5</span></div></div>
             </div>
             <div style="display:flex;gap:8px">
               <button class="btn btn-primary" onclick="saveCustomColors()">Profildə tətbiq et</button>
@@ -936,6 +937,13 @@ function loadUD(){
     activeSocials=d.socials||{};loadSocialUI();
     renderSlugSection(slug,isPro);
   renderBrandSection(isPro);
+  // Pro yazılarını gizlət/göstər
+  document.querySelectorAll('.nav-pro').forEach(badge=>{
+    badge.style.display=isPro?'none':'inline-flex';
+  });
+  document.querySelectorAll('.tmpl-badge.tmpl-pro').forEach(b=>{
+    b.style.display=isPro?'none':'inline-flex';
+  });
     // Default lang
     _selectedDefaultLang=d.defaultLang||'az';
     document.querySelectorAll('#defaultLangGrid .lang-card').forEach(el=>el.classList.toggle('selected',el.dataset.lang===_selectedDefaultLang));
@@ -1889,9 +1897,11 @@ function renderTemplates(){
 
 window.previewTemplate=function(id){
   _previewTmplId=id;
-  document.querySelectorAll('.tmpl-card').forEach(c=>{
-    const cid=parseInt(c.getAttribute('onclick').replace('previewTemplate(',''));
-    c.classList.toggle('selected',cid===id);
+  document.querySelectorAll('.tmpl-card').forEach(card=>{
+    const onclick=card.getAttribute('onclick')||'';
+    const match=onclick.match(/previewTemplate\((\d+)\)/);
+    const cid=match?parseInt(match[1]):0;
+    card.classList.toggle('selected',cid===id);
   });
   const frame=document.getElementById('livePreviewFrame');
   if(frame?.contentWindow)frame.contentWindow.postMessage({type:'setTmpl',tmpl:id},'*');
@@ -2000,7 +2010,7 @@ function loadCustomColors(){
   const c=UD?.customColors||{};
   const base=c.logo||UD?.color||'#185FA5';
   _liveColor=base;
-  const map={btn:c.btn||base,cover1:c.cover1||base,cover2:c.cover2||lightenHex(base,0.28),text:c.text||'#0a1628',iconbg:c.iconbg||lightenHex(base,0.88)};
+  const map={btn:c.btn||base,cover1:c.cover1||base,cover2:c.cover2||lightenHex(base,0.28),text:c.text||'#0a1628',iconbg:c.iconbg||lightenHex(base,0.88),bg:c.bg||'#f0f2f5'};
   Object.entries(map).forEach(([k,v])=>{
     const el=document.getElementById('c_'+k);if(el)el.value=v;
     const hex=document.getElementById('c_'+k+'_hex');if(hex)hex.textContent=v;
