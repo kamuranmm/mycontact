@@ -182,21 +182,6 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 .preview-pos{font-size:12px;margin-bottom:.75rem}
 .preview-btn{padding:8px 14px;border-radius:8px;font-size:12px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-block}
 /* TEMPLATES */
-.design-wrap{display:grid;grid-template-columns:1fr 320px;gap:1.25rem;align-items:start}
-.design-left{display:flex;flex-direction:column;gap:1.25rem}
-.design-right-sticky{position:sticky;top:76px}
-.live-phone{background:#1a1a2e;border-radius:40px;padding:12px 10px;box-shadow:0 24px 60px rgba(0,0,0,.35);margin:0 auto;width:240px}
-.live-phone-bar{width:70px;height:5px;background:rgba(255,255,255,.15);border-radius:3px;margin:0 auto 8px}
-.live-phone-screen{border-radius:28px;overflow:hidden;height:460px;background:#f0f2f5;position:relative}
-.live-phone-screen iframe{width:375px;height:700px;border:none;transform:scale(0.64);transform-origin:top left;pointer-events:none}
-.cdot-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1rem}
-.cdot2{width:28px;height:28px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:all .15s;flex-shrink:0}
-.cdot2.on{border-color:var(--navy);transform:scale(1.15);box-shadow:0 2px 8px rgba(0,0,0,.2)}
-.cc-row2{display:flex;align-items:center;gap:8px;margin-bottom:1rem}
-.cc-row2 input[type=color]{width:36px;height:36px;border-radius:50%;border:2px solid var(--gray-light);cursor:pointer;padding:2px}
-.cc-row2 label{font-size:12px;color:var(--gray)}
-.tmpl-palette{display:flex;gap:4px;margin-top:6px}
-.tmpl-palette span{width:12px;height:12px;border-radius:50%;display:inline-block}
 .templates-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:860px}
 .tmpl-card{border-radius:14px;overflow:hidden;border:2.5px solid var(--gray-light);cursor:pointer;transition:all .22s;position:relative;background:var(--white);box-shadow:0 2px 8px rgba(0,0,0,.06)}
 .tmpl-card:hover{border-color:var(--blue);transform:translateY(-4px);box-shadow:0 12px 32px rgba(24,95,165,.18)}
@@ -263,8 +248,6 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
   .sig-builder{grid-template-columns:1fr!important}
   /* Şablonlar */
   .templates-grid{grid-template-columns:repeat(2,1fr)!important}
-  .design-wrap{grid-template-columns:1fr!important}
-  .design-right-sticky{position:static!important}
   /* right-col */
   .right-col{grid-template-columns:1fr 1fr!important}
   /* Contacts */
@@ -521,43 +504,57 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 
     <!-- CUSTOMIZE / TEMPLATES -->
     <div class="panel" id="panel-customize">
-      <div class="design-wrap">
-        <!-- SOL: Şablon + Rəng -->
+      <!-- Templates -->
+      <div style="margin-bottom:1.5rem">
+        <div style="font-size:15px;font-weight:500;color:var(--navy);margin-bottom:4px">Şablon seç</div>
+        <div style="font-size:13px;color:var(--gray);margin-bottom:1rem">3 FREE + 7 PRO şablon. Klik edərək profilinizə tətbiq edin.</div>
+        <div class="templates-grid" id="templatesGrid"></div>
+      </div>
+      <!-- Rəng + Canlı Preview -->
+      <div class="design-wrap" style="margin-top:0">
         <div class="design-left">
-          <!-- Şablon seçimi -->
           <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
-            <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px">Şablon</div>
-            <div style="font-size:12px;color:var(--gray);margin-bottom:1rem">Seçdikdə sağda canlı görəcəksiniz</div>
-            <div class="templates-grid" id="templatesGrid"></div>
-          </div>
-          <!-- Rəng seçimi -->
-          <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
-            <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px">Rəng</div>
-            <div style="font-size:12px;color:var(--gray);margin-bottom:1rem">Seçin — canlı baxışda dərhal görünür</div>
+            <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px">Rəng & Görünüş</div>
+            <div style="font-size:12px;color:var(--gray);margin-bottom:1rem">Seçin — telefonda dərhal görünür. Tətbiq et-dən sonra yadda saxlanır.</div>
+            <div style="font-size:11px;font-weight:600;color:var(--gray);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em">Hazır paletlər</div>
             <div class="cdot-grid" id="colorDots">
-              <div class="cdot2 on" style="background:#185FA5" data-c="#185FA5" onclick="pickColor('#185FA5')"></div>
-              <div class="cdot2" style="background:#7C3AED" data-c="#7C3AED" onclick="pickColor('#7C3AED')"></div>
-              <div class="cdot2" style="background:#059669" data-c="#059669" onclick="pickColor('#059669')"></div>
-              <div class="cdot2" style="background:#DC2626" data-c="#DC2626" onclick="pickColor('#DC2626')"></div>
-              <div class="cdot2" style="background:#D97706" data-c="#D97706" onclick="pickColor('#D97706')"></div>
-              <div class="cdot2" style="background:#0891B2" data-c="#0891B2" onclick="pickColor('#0891B2')"></div>
-              <div class="cdot2" style="background:#BE185D" data-c="#BE185D" onclick="pickColor('#BE185D')"></div>
-              <div class="cdot2" style="background:#111827" data-c="#111827" onclick="pickColor('#111827')"></div>
-              <div class="cdot2" style="background:#7E6C55" data-c="#7E6C55" onclick="pickColor('#7E6C55')"></div>
-              <div class="cdot2" style="background:#1D4ED8" data-c="#1D4ED8" onclick="pickColor('#1D4ED8')"></div>
+              <div class="cdot2 on" style="background:#185FA5" data-c="#185FA5" onclick="pickColor('#185FA5')" title="Klassik mavi"></div>
+              <div class="cdot2" style="background:#1D4ED8" data-c="#1D4ED8" onclick="pickColor('#1D4ED8')" title="Cobalt"></div>
+              <div class="cdot2" style="background:#0891B2" data-c="#0891B2" onclick="pickColor('#0891B2')" title="Dəniz"></div>
+              <div class="cdot2" style="background:#059669" data-c="#059669" onclick="pickColor('#059669')" title="Yaşıl"></div>
+              <div class="cdot2" style="background:#16A34A" data-c="#16A34A" onclick="pickColor('#16A34A')" title="Meşə"></div>
+              <div class="cdot2" style="background:#7C3AED" data-c="#7C3AED" onclick="pickColor('#7C3AED')" title="Bənövşəyi"></div>
+              <div class="cdot2" style="background:#6D28D9" data-c="#6D28D9" onclick="pickColor('#6D28D9')" title="Tünd bənövşəyi"></div>
+              <div class="cdot2" style="background:#BE185D" data-c="#BE185D" onclick="pickColor('#BE185D')" title="Çəhrayı"></div>
+              <div class="cdot2" style="background:#DC2626" data-c="#DC2626" onclick="pickColor('#DC2626')" title="Qırmızı"></div>
+              <div class="cdot2" style="background:#D97706" data-c="#D97706" onclick="pickColor('#D97706')" title="Narıncı"></div>
+              <div class="cdot2" style="background:#92400E" data-c="#92400E" onclick="pickColor('#92400E')" title="Şokolad"></div>
+              <div class="cdot2" style="background:#7E6C55" data-c="#7E6C55" onclick="pickColor('#7E6C55')" title="Bej"></div>
+              <div class="cdot2" style="background:#374151" data-c="#374151" onclick="pickColor('#374151')" title="Boz-qara"></div>
+              <div class="cdot2" style="background:#111827" data-c="#111827" onclick="pickColor('#111827')" title="Tünd"></div>
+              <div class="cdot2" style="background:#0F172A" data-c="#0F172A" onclick="pickColor('#0F172A')" title="Gecə"></div>
             </div>
-            <div class="cc-row2">
+            <div style="font-size:11px;font-weight:600;color:var(--gray);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em">Özəl rəng</div>
+            <div class="cc-row2" style="margin-bottom:1.1rem">
               <input type="color" id="customColorPicker" value="#185FA5" oninput="pickColor(this.value)">
-              <label>Özəl rəng seç</label>
-              <span id="customColorHex" style="font-size:11px;color:var(--gray);margin-left:4px">#185FA5</span>
+              <label>İstənilən rəngi seçin</label>
+              <span id="customColorHex" style="font-size:12px;color:var(--navy);font-weight:600;margin-left:4px;font-family:monospace">#185FA5</span>
+            </div>
+            <div style="font-size:11px;font-weight:600;color:var(--gray);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em">Ətraflı tənzimləmə</div>
+            <div style="border:1px solid var(--gray-light);border-radius:10px;overflow:hidden;margin-bottom:1rem">
+              <div class="color-row" style="padding:10px 12px;border-bottom:1px solid var(--gray-light)"><div class="color-row-label">İkon & Düymə</div><div class="color-row-input"><input type="color" id="c_btn" value="#185FA5" class="color-swatch" oninput="onDetailColor()"><span style="font-size:11px;color:var(--gray);font-family:monospace" id="c_btn_hex">#185FA5</span></div></div>
+              <div class="color-row" style="padding:10px 12px;border-bottom:1px solid var(--gray-light)"><div class="color-row-label">Cover başlanğıc</div><div class="color-row-input"><input type="color" id="c_cover1" value="#185FA5" class="color-swatch" oninput="onDetailColor()"><span style="font-size:11px;color:var(--gray);font-family:monospace" id="c_cover1_hex">#185FA5</span></div></div>
+              <div class="color-row" style="padding:10px 12px;border-bottom:1px solid var(--gray-light)"><div class="color-row-label">Cover son</div><div class="color-row-input"><input type="color" id="c_cover2" value="#378ADD" class="color-swatch" oninput="onDetailColor()"><span style="font-size:11px;color:var(--gray);font-family:monospace" id="c_cover2_hex">#378ADD</span></div></div>
+              <div class="color-row" style="padding:10px 12px;border-bottom:1px solid var(--gray-light)"><div class="color-row-label">Mətn rəngi</div><div class="color-row-input"><input type="color" id="c_text" value="#0a1628" class="color-swatch" oninput="onDetailColor()"><span style="font-size:11px;color:var(--gray);font-family:monospace" id="c_text_hex">#0a1628</span></div></div>
+              <div class="color-row" style="padding:10px 12px"><div class="color-row-label">İkon arxa fonu</div><div class="color-row-input"><input type="color" id="c_iconbg" value="#EFF6FF" class="color-swatch" oninput="onDetailColor()"><span style="font-size:11px;color:var(--gray);font-family:monospace" id="c_iconbg_hex">#EFF6FF</span></div></div>
             </div>
             <div style="display:flex;gap:8px">
               <button class="btn btn-primary" onclick="saveCustomColors()">Profildə tətbiq et</button>
-              <button class="btn" onclick="pickColor('#185FA5')">Sıfırla</button>
+              <button class="btn" onclick="resetAllColors()">Sıfırla</button>
             </div>
           </div>
         </div>
-        <!-- SAĞ: Canlı telefon preview -->
+        <!-- Canlı telefon -->
         <div class="design-right-sticky">
           <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem;text-align:center">
             <div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:1rem;text-align:left">Canlı baxış</div>
@@ -745,7 +742,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 <!-- MODALS -->
 <div class="modal-overlay" id="crmModal"><div class="modal"><div class="modal-title" id="crmModalTitle">CRM</div><div class="modal-sub" id="crmModalSub"></div><div id="crmModalFields"></div><div class="modal-footer"><button class="btn" onclick="closeModal('crmModal')">Ləğv et</button><button class="btn btn-primary" onclick="saveCrmConfig()">Qoş</button></div></div></div>
 <div class="modal-overlay" id="contactModal"><div class="modal"><div class="modal-title" id="contactModalName">Kontakt</div><div class="modal-sub" id="contactModalMeta"></div><div id="contactModalFields"></div><div class="modal-footer"><button class="btn btn-danger btn-sm" onclick="deleteContact(window._cid)">Sil</button><button class="btn" onclick="closeModal('contactModal')">Bağla</button><button class="btn btn-primary" onclick="exportContactVcf(window._cid)">Telefona saxla</button></div></div></div>
-<div class="modal-overlay" id="addContactModal"><div class="modal"><div class="modal-title">Yeni kontakt</div><div class="modal-sub">Kontakt məlumatlarını daxil edin</div><div class="form-group"><label class="form-label">Ad Soyad *</label><input class="form-input" id="mName" placeholder="Ad Soyad"></div><div class="form-row"><div class="form-group"><label class="form-label">Vəzifə</label><input class="form-input" id="mPosition"></div><div class="form-group"><label class="form-label">Şirkət</label><input class="form-input" id="mCompany"></div></div><div class="form-row"><div class="form-group"><label class="form-label">Telefon</label><input class="form-input" id="mPhone"></div><div class="form-group"><label class="form-label">E-mail</label><input class="form-input" id="mEmail"></div></div><div class="form-group"><label class="form-label">Qeyd</label><input class="form-input" id="mNote" placeholder="Harada tanışlıq..."></div><div class="modal-footer"><button class="btn" onclick="closeModal('addContactModal')">Ləğv et</button><button class="btn btn-primary" onclick="addManualContact()">Əlavə et</button></div></div></div>
+<div class="modal-overlay" id="addContactModal"><div class="modal"><div class="modal-title">Yeni kontakt</div><div class="modal-sub">Kontakt məlumatlarını daxil edin</div><div class="form-group"><label class="form-label">Ad Soyad *</label><input class="form-input" id="mName" placeholder="Ad Soyad"></div><div class="form-row"><div class="form-group"><label class="form-label">Vəzifə</label><input class="form-input" id="mPosition"></div><div class="form-group"><label class="form-label">Şirkət</label><input class="form-input" id="mCompany"></div></div><div class="form-row"><div class="form-group"><label class="form-label">Telefon</label><input class="form-input" id="mPhone"></div><div class="form-group"><label class="form-label">E-mail</label><input class="form-input" id="mEmail"></div></div><div class="form-group"><label class="form-label">Kateqoriya</label><select class="form-input" id="mLabel" style="cursor:pointer"><option value="biznes">💼 Biznes</option><option value="ev">🏠 Ev / Şəxsi</option><option value="marketinq">📣 Marketinq</option><option value="tərəfdaş">🤝 Tərəfdaş</option><option value="digər">📋 Digər</option></select></div><div class="form-group"><label class="form-label">Qeyd</label><input class="form-input" id="mNote" placeholder="Harada tanışlıq..."></div><div class="modal-footer"><button class="btn" onclick="closeModal('addContactModal')">Ləğv et</button><button class="btn btn-primary" onclick="addManualContact()">Əlavə et</button></div></div></div>
 <div class="modal-overlay" id="upgradeModal">
 <div class="modal upgrade-modal" style="max-width:460px;text-align:left">
   <div style="text-align:center;margin-bottom:1.25rem">
@@ -1021,7 +1018,26 @@ window.removePdf=async function(i){const pdfs=[...(UD?.pdfs||[])];pdfs.splice(i,
 function renderContacts(list){
   const g=document.getElementById('contactsGrid');
   if(!list.length){g.innerHTML='<div class="empty-state"><div style="font-size:36px;opacity:.3;margin-bottom:.9rem">📇</div><div style="font-size:14px;color:var(--navy);margin-bottom:3px">Hələ kontakt yoxdur</div></div>';return;}
-  g.innerHTML=list.map(c=>`<div class="contact-card"><div class="contact-av">${(c.name||'?').charAt(0).toUpperCase()}</div><div class="contact-info"><div class="contact-name">${c.name||'—'}</div><div class="contact-meta">${[c.position,c.company,c.phone,c.email].filter(Boolean).join(' · ')}</div></div><span class="contact-source src-manual">Əl ilə</span><div class="contact-actions"><button class="btn btn-sm" onclick="openContactModal('${c.id}')">Bax</button><button class="btn btn-sm" onclick="exportContactVcf('${c.id}')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button></div></div>`).join('');
+  g.innerHTML=list.map(c=>{
+    const labelColor={biznes:'#185FA5',ev:'#059669',marketinq:'#BE185D',tərəfdaş:'#7C3AED',digər:'#888'}[c.label||'digər']||'#888';
+    const labelName={biznes:'Biznes',ev:'Ev',marketinq:'Marketinq',tərəfdaş:'Tərəfdaş',digər:'Digər'}[c.label||'digər']||'Digər';
+    const hasWebhook=!!_cachedAutoUrl;
+    return `<div class="contact-card">
+      <div class="contact-av">${(c.name||'?').charAt(0).toUpperCase()}</div>
+      <div class="contact-info" style="flex:1;min-width:0">
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+          <div class="contact-name">${c.name||'—'}</div>
+          <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;background:${labelColor}18;color:${labelColor};flex-shrink:0">${labelName}</span>
+        </div>
+        <div class="contact-meta">${[c.position,c.company,c.phone,c.email].filter(Boolean).join(' · ')}</div>
+      </div>
+      <div class="contact-actions" style="display:flex;gap:5px;flex-shrink:0;align-items:center">
+        ${hasWebhook?`<button class="btn btn-sm" title="CRM-ə göndər" onclick="sendOneToWebhook('${c.id}')" style="padding:4px 7px;min-width:0"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></button>`:''}
+        <button class="btn btn-sm" onclick="openContactModal('${c.id}')">Bax</button>
+        <button class="btn btn-sm" onclick="exportContactVcf('${c.id}')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+      </div>
+    </div>`;
+  }).join('');
 }
 window.filterContacts=function(q){renderContacts(allContacts.filter(c=>[c.name,c.company,c.email,c.phone].join(' ').toLowerCase().includes(q.toLowerCase())));};
 window.openAddContactModal=function(){document.getElementById('addContactModal').classList.add('open');};
@@ -1048,9 +1064,9 @@ window.addManualContact=async function(){
     setTimeout(()=>openUpgradeModal(),800);
     return;
   }
-  const c={name:n,position:document.getElementById('mPosition').value.trim(),company:document.getElementById('mCompany').value.trim(),phone:document.getElementById('mPhone').value.trim(),email:document.getElementById('mEmail').value.trim(),note:document.getElementById('mNote').value.trim(),source:'manual',addedAt:Date.now()};
+  const c={name:n,position:document.getElementById('mPosition').value.trim(),company:document.getElementById('mCompany').value.trim(),phone:document.getElementById('mPhone').value.trim(),email:document.getElementById('mEmail').value.trim(),note:document.getElementById('mNote').value.trim(),label:document.getElementById('mLabel')?.value||'biznes',source:'manual',addedAt:Date.now()};
   await push(ref(db,`contacts/${CU.uid}`),c);
-  ['mName','mPosition','mCompany','mPhone','mEmail','mNote'].forEach(id=>document.getElementById(id).value='');
+  ['mName','mPosition','mCompany','mPhone','mEmail','mNote'].forEach(id=>document.getElementById(id).value='');document.getElementById('mLabel').value='biznes';
   showToast('Kontakt əlavə edildi','success');closeModal('addContactModal');
   triggerAutoContact(c);
   syncContactToHubspot(c);
@@ -1754,86 +1770,99 @@ const TEMPLATES=[
 <rect x="14" y="268" width="192" height="16" rx="4" stroke="#C9A84C" stroke-width=".8" fill="none"/>
 <text x="110" y="279" font-family="Georgia,serif" font-size="7.5" fill="#C9A84C" text-anchor="middle" letter-spacing="1">KONTAKTI SAXLA</text>
 </svg>`},
-];
-// ── TEMPLATE COLORS ─────────────────────────────────────────────────────────
-const TMPL_COLORS={1:["#185FA5","#0a1628","#4FACFE"],2:["#185FA5","#374151","#6366F1"],3:["#7C3AED","#0d1117","#4FACFE"],4:["#059669","#185FA5","#D97706"],5:["#7C3AED","#1D4ED8","#BE185D"],6:["#185FA5","#0891B2","#059669"],7:["#111827","#374151","#7C3AED"],8:["#DC2626","#D97706","#185FA5"],9:["#111827","#1D4ED8","#7C3AED"],10:["#185FA5","#059669","#D97706"],11:["#BE185D","#7C3AED","#185FA5"],12:["#1D4ED8","#0891B2","#059669"]};
-
-// Cari seçilmiş rəng (preview üçün)
-let _liveColor='#185FA5';
-
-function renderTemplates(){
+];function renderTemplates(){
   const saved=parseInt(UD?.tmplNum||UD?.template||'1')||1;
-  const isPro=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
-  document.getElementById('templatesGrid').innerHTML=TEMPLATES.map(t=>{
-    const colors=TMPL_COLORS[t.id]||["#185FA5"];
-    const palette=colors.map(c=>`<span style="width:10px;height:10px;border-radius:50%;background:${c};display:inline-block;margin-right:2px"></span>`).join('');
-    const badgeHtml=t.free?`<span class="tmpl-badge tmpl-free">FREE</span>`:(isPro?'':`<span class="tmpl-badge tmpl-pro">PRO</span>`);
-    const lockHtml=!t.free&&!isPro?`<div style="position:absolute;inset:0;background:rgba(244,246,251,.55);backdrop-filter:blur(1px);display:flex;align-items:center;justify-content:center"><span style="background:rgba(201,168,76,.9);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px">PRO</span></div>`:'';
-    return `<div class="tmpl-card${t.id===saved?' selected':''}" onclick="applyTemplate(${t.id})">
-      <div class="tmpl-cover" style="position:relative">${t.preview}${lockHtml}</div>
-      <div class="tmpl-body">
-        <div class="tmpl-name">${t.name}</div>
-        <div style="display:flex;align-items:center;gap:4px;margin-top:3px">${palette}</div>
-      </div>
-      ${badgeHtml}
+  document.getElementById('templatesGrid').innerHTML=TEMPLATES.map(t=>`
+    <div class="tmpl-card${t.id===saved?' selected':''}" onclick="applyTemplate(${t.id})">
+      <div class="tmpl-cover">${t.preview}</div>
+      <div class="tmpl-body"><div class="tmpl-name">${t.name}</div><div class="tmpl-cat">${t.cat}</div></div>
+      <span class="tmpl-badge ${t.free?'tmpl-free':'tmpl-pro'}">${t.free?'FREE':'PRO'}</span>
       <div class="tmpl-selected-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-    </div>`;
-  }).join('');
-  // ilk yükləmədə mevcut rəng
-  const savedColor=UD?.customColors?.logo||'#185FA5';
-  _liveColor=savedColor;
-  document.querySelectorAll('.cdot2').forEach(d=>d.classList.toggle('on',d.dataset.c===_liveColor));
-  const ccp=document.getElementById('customColorPicker');if(ccp)ccp.value=_liveColor;
-  const cch=document.getElementById('customColorHex');if(cch)cch.textContent=_liveColor;
+    </div>`).join('');
 }
 window.applyTemplate=async function(id){
   const tmpl=TEMPLATES.find(t=>t.id===id);if(!tmpl)return;
-  const isPro=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
-  if(!tmpl.free&&!isPro){document.getElementById('proTmplModal')?.classList.add('open');return;}
+  const isPro=UD?.plan==='pro'||UD?.plan==='premium';
+  if(!tmpl.free&&!isPro){openUpgradeModal();return;}
+  // tmplNum → profile.html-in t1..t12 sistemi
   await update(ref(db,`users/${CU.uid}`),{tmplNum:id,template:id});
-  document.querySelectorAll('.tmpl-card').forEach(c=>c.classList.toggle('selected',parseInt(c.getAttribute('onclick').match(/\d+/)?.[0]||0)===id));
+  document.querySelectorAll('.tmpl-card').forEach(c=>c.classList.toggle('selected',c.getAttribute('onclick')===`applyTemplate(${id})`));
   showToast(`${tmpl.name} tətbiq edildi ✓`,'success');
-  // tövsiyə rəngini tətbiq et
-  const suggestedColor=TMPL_COLORS[id]?.[0]||'#185FA5';
-  pickColor(suggestedColor);
-  refreshLivePreview();
 };
 
-// ── COLOR & LIVE PREVIEW ─────────────────────────────────────────────────
+// ── COLOR CUSTOMIZATION ───────────────────────────────────────────────────
+let _liveColor='#185FA5';
+
+// Hex → lighten (30%)
+function lightenHex(hex,pct=0.3){try{const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);const lx=v=>Math.round(v+(255-v)*pct);return`#${[lx(r),lx(g),lx(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}`;}catch{return hex;}}
+
+// Əsas rəng seçiləndə bütün nuansları avtomatik yenilə + iframe postMessage
 window.pickColor=function(c){
   _liveColor=c;
   document.querySelectorAll('.cdot2').forEach(d=>d.classList.toggle('on',d.dataset.c===c));
   const ccp=document.getElementById('customColorPicker');if(ccp)ccp.value=c;
   const cch=document.getElementById('customColorHex');if(cch)cch.textContent=c;
-  // iframe-ə postMessage ilə rəng göndər (anında preview)
+  // Nuansları avtomatik hesabla
+  const accent=lightenHex(c,0.28);
+  const iconbg=lightenHex(c,0.88);
+  const updates={c_btn:c,c_cover1:c,c_cover2:accent,c_iconbg:iconbg};
+  Object.entries(updates).forEach(([k,v])=>{
+    const el=document.getElementById(k);if(el)el.value=v;
+    const hex=document.getElementById(k+'_hex');if(hex)hex.textContent=v;
+  });
+  // iframe-ə anlıq göndər
   const frame=document.getElementById('livePreviewFrame');
   if(frame?.contentWindow)frame.contentWindow.postMessage({type:'setColor',color:c},'*');
 };
-window.saveCustomColors=async function(){
-  const c=_liveColor||'#185FA5';
-  // lighten for accent
-  const r=parseInt(c.slice(1,3),16),g=parseInt(c.slice(3,5),16),b=parseInt(c.slice(5,7),16);
-  const lx=v=>Math.round(v+(255-v)*.3);
-  const accent=`rgb(${lx(r)},${lx(g)},${lx(b)})`;
-  const cols={logo:c,text:'#0a1628',btn:c,cover1:c,cover2:accent};
-  await update(ref(db,`users/${CU.uid}`),{customColors:cols,color:c});
-  showToast('Rəng saxlanıldı — profil yeniləndi ✓','success');
-  setTimeout(refreshLivePreview,900);
-};
-function loadCustomColors(){
-  const c=UD?.customColors?.logo||UD?.color||'#185FA5';
-  _liveColor=c;
-}
-function refreshLivePreview(){
-  const slug=UD?.slug||'';
+
+// Ətraflı nuans dəyişdirildikdə iframe-ə göndər
+window.onDetailColor=function(){
+  const btn=document.getElementById('c_btn')?.value||_liveColor;
+  const c1=document.getElementById('c_cover1')?.value||_liveColor;
+  const c2=document.getElementById('c_cover2')?.value;
+  const txt=document.getElementById('c_text')?.value;
+  const ibg=document.getElementById('c_iconbg')?.value;
+  ['btn','cover1','cover2','text','iconbg'].forEach(k=>{
+    const el=document.getElementById('c_'+k);
+    const hex=document.getElementById('c_'+k+'_hex');
+    if(el&&hex)hex.textContent=el.value;
+  });
   const frame=document.getElementById('livePreviewFrame');
-  const link=document.getElementById('openProfileLink');
-  if(!frame)return;
-  const url=slug?`https://apps.mycontact.az/profile.html?u=${slug}&_r=${Date.now()}`:`profile.html?_r=${Date.now()}`;
-  frame.src=url;
-  if(link)link.href=slug?`https://apps.mycontact.az/profile.html?u=${slug}`:'profile.html';
-}
+  if(frame?.contentWindow)frame.contentWindow.postMessage({type:'setColors',btn,cover1:c1,cover2:c2,text:txt,iconbg:ibg},'*');
+};
+
 window.updatePreview=function(){};// legacy stub
+
+window.saveCustomColors=async function(){
+  const cols={
+    logo:_liveColor,
+    btn:document.getElementById('c_btn')?.value||_liveColor,
+    cover1:document.getElementById('c_cover1')?.value||_liveColor,
+    cover2:document.getElementById('c_cover2')?.value||lightenHex(_liveColor,0.28),
+    text:document.getElementById('c_text')?.value||'#0a1628',
+    iconbg:document.getElementById('c_iconbg')?.value||lightenHex(_liveColor,0.88)
+  };
+  await update(ref(db,`users/${CU.uid}`),{customColors:cols,color:_liveColor});
+  showToast('Rənglər saxlanıldı — profil yeniləndi ✓','success');
+  setTimeout(()=>{const f=document.getElementById('livePreviewFrame');if(f&&f.src!=='about:blank')f.src=f.src;},900);
+};
+
+window.resetAllColors=function(){pickColor('#185FA5');};
+window.resetColors=window.resetAllColors;
+
+function loadCustomColors(){
+  const c=UD?.customColors||{};
+  const base=c.logo||UD?.color||'#185FA5';
+  _liveColor=base;
+  const map={btn:c.btn||base,cover1:c.cover1||base,cover2:c.cover2||lightenHex(base,0.28),text:c.text||'#0a1628',iconbg:c.iconbg||lightenHex(base,0.88)};
+  Object.entries(map).forEach(([k,v])=>{
+    const el=document.getElementById('c_'+k);if(el)el.value=v;
+    const hex=document.getElementById('c_'+k+'_hex');if(hex)hex.textContent=v;
+  });
+  const ccp=document.getElementById('customColorPicker');if(ccp)ccp.value=base;
+  const cch=document.getElementById('customColorHex');if(cch)cch.textContent=base;
+  document.querySelectorAll('.cdot2').forEach(d=>d.classList.toggle('on',d.dataset.c===base));
+}
 window.saveCrmConfig=async function(){
   const k1=document.getElementById('crmKey1')?.value.trim();if(!k1){showToast('Məlumatları daxil edin','error');return;}
   const k2=document.getElementById('crmKey2')?.value.trim()||'';
@@ -1887,7 +1916,7 @@ window.showPanel=function(n){
   const t={overview:'İcmal',editor:'Kartımı redaktə et',social:'Sosial şəbəkələr',media:'PDF və Video',contacts:'Kontaktlarım',crm:'CRM İnteqrasiya',scanner:'Vizit Kart Oxuyucu',signature:'Email İmzası Builder',customize:'Dizayn & Şablonlar',settings:'Ayarlar',zapier:'CRM İnteqrasiya'};
   document.getElementById('topbarTitle').textContent=t[n]||n;
   if(n==='signature'){document.querySelectorAll('#sigBlocks .sig-block-toggle').forEach(btn=>{const key=btn.closest('[data-key]')?.dataset.key;if(key)sigState[key]=btn.classList.contains('on');});setTimeout(renderSigPreview,100);}
-  if(n==='customize'){renderTemplates();loadCustomColors();setTimeout(refreshLivePreview,400);}
+  if(n==='customize'){renderTemplates();loadCustomColors();}
   if(n==='zapier'){loadAutoWebhook();}
   closeSidebar();
 };
@@ -1930,6 +1959,16 @@ async function getAutoWebhookUrl(){
   catch(e){return null;}
 }
 
+window.sendOneToWebhook=async function(id){
+  const ct=allContacts.find(x=>x.id===id);if(!ct)return;
+  const url=await getAutoWebhookUrl();
+  if(!url){showToast('Webhook URL qoşulmayıb — Avtomatlaşdırma bölməsini açın','error');return;}
+  const payload={name:ct.name||'',email:ct.email||'',phone:ct.phone||'',company:ct.company||'',position:ct.position||'',label:ct.label||'',note:ct.note||'',savedAt:new Date(ct.addedAt||Date.now()).toISOString()};
+  try{
+    await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    showToast(`${ct.name} CRM-ə göndərildi ✓`,'success');
+  }catch(e){showToast('Göndərmə xətası','error');}
+};
 async function triggerAutoContact(contact){
   const url=await getAutoWebhookUrl();
   if(!url)return;
