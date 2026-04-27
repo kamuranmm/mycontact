@@ -182,24 +182,6 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 .preview-pos{font-size:12px;margin-bottom:.75rem}
 .preview-btn{padding:8px 14px;border-radius:8px;font-size:12px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;display:inline-block}
 /* TEMPLATES */
-/* Design panel layout */
-.design-wrap{display:grid;grid-template-columns:1fr 300px;gap:1.25rem;align-items:start}
-.design-left{display:flex;flex-direction:column;gap:1.25rem}
-.design-right-sticky{position:sticky;top:76px}
-/* Phone frame */
-.live-phone{background:#18181b;border-radius:44px;padding:14px 11px 18px;box-shadow:0 28px 64px rgba(0,0,0,.38),0 0 0 1px rgba(255,255,255,.05);margin:0 auto;width:256px;position:relative}
-.live-phone::before{content:'';display:block;width:80px;height:6px;background:rgba(255,255,255,.15);border-radius:3px;margin:0 auto 10px}
-.live-phone-screen{border-radius:32px;overflow:hidden;background:#f0f2f5;position:relative;height:500px}
-.live-phone-screen iframe{width:390px;height:760px;border:none;transform:scale(0.6564);transform-origin:top left;pointer-events:none;display:block}
-.live-phone-bottom{display:flex;justify-content:center;margin-top:10px}
-.live-phone-home{width:36px;height:5px;background:rgba(255,255,255,.25);border-radius:3px}
-/* Color dots */
-.cdot-grid{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:1rem}
-.cdot2{width:30px;height:30px;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:all .15s;flex-shrink:0}
-.cdot2:hover{transform:scale(1.1)}
-.cdot2.on{border-color:var(--navy);transform:scale(1.15);box-shadow:0 2px 10px rgba(0,0,0,.25)}
-.cc-row2{display:flex;align-items:center;gap:8px;margin-bottom:1rem}
-.cc-row2 input[type=color]{width:38px;height:38px;border-radius:50%;border:2px solid var(--gray-light);cursor:pointer;padding:2px}
 .templates-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:860px}
 .tmpl-card{border-radius:14px;overflow:hidden;border:2.5px solid var(--gray-light);cursor:pointer;transition:all .22s;position:relative;background:var(--white);box-shadow:0 2px 8px rgba(0,0,0,.06)}
 .tmpl-card:hover{border-color:var(--blue);transform:translateY(-4px);box-shadow:0 12px 32px rgba(24,95,165,.18)}
@@ -522,21 +504,14 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 
     <!-- CUSTOMIZE / TEMPLATES -->
     <div class="panel" id="panel-customize">
-      <div class="design-wrap" style="margin-bottom:1.5rem">
-        <!-- SOL: Şablon + Rəng -->
-        <div class="design-left">
-          <!-- Şablon seçimi -->
-          <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
-            <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:3px">Şablon</div>
-            <div style="font-size:12px;color:var(--gray);margin-bottom:1rem">Klik edərək preview görün. Pro şablonları da baxmaq üçün seçə bilərsiniz.</div>
-            <div class="templates-grid" id="templatesGrid" style="max-width:none"></div>
-            <div style="margin-top:1rem;display:flex;gap:8px;align-items:center">
-              <button class="btn btn-primary" id="applyTmplBtn" disabled onclick="applyPreviewedTemplate()">Tətbiq edilib</button>
-              <span style="font-size:11px;color:var(--gray)">Seçin → Preview → Tətbiq et</span>
-            </div>
-          </div>
+      <!-- Templates -->
+      <div style="margin-bottom:1.5rem">
+        <div style="font-size:15px;font-weight:500;color:var(--navy);margin-bottom:4px">Şablon seç</div>
+        <div style="font-size:13px;color:var(--gray);margin-bottom:1rem">3 FREE + 7 PRO şablon. Klik edərək profilinizə tətbiq edin.</div>
+        <div class="templates-grid" id="templatesGrid"></div>
+      </div>
       <!-- Rəng + Canlı Preview -->
-      <div style="margin-top:0">
+      <div class="design-wrap" style="margin-top:0">
         <div class="design-left">
           <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
             <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px">Rəng & Görünüş</div>
@@ -579,18 +554,17 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
             </div>
           </div>
         </div>
-        </div><!-- /design-left -->
-        <!-- SAĞ: Canlı telefon -->
+        <!-- Canlı telefon -->
         <div class="design-right-sticky">
           <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem;text-align:center">
             <div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:1rem;text-align:left">Canlı baxış</div>
             <div class="live-phone">
+              <div class="live-phone-bar"></div>
               <div class="live-phone-screen">
-                <iframe id="livePreviewFrame" src="about:blank" scrolling="no" allow="same-origin"></iframe>
+                <iframe id="livePreviewFrame" src="about:blank" scrolling="no"></iframe>
               </div>
-              <div class="live-phone-bottom"><div class="live-phone-home"></div></div>
             </div>
-            <div style="margin-top:.9rem;display:flex;justify-content:center">
+            <div style="margin-top:.9rem">
               <a id="openProfileLink" href="#" target="_blank" style="font-size:12px;color:var(--blue);display:inline-flex;align-items:center;gap:4px;text-decoration:none">
                 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                 Profili tam aç
@@ -598,8 +572,8 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
             </div>
           </div>
         </div>
-      </div><!-- /design-wrap outer -->
-    </div><!-- /panel-customize -->
+      </div>
+    </div>
 
     <!-- SETTINGS -->
     <div class="panel" id="panel-settings">
@@ -762,13 +736,12 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
       </div>
     </div>
 
-  </div>
 </main>
 
 <!-- MODALS -->
 <div class="modal-overlay" id="crmModal"><div class="modal"><div class="modal-title" id="crmModalTitle">CRM</div><div class="modal-sub" id="crmModalSub"></div><div id="crmModalFields"></div><div class="modal-footer"><button class="btn" onclick="closeModal('crmModal')">Ləğv et</button><button class="btn btn-primary" onclick="saveCrmConfig()">Qoş</button></div></div></div>
 <div class="modal-overlay" id="contactModal"><div class="modal"><div class="modal-title" id="contactModalName">Kontakt</div><div class="modal-sub" id="contactModalMeta"></div><div id="contactModalFields"></div><div class="modal-footer"><button class="btn btn-danger btn-sm" onclick="deleteContact(window._cid)">Sil</button><button class="btn" onclick="closeModal('contactModal')">Bağla</button><button class="btn btn-primary" onclick="exportContactVcf(window._cid)">Telefona saxla</button></div></div></div>
-<div class="modal-overlay" id="addContactModal"><div class="modal"><div class="modal-title">Yeni kontakt</div><div class="modal-sub">Kontakt məlumatlarını daxil edin</div><div class="form-group"><label class="form-label">Ad Soyad *</label><input class="form-input" id="mName" placeholder="Ad Soyad"></div><div class="form-row"><div class="form-group"><label class="form-label">Vəzifə</label><input class="form-input" id="mPosition"></div><div class="form-group"><label class="form-label">Şirkət</label><input class="form-input" id="mCompany"></div></div><div class="form-row"><div class="form-group"><label class="form-label">Telefon</label><input class="form-input" id="mPhone"></div><div class="form-group"><label class="form-label">E-mail</label><input class="form-input" id="mEmail"></div></div><div class="form-group"><label class="form-label">Kateqoriya</label><select class="form-input" id="mLabel" style="cursor:pointer"><option value="biznes">💼 Biznes</option><option value="satış">📈 Satış</option><option value="marketinq">📣 Marketinq</option><option value="hr">👥 HR</option><option value="şəxsi">🙍 Şəxsi</option><option value="ev">🏠 Ev</option><option value="ofis">🏢 Ofis</option><option value="tərəfdaş">🤝 Tərəfdaş</option><option value="müştəri">⭐ Müştəri</option><option value="digər">📋 Digər</option></select></div><div class="form-group"><label class="form-label">Qeyd</label><input class="form-input" id="mNote" placeholder="Harada tanışlıq..."></div><div class="modal-footer"><button class="btn" onclick="closeModal('addContactModal')">Ləğv et</button><button class="btn btn-primary" onclick="addManualContact()">Əlavə et</button></div></div></div>
+<div class="modal-overlay" id="addContactModal"><div class="modal"><div class="modal-title">Yeni kontakt</div><div class="modal-sub">Kontakt məlumatlarını daxil edin</div><div class="form-group"><label class="form-label">Ad Soyad *</label><input class="form-input" id="mName" placeholder="Ad Soyad"></div><div class="form-row"><div class="form-group"><label class="form-label">Vəzifə</label><input class="form-input" id="mPosition"></div><div class="form-group"><label class="form-label">Şirkət</label><input class="form-input" id="mCompany"></div></div><div class="form-row"><div class="form-group"><label class="form-label">Telefon</label><input class="form-input" id="mPhone"></div><div class="form-group"><label class="form-label">E-mail</label><input class="form-input" id="mEmail"></div></div><div class="form-group"><label class="form-label">Kateqoriya</label><select class="form-input" id="mLabel" style="cursor:pointer"><option value="biznes">💼 Biznes</option><option value="ev">🏠 Ev / Şəxsi</option><option value="marketinq">📣 Marketinq</option><option value="tərəfdaş">🤝 Tərəfdaş</option><option value="digər">📋 Digər</option></select></div><div class="form-group"><label class="form-label">Qeyd</label><input class="form-input" id="mNote" placeholder="Harada tanışlıq..."></div><div class="modal-footer"><button class="btn" onclick="closeModal('addContactModal')">Ləğv et</button><button class="btn btn-primary" onclick="addManualContact()">Əlavə et</button></div></div></div>
 <div class="modal-overlay" id="upgradeModal">
 <div class="modal upgrade-modal" style="max-width:460px;text-align:left">
   <div style="text-align:center;margin-bottom:1.25rem">
@@ -1045,9 +1018,8 @@ function renderContacts(list){
   const g=document.getElementById('contactsGrid');
   if(!list.length){g.innerHTML='<div class="empty-state"><div style="font-size:36px;opacity:.3;margin-bottom:.9rem">📇</div><div style="font-size:14px;color:var(--navy);margin-bottom:3px">Hələ kontakt yoxdur</div></div>';return;}
   g.innerHTML=list.map(c=>{
-    const LABEL_MAP={biznes:{n:'Biznes',c:'#185FA5'},satış:{n:'Satış',c:'#059669'},marketinq:{n:'Marketinq',c:'#BE185D'},hr:{n:'HR',c:'#7C3AED'},şəxsi:{n:'Şəxsi',c:'#D97706'},ev:{n:'Ev',c:'#0891B2'},ofis:{n:'Ofis',c:'#374151'},tərəfdaş:{n:'Tərəfdaş',c:'#6D28D9'},müştəri:{n:'Müştəri',c:'#DC2626'},digər:{n:'Digər',c:'#888'}};
-    const lbl=LABEL_MAP[c.label||'digər']||LABEL_MAP.digər;
-    const labelColor=lbl.c;const labelName=lbl.n;
+    const labelColor={biznes:'#185FA5',ev:'#059669',marketinq:'#BE185D',tərəfdaş:'#7C3AED',digər:'#888'}[c.label||'digər']||'#888';
+    const labelName={biznes:'Biznes',ev:'Ev',marketinq:'Marketinq',tərəfdaş:'Tərəfdaş',digər:'Digər'}[c.label||'digər']||'Digər';
     const hasWebhook=!!_cachedAutoUrl;
     return `<div class="contact-card">
       <div class="contact-av">${(c.name||'?').charAt(0).toUpperCase()}</div>
@@ -1093,7 +1065,7 @@ window.addManualContact=async function(){
   }
   const c={name:n,position:document.getElementById('mPosition').value.trim(),company:document.getElementById('mCompany').value.trim(),phone:document.getElementById('mPhone').value.trim(),email:document.getElementById('mEmail').value.trim(),note:document.getElementById('mNote').value.trim(),label:document.getElementById('mLabel')?.value||'biznes',source:'manual',addedAt:Date.now()};
   await push(ref(db,`contacts/${CU.uid}`),c);
-  ['mName','mPosition','mCompany','mPhone','mEmail','mNote'].forEach(id=>document.getElementById(id).value='');document.getElementById('mLabel').value='biznes';if(PD)render();
+  ['mName','mPosition','mCompany','mPhone','mEmail','mNote'].forEach(id=>document.getElementById(id).value='');document.getElementById('mLabel').value='biznes';
   showToast('Kontakt əlavə edildi','success');closeModal('addContactModal');
   triggerAutoContact(c);
   syncContactToHubspot(c);
@@ -1797,94 +1769,24 @@ const TEMPLATES=[
 <rect x="14" y="268" width="192" height="16" rx="4" stroke="#C9A84C" stroke-width=".8" fill="none"/>
 <text x="110" y="279" font-family="Georgia,serif" font-size="7.5" fill="#C9A84C" text-anchor="middle" letter-spacing="1">KONTAKTI SAXLA</text>
 </svg>`},
-];
-// Canlı preview iframe yenilə
-function refreshLivePreview(){
-  const slug=UD?.slug||'';
-  const frame=document.getElementById('livePreviewFrame');
-  const link=document.getElementById('openProfileLink');
-  if(!frame)return;
-  const url=slug
-    ?`https://apps.mycontact.az/profile.html?u=${encodeURIComponent(slug)}&_r=${Date.now()}`
-    :`profile.html?_r=${Date.now()}`;
-  frame.src=url;
-  if(link)link.href=slug?`https://apps.mycontact.az/profile.html?u=${encodeURIComponent(slug)}`:'profile.html';
-}
-
-// Seçilmiş preview şablon (saxlanmır — yalnız baxış üçün)
-let _previewTmplId=null;
-
-function renderTemplates(){
+];function renderTemplates(){
   const saved=parseInt(UD?.tmplNum||UD?.template||'1')||1;
-  _previewTmplId=saved;
-  const isPro=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
-  document.getElementById('templatesGrid').innerHTML=TEMPLATES.map(t=>{
-    const isSel=t.id===saved;
-    const isProTmpl=!t.free;
-    const badgeHtml=t.free
-      ?`<span class="tmpl-badge tmpl-free">FREE</span>`
-      :(isPro?'':`<span class="tmpl-badge tmpl-pro">PRO</span>`);
-    return `<div class="tmpl-card${isSel?' selected':''}" onclick="previewTemplate(${t.id})">
+  document.getElementById('templatesGrid').innerHTML=TEMPLATES.map(t=>`
+    <div class="tmpl-card${t.id===saved?' selected':''}" onclick="applyTemplate(${t.id})">
       <div class="tmpl-cover">${t.preview}</div>
       <div class="tmpl-body"><div class="tmpl-name">${t.name}</div><div class="tmpl-cat">${t.cat}</div></div>
-      ${badgeHtml}
+      <span class="tmpl-badge ${t.free?'tmpl-free':'tmpl-pro'}">${t.free?'FREE':'PRO'}</span>
       <div class="tmpl-selected-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
-    </div>`;
-  }).join('');
-  // Applied template'i fərqləndirmək üçün
-  updateTmplAppliedBadge(saved);
+    </div>`).join('');
 }
-
-// Şablona preview bax (saxlanmır)
-window.previewTemplate=function(id){
-  _previewTmplId=id;
-  // Kart seçimini vizual göstər
-  document.querySelectorAll('.tmpl-card').forEach(c=>{
-    const cid=parseInt(c.getAttribute('onclick').match(/\d+/)?.[0]||0);
-    c.classList.toggle('selected',cid===id);
-  });
-  // iframe-ə şablon dəyiş mesajı göndər
-  const frame=document.getElementById('livePreviewFrame');
-  if(frame?.contentWindow)frame.contentWindow.postMessage({type:'setTmpl',tmpl:id},'*');
-  // "Tətbiq et" düyməsini aktiv et
-  const applyBtn=document.getElementById('applyTmplBtn');
-  if(applyBtn){
-    const tmpl=TEMPLATES.find(t=>t.id===id);
-    const isPro=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
-    const savedId=parseInt(UD?.tmplNum||UD?.template||'1')||1;
-    applyBtn.disabled=(id===savedId);
-    applyBtn.textContent=id===savedId?'Tətbiq edilib':'Tətbiq et';
-    applyBtn.dataset.tmplId=id;
-    applyBtn.dataset.isPro=(!tmpl?.free&&!isPro)?'1':'0';
-  }
-};
-
-function updateTmplAppliedBadge(savedId){
-  document.querySelectorAll('.tmpl-card').forEach(c=>{
-    const cid=parseInt(c.getAttribute('onclick').match(/\d+/)?.[0]||0);
-    c.classList.toggle('selected',cid===savedId);
-  });
-}
-
 window.applyTemplate=async function(id){
   const tmpl=TEMPLATES.find(t=>t.id===id);if(!tmpl)return;
-  const isPro=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
+  const isPro=UD?.plan==='pro'||UD?.plan==='premium';
   if(!tmpl.free&&!isPro){openUpgradeModal();return;}
+  // tmplNum → profile.html-in t1..t12 sistemi
   await update(ref(db,`users/${CU.uid}`),{tmplNum:id,template:id});
-  if(UD)UD.tmplNum=id;
-  updateTmplAppliedBadge(id);
+  document.querySelectorAll('.tmpl-card').forEach(c=>c.classList.toggle('selected',c.getAttribute('onclick')===`applyTemplate(${id})`));
   showToast(`${tmpl.name} tətbiq edildi ✓`,'success');
-  refreshLivePreview();
-};
-
-// "Tətbiq et" düyməsi handler
-window.applyPreviewedTemplate=async function(){
-  const btn=document.getElementById('applyTmplBtn');
-  if(!btn)return;
-  const id=parseInt(btn.dataset.tmplId||'0');
-  if(!id)return;
-  if(btn.dataset.isPro==='1'){openUpgradeModal();return;}
-  await applyTemplate(id);
 };
 
 // ── COLOR CUSTOMIZATION ───────────────────────────────────────────────────
@@ -1909,11 +1811,7 @@ window.pickColor=function(c){
   });
   // iframe-ə anlıq göndər
   const frame=document.getElementById('livePreviewFrame');
-  if(frame?.contentWindow){
-    frame.contentWindow.postMessage({type:'setColor',color:c},'*');
-    // Cari preview şablon varsa onu da göndər
-    if(_previewTmplId)frame.contentWindow.postMessage({type:'setTmpl',tmpl:_previewTmplId},'*');
-  }
+  if(frame?.contentWindow)frame.contentWindow.postMessage({type:'setColor',color:c},'*');
 };
 
 // Ətraflı nuans dəyişdirildikdə iframe-ə göndər
@@ -2017,7 +1915,7 @@ window.showPanel=function(n){
   const t={overview:'İcmal',editor:'Kartımı redaktə et',social:'Sosial şəbəkələr',media:'PDF və Video',contacts:'Kontaktlarım',crm:'CRM İnteqrasiya',scanner:'Vizit Kart Oxuyucu',signature:'Email İmzası Builder',customize:'Dizayn & Şablonlar',settings:'Ayarlar',zapier:'CRM İnteqrasiya'};
   document.getElementById('topbarTitle').textContent=t[n]||n;
   if(n==='signature'){document.querySelectorAll('#sigBlocks .sig-block-toggle').forEach(btn=>{const key=btn.closest('[data-key]')?.dataset.key;if(key)sigState[key]=btn.classList.contains('on');});setTimeout(renderSigPreview,100);}
-  if(n==='customize'){renderTemplates();loadCustomColors();setTimeout(refreshLivePreview,400);}
+  if(n==='customize'){renderTemplates();loadCustomColors();}
   if(n==='zapier'){loadAutoWebhook();}
   closeSidebar();
 };
