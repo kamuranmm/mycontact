@@ -1871,10 +1871,11 @@ function refreshLivePreview(){
 
 function renderTemplates(){
   const saved=parseInt(UD?.tmplNum||UD?.template||'1')||1;
-  _previewTmplId=saved;
+  // _previewTmplId saxla — apply etdikdən sonra dəyişməsin
+  if(!_previewTmplId||_previewTmplId===0)_previewTmplId=saved;
   const isPro=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
   document.getElementById('templatesGrid').innerHTML=TEMPLATES.map(t=>{
-    const isSel=t.id===saved;
+    const isSel=t.id===saved;  // aktiv (Firebase-dəki)
     const badgeHtml=t.free
       ?`<span class="tmpl-badge tmpl-free">FREE</span>`
       :(isPro?'':`<span class="tmpl-badge tmpl-pro">PRO</span>`);
@@ -1935,7 +1936,14 @@ async function _doApplyTemplate(id){
   const isPro=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
   if(!tmpl.free&&!isPro){document.getElementById('proTmplModal')?.classList.add('open');return;}
   await update(ref(db,`users/${CU.uid}`),{tmplNum:id,template:id});
-  if(UD)UD.tmplNum=id;
+  if(UD){UD.tmplNum=id;UD.template=id;}
+  _previewTmplId=id;
+  // Profile iframe-dəki localStorage-ı sıfırla ki köhnə dəyər qalmasın
+  const slug=UD?.slug||'';
+  if(slug){
+    const frame=document.getElementById('livePreviewFrame');
+    try{frame?.contentWindow?.localStorage?.removeItem('cp_tmpl_'+slug);}catch(e){}
+  }
   showToast(`${tmpl.name} tətbiq edildi ✓`,'success');
   renderTemplates();
   setTimeout(refreshLivePreview,600);
