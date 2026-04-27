@@ -1087,7 +1087,7 @@ async function init(){
     const lm=LM[lang]||LM.az;const _lfl=document.getElementById('lfl');const _lco=document.getElementById('lco');if(_lfl)_lfl.textContent=lm.f;if(_lco)_lco.textContent=lm.c;document.querySelectorAll('.lang-opt').forEach(o=>o.classList.toggle('sel',o.dataset.l===lang));
     color=localStorage.getItem('cp_col_'+slug)||'#185FA5';
     // tmplNum — dashboard-dan seçilmiş şablon (1-12), lokal override var ise onu götür
-    const savedTmpl=parseInt(localStorage.getItem('cp_tmpl_'+slug)||PD.tmplNum||PD.template||'1');
+    const savedTmpl=parseInt(PD.tmplNum||PD.template||localStorage.getItem('cp_tmpl_'+slug)||'1');
     tmpl=isNaN(savedTmpl)?1:Math.min(Math.max(savedTmpl,1),12);
     applyColor(color);
     // Arxa fon rəngi
