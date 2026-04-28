@@ -543,145 +543,83 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 
     <!-- CUSTOMIZE / TEMPLATES -->
         <div class="panel" id="panel-customize">
-<style>
-/* ── DESIGN PANEL ─────────────────────────────── */
-.dp-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:start}
-@media(max-width:768px){.dp-wrap{grid-template-columns:1fr}}
-.dp-section{background:var(--white);border-radius:16px;border:1px solid var(--gray-light);overflow:hidden}
-.dp-section-head{padding:1rem 1.25rem;border-bottom:1px solid var(--gray-light);display:flex;align-items:center;gap:10px}
-.dp-section-icon{width:32px;height:32px;border-radius:8px;background:var(--surface);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.dp-section-title{font-size:14px;font-weight:600;color:var(--navy)}
-.dp-section-sub{font-size:11px;color:var(--gray);margin-top:1px}
-/* Template grid */
-.tmpl-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:1rem}
-.tmpl-item{border-radius:12px;overflow:hidden;border:2px solid transparent;cursor:pointer;transition:all .2s;position:relative;background:#f8f9fb}
-.tmpl-item:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:0 6px 20px rgba(24,95,165,.15)}
-.tmpl-item.active{border-color:var(--blue);box-shadow:0 0 0 3px rgba(24,95,165,.12)}
-.tmpl-item.active::after{content:'✓';position:absolute;top:7px;right:7px;width:20px;height:20px;background:var(--blue);border-radius:50%;color:#fff;font-size:11px;display:flex;align-items:center;justify-content:center;font-weight:700;z-index:2}
-.tmpl-preview{width:100%;display:block;line-height:0}
-.tmpl-preview svg{width:100%;height:auto;display:block}
-.tmpl-label{padding:8px 10px;display:flex;align-items:center;justify-content:space-between;background:#fff}
-.tmpl-name{font-size:11px;font-weight:600;color:var(--navy)}
-.tmpl-cat{font-size:9px;color:var(--gray)}
-/* Color swatches */
-.color-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:1rem}
-.color-swatch-btn{aspect-ratio:1;border-radius:10px;border:2px solid transparent;cursor:pointer;transition:all .2s;position:relative;display:flex;align-items:center;justify-content:center}
-.color-swatch-btn:hover{transform:scale(1.08)}
-.color-swatch-btn.active{border-color:#fff;box-shadow:0 0 0 2px var(--blue),0 3px 10px rgba(0,0,0,.15)}
-.color-swatch-btn.active::after{content:'✓';color:#fff;font-size:12px;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,.4)}
-/* Custom color row */
-.custom-color-row{display:flex;align-items:center;gap:10px;padding:0 1rem 1rem}
-.custom-color-preview{width:36px;height:36px;border-radius:9px;border:1px solid var(--gray-light);flex-shrink:0;cursor:pointer;overflow:hidden;position:relative}
-.custom-color-preview input[type=color]{position:absolute;inset:-4px;width:calc(100%+8px);height:calc(100%+8px);border:none;cursor:pointer;opacity:0}
-.custom-color-preview-fill{position:absolute;inset:0;border-radius:8px}
-.custom-color-label{font-size:12px;color:var(--gray)}
-/* Live preview phone */
-.dp-phone-wrap{position:sticky;top:80px}
-.dp-phone{width:200px;margin:0 auto;position:relative}
-.dp-phone-frame{width:200px;height:400px;border-radius:32px;background:#1a1a2e;padding:10px;box-shadow:0 20px 60px rgba(0,0,0,.3),0 0 0 1px rgba(255,255,255,.1)}
-.dp-phone-screen{width:100%;height:100%;border-radius:24px;overflow:hidden;background:#fff;position:relative}
-.dp-phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:60px;height:18px;background:#1a1a2e;border-radius:0 0 12px 12px;z-index:10}
-.dp-apply-btn{width:100%;padding:14px;background:var(--navy);color:#fff;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;margin-top:1rem}
-.dp-apply-btn:hover{background:var(--blue);transform:translateY(-1px)}
-.dp-apply-btn:active{transform:translateY(0)}
-/* Category filter */
-.tmpl-cats{display:flex;gap:6px;padding:1rem 1rem .5rem;flex-wrap:wrap}
-.tmpl-cat-btn{padding:5px 12px;border-radius:20px;border:1px solid var(--gray-light);font-size:11px;font-weight:500;color:var(--gray);cursor:pointer;background:#fff;transition:all .15s}
-.tmpl-cat-btn.active{background:var(--navy);color:#fff;border-color:var(--navy)}
-</style>
-
-<div style="max-width:1100px">
-  <!-- Header -->
-  <div style="margin-bottom:1.5rem">
-    <div style="font-size:20px;font-weight:700;color:var(--navy);margin-bottom:4px">Dizayn Studio</div>
-    <div style="font-size:13px;color:var(--gray)">Şablon seçin, rənginizi fərdiləşdirin — canlı önizləmə ilə</div>
-  </div>
-
-  <div class="dp-wrap">
-    <!-- SOL: Şablon + Rəng -->
-    <div style="display:flex;flex-direction:column;gap:1rem">
-
-      <!-- Şablonlar -->
-      <div class="dp-section">
-        <div class="dp-section-head">
-          <div class="dp-section-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      <div class="design-wrap">
+        <!-- SOL: Şablon + Rəng -->
+        <div class="design-left">
+          <!-- Şablonlar -->
+          <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1.25rem">
+            <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:3px">Şablon</div>
+            <div style="font-size:12px;color:var(--gray);margin-bottom:1rem">Pro şablonlara baxmaq üçün seçin. Tətbiq et-dən sonra yadda saxlanır.</div>
+            <div class="templates-grid" id="templatesGrid" style="max-width:none;margin-bottom:1rem"></div>
+            <div style="display:flex;gap:8px;align-items:center">
+              <button class="btn btn-primary" id="applyTmplBtn" onclick="applyPreviewedTemplate()" disabled style="min-width:110px">Tətbiq edilib</button>
+              <span style="font-size:11px;color:var(--gray)">Seçin → Preview → Tətbiq et</span>
+            </div>
           </div>
-          <div>
-            <div class="dp-section-title">Kart Şablonu</div>
-            <div class="dp-section-sub">Profil görünüşünüzü seçin</div>
+          <!-- Rəng -->
+          <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
+            <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:4px">Rəng & Görünüş</div>
+            <div style="font-size:12px;color:var(--gray);margin-bottom:1rem">Seçin — telefonda dərhal görünür. Tətbiq et-dən sonra yadda saxlanır.</div>
+            <div style="font-size:11px;font-weight:600;color:var(--gray);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em">Hazır paletlər</div>
+            <div class="cdot-grid" id="colorDots">
+              <div class="cdot2 on" style="background:#185FA5" data-c="#185FA5" onclick="pickColor('#185FA5')" title="Klassik mavi"></div>
+              <div class="cdot2" style="background:#1D4ED8" data-c="#1D4ED8" onclick="pickColor('#1D4ED8')" title="Cobalt"></div>
+              <div class="cdot2" style="background:#0891B2" data-c="#0891B2" onclick="pickColor('#0891B2')" title="Dəniz"></div>
+              <div class="cdot2" style="background:#059669" data-c="#059669" onclick="pickColor('#059669')" title="Yaşıl"></div>
+              <div class="cdot2" style="background:#16A34A" data-c="#16A34A" onclick="pickColor('#16A34A')" title="Meşə"></div>
+              <div class="cdot2" style="background:#7C3AED" data-c="#7C3AED" onclick="pickColor('#7C3AED')" title="Bənövşəyi"></div>
+              <div class="cdot2" style="background:#6D28D9" data-c="#6D28D9" onclick="pickColor('#6D28D9')" title="Tünd bənövşəyi"></div>
+              <div class="cdot2" style="background:#BE185D" data-c="#BE185D" onclick="pickColor('#BE185D')" title="Çəhrayı"></div>
+              <div class="cdot2" style="background:#DC2626" data-c="#DC2626" onclick="pickColor('#DC2626')" title="Qırmızı"></div>
+              <div class="cdot2" style="background:#D97706" data-c="#D97706" onclick="pickColor('#D97706')" title="Narıncı"></div>
+              <div class="cdot2" style="background:#92400E" data-c="#92400E" onclick="pickColor('#92400E')" title="Şokolad"></div>
+              <div class="cdot2" style="background:#7E6C55" data-c="#7E6C55" onclick="pickColor('#7E6C55')" title="Bej"></div>
+              <div class="cdot2" style="background:#374151" data-c="#374151" onclick="pickColor('#374151')" title="Boz-qara"></div>
+              <div class="cdot2" style="background:#111827" data-c="#111827" onclick="pickColor('#111827')" title="Tünd"></div>
+              <div class="cdot2" style="background:#0F172A" data-c="#0F172A" onclick="pickColor('#0F172A')" title="Gecə"></div>
+            </div>
+            <div style="font-size:11px;font-weight:600;color:var(--gray);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em">Özəl rəng</div>
+            <div class="cc-row2" style="margin-bottom:1.1rem">
+              <input type="color" id="customColorPicker" value="#185FA5" oninput="pickColor(this.value)">
+              <label>İstənilən rəngi seçin</label>
+              <span id="customColorHex" style="font-size:12px;color:var(--navy);font-weight:600;margin-left:4px;font-family:monospace">#185FA5</span>
+            </div>
+            <div style="font-size:11px;font-weight:600;color:var(--gray);margin-bottom:8px;text-transform:uppercase;letter-spacing:.04em">Ətraflı tənzimləmə</div>
+            <div style="border:1px solid var(--gray-light);border-radius:10px;overflow:hidden;margin-bottom:1rem">
+              <div class="color-row" style="padding:10px 12px;border-bottom:1px solid var(--gray-light)"><div class="color-row-label">İkon & Düymə</div><div class="color-row-input"><input type="color" id="c_btn" value="#185FA5" class="color-swatch" oninput="onDetailColor()"><span style="font-size:11px;color:var(--gray);font-family:monospace" id="c_btn_hex">#185FA5</span></div></div>
+              <div class="color-row" style="padding:10px 12px;border-bottom:1px solid var(--gray-light)"><div class="color-row-label">Cover başlanğıc</div><div class="color-row-input"><input type="color" id="c_cover1" value="#185FA5" class="color-swatch" oninput="onDetailColor()"><span style="font-size:11px;color:var(--gray);font-family:monospace" id="c_cover1_hex">#185FA5</span></div></div>
+              <div class="color-row" style="padding:10px 12px;border-bottom:1px solid var(--gray-light)"><div class="color-row-label">Cover son</div><div class="color-row-input"><input type="color" id="c_cover2" value="#378ADD" class="color-swatch" oninput="onDetailColor()"><span style="font-size:11px;color:var(--gray);font-family:monospace" id="c_cover2_hex">#378ADD</span></div></div>
+              <div class="color-row" style="padding:10px 12px;border-bottom:1px solid var(--gray-light)"><div class="color-row-label">Mətn rəngi</div><div class="color-row-input"><input type="color" id="c_text" value="#0a1628" class="color-swatch" oninput="onDetailColor()"><span style="font-size:11px;color:var(--gray);font-family:monospace" id="c_text_hex">#0a1628</span></div></div>
+              <div class="color-row" style="padding:10px 12px;border-bottom:1px solid var(--gray-light)"><div class="color-row-label">İkon arxa fonu</div><div class="color-row-input"><input type="color" id="c_iconbg" value="#EFF6FF" class="color-swatch" oninput="onDetailColor()"><span style="font-size:11px;color:var(--gray);font-family:monospace" id="c_iconbg_hex">#EFF6FF</span></div></div>
+              <div class="color-row" style="padding:10px 12px"><div class="color-row-label">Arxa fon rəngi</div><div class="color-row-input"><input type="color" id="c_bg" value="#f0f2f5" class="color-swatch" oninput="onDetailColor()"><span style="font-size:11px;color:var(--gray);font-family:monospace" id="c_bg_hex">#f0f2f5</span></div></div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button class="btn btn-primary" onclick="saveCustomColors()">Profildə tətbiq et</button>
+              <button class="btn" onclick="resetAllColors()">Sıfırla</button>
+            </div>
           </div>
         </div>
-        <!-- Category filter -->
-        <div class="tmpl-cats" id="tmplCats">
-          <button class="tmpl-cat-btn active" onclick="filterTmpl('all',this)">Hamısı</button>
-          <button class="tmpl-cat-btn" onclick="filterTmpl('free',this)">Free</button>
-          <button class="tmpl-cat-btn" onclick="filterTmpl('pro',this)">Pro</button>
-        </div>
-        <!-- Template grid -->
-        <div class="tmpl-grid" id="templatesGrid"></div>
-        <!-- Apply button -->
-        <div style="padding:0 1rem 1rem">
-          <button class="dp-apply-btn" id="applyTmplBtn" onclick="applyPreviewedTemplate()">
-            Bu şablonu tətbiq et →
-          </button>
-        </div>
-      </div>
-
-      <!-- Rəng paleti -->
-      <div class="dp-section">
-        <div class="dp-section-head">
-          <div class="dp-section-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 010 20"/><path d="M2 12h20"/></svg>
-          </div>
-          <div>
-            <div class="dp-section-title">Rəng Sxemi</div>
-            <div class="dp-section-sub">Brend rənginizi seçin</div>
-          </div>
-        </div>
-        <!-- Preset swatches -->
-        <div class="color-grid" id="colorSwatches"></div>
-        <!-- Custom color -->
-        <div class="custom-color-row">
-          <div class="custom-color-preview" id="customColorPreview">
-            <div class="custom-color-preview-fill" id="customColorFill"></div>
-            <input type="color" id="customColorPicker" value="#185FA5" oninput="applyCustomColor(this.value)">
-          </div>
-          <div>
-            <div style="font-size:12px;font-weight:500;color:var(--navy)">Xüsusi rəng</div>
-            <div class="custom-color-label">Öz brend rənginizi daxil edin</div>
+        <!-- SAĞ: Canlı telefon preview -->
+        <div class="design-right-sticky">
+          <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem;text-align:center">
+            <div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:1rem;text-align:left">Canlı baxış</div>
+            <div class="live-phone">
+              <div class="live-phone-bar"></div>
+              <div class="live-phone-screen">
+                <iframe id="livePreviewFrame" src="about:blank" allow="same-origin" style="width:375px;height:812px;border:none;display:block;transform:scale(0.58);transform-origin:top left" scrolling="yes"></iframe>
+              </div>
+              <div class="live-phone-home"></div>
+            </div>
+            <div style="margin-top:.75rem;display:flex;justify-content:center">
+              <a id="openProfileLink" href="#" target="_blank" style="font-size:12px;color:var(--blue);display:inline-flex;align-items:center;gap:4px;text-decoration:none">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                Profili tam aç
+              </a>
+            </div>
           </div>
         </div>
       </div>
-
     </div>
-
-    <!-- SAĞ: Canlı önizləmə -->
-    <div class="dp-phone-wrap">
-      <div style="text-align:center;margin-bottom:.75rem">
-        <span style="font-size:11px;font-weight:600;color:var(--gray);letter-spacing:1px;text-transform:uppercase">Canlı Önizləmə</span>
-      </div>
-      <div class="dp-phone">
-        <div class="dp-phone-frame">
-          <div class="dp-phone-notch"></div>
-          <div class="dp-phone-screen">
-            <iframe id="livePreviewFrame" src="" style="width:100%;height:100%;border:none;display:block" scrolling="yes"></iframe>
-          </div>
-        </div>
-        <!-- Refresh -->
-        <button onclick="refreshLivePreview()" style="width:100%;margin-top:.75rem;padding:8px;background:var(--surface);border:1px solid var(--gray-light);border-radius:8px;font-size:12px;color:var(--gray);cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
-          Yenilə
-        </button>
-      </div>
-      <!-- Save colors button -->
-      <button onclick="saveCustomColors()" style="width:200px;display:block;margin:1rem auto 0;padding:10px;background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;border:none;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">
-        Rəngləri Saxla ✓
-      </button>
-    </div>
-  </div>
-</div>
-        </div>
 <div class="panel" id="panel-settings">
       <div style="max-width:540px;display:flex;flex-direction:column;gap:1rem">
         <!-- Profil Linki -->
@@ -1924,68 +1862,58 @@ function refreshLivePreview(){
   const frame=document.getElementById('livePreviewFrame');
   const link=document.getElementById('openProfileLink');
   if(!frame)return;
-  const tmplId=UD?.tmplNum||UD?.template||1;
+  const tmplId=_previewTmplId||UD?.tmplNum||UD?.template||1;
   const url=slug
-    ?`profile.html?u=${encodeURIComponent(slug)}&_r=${Date.now()}`
-    :`profile.html?_r=${Date.now()}`;
+    ?`profile.html?u=${encodeURIComponent(slug)}&tmpl=${tmplId}&_r=${Date.now()}`
+    :`profile.html?tmpl=${tmplId}&_r=${Date.now()}`;
   frame.src=url;
   if(link)link.href=slug?`profile.html?u=${encodeURIComponent(slug)}`:'profile.html';
 }
 
-function renderTemplates(filter='all'){
-  const el=document.getElementById('templatesGrid');if(!el)return;
+function renderTemplates(){
   const saved=parseInt(UD?.tmplNum||UD?.template||'1')||1;
-  if(!_previewTmplId)_previewTmplId=saved;
+  _previewTmplId=saved;  // həmişə Firebase dəyərini əsas al
   const isPro=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
-
-  let list=TEMPLATES;
-  if(filter==='free')list=TEMPLATES.filter(t=>t.free);
-  else if(filter==='pro')list=TEMPLATES.filter(t=>!t.free);
-
-  el.innerHTML=list.map(t=>{
-    const isActive=t.id===_previewTmplId;
-    const locked=!t.free&&!isPro;
-    return`<div class="tmpl-item${isActive?' active':''}" onclick="previewTemplate(${t.id})" title="${t.name}">
-      <div class="tmpl-preview">${t.preview}</div>
-      <div class="tmpl-label">
-        <div>
-          <div class="tmpl-name">${t.name}</div>
-          <div class="tmpl-cat">${t.cat}</div>
-        </div>
-        ${t.free
-          ?'<span style="font-size:9px;font-weight:700;color:var(--success);background:rgba(39,174,96,.1);padding:2px 7px;border-radius:8px">FREE</span>'
-          :locked
-            ?'<span style="font-size:9px;font-weight:700;color:#b45309;background:rgba(201,168,76,.15);padding:2px 7px;border-radius:8px">PRO 🔒</span>'
-            :'<span style="font-size:9px;font-weight:700;color:var(--blue);background:rgba(24,95,165,.1);padding:2px 7px;border-radius:8px">PRO ✓</span>'
-        }
+  document.getElementById('templatesGrid').innerHTML=TEMPLATES.map(t=>{
+    const isSel=t.id===saved;
+    const badgeHtml=t.free
+      ?`<span class="tmpl-badge tmpl-free">FREE</span>`
+      :(isPro?'':`<span class="tmpl-badge tmpl-pro">PRO</span>`);
+    const lockHtml=!t.free&&!isPro
+      ?`<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(244,246,251,.55);backdrop-filter:blur(1px);border-radius:12px 12px 0 0"><span style="background:rgba(201,168,76,.9);color:#fff;font-size:10px;font-weight:700;padding:3px 9px;border-radius:10px">🔒 PRO</span></div>`
+      :'';
+    return `<div class="tmpl-card${isSel?' selected':''}" onclick="previewTemplate(${t.id})" style="cursor:pointer">
+      <div class="tmpl-cover" style="position:relative">${t.preview}${lockHtml}</div>
+      <div class="tmpl-body">
+        <div class="tmpl-name">${t.name}</div>
+        <div class="tmpl-cat">${t.cat}</div>
+        ${isSel?`<div style="font-size:9px;color:var(--blue);font-weight:700;margin-top:2px">✓ Aktiv</div>`:''}
       </div>
+      ${badgeHtml}
+      <div class="tmpl-selected-check"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>
     </div>`;
   }).join('');
-
-  // Apply btn label
-  const btn=document.getElementById('applyTmplBtn');
-  if(btn){
-    const cur=TEMPLATES.find(t=>t.id===_previewTmplId);
-    btn.textContent=cur?`"${cur.name}" tətbiq et →`:'Şablon seç →';
-  }
+  _syncApplyBtn(saved);
 }
-
-window.filterTmpl=function(f,btn){
-  document.querySelectorAll('.tmpl-cat-btn').forEach(b=>b.classList.remove('active'));
-  if(btn)btn.classList.add('active');
-  renderTemplates(f);
-};
 
 window.previewTemplate=function(id){
   _previewTmplId=id;
-  document.querySelectorAll('.tmpl-card').forEach(card=>{
+  document.querySelectorAll('.tmpl-card,.tmpl-item').forEach(card=>{
     const onclick=card.getAttribute('onclick')||'';
     const match=onclick.match(/previewTemplate\((\d+)\)/);
     const cid=match?parseInt(match[1]):0;
     card.classList.toggle('selected',cid===id);
+    card.classList.toggle('active',cid===id);
   });
+  // iframe-i tmpl parametri ilə yenilə
+  const slug=UD?.slug||'';
   const frame=document.getElementById('livePreviewFrame');
-  if(frame?.contentWindow)frame.contentWindow.postMessage({type:'setTmpl',tmpl:id},'*');
+  if(frame){
+    const url=slug
+      ?`profile.html?u=${encodeURIComponent(slug)}&tmpl=${id}&_r=${Date.now()}`
+      :`profile.html?tmpl=${id}&_r=${Date.now()}`;
+    frame.src=url;
+  }
   _syncApplyBtn(id);
 };
 
@@ -2097,24 +2025,17 @@ window.resetAllColors=function(){pickColor('#185FA5');};
 window.resetColors=window.resetAllColors;
 
 function loadCustomColors(){
-  const el=document.getElementById('colorSwatches');if(!el)return;
-  const base=UD?.customColors?.btn||UD?.customBase||'#185FA5';
-  const presets=[('#185FA5', 'Navy Blue'), ('#0f172a', 'Midnight'), ('#1d4ed8', 'Royal Blue'), ('#7c3aed', 'Violet'), ('#db2777', 'Pink Pro'), ('#059669', 'Emerald'), ('#d97706', 'Amber'), ('#dc2626', 'Crimson'), ('#0891b2', 'Cyan'), ('#4f46e5', 'Indigo'), ('#0a0a0a', 'Obsidian'), ('#C9A84C', 'Gold')];
-  el.innerHTML=presets.map(([hex,name])=>{
-    const isActive=hex.toLowerCase()===base.toLowerCase();
-    return`<div class="color-swatch-btn${isActive?' active':''}"
-      style="background:${hex}"
-      title="${name}"
-      onclick="selectColorPreset('${hex}',this)">
-    </div>`;
-  }).join('');
-  // Custom picker
-  const picker=document.getElementById('customColorPicker');
-  const fill=document.getElementById('customColorFill');
-  if(picker)picker.value=base;
-  if(fill)fill.style.background=base;
-  // Iframe
-  refreshLivePreview();
+  const c=UD?.customColors||{};
+  const base=c.logo||UD?.color||'#185FA5';
+  _liveColor=base;
+  const map={btn:c.btn||base,cover1:c.cover1||base,cover2:c.cover2||lightenHex(base,0.28),text:c.text||'#0a1628',iconbg:c.iconbg||lightenHex(base,0.88),bg:c.bg||'#f0f2f5'};
+  Object.entries(map).forEach(([k,v])=>{
+    const el=document.getElementById('c_'+k);if(el)el.value=v;
+    const hex=document.getElementById('c_'+k+'_hex');if(hex)hex.textContent=v;
+  });
+  const ccp=document.getElementById('customColorPicker');if(ccp)ccp.value=base;
+  const cch=document.getElementById('customColorHex');if(cch)cch.textContent=base;
+  document.querySelectorAll('.cdot2').forEach(d=>d.classList.toggle('on',d.dataset.c===base));
 }
 window.saveCrmConfig=async function(){
   const k1=document.getElementById('crmKey1')?.value.trim();if(!k1){showToast('Məlumatları daxil edin','error');return;}
