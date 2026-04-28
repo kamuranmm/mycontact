@@ -353,7 +353,7 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
           <div style="background:var(--white);border-radius:11px;border:1px solid var(--gray-light);padding:1rem">
             <div style="font-size:13px;font-weight:500;margin-bottom:4px">🌐 Subdomain <span style="font-size:10px;background:#f0fdf4;color:var(--success);padding:2px 7px;border-radius:10px;font-weight:600;margin-left:4px">STANDARD</span></div>
             <div style="font-size:12px;color:var(--gray);margin-bottom:.75rem">brand.apps.mycontact.az — avtomatik aktivdir</div>
-            <div style="font-family:monospace;font-size:12px;background:var(--surface);padding:6px 10px;border-radius:7px;color:var(--blue)">brand.apps.mycontact.az/profil</div>
+            <div style="font-family:monospace;font-size:12px;background:var(--surface);padding:6px 10px;border-radius:7px;color:var(--blue)">brand.apps.vizitaz.az/profil</div>
           </div>
           <div style="background:var(--white);border-radius:11px;border:1px solid var(--gray-light);padding:1rem">
             <div style="font-size:13px;font-weight:500;margin-bottom:4px">🔗 Custom Domain <span style="font-size:10px;background:rgba(201,168,76,.15);color:#b45309;padding:2px 7px;border-radius:10px;font-weight:600;margin-left:4px">PRO/BUSINESS</span></div>
@@ -492,7 +492,7 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
     <input type="hidden" id="editUid">
     <div class="form-group"><label class="form-label">Ad Soyad</label><input class="form-input" id="editName"></div>
     <div class="form-group"><label class="form-label">Şirkət</label><input class="form-input" id="editCompany"></div>
-    <div class="form-group"><label class="form-label">Kart linki</label><div style="display:flex;align-items:center;gap:6px"><span style="font-size:12px;color:var(--gray);white-space:nowrap">apps.mycontact.az/</span><input class="form-input" id="editSlug"></div></div>
+    <div class="form-group"><label class="form-label">Kart linki</label><div style="display:flex;align-items:center;gap:6px"><span style="font-size:12px;color:var(--gray);white-space:nowrap">apps.vizitaz.az/</span><input class="form-input" id="editSlug"></div></div>
     <div class="form-group"><label class="form-label">Plan</label>
       <div class="plan-options">
         <div class="plan-opt" onclick="selectEditPlan(this,'free')"><div class="plan-opt-name">🟢 Free</div></div>
@@ -681,8 +681,8 @@ function renderRecentUsers(){
 function renderUsers(users){
   const tbody=document.getElementById('usersBody');const mc=document.getElementById('usersMobileCards');
   if(!users.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--gray)">Nəticə tapılmadı</td></tr>';mc.innerHTML='';return;}
-  tbody.innerHTML=users.map(u=>`<tr><td><div class="user-cell"><div class="user-av">${u.card?.photo?`<img src="${u.card.photo}">`:(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div></td><td>${planBadge(u.plan)}</td><td>${roleBadge(u.userRole||'user')}</td><td>${statusBadge(u.status)}</td><td style="font-size:12px;color:var(--blue-light)">${u.slug?'apps.mycontact.az/'+u.slug:'—'}</td><td><div class="action-btns"><button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button><button class="btn btn-sm" onclick="toggleBlock('${u.uid}','${u.status||'active'}')">${u.status==='blocked'?'Aktiv et':'Blokla'}</button></div></td></tr>`).join('');
-  mc.innerHTML=users.map(u=>`<div class="mobile-card"><div class="mobile-card-top"><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div><div style="display:flex;gap:4px;flex-wrap:wrap">${planBadge(u.plan)}${roleBadge(u.userRole||'user')}</div></div><div class="mobile-card-meta">${u.slug?'apps.mycontact.az/'+u.slug:'Link yoxdur'}</div><div style="display:flex;gap:5px;margin-top:8px"><button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button><button class="btn btn-sm" onclick="toggleBlock('${u.uid}','${u.status||'active'}')">${u.status==='blocked'?'Aktiv et':'Blokla'}</button></div></div>`).join('');
+  tbody.innerHTML=users.map(u=>`<tr><td><div class="user-cell"><div class="user-av">${u.card?.photo?`<img src="${u.card.photo}">`:(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div></td><td>${planBadge(u.plan)}</td><td>${roleBadge(u.userRole||'user')}</td><td>${statusBadge(u.status)}</td><td style="font-size:12px;color:var(--blue-light)">${u.slug?'apps.vizitaz.az/'+u.slug:'—'}</td><td><div class="action-btns"><button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button><button class="btn btn-sm" onclick="toggleBlock('${u.uid}','${u.status||'active'}')">${u.status==='blocked'?'Aktiv et':'Blokla'}</button></div></td></tr>`).join('');
+  mc.innerHTML=users.map(u=>`<div class="mobile-card"><div class="mobile-card-top"><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div><div style="display:flex;gap:4px;flex-wrap:wrap">${planBadge(u.plan)}${roleBadge(u.userRole||'user')}</div></div><div class="mobile-card-meta">${u.slug?'apps.vizitaz.az/'+u.slug:'Link yoxdur'}</div><div style="display:flex;gap:5px;margin-top:8px"><button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button><button class="btn btn-sm" onclick="toggleBlock('${u.uid}','${u.status||'active'}')">${u.status==='blocked'?'Aktiv et':'Blokla'}</button></div></div>`).join('');
 }
 
 function renderCards(){
@@ -836,7 +836,7 @@ window.createUser=async function(){
       company,createdAt:Date.now(),scanCount:0,defaultLang:'az',
       card:{name,surname:sur||'',phone:'',email,web:'',position:'',company,bio:'',address:'',photo:'',cover:''}
     });
-    ok.textContent='Yaradıldı! Link: apps.mycontact.az/'+slug;ok.className='success-box show';
+    ok.textContent='Yaradıldı! Link: apps.vizitaz.az/'+slug;ok.className='success-box show';
     showToast('İstifadəçi yaradıldı','success');setTimeout(()=>closeModal('createModal'),2000);
   }catch(e){let m='Xəta baş verdi.';if(e.code==='auth/email-already-in-use')m='Bu email artıq istifadə olunur.';err.textContent=m;err.className='error-box show';}
   btn.disabled=false;btn.textContent='Yarat';
