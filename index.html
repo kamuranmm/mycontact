@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CardPro — Giriş</title>
+<title>MyContact — Giriş</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -333,6 +333,45 @@
   }
   .attempt-warn{background:#fff7ed;border:1px solid #fed7aa;color:#c2410c;font-size:12px;padding:9px 12px;border-radius:8px;margin-bottom:1rem;display:none;align-items:center;gap:6px}
   .attempt-warn.show{display:flex}
+
+  /* ── Tabs ── */
+  .auth-tabs{display:flex;border-bottom:1.5px solid var(--gray-light);margin-bottom:1.75rem}
+  .auth-tab{flex:1;padding:.7rem;font-size:13px;font-weight:500;color:var(--gray);text-align:center;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1.5px;transition:all .18s}
+  .auth-tab.active{color:var(--navy);border-bottom-color:var(--blue);font-weight:600}
+
+  /* ── Panels ── */
+  .auth-panel{display:none}.auth-panel.active{display:block}
+
+  /* ── Form row ── */
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+  /* ── Google button ── */
+  .btn-google{width:100%;padding:11px;background:var(--white);color:var(--navy);border:1.5px solid var(--gray-light);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:border-color .2s;margin-top:0}
+  .btn-google:hover{border-color:var(--blue)}
+
+  /* ── Register submit button ── */
+  .btn-register{width:100%;padding:12px;background:var(--navy);color:var(--white);border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:background .2s;margin-top:.25rem}
+  .btn-register:hover{background:var(--navy-mid)}
+  .btn-register:disabled{opacity:.6;cursor:not-allowed}
+
+  /* ── Pending screens ── */
+  .pending-screen{display:none;text-align:center;padding:.5rem 0}
+  .pending-screen.show{display:block}
+  .pend-icon{font-size:52px;margin-bottom:1rem;display:block}
+  .pend-title{font-family:'DM Serif Display',serif;font-size:24px;color:var(--navy);margin-bottom:.6rem}
+  .pend-sub{font-size:14px;color:var(--gray);line-height:1.7;margin-bottom:1.5rem}
+  .btn-order{width:100%;padding:13px;background:linear-gradient(135deg,var(--blue),var(--accent));color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 4px 18px rgba(24,95,165,.28);margin-bottom:.75rem;transition:opacity .2s}
+  .btn-order:hover{opacity:.9}
+  .btn-order:disabled{opacity:.5;cursor:not-allowed}
+  .badge-wait{display:inline-flex;align-items:center;gap:7px;padding:7px 16px;background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.25);color:#b45309;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:1.25rem}
+  .btn-ghost{width:100%;padding:10px;background:transparent;color:var(--gray);border:1.5px solid var(--gray-light);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:border-color .2s}
+  .btn-ghost:hover{border-color:var(--gray)}
+
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+  .blink{animation:blink 1.8s infinite}
+
+  .success-note{background:#f0fdf4;border:1px solid #bbf7d0;color:#15803d;font-size:13px;padding:10px 12px;border-radius:8px;margin-bottom:1rem;display:none}
+  .success-note.show{display:block}
 </style>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 </head>
@@ -340,14 +379,7 @@
 
 <div class="left">
   <div class="brand">
-    <div class="brand-mark">
-      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
-        <rect x="3" y="6" width="18" height="13" rx="2"/>
-        <path d="M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2"/>
-        <circle cx="12" cy="13" r="2"/>
-      </svg>
-    </div>
-    <span class="brand-name">Card<span>Pro</span></span>
+    <img src="data:image/png;base64,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" alt="MyContact" style="height:38px;width:auto;display:block">
   </div>
 
   <div class="hero">
@@ -397,41 +429,119 @@
 
 <div class="right">
   <div class="login-box">
-    <div class="login-title">Xoş gəldiniz</div>
-    <div class="login-sub">Hesabınıza daxil olun</div>
 
-    <div class="error-msg" id="errorMsg"></div>
-    <div class="attempt-warn" id="attemptWarn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span id="attemptWarnTxt"></span></div>
-
-    <div class="form-group">
-      <label class="form-label">Email ünvanı</label>
-      <input type="email" class="form-input" id="emailInput" placeholder="email@nümunə.az" autocomplete="email">
+    <!-- ── AUTH TABS ── -->
+    <div class="auth-tabs" id="authTabs">
+      <div class="auth-tab active" onclick="switchTab('login')">Daxil ol</div>
+      <div class="auth-tab" onclick="switchTab('register')">Qeydiyyat</div>
     </div>
 
-    <div class="form-group">
-      <label class="form-label">Şifrə</label>
-      <input type="password" class="form-input" id="passInput" placeholder="••••••••" autocomplete="current-password">
+    <!-- ══ LOGIN PANEL ══ -->
+    <div class="auth-panel active" id="panelLogin">
+      <div class="login-title" style="margin-bottom:4px">Xoş gəldiniz</div>
+      <div class="login-sub" style="margin-bottom:1.5rem">Hesabınıza daxil olun</div>
+
+      <div class="error-msg" id="errorMsg"></div>
+      <div class="attempt-warn" id="attemptWarn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span id="attemptWarnTxt"></span>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Email ünvanı</label>
+        <input type="email" class="form-input" id="emailInput" placeholder="email@nümunə.az" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Şifrə</label>
+        <input type="password" class="form-input" id="passInput" placeholder="••••••••" autocomplete="current-password">
+      </div>
+
+      <div id="cf-turnstile-wrap" style="margin:0.75rem 0 0.25rem"></div>
+      <button class="btn-login" id="loginBtn" onclick="doLogin()">
+        <span class="btn-text">Daxil ol</span>
+        <div class="spinner"></div>
+      </button>
+
+      <div class="divider">və ya</div>
+
+      <button class="btn-google" onclick="doGoogle()">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Google ilə daxil ol
+      </button>
+
+      <div class="secure-note" style="margin-top:1.25rem">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        Firebase ilə qorunan giriş
+      </div>
     </div>
 
-    <div id="cf-turnstile-wrap" style="margin:0.75rem 0 0.25rem"></div>
-    <button class="btn-login" id="loginBtn" onclick="doLogin()">
-      <span class="btn-text">Daxil ol</span>
-      <div class="spinner"></div>
-    </button>
+    <!-- ══ REGISTER PANEL ══ -->
+    <div class="auth-panel" id="panelRegister">
+      <div class="login-title" style="margin-bottom:4px">Hesab yaradın</div>
+      <div class="login-sub" style="margin-bottom:1.5rem">Qeydiyyatdan keçin</div>
 
-    <div class="divider">və ya</div>
+      <div class="error-msg" id="regErr"></div>
+      <div class="success-note" id="regSuccess"></div>
 
-    <div class="secure-note">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-      Firebase ilə qorunan giriş
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Ad</label>
+          <input type="text" class="form-input" id="regName" placeholder="Adınız" autocomplete="given-name">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Soyad</label>
+          <input type="text" class="form-input" id="regSurname" placeholder="Soyadınız" autocomplete="family-name">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email ünvanı</label>
+        <input type="email" class="form-input" id="regEmail" placeholder="email@nümunə.az" autocomplete="email">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Şifrə</label>
+        <input type="password" class="form-input" id="regPass" placeholder="Minimum 6 simvol" autocomplete="new-password">
+      </div>
+
+      <button class="btn-register" id="btnRegister" onclick="doRegister()">Hesab yarat</button>
+
+      <div class="divider">və ya</div>
+
+      <button class="btn-google" onclick="doGoogle()">
+        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Google ilə qeydiyyat
+      </button>
     </div>
+
+    <!-- ══ PENDING ORDER SCREEN ══ -->
+    <div class="pending-screen" id="screenOrder">
+      <span class="pend-icon">📦</span>
+      <div class="pend-title">Kart sifariş edin</div>
+      <div class="pend-sub">Hesabınız yaradıldı! Fiziki <strong>MyContact</strong> kartınızı sifariş edin. Sifarişiniz təsdiqləndikdən sonra hesabınız aktivləşəcək.</div>
+      <button class="btn-order" id="btnOrder" onclick="placeOrder()">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        Kart sifariş et
+      </button>
+      <button class="btn-ghost" onclick="doLogout()">Çıxış</button>
+    </div>
+
+    <!-- ══ PENDING APPROVAL SCREEN ══ -->
+    <div class="pending-screen" id="screenWait">
+      <span class="pend-icon blink">⏳</span>
+      <div class="pend-title">Sifarişiniz gözləyir</div>
+      <div class="pend-sub">Kart sifarişiniz qəbul edildi. Admin tərəfindən təsdiqlənəndən sonra <strong>hesabınız aktivləşəcək</strong> və daxil ola biləcəksiniz.</div>
+      <div class="badge-wait">
+        <span class="blink">●</span> Admin təsdiqi gözlənilir
+      </div>
+      <button class="btn-ghost" onclick="doLogout()">Çıxış</button>
+    </div>
+
   </div>
 </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+  import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  import { getDatabase, ref, get, set, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyBx81QDpjHSPvhkmnnSUNkJYMvR_fnRTaU",
@@ -446,6 +556,8 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getDatabase(app);
+  const gProvider = new GoogleAuthProvider();
+  let CU = null;
 
   // ── Turnstile ──
   const SITE_KEY = '0x4AAAAAADD1DxxfxSthx3HI';
@@ -491,12 +603,41 @@
   }
   checkLock();
 
+  // ── UI: tab switching ──
+  window.switchTab = function(t) {
+    document.querySelectorAll('.auth-tab').forEach((el,i) => el.classList.toggle('active', (t==='login'&&i===0)||(t==='register'&&i===1)));
+    document.getElementById('panelLogin').classList.toggle('active', t==='login');
+    document.getElementById('panelRegister').classList.toggle('active', t==='register');
+  };
+
+  function showScreen(name) {
+    const tabs = document.getElementById('authTabs');
+    ['panelLogin','panelRegister'].forEach(id => document.getElementById(id).classList.remove('active'));
+    ['screenOrder','screenWait'].forEach(id => document.getElementById(id).classList.remove('show'));
+    document.querySelectorAll('.auth-tab').forEach(el => el.classList.remove('active'));
+    if (name === 'login')    { tabs.style.display='flex'; document.getElementById('panelLogin').classList.add('active'); document.querySelector('.auth-tab').classList.add('active'); }
+    else if (name === 'register') { tabs.style.display='flex'; document.getElementById('panelRegister').classList.add('active'); document.querySelectorAll('.auth-tab')[1].classList.add('active'); }
+    else if (name === 'order') { tabs.style.display='none'; document.getElementById('screenOrder').classList.add('show'); }
+    else if (name === 'wait')  { tabs.style.display='none'; document.getElementById('screenWait').classList.add('show'); }
+  }
+
   // ── Auth redirect ──
   onAuthStateChanged(auth, async user => {
-    if (user) {
-      const s = await get(ref(db, `users/${user.uid}/role`));
-      window.location.href = s.val() === 'admin' ? 'admin.html' : 'dashboard.html';
+    if (!user) { showScreen('login'); return; }
+    CU = user;
+    const snap = await get(ref(db, `users/${user.uid}`));
+    const data = snap.val();
+    if (!data) { await signOut(auth); showScreen('login'); return; }
+    if (data.role === 'admin') { window.location.href = 'admin.html'; return; }
+    const st = data.status || 'active';
+    if (st === 'pending_order')    { showScreen('order'); return; }
+    if (st === 'pending_approval') { showScreen('wait');  return; }
+    if (st === 'cancelled')        {
+      document.getElementById('errorMsg').textContent = 'Sifarişiniz ləğv edilmişdir. Əlaqə saxlayın.';
+      document.getElementById('errorMsg').classList.add('show');
+      await signOut(auth); showScreen('login'); return;
     }
+    window.location.href = 'dashboard.html';
   });
 
   // ── Login ──
@@ -536,8 +677,7 @@
     try {
       const cred = await signInWithEmailAndPassword(auth, email, pass);
       clearA();
-      const s = await get(ref(db, `users/${cred.user.uid}/role`));
-      window.location.href = s.val() === 'admin' ? 'admin.html' : 'dashboard.html';
+      // onAuthStateChanged will handle routing based on status
     } catch (e) {
       let msg = 'Giriş uğursuz oldu.';
       if (e.code === 'auth/user-not-found' || e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') msg = 'Email və ya şifrə yanlışdır.';
@@ -566,6 +706,85 @@
 
   document.getElementById('passInput').addEventListener('keydown', e => {
     if (e.key === 'Enter') window.doLogin();
+  });
+
+  // ── Register ─────────────────────────────────────────────────────────────
+  window.doRegister = async function() {
+    const err = document.getElementById('regErr');
+    const ok  = document.getElementById('regSuccess');
+    err.classList.remove('show'); ok.classList.remove('show');
+    const name    = document.getElementById('regName').value.trim();
+    const surname = document.getElementById('regSurname').value.trim();
+    const email   = document.getElementById('regEmail').value.trim();
+    const pass    = document.getElementById('regPass').value;
+    if (!name || !email || !pass) { err.textContent='Ad, email və şifrəni daxil edin.'; err.classList.add('show'); return; }
+    if (pass.length < 6) { err.textContent='Şifrə minimum 6 simvol olmalıdır.'; err.classList.add('show'); return; }
+    const btn = document.getElementById('btnRegister');
+    btn.disabled = true; btn.textContent = 'Hesab yaradılır...';
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, email, pass);
+      const uid  = cred.user.uid;
+      const slug = email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g,'') + Math.floor(Math.random()*900+100);
+      await set(ref(db, `users/${uid}`), {
+        name: name + (surname ? ' ' + surname : ''),
+        email, slug, plan: 'free', role: 'user', userRole: 'user',
+        status: 'pending_order',
+        createdAt: Date.now(), registeredAt: Date.now(),
+        card: { name, surname, email }, brandLink: true
+      });
+      CU = cred.user;
+      showScreen('order');
+    } catch(e) {
+      const msgs = {
+        'auth/email-already-in-use': 'Bu email artıq qeydiyyatdan keçib.',
+        'auth/invalid-email': 'Email formatı yanlışdır.',
+        'auth/weak-password': 'Şifrə çox sadədir.'
+      };
+      err.textContent = msgs[e.code] || 'Qeydiyyat xətası: ' + e.message;
+      err.classList.add('show');
+      btn.disabled = false; btn.textContent = 'Hesab yarat';
+    }
+  };
+
+  // ── Google Auth ──────────────────────────────────────────────────────────
+  window.doGoogle = async function() {
+    try {
+      const result = await signInWithPopup(auth, gProvider);
+      const u = result.user;
+      const snap = await get(ref(db, `users/${u.uid}`));
+      if (!snap.exists()) {
+        const slug = (u.displayName || u.email || 'user').toLowerCase().replace(/[^a-z0-9]/g,'') + Math.floor(Math.random()*900+100);
+        await set(ref(db, `users/${u.uid}`), {
+          name: u.displayName || u.email, email: u.email, slug,
+          plan: 'free', role: 'user', userRole: 'user',
+          status: 'pending_order',
+          createdAt: Date.now(), registeredAt: Date.now(),
+          card: { name: u.displayName || '', email: u.email }, brandLink: true
+        });
+        CU = u; showScreen('order');
+      }
+      // existing user → onAuthStateChanged routes correctly
+    } catch(e) {
+      if (e.code !== 'auth/popup-closed-by-user') alert('Google giriş xətası: ' + e.message);
+    }
+  };
+
+  // ── Place Order ──────────────────────────────────────────────────────────
+  window.placeOrder = async function() {
+    if (!CU) return;
+    const btn = document.getElementById('btnOrder');
+    btn.disabled = true; btn.textContent = 'Göndərilir...';
+    await update(ref(db, `users/${CU.uid}`), { status: 'pending_approval', orderedAt: Date.now() });
+    await set(ref(db, `orders/${CU.uid}`), { uid: CU.uid, orderedAt: Date.now(), status: 'pending' });
+    showScreen('wait');
+  };
+
+  // ── Logout ───────────────────────────────────────────────────────────────
+  window.doLogout = async function() { await signOut(auth); showScreen('login'); };
+
+  // Enter key on register fields
+  ['regName','regSurname','regEmail','regPass'].forEach(id => {
+    document.getElementById(id)?.addEventListener('keydown', e => { if(e.key==='Enter') window.doRegister(); });
   });
 </script>
 </body>
