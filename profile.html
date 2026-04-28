@@ -772,309 +772,253 @@ function t4(d,c,name){
 }
 
 
-// ── T5: HiHello UX — Cover+Avatar, pill sosial, "Add to Contacts" ────────
+// ── T5: HiHello UX ────────────────────────────────────────────────────────
 function t5(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
   const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
   const col=color||'#185FA5';
   return`<div style="background:#f5f7fa;min-height:100vh;font-family:'Inter',sans-serif">
-  <!-- Cover tam ekran -->
-  <div style="position:relative;height:220px;overflow:hidden;background:linear-gradient(160deg,${col}dd,${col}88)">
+  <div style="position:relative;height:220px;overflow:hidden;background:${col}">
     ${c.cover?`<img src="${esc(c.cover)}" style="width:100%;height:100%;object-fit:cover">`:`<div style="width:100%;height:100%;background:linear-gradient(160deg,${col},${col}aa)"></div>`}
-    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.5))"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(0,0,0,.45))"></div>
   </div>
-  <!-- Avatar mərkəzdə, cover üstündə -->
-  <div style="display:flex;justify-content:center;margin-top:-52px;position:relative;z-index:2">
-    <div style="width:104px;height:104px;border-radius:50%;overflow:hidden;border:4px solid #fff;box-shadow:0 4px 20px rgba(0,0,0,.18)">${avImg(c.photo,name.charAt(0).toUpperCase())}</div>
+  <div style="display:flex;justify-content:center;margin-top:-50px;position:relative;z-index:2">
+    <div style="width:100px;height:100px;border-radius:50%;overflow:hidden;border:4px solid #fff;box-shadow:0 4px 20px rgba(0,0,0,.18)">${avImg(c.photo,name.charAt(0))}</div>
   </div>
-  <!-- İnfo mərkəzdə -->
   <div style="text-align:center;padding:.75rem 1.25rem 0">
     <div style="font-size:22px;font-weight:700;color:${col};margin-bottom:3px">${esc(name)||'—'}</div>
     ${c.position?`<div style="font-size:13px;color:#555;margin-bottom:2px">${esc(c.position)}</div>`:''}
-    ${c.company?`<div style="font-size:13px;font-weight:600;color:${col};margin-bottom:.75rem">${esc(c.company)}</div>`:''}
-    <!-- Sosial pill-lər -->
+    ${c.company?`<div style="font-size:12px;font-weight:600;color:${col}99;margin-bottom:.75rem">${esc(c.company)}</div>`:''}
     ${sk.length?`<div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:1rem">${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="display:flex;align-items:center;gap:6px;padding:7px 14px;background:#fff;border-radius:24px;text-decoration:none;font-size:12px;font-weight:500;color:#333;box-shadow:0 2px 8px rgba(0,0,0,.08);border:1px solid #eee">${socIco[x]||''}<span>${socLab[x]||x}</span></a>`).join('')}</div>`:''}
-    ${c.bio?`<div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:1rem;text-align:left;padding:12px;background:#fff;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.05)">${esc(c.bio)}</div>`:''}
+    ${c.bio?`<div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:1rem;text-align:left;padding:12px 14px;background:#fff;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.05)">${esc(c.bio)}</div>`:''}
   </div>
-  <!-- Kontaktlar -->
   <div style="padding:0 1.25rem">
-    ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(c.whatsapp||c.phone)}','')" style="display:flex;align-items:center;gap:12px;padding:14px;background:#fff;border-radius:14px;margin-bottom:8px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.05)"><div style="width:40px;height:40px;border-radius:12px;background:${col}15;display:flex;align-items:center;justify-content:center;color:${col}">${ico.phone}</div><div><div style="font-size:14px;font-weight:500;color:#1a1a1a">${esc(c.phone)}</div><div style="font-size:11px;color:#999">Telefon · Klik edin</div></div><div style="margin-left:auto;color:#ccc">›</div></div>`:''}
-    ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="display:flex;align-items:center;gap:12px;padding:14px;background:#fff;border-radius:14px;margin-bottom:8px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.05)"><div style="width:40px;height:40px;border-radius:12px;background:${col}15;display:flex;align-items:center;justify-content:center;color:${col}">${ico.email}</div><div><div style="font-size:14px;font-weight:500;color:#1a1a1a">${esc(c.email)}</div><div style="font-size:11px;color:#999">Email · Klik edin</div></div><div style="margin-left:auto;color:#ccc">›</div></div>`:''}
-    ${c.web?`<a href="${htp(c.web)}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:14px;background:#fff;border-radius:14px;margin-bottom:8px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)"><div style="width:40px;height:40px;border-radius:12px;background:${col}15;display:flex;align-items:center;justify-content:center;color:${col}">${ico.web}</div><div><div style="font-size:14px;font-weight:500;color:${col}">${esc(c.web)}</div><div style="font-size:11px;color:#999">Vebsayt · Açmaq üçün klik</div></div><div style="margin-left:auto;color:#ccc">›</div></a>`:''}
-    ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:14px;background:#fff;border-radius:14px;margin-bottom:8px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)"><div style="width:40px;height:40px;border-radius:12px;background:#f5f5f5;display:flex;align-items:center;justify-content:center;color:#888">${ico.loc}</div><div><div style="font-size:14px;color:#555">${esc(c.address)}</div><div style="font-size:11px;color:#999">Xəritədə aç</div></div><div style="margin-left:auto;color:#ccc">›</div></a>`:''}
+    ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')" style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:#fff;border-radius:14px;margin-bottom:8px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.05)"><div style="width:40px;height:40px;border-radius:12px;background:${col}15;display:flex;align-items:center;justify-content:center;color:${col}">${ico.phone}</div><div style="flex:1"><div style="font-size:14px;font-weight:500;color:#1a1a1a">${esc(c.phone)}</div><div style="font-size:11px;color:#999;margin-top:1px">${t('phone')}</div></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ddd" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>`:''}
+    ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:#fff;border-radius:14px;margin-bottom:8px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.05)"><div style="width:40px;height:40px;border-radius:12px;background:${col}15;display:flex;align-items:center;justify-content:center;color:${col}">${ico.email}</div><div style="flex:1"><div style="font-size:14px;font-weight:500;color:#1a1a1a">${esc(c.email)}</div><div style="font-size:11px;color:#999;margin-top:1px">${t('email')}</div></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ddd" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>`:''}
+    ${c.web?`<a href="${htp(c.web)}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:#fff;border-radius:14px;margin-bottom:8px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)"><div style="width:40px;height:40px;border-radius:12px;background:${col}15;display:flex;align-items:center;justify-content:center;color:${col}">${ico.web}</div><div style="flex:1"><div style="font-size:14px;font-weight:500;color:${col}">${esc(c.web)}</div><div style="font-size:11px;color:#999;margin-top:1px">${t('web')}</div></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ddd" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`:''}
+    ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:13px 14px;background:#fff;border-radius:14px;margin-bottom:8px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05)"><div style="width:40px;height:40px;border-radius:12px;background:#f5f5f5;display:flex;align-items:center;justify-content:center;color:#888">${ico.loc}</div><div style="flex:1"><div style="font-size:14px;color:#555">${esc(c.address)}</div><div style="font-size:11px;color:#999;margin-top:1px">${t('address')}</div></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ddd" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`:''}
     ${qrBtn()}${videoH(d)}${pdfsH(d)}
-    <!-- HiHello-stilə böyük "Add to Contacts" düyməsi -->
-    <button onclick="svContact()" style="width:100%;padding:16px;background:${col};border:none;border-radius:16px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;margin-top:.5rem;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px ${col}44">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
-      ${t('save')}
-    </button>
-    <button onclick="shProfile()" style="width:100%;padding:13px;background:#fff;border:1.5px solid #eee;border-radius:16px;color:#555;font-size:14px;cursor:pointer;margin-top:10px;font-family:inherit">${t('share')}</button>
-  </div>
-  <div style="height:2rem"></div></div>`;
+    <button onclick="svContact()" style="width:100%;padding:16px;background:${col};border:none;border-radius:16px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;margin-top:.5rem;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px ${col}44"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>${t('save')}</button>
+    <button onclick="shProfile()" style="width:100%;padding:13px;background:#fff;border:1px solid #eee;border-radius:16px;color:#555;font-size:14px;cursor:pointer;margin-top:8px;font-family:inherit">${t('share')}</button>
+  </div><div style="height:2rem"></div></div>`;
 }
 
-// ── T6: Blinq UX — Exchange Contact, gallery, şirkət loqo ────────────────
+// ── T6: Blinq UX ──────────────────────────────────────────────────────────
 function t6(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
   const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
   const col=color||'#0f172a';
   return`<div style="background:#fff;min-height:100vh;font-family:'Inter',sans-serif">
-  <!-- Cover + şirkət loqo -->
   <div style="position:relative;height:200px;overflow:hidden;background:${col}">
     ${c.cover?`<img src="${esc(c.cover)}" style="width:100%;height:100%;object-fit:cover;opacity:.7">`:`<div style="width:100%;height:100%;background:linear-gradient(135deg,${col},${col}88)"></div>`}
-    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(0,0,0,.6))"></div>
-    <!-- Şirkət adı yuxarı sol -->
-    <div style="position:absolute;top:14px;left:14px;background:rgba(255,255,255,.15);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.2);border-radius:20px;padding:5px 14px">
-      <span style="font-size:12px;font-weight:600;color:#fff">${esc(c.company)||'MyContact'}</span>
-    </div>
-    <!-- Ad aşağı -->
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(0,0,0,.55))"></div>
     <div style="position:absolute;bottom:14px;left:14px;right:14px">
-      <div style="font-size:24px;font-weight:800;color:#fff;margin-bottom:4px">${esc(name)||'—'}</div>
-      ${c.position?`<div style="font-size:13px;color:rgba(255,255,255,.8)">${esc(c.position)}</div>`:''}
+      <div style="font-size:23px;font-weight:800;color:#fff;margin-bottom:3px">${esc(name)||'—'}</div>
+      ${c.position?`<div style="font-size:12px;color:rgba(255,255,255,.8)">${esc(c.position)}</div>`:''}
+      ${c.company?`<div style="font-size:11px;color:rgba(255,255,255,.55);margin-top:2px">${esc(c.company)}</div>`:''}
     </div>
   </div>
-  <!-- Blinq-stilə ikili düymə -->
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:1rem 1.25rem">
-    <button onclick="svContact()" style="padding:14px;background:${col};border:none;border-radius:14px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
-      ${t('save')}
-    </button>
-    <button onclick="shProfile()" style="padding:14px;background:#f5f5f5;border:none;border-radius:14px;color:#333;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-      ${t('share')}
-    </button>
+    <button onclick="svContact()" style="padding:14px;background:${col};border:none;border-radius:14px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>${t('save')}</button>
+    <button onclick="shProfile()" style="padding:14px;background:#f5f5f5;border:none;border-radius:14px;color:#333;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#333" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>${t('share')}</button>
   </div>
-  <!-- Bio -->
-  ${c.bio?`<div style="padding:0 1.25rem;margin-bottom:.75rem"><div style="font-size:13px;color:#555;line-height:1.6;padding:12px;background:#f8f9fa;border-radius:12px">${esc(c.bio)}</div></div>`:''}
-  <!-- Kontaktlar bölməsi -->
+  ${c.bio?`<div style="padding:0 1.25rem;margin-bottom:.75rem"><div style="font-size:13px;color:#555;line-height:1.6;padding:12px 14px;background:#f8f9fa;border-radius:12px">${esc(c.bio)}</div></div>`:''}
   <div style="padding:0 1.25rem">
-    <div style="font-size:11px;font-weight:700;color:#999;letter-spacing:1px;text-transform:uppercase;margin-bottom:.6rem">Əlaqə</div>
+    <div style="font-size:11px;font-weight:700;color:#aaa;letter-spacing:1px;text-transform:uppercase;margin-bottom:.6rem">${t('contact')}</div>
     <div style="background:#f8f9fa;border-radius:16px;overflow:hidden;margin-bottom:1rem">
-      ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(c.whatsapp||c.phone)}','')" style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #eee;cursor:pointer"><div style="width:36px;height:36px;border-radius:10px;background:${col}12;display:flex;align-items:center;justify-content:center;color:${col}">${ico.phone}</div><span style="font-size:14px;font-weight:500;color:#1a1a1a">${esc(c.phone)}</span><span style="margin-left:auto;color:#ccc">›</span></div>`:''}
-      ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #eee;cursor:pointer"><div style="width:36px;height:36px;border-radius:10px;background:${col}12;display:flex;align-items:center;justify-content:center;color:${col}">${ico.email}</div><span style="font-size:14px;font-weight:500;color:#1a1a1a">${esc(c.email)}</span><span style="margin-left:auto;color:#ccc">›</span></div>`:''}
-      ${c.web?`<a href="${htp(c.web)}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #eee;text-decoration:none"><div style="width:36px;height:36px;border-radius:10px;background:${col}12;display:flex;align-items:center;justify-content:center;color:${col}">${ico.web}</div><span style="font-size:14px;color:${col}">${esc(c.web)}</span><span style="margin-left:auto;color:#ccc">›</span></a>`:''}
-      ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:14px 16px;text-decoration:none"><div style="width:36px;height:36px;border-radius:10px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#888">${ico.loc}</div><span style="font-size:14px;color:#666">${esc(c.address)}</span><span style="margin-left:auto;color:#ccc">›</span></a>`:''}
+      ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')" style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid #eee;cursor:pointer"><div style="width:36px;height:36px;border-radius:10px;background:${col}12;display:flex;align-items:center;justify-content:center;color:${col}">${ico.phone}</div><div style="flex:1"><div style="font-size:14px;font-weight:500;color:#1a1a1a">${esc(c.phone)}</div></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>`:''}
+      ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid #eee;cursor:pointer"><div style="width:36px;height:36px;border-radius:10px;background:${col}12;display:flex;align-items:center;justify-content:center;color:${col}">${ico.email}</div><div style="flex:1"><div style="font-size:14px;font-weight:500;color:#1a1a1a">${esc(c.email)}</div></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>`:''}
+      ${c.web?`<a href="${htp(c.web)}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid #eee;text-decoration:none"><div style="width:36px;height:36px;border-radius:10px;background:${col}12;display:flex;align-items:center;justify-content:center;color:${col}">${ico.web}</div><div style="flex:1"><div style="font-size:14px;font-weight:500;color:${col}">${esc(c.web)}</div></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`:''}
+      ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:13px 16px;text-decoration:none"><div style="width:36px;height:36px;border-radius:10px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#888">${ico.loc}</div><div style="flex:1"><div style="font-size:14px;color:#555">${esc(c.address)}</div></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`:''}
     </div>
-    <!-- Sosial -->
-    ${sk.length?`<div style="font-size:11px;font-weight:700;color:#999;letter-spacing:1px;text-transform:uppercase;margin-bottom:.6rem">Sosial media</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem">${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="display:flex;align-items:center;gap:8px;padding:9px 16px;background:#f8f9fa;border-radius:24px;text-decoration:none;font-size:13px;font-weight:500;color:#333;border:1px solid #eee">${socIco[x]||''}<span>${socLab[x]||x}</span></a>`).join('')}</div>`:''}
+    ${sk.length?`<div style="font-size:11px;font-weight:700;color:#aaa;letter-spacing:1px;text-transform:uppercase;margin-bottom:.6rem">Sosial</div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem">${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="display:flex;align-items:center;gap:8px;padding:8px 16px;background:#f8f9fa;border-radius:24px;text-decoration:none;font-size:12px;font-weight:500;color:#333;border:1px solid #eee">${socIco[x]||''}<span>${socLab[x]||x}</span></a>`).join('')}</div>`:''}
     ${qrBtn()}${videoH(d)}${pdfsH(d)}
-  </div>
-  <div style="height:2rem"></div></div>`;
+  </div><div style="height:2rem"></div></div>`;
 }
 
-// ── T7: Popl UX — Tam ekran qaranlıq, böyük sosial bloklar ──────────────
+// ── T7: Popl Dark UX ──────────────────────────────────────────────────────
 function t7(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
   const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
   const col=color||'#6366f1';
   return`<div style="background:#000;min-height:100vh;font-family:'Inter',sans-serif;position:relative">
-  <!-- Tam ekran cover/photo -->
   <div style="position:fixed;inset:0;z-index:0">
     ${c.photo?`<img src="${esc(c.photo)}" style="width:100%;height:100%;object-fit:cover;object-position:center top">`:`<div style="width:100%;height:100%;background:linear-gradient(160deg,#1a1a2e,#16213e,#0f3460)"></div>`}
-    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.3) 0%,rgba(0,0,0,.85) 55%,rgba(0,0,0,.97) 100%)"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.25) 0%,rgba(0,0,0,.82) 50%,rgba(0,0,0,.97) 100%)"></div>
   </div>
-  <!-- Məzmun -->
-  <div style="position:relative;z-index:1;padding:2.5rem 1.25rem 1.25rem">
-    <!-- Spacer -->
-    <div style="height:30vh;min-height:120px"></div>
-    <!-- Ad / vəzifə -->
+  <div style="position:relative;z-index:1;padding:2rem 1.25rem 1.25rem">
+    <div style="height:28vh;min-height:100px"></div>
     <div style="margin-bottom:1.5rem">
-      <div style="font-size:28px;font-weight:800;color:#fff;margin-bottom:6px;line-height:1.1">${esc(name)||'—'}</div>
-      ${c.position?`<div style="font-size:14px;color:rgba(255,255,255,.7);margin-bottom:4px">${esc(c.position)}</div>`:''}
-      ${c.company?`<div style="font-size:13px;font-weight:600;color:${col}">${esc(c.company)}</div>`:''}
-      ${c.bio?`<div style="font-size:13px;color:rgba(255,255,255,.5);margin-top:.75rem;line-height:1.6">${esc(c.bio)}</div>`:''}
+      <div style="font-size:27px;font-weight:800;color:#fff;margin-bottom:5px;line-height:1.15">${esc(name)||'—'}</div>
+      ${c.position?`<div style="font-size:13px;color:rgba(255,255,255,.65);margin-bottom:3px">${esc(c.position)}</div>`:''}
+      ${c.company?`<div style="font-size:12px;font-weight:600;color:${col};margin-bottom:.75rem">${esc(c.company)}</div>`:''}
+      ${c.bio?`<div style="font-size:12px;color:rgba(255,255,255,.45);line-height:1.6">${esc(c.bio)}</div>`:''}
     </div>
-    <!-- Böyük sosial link blokları — Popl stilə -->
-    ${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:rgba(255,255,255,.08);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.12);border-radius:16px;text-decoration:none;margin-bottom:10px"><div style="width:42px;height:42px;border-radius:12px;background:${socCol[x]||col};display:flex;align-items:center;justify-content:center;color:#fff">${socIco[x]||'<span>'+x.substring(0,2).toUpperCase()+'</span>'}</div><div><div style="font-size:14px;font-weight:600;color:#fff">${socLab[x]||x}</div><div style="font-size:11px;color:rgba(255,255,255,.4)">Bax</div></div><div style="margin-left:auto;color:rgba(255,255,255,.3)">›</div></a>`).join('')}
-    <!-- Kontaktlar -->
-    ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(c.whatsapp||c.phone)}','')" style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:rgba(255,255,255,.06);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.1);border-radius:16px;margin-bottom:10px;cursor:pointer"><div style="width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;color:#fff">${ico.phoneW}</div><div><div style="font-size:14px;font-weight:600;color:#fff">${esc(c.phone)}</div><div style="font-size:11px;color:rgba(255,255,255,.4)">Telefon</div></div><div style="margin-left:auto;color:rgba(255,255,255,.3)">›</div></div>`:''}
-    ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:rgba(255,255,255,.06);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.1);border-radius:16px;margin-bottom:10px;cursor:pointer"><div style="width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;color:#fff">${ico.emailW}</div><div><div style="font-size:14px;font-weight:600;color:#fff">${esc(c.email)}</div><div style="font-size:11px;color:rgba(255,255,255,.4)">Email</div></div><div style="margin-left:auto;color:rgba(255,255,255,.3)">›</div></div>`:''}
-    ${c.web?`<a href="${htp(c.web)}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px 18px;background:rgba(255,255,255,.06);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.1);border-radius:16px;margin-bottom:10px;text-decoration:none"><div style="width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;color:#fff">${ico.webW}</div><div><div style="font-size:14px;font-weight:600;color:#fff">${esc(c.web)}</div><div style="font-size:11px;color:rgba(255,255,255,.4)">Vebsayt</div></div><div style="margin-left:auto;color:rgba(255,255,255,.3)">›</div></a>`:''}
+    ${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:13px 16px;background:rgba(255,255,255,.07);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.1);border-radius:14px;text-decoration:none;margin-bottom:9px"><div style="width:40px;height:40px;border-radius:11px;background:${socCol[x]||col};display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0">${socIco[x]||'<span style="font-size:11px;font-weight:700">'+x.substring(0,2).toUpperCase()+'</span>'}</div><div style="flex:1"><div style="font-size:14px;font-weight:600;color:#fff">${socLab[x]||x}</div></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`).join('')}
+    ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')" style="display:flex;align-items:center;gap:14px;padding:13px 16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:14px;margin-bottom:9px;cursor:pointer"><div style="width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0">${ico.phoneW}</div><div style="flex:1"><div style="font-size:14px;font-weight:600;color:#fff">${esc(c.phone)}</div></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>`:''}
+    ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="display:flex;align-items:center;gap:14px;padding:13px 16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:14px;margin-bottom:9px;cursor:pointer"><div style="width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0">${ico.emailW}</div><div style="flex:1"><div style="font-size:14px;font-weight:600;color:#fff">${esc(c.email)}</div></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>`:''}
+    ${c.web?`<a href="${htp(c.web)}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:13px 16px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.09);border-radius:14px;margin-bottom:9px;text-decoration:none"><div style="width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0">${ico.webW}</div><div style="flex:1"><div style="font-size:14px;font-weight:600;color:#fff">${esc(c.web)}</div></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`:''}
+    ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:13px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;margin-bottom:9px;text-decoration:none"><div style="width:40px;height:40px;border-radius:11px;background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.6);flex-shrink:0">${ico.locW}</div><div style="flex:1"><div style="font-size:14px;color:rgba(255,255,255,.55)">${esc(c.address)}</div></div></a>`:''}
     ${qrBtn(true)}${videoH(d,true)}${pdfsH(d,true)}
-    <button onclick="svContact()" style="width:100%;padding:16px;background:${col};border:none;border-radius:16px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;margin-top:.5rem;font-family:inherit">${t('save')}</button>
-    <button onclick="shProfile()" style="width:100%;padding:13px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:16px;color:rgba(255,255,255,.6);font-size:14px;cursor:pointer;margin-top:10px;font-family:inherit">${t('share')}</button>
+    <button onclick="svContact()" style="width:100%;padding:15px;background:${col};border:none;border-radius:14px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-top:.5rem;font-family:inherit">${t('save')}</button>
+    <button onclick="shProfile()" style="width:100%;padding:13px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:14px;color:rgba(255,255,255,.55);font-size:13px;cursor:pointer;margin-top:8px;font-family:inherit">${t('share')}</button>
   </div></div>`;
 }
 
-// ── T8: Linq UX — Link-in-bio, hər kontakt böyük blok ────────────────────
+// ── T8: Linq Bio UX ───────────────────────────────────────────────────────
 function t8(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
   const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
   const col=color||'#059669';
-  return`<div style="background:linear-gradient(160deg,${col}18,#fff 40%);min-height:100vh;font-family:'Inter',sans-serif">
-  <!-- Header minimal -->
-  <div style="padding:2rem 1.25rem 1rem;text-align:center">
-    <div style="width:90px;height:90px;border-radius:50%;overflow:hidden;margin:0 auto 1rem;border:3px solid ${col};box-shadow:0 4px 20px ${col}44">${avImg(c.photo,name.charAt(0).toUpperCase())}</div>
-    <div style="font-size:22px;font-weight:700;color:${col};margin-bottom:4px">${esc(name)||'—'}</div>
+  return`<div style="background:#fff;min-height:100vh;font-family:'Inter',sans-serif">
+  <div style="padding:2rem 1.25rem 1.25rem;text-align:center;background:linear-gradient(160deg,${col}12,#fff 50%)">
+    <div style="width:88px;height:88px;border-radius:50%;overflow:hidden;margin:0 auto .9rem;border:3px solid ${col};box-shadow:0 4px 18px ${col}33">${avImg(c.photo,name.charAt(0))}</div>
+    <div style="font-size:21px;font-weight:700;color:${col};margin-bottom:3px">${esc(name)||'—'}</div>
     ${c.position?`<div style="font-size:13px;color:#555;margin-bottom:2px">${esc(c.position)}</div>`:''}
-    ${c.company?`<div style="font-size:12px;font-weight:600;color:${col}99">${esc(c.company)}</div>`:''}
-    ${c.bio?`<div style="font-size:13px;color:#666;line-height:1.6;margin-top:.75rem;max-width:320px;margin-left:auto;margin-right:auto">${esc(c.bio)}</div>`:''}
+    ${c.company?`<div style="font-size:11px;color:${col}88;font-weight:600;margin-bottom:.5rem">${esc(c.company)}</div>`:''}
+    ${c.bio?`<div style="font-size:13px;color:#666;line-height:1.6;margin-bottom:.75rem;max-width:320px;margin-left:auto;margin-right:auto">${esc(c.bio)}</div>`:''}
   </div>
-  <!-- Linq-stilə böyük link blokları -->
   <div style="padding:0 1.25rem">
-    ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(c.whatsapp||c.phone)}','')" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:#fff;border-radius:18px;margin-bottom:10px;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,.07);border:1.5px solid ${col}20"><div style="width:44px;height:44px;border-radius:14px;background:${col};display:flex;align-items:center;justify-content:center;color:#fff">${ico.phoneW}</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:#1a1a1a">Zəng et</div><div style="font-size:12px;color:#999;margin-top:1px">${esc(c.phone)}</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>`:''}
-    ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:#fff;border-radius:18px;margin-bottom:10px;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,.07);border:1.5px solid ${col}20"><div style="width:44px;height:44px;border-radius:14px;background:${col};display:flex;align-items:center;justify-content:center;color:#fff">${ico.emailW}</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:#1a1a1a">Email göndər</div><div style="font-size:12px;color:#999;margin-top:1px">${esc(c.email)}</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>`:''}
-    ${c.web?`<a href="${htp(c.web)}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:#fff;border-radius:18px;margin-bottom:10px;text-decoration:none;box-shadow:0 2px 12px rgba(0,0,0,.07);border:1.5px solid ${col}20"><div style="width:44px;height:44px;border-radius:14px;background:${col};display:flex;align-items:center;justify-content:center;color:#fff">${ico.webW}</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:#1a1a1a">Vebsayt</div><div style="font-size:12px;color:#999;margin-top:1px">${esc(c.web)}</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`:''}
-    ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:#fff;border-radius:18px;margin-bottom:10px;text-decoration:none;box-shadow:0 2px 12px rgba(0,0,0,.07);border:1.5px solid rgba(0,0,0,.06)"><div style="width:44px;height:44px;border-radius:14px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#666">${ico.loc}</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:#1a1a1a">Ünvan</div><div style="font-size:12px;color:#999;margin-top:1px">${esc(c.address)}</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`:''}
-    ${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:16px 18px;background:#fff;border-radius:18px;margin-bottom:10px;text-decoration:none;box-shadow:0 2px 12px rgba(0,0,0,.07);border:1.5px solid rgba(0,0,0,.06)"><div style="width:44px;height:44px;border-radius:14px;background:${socCol[x]||col};display:flex;align-items:center;justify-content:center;color:#fff">${socIco[x]||'<span>'+x.substring(0,2).toUpperCase()+'</span>'}</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:#1a1a1a">${socLab[x]||x}</div><div style="font-size:12px;color:#999;margin-top:1px">Bax</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`).join('')}
+    ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')" style="display:flex;align-items:center;gap:14px;padding:15px 18px;background:#fff;border-radius:16px;margin-bottom:9px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.07);border:1.5px solid ${col}18"><div style="width:44px;height:44px;border-radius:13px;background:${col};display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0">${ico.phoneW}</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:#1a1a1a">Zəng et</div><div style="font-size:12px;color:#888;margin-top:1px">${esc(c.phone)}</div></div><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>`:''}
+    ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="display:flex;align-items:center;gap:14px;padding:15px 18px;background:#fff;border-radius:16px;margin-bottom:9px;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.07);border:1.5px solid ${col}18"><div style="width:44px;height:44px;border-radius:13px;background:${col};display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0">${ico.emailW}</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:#1a1a1a">Email</div><div style="font-size:12px;color:#888;margin-top:1px">${esc(c.email)}</div></div><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>`:''}
+    ${c.web?`<a href="${htp(c.web)}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:15px 18px;background:#fff;border-radius:16px;margin-bottom:9px;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.07);border:1.5px solid ${col}18"><div style="width:44px;height:44px;border-radius:13px;background:${col};display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0">${ico.webW}</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:#1a1a1a">Vebsayt</div><div style="font-size:12px;color:#888;margin-top:1px">${esc(c.web)}</div></div><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`:''}
+    ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:15px 18px;background:#fff;border-radius:16px;margin-bottom:9px;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.07);border:1.5px solid rgba(0,0,0,.04)"><div style="width:44px;height:44px;border-radius:13px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#666;flex-shrink:0">${ico.loc}</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:#1a1a1a">Ünvan</div><div style="font-size:12px;color:#888;margin-top:1px">${esc(c.address)}</div></div><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`:''}
+    ${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:15px 18px;background:#fff;border-radius:16px;margin-bottom:9px;text-decoration:none;box-shadow:0 2px 10px rgba(0,0,0,.07);border:1.5px solid rgba(0,0,0,.04)"><div style="width:44px;height:44px;border-radius:13px;background:${socCol[x]||col};display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0">${socIco[x]||'<span style="font-size:12px;font-weight:700">'+x.substring(0,2).toUpperCase()+'</span>'}</div><div style="flex:1"><div style="font-size:15px;font-weight:600;color:#1a1a1a">${socLab[x]||x}</div></div><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`).join('')}
     ${qrBtn()}${videoH(d)}${pdfsH(d)}
-    <button onclick="svContact()" style="width:100%;padding:16px;background:${col};border:none;border-radius:18px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;margin-top:.5rem;font-family:inherit;box-shadow:0 4px 16px ${col}44">${t('save')}</button>
-    <button onclick="shProfile()" style="width:100%;padding:13px;background:#fff;border:1.5px solid #eee;border-radius:18px;color:#555;font-size:14px;cursor:pointer;margin-top:10px;font-family:inherit">${t('share')}</button>
-  </div>
-  <div style="height:2rem"></div></div>`;
+    <button onclick="svContact()" style="width:100%;padding:16px;background:${col};border:none;border-radius:16px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;margin-top:.5rem;font-family:inherit;box-shadow:0 4px 14px ${col}44">${t('save')}</button>
+    <button onclick="shProfile()" style="width:100%;padding:13px;background:#fff;border:1.5px solid #eee;border-radius:16px;color:#555;font-size:13px;cursor:pointer;margin-top:8px;font-family:inherit">${t('share')}</button>
+  </div><div style="height:2rem"></div></div>`;
 }
 
-// ── T9: Dot UX — Ultra minimal, NFC-focused ───────────────────────────────
+// ── T9: Dot Minimal UX ────────────────────────────────────────────────────
 function t9(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
   const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
   const col=color||'#1a1a1a';
   return`<div style="background:#fff;min-height:100vh;font-family:'Inter',sans-serif;display:flex;flex-direction:column">
-  <!-- Tam ekran foto yuxarı yarı -->
-  <div style="position:relative;flex:0 0 55vh;overflow:hidden;background:#f0f0f0">
-    ${c.photo?`<img src="${esc(c.photo)}" style="width:100%;height:100%;object-fit:cover;object-position:center top">`:`<div style="width:100%;height:100%;background:linear-gradient(160deg,#e8e8e8,#f5f5f5);display:flex;align-items:center;justify-content:center"><div style="width:80px;height:80px;border-radius:50%;background:#ccc;display:flex;align-items:center;justify-content:center;font-size:32px;font-weight:700;color:#fff">${name.charAt(0).toUpperCase()}</div></div>`}
-    <!-- Dalğa aşağı -->
-    <svg style="position:absolute;bottom:-1px;left:0;width:100%" viewBox="0 0 390 40" preserveAspectRatio="none"><path d="M0,20 C100,40 290,0 390,20 L390,40 L0,40Z" fill="#fff"/></svg>
+  <div style="position:relative;height:55vh;overflow:hidden;background:#f0f0f0;flex-shrink:0">
+    ${c.photo?`<img src="${esc(c.photo)}" style="width:100%;height:100%;object-fit:cover;object-position:center top">`:`<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:linear-gradient(160deg,#e8e8e8,#f5f5f5)"><div style="width:90px;height:90px;border-radius:50%;background:#ccc;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:700;color:#fff">${name.charAt(0).toUpperCase()}</div></div>`}
+    <svg style="position:absolute;bottom:-1px;left:0;width:100%" viewBox="0 0 390 45" preserveAspectRatio="none"><path d="M0,22 C100,44 290,0 390,22 L390,45 L0,45Z" fill="#fff"/></svg>
   </div>
-  <!-- Məlumat alt hissə -->
-  <div style="flex:1;padding:1.25rem;display:flex;flex-direction:column">
+  <div style="flex:1;padding:1rem 1.25rem;display:flex;flex-direction:column">
     <div style="margin-bottom:1.25rem">
-      <div style="font-size:26px;font-weight:800;color:${col};margin-bottom:4px">${esc(name)||'—'}</div>
+      <div style="font-size:25px;font-weight:800;color:${col};margin-bottom:4px">${esc(name)||'—'}</div>
       ${c.position?`<div style="font-size:14px;color:#555;margin-bottom:2px">${esc(c.position)}</div>`:''}
-      ${c.company?`<div style="font-size:13px;color:${col};font-weight:600;opacity:.6">${esc(c.company)}</div>`:''}
+      ${c.company?`<div style="font-size:12px;color:${col};opacity:.5;font-weight:600">${esc(c.company)}</div>`:''}
+      ${c.bio?`<div style="font-size:13px;color:#888;line-height:1.6;margin-top:.6rem">${esc(c.bio)}</div>`:''}
     </div>
-    <!-- Dot-stilə 3-4 kontakt maksimum, çox sadə -->
     <div style="flex:1">
-      ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(c.whatsapp||c.phone)}','')" style="padding:14px 0;border-bottom:1px solid #f5f5f5;cursor:pointer;display:flex;align-items:center;gap:12px"><div style="width:36px;height:36px;background:${col}10;border-radius:10px;display:flex;align-items:center;justify-content:center;color:${col}">${ico.phone}</div><span style="font-size:15px;color:#1a1a1a">${esc(c.phone)}</span></div>`:''}
-      ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="padding:14px 0;border-bottom:1px solid #f5f5f5;cursor:pointer;display:flex;align-items:center;gap:12px"><div style="width:36px;height:36px;background:${col}10;border-radius:10px;display:flex;align-items:center;justify-content:center;color:${col}">${ico.email}</div><span style="font-size:15px;color:#1a1a1a">${esc(c.email)}</span></div>`:''}
-      ${c.web?`<a href="${htp(c.web)}" target="_blank" style="padding:14px 0;border-bottom:1px solid #f5f5f5;display:flex;align-items:center;gap:12px;text-decoration:none"><div style="width:36px;height:36px;background:${col}10;border-radius:10px;display:flex;align-items:center;justify-content:center;color:${col}">${ico.web}</div><span style="font-size:15px;color:${col}">${esc(c.web)}</span></a>`:''}
-      ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="padding:14px 0;border-bottom:1px solid #f5f5f5;display:flex;align-items:center;gap:12px;text-decoration:none"><div style="width:36px;height:36px;background:#f5f5f5;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#888">${ico.loc}</div><span style="font-size:15px;color:#555">${esc(c.address)}</span></a>`:''}
-      ${sk.length?`<div style="display:flex;gap:10px;padding-top:14px">${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="width:44px;height:44px;border-radius:50%;background:${socCol[x]||col};display:flex;align-items:center;justify-content:center;color:#fff;text-decoration:none">${socIco[x]||'<span style="font-size:10px">'+x.substring(0,2).toUpperCase()+'</span>'}</a>`).join('')}</div>`:''}
+      ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')" style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #f0f0f0;cursor:pointer"><div style="width:36px;height:36px;border-radius:10px;background:${col}10;display:flex;align-items:center;justify-content:center;color:${col};flex-shrink:0">${ico.phone}</div><span style="font-size:15px;color:#1a1a1a;flex:1">${esc(c.phone)}</span></div>`:''}
+      ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #f0f0f0;cursor:pointer"><div style="width:36px;height:36px;border-radius:10px;background:${col}10;display:flex;align-items:center;justify-content:center;color:${col};flex-shrink:0">${ico.email}</div><span style="font-size:15px;color:#1a1a1a;flex:1">${esc(c.email)}</span></div>`:''}
+      ${c.web?`<a href="${htp(c.web)}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #f0f0f0;text-decoration:none"><div style="width:36px;height:36px;border-radius:10px;background:${col}10;display:flex;align-items:center;justify-content:center;color:${col};flex-shrink:0">${ico.web}</div><span style="font-size:15px;color:${col};flex:1">${esc(c.web)}</span></a>`:''}
+      ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid #f0f0f0;text-decoration:none"><div style="width:36px;height:36px;border-radius:10px;background:#f5f5f5;display:flex;align-items:center;justify-content:center;color:#999;flex-shrink:0">${ico.loc}</div><span style="font-size:15px;color:#555;flex:1">${esc(c.address)}</span></a>`:''}
+      ${sk.length?`<div style="display:flex;gap:10px;padding-top:1rem">${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="width:44px;height:44px;border-radius:50%;background:${socCol[x]||col};display:flex;align-items:center;justify-content:center;color:#fff;text-decoration:none">${socIco[x]||'<span style="font-size:10px;font-weight:700">'+x.substring(0,2).toUpperCase()+'</span>'}</a>`).join('')}</div>`:''}
     </div>
     ${qrBtn()}${videoH(d)}${pdfsH(d)}
-    <!-- Dot-stilə tək böyük düymə -->
-    <button onclick="svContact()" style="width:100%;padding:18px;background:${col};border:none;border-radius:18px;color:#fff;font-size:17px;font-weight:700;cursor:pointer;margin-top:1rem;font-family:inherit">${t('save')}</button>
+    <button onclick="svContact()" style="width:100%;padding:17px;background:${col};border:none;border-radius:16px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;margin-top:.75rem;font-family:inherit">${t('save')}</button>
+    <button onclick="shProfile()" style="width:100%;padding:13px;background:#f5f5f5;border:none;border-radius:16px;color:#555;font-size:13px;cursor:pointer;margin-top:8px;font-family:inherit">${t('share')}</button>
   </div></div>`;
 }
 
-// ── T10: Mobilo UX — Şirkət rəngi dominant, CV stil ──────────────────────
+// ── T10: Mobilo UX ────────────────────────────────────────────────────────
 function t10(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
   const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
   const col=color||'#1d4ed8';
   return`<div style="background:#f8fafc;min-height:100vh;font-family:'Inter',sans-serif">
-  <!-- Şirkət branded header -->
-  <div style="background:${col};padding:1rem 1.25rem">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.5rem">
-      <div style="font-size:16px;font-weight:700;color:#fff">${esc(c.company)||'Şirkət'}</div>
-      <div style="background:rgba(255,255,255,.15);border-radius:20px;padding:3px 12px;font-size:10px;color:#fff;font-weight:600;letter-spacing:1px">STAFF CARD</div>
-    </div>
+  <div style="background:${col};padding:1.1rem 1.25rem 1.25rem">
     <div style="display:flex;align-items:center;gap:1rem">
-      <div style="width:72px;height:72px;border-radius:16px;overflow:hidden;border:2px solid rgba(255,255,255,.3);flex-shrink:0">${avImg(c.photo,name.charAt(0).toUpperCase())}</div>
+      <div style="width:70px;height:70px;border-radius:16px;overflow:hidden;border:2px solid rgba(255,255,255,.25);flex-shrink:0">${avImg(c.photo,name.charAt(0))}</div>
       <div>
-        <div style="font-size:20px;font-weight:700;color:#fff;line-height:1.2">${esc(name)||'—'}</div>
-        ${c.position?`<div style="font-size:12px;color:rgba(255,255,255,.75);margin-top:4px">${esc(c.position)}</div>`:''}
+        <div style="font-size:19px;font-weight:700;color:#fff;line-height:1.2">${esc(name)||'—'}</div>
+        ${c.position?`<div style="font-size:12px;color:rgba(255,255,255,.7);margin-top:4px">${esc(c.position)}</div>`:''}
+        ${c.company?`<div style="font-size:11px;color:rgba(255,255,255,.45);margin-top:2px">${esc(c.company)}</div>`:''}
       </div>
     </div>
   </div>
-  <!-- Əsas məzmun -->
   <div style="padding:1rem 1.25rem">
-    ${c.bio?`<div style="background:#fff;border-radius:14px;padding:14px;font-size:13px;color:#555;line-height:1.6;margin-bottom:.75rem;box-shadow:0 2px 8px rgba(0,0,0,.05)">${esc(c.bio)}</div>`:''}
-    <!-- Mobilo-stilə grid kontaktlar -->
+    ${c.bio?`<div style="background:#fff;border-radius:14px;padding:13px 14px;font-size:13px;color:#555;line-height:1.6;margin-bottom:.75rem;box-shadow:0 2px 8px rgba(0,0,0,.05)">${esc(c.bio)}</div>`:''}
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:.75rem">
-      ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(c.whatsapp||c.phone)}','')" style="background:#fff;border-radius:14px;padding:14px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.05);display:flex;align-items:center;gap:10px"><div style="width:36px;height:36px;border-radius:10px;background:${col}15;display:flex;align-items:center;justify-content:center;color:${col};flex-shrink:0">${ico.phone}</div><div><div style="font-size:11px;color:#999;margin-bottom:2px">Telefon</div><div style="font-size:12px;font-weight:600;color:#1a1a1a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(c.phone)}</div></div></div>`:``}
-      ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="background:#fff;border-radius:14px;padding:14px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.05);display:flex;align-items:center;gap:10px"><div style="width:36px;height:36px;border-radius:10px;background:${col}15;display:flex;align-items:center;justify-content:center;color:${col};flex-shrink:0">${ico.email}</div><div><div style="font-size:11px;color:#999;margin-bottom:2px">Email</div><div style="font-size:12px;font-weight:600;color:#1a1a1a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(c.email)}</div></div></div>`:``}
-      ${c.web?`<a href="${htp(c.web)}" target="_blank" style="background:#fff;border-radius:14px;padding:14px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05);display:flex;align-items:center;gap:10px"><div style="width:36px;height:36px;border-radius:10px;background:${col}15;display:flex;align-items:center;justify-content:center;color:${col};flex-shrink:0">${ico.web}</div><div><div style="font-size:11px;color:#999;margin-bottom:2px">Vebsayt</div><div style="font-size:12px;font-weight:600;color:${col};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(c.web)}</div></div></a>`:``}
-      ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="background:#fff;border-radius:14px;padding:14px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05);display:flex;align-items:center;gap:10px"><div style="width:36px;height:36px;border-radius:10px;background:#f5f5f5;display:flex;align-items:center;justify-content:center;color:#888;flex-shrink:0">${ico.loc}</div><div><div style="font-size:11px;color:#999;margin-bottom:2px">Ünvan</div><div style="font-size:12px;font-weight:600;color:#555;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(c.address)}</div></div></a>`:``}
+      ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')" style="background:#fff;border-radius:14px;padding:13px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.05);display:flex;align-items:center;gap:9px"><div style="width:34px;height:34px;border-radius:10px;background:${col}15;display:flex;align-items:center;justify-content:center;color:${col};flex-shrink:0">${ico.phone}</div><div><div style="font-size:10px;color:#999;margin-bottom:1px">Telefon</div><div style="font-size:11px;font-weight:600;color:#1a1a1a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:80px">${esc(c.phone)}</div></div></div>`:``}
+      ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="background:#fff;border-radius:14px;padding:13px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.05);display:flex;align-items:center;gap:9px"><div style="width:34px;height:34px;border-radius:10px;background:${col}15;display:flex;align-items:center;justify-content:center;color:${col};flex-shrink:0">${ico.email}</div><div><div style="font-size:10px;color:#999;margin-bottom:1px">Email</div><div style="font-size:11px;font-weight:600;color:#1a1a1a;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:80px">${esc(c.email)}</div></div></div>`:``}
+      ${c.web?`<a href="${htp(c.web)}" target="_blank" style="background:#fff;border-radius:14px;padding:13px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05);display:flex;align-items:center;gap:9px"><div style="width:34px;height:34px;border-radius:10px;background:${col}15;display:flex;align-items:center;justify-content:center;color:${col};flex-shrink:0">${ico.web}</div><div><div style="font-size:10px;color:#999;margin-bottom:1px">Web</div><div style="font-size:11px;font-weight:600;color:${col};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:80px">${esc(c.web)}</div></div></a>`:``}
+      ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="background:#fff;border-radius:14px;padding:13px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.05);display:flex;align-items:center;gap:9px"><div style="width:34px;height:34px;border-radius:10px;background:#f5f5f5;display:flex;align-items:center;justify-content:center;color:#888;flex-shrink:0">${ico.loc}</div><div><div style="font-size:10px;color:#999;margin-bottom:1px">Ünvan</div><div style="font-size:11px;font-weight:600;color:#555;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:80px">${esc(c.address)}</div></div></a>`:``}
     </div>
-    <!-- Sosial + vCard download -->
-    ${sk.length?`<div style="background:#fff;border-radius:14px;padding:1rem;box-shadow:0 2px 8px rgba(0,0,0,.05);margin-bottom:.75rem"><div style="font-size:11px;font-weight:700;color:#999;text-transform:uppercase;letter-spacing:1px;margin-bottom:.75rem">Sosial media</div><div style="display:flex;gap:8px;flex-wrap:wrap">${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="display:flex;align-items:center;gap:8px;padding:8px 14px;background:#f8fafc;border-radius:20px;text-decoration:none;font-size:12px;font-weight:500;color:#333;border:1px solid #eee">${socIco[x]||''}<span>${socLab[x]||x}</span></a>`).join('')}</div></div>`:''}
+    ${sk.length?`<div style="background:#fff;border-radius:14px;padding:13px 14px;box-shadow:0 2px 8px rgba(0,0,0,.05);margin-bottom:.75rem"><div style="display:flex;gap:8px;flex-wrap:wrap">${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="display:flex;align-items:center;gap:7px;padding:7px 13px;background:#f8fafc;border-radius:20px;text-decoration:none;font-size:12px;font-weight:500;color:#333;border:1px solid #e8edf5">${socIco[x]||''}<span>${socLab[x]||x}</span></a>`).join('')}</div></div>`:''}
     ${qrBtn()}${videoH(d)}${pdfsH(d)}
-    <!-- Mobilo-stilə vCard önə çıxmış -->
-    <button onclick="svContact()" style="width:100%;padding:16px;background:${col};border:none;border-radius:14px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 16px ${col}44">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      vCard yüklə / Saxla
-    </button>
-    <button onclick="shProfile()" style="width:100%;padding:12px;background:#fff;border:1px solid #e2e8f0;border-radius:14px;color:#555;font-size:13px;cursor:pointer;margin-top:8px;font-family:inherit">${t('share')}</button>
-  </div>
-  <div style="height:2rem"></div></div>`;
+    <button onclick="svContact()" style="width:100%;padding:15px;background:${col};border:none;border-radius:13px;color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 4px 14px ${col}44;margin-top:.25rem"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>vCard yüklə / ${t('save')}</button>
+    <button onclick="shProfile()" style="width:100%;padding:12px;background:#fff;border:1px solid #e2e8f0;border-radius:13px;color:#555;font-size:13px;cursor:pointer;margin-top:8px;font-family:inherit">${t('share')}</button>
+  </div><div style="height:2rem"></div></div>`;
 }
 
-// ── T11: Stackteam UX — Komanda kartı, uniform stil ───────────────────────
+// ── T11: Stackteam UX ─────────────────────────────────────────────────────
 function t11(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
   const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
   const col=color||'#0f172a';
   return`<div style="background:#fff;min-height:100vh;font-family:'Inter',sans-serif">
-  <!-- Şirkət top bar -->
-  <div style="background:${col};padding:.6rem 1.25rem;display:flex;align-items:center;gap:10px">
-    <div style="width:28px;height:28px;border-radius:8px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff">${(c.company||'M').charAt(0)}</div>
-    <div style="font-size:13px;font-weight:600;color:#fff">${esc(c.company)||'Company'}</div>
-    <div style="margin-left:auto;font-size:9px;color:rgba(255,255,255,.4);letter-spacing:1px">TEAM MEMBER</div>
+  <div style="height:130px;background:linear-gradient(135deg,${col}cc,${col}55);position:relative;overflow:hidden">
+    ${c.cover?`<img src="${esc(c.cover)}" style="width:100%;height:100%;object-fit:cover;opacity:.45">`:''}
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent,rgba(0,0,0,.35))"></div>
   </div>
-  <!-- Cover -->
-  <div style="height:140px;background:linear-gradient(135deg,${col}cc,${col}44);position:relative;overflow:hidden">
-    ${c.cover?`<img src="${esc(c.cover)}" style="width:100%;height:100%;object-fit:cover;opacity:.5">`:''}
-    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent,rgba(0,0,0,.4))"></div>
-  </div>
-  <!-- Avatar + ad -->
-  <div style="padding:0 1.25rem;position:relative">
-    <div style="display:flex;align-items:flex-end;gap:1rem;margin-top:-42px;margin-bottom:1rem;position:relative;z-index:2">
-      <div style="width:84px;height:84px;border-radius:18px;overflow:hidden;border:3px solid #fff;box-shadow:0 4px 16px rgba(0,0,0,.15);flex-shrink:0">${avImg(c.photo,name.charAt(0).toUpperCase())}</div>
-      <div style="padding-bottom:6px">
-        <div style="font-size:20px;font-weight:700;color:${col}">${esc(name)||'—'}</div>
+  <div style="padding:0 1.25rem">
+    <div style="display:flex;align-items:flex-end;gap:1rem;margin-top:-40px;margin-bottom:1rem;position:relative;z-index:2">
+      <div style="width:80px;height:80px;border-radius:18px;overflow:hidden;border:3px solid #fff;box-shadow:0 4px 16px rgba(0,0,0,.14);flex-shrink:0">${avImg(c.photo,name.charAt(0))}</div>
+      <div style="padding-bottom:5px">
+        <div style="font-size:19px;font-weight:700;color:${col}">${esc(name)||'—'}</div>
         ${c.position?`<div style="font-size:12px;color:#64748b;margin-top:2px">${esc(c.position)}</div>`:''}
+        ${c.company?`<div style="font-size:11px;color:${col};opacity:.5;margin-top:1px">${esc(c.company)}</div>`:''}
       </div>
     </div>
-    ${c.bio?`<div style="font-size:13px;color:#64748b;line-height:1.6;margin-bottom:1rem;padding:12px;background:#f8fafc;border-radius:12px;border-left:3px solid ${col}">${esc(c.bio)}</div>`:''}
-    <!-- Kontaktlar uniform -->
+    ${c.bio?`<div style="font-size:13px;color:#64748b;line-height:1.6;margin-bottom:1rem;padding:12px 13px;background:#f8fafc;border-radius:12px;border-left:3px solid ${col}">${esc(c.bio)}</div>`:''}
     <div style="border:1px solid #e2e8f0;border-radius:16px;overflow:hidden;margin-bottom:.75rem">
-      ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(c.whatsapp||c.phone)}','')" style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #f1f5f9;cursor:pointer"><div style="width:36px;height:36px;border-radius:10px;background:${col}10;display:flex;align-items:center;justify-content:center;color:${col}">${ico.phone}</div><div><div style="font-size:13px;font-weight:500;color:#1e293b">${esc(c.phone)}</div><div style="font-size:11px;color:#94a3b8">İş telefonu</div></div><svg style="margin-left:auto" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>`:''}
-      ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #f1f5f9;cursor:pointer"><div style="width:36px;height:36px;border-radius:10px;background:${col}10;display:flex;align-items:center;justify-content:center;color:${col}">${ico.email}</div><div><div style="font-size:13px;font-weight:500;color:#1e293b">${esc(c.email)}</div><div style="font-size:11px;color:#94a3b8">İş emaili</div></div><svg style="margin-left:auto" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>`:''}
-      ${c.web?`<a href="${htp(c.web)}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #f1f5f9;text-decoration:none"><div style="width:36px;height:36px;border-radius:10px;background:${col}10;display:flex;align-items:center;justify-content:center;color:${col}">${ico.web}</div><div><div style="font-size:13px;font-weight:500;color:${col}">${esc(c.web)}</div><div style="font-size:11px;color:#94a3b8">Korporativ sayt</div></div><svg style="margin-left:auto" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`:''}
-      ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:14px 16px;text-decoration:none"><div style="width:36px;height:36px;border-radius:10px;background:#f8fafc;display:flex;align-items:center;justify-content:center;color:#64748b">${ico.loc}</div><div><div style="font-size:13px;font-weight:500;color:#475569">${esc(c.address)}</div><div style="font-size:11px;color:#94a3b8">Ofis ünvanı</div></div><svg style="margin-left:auto" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`:''}
+      ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')" style="display:flex;align-items:center;gap:12px;padding:13px 15px;border-bottom:1px solid #f1f5f9;cursor:pointer"><div style="width:35px;height:35px;border-radius:10px;background:${col}10;display:flex;align-items:center;justify-content:center;color:${col};flex-shrink:0">${ico.phone}</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:#1e293b">${esc(c.phone)}</div></div><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>`:''}
+      ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="display:flex;align-items:center;gap:12px;padding:13px 15px;border-bottom:1px solid #f1f5f9;cursor:pointer"><div style="width:35px;height:35px;border-radius:10px;background:${col}10;display:flex;align-items:center;justify-content:center;color:${col};flex-shrink:0">${ico.email}</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:#1e293b">${esc(c.email)}</div></div><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>`:''}
+      ${c.web?`<a href="${htp(c.web)}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:13px 15px;border-bottom:1px solid #f1f5f9;text-decoration:none"><div style="width:35px;height:35px;border-radius:10px;background:${col}10;display:flex;align-items:center;justify-content:center;color:${col};flex-shrink:0">${ico.web}</div><div style="flex:1"><div style="font-size:13px;font-weight:500;color:${col}">${esc(c.web)}</div></div><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`:''}
+      ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:13px 15px;text-decoration:none"><div style="width:35px;height:35px;border-radius:10px;background:#f8fafc;display:flex;align-items:center;justify-content:center;color:#64748b;flex-shrink:0">${ico.loc}</div><div style="flex:1"><div style="font-size:13px;color:#475569">${esc(c.address)}</div></div><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#cbd5e1" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`:''}
     </div>
-    ${sk.length?`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:.75rem">${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="display:flex;align-items:center;gap:8px;padding:8px 14px;background:#f8fafc;border-radius:20px;text-decoration:none;font-size:12px;color:#475569;border:1px solid #e2e8f0">${socIco[x]||''}<span>${socLab[x]||x}</span></a>`).join('')}</div>`:''}
+    ${sk.length?`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:.75rem">${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="display:flex;align-items:center;gap:7px;padding:7px 13px;background:#f8fafc;border-radius:20px;text-decoration:none;font-size:12px;color:#475569;border:1px solid #e2e8f0">${socIco[x]||''}<span>${socLab[x]||x}</span></a>`).join('')}</div>`:''}
     ${qrBtn()}${videoH(d)}${pdfsH(d)}
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:.75rem">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:.5rem">
       <button onclick="svContact()" style="padding:14px;background:${col};border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">${t('save')}</button>
       <button onclick="shProfile()" style="padding:14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;color:#475569;font-size:13px;cursor:pointer;font-family:inherit">${t('share')}</button>
     </div>
-  </div>
-  <div style="height:2rem"></div></div>`;
+  </div><div style="height:2rem"></div></div>`;
 }
 
-// ── T12: HiHello Pro UX — Achievements + Gallery ─────────────────────────
+// ── T12: HiHello Pro UX ───────────────────────────────────────────────────
 function t12(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
   const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
   const col=color||'#7c3aed';
   return`<div style="background:#fff;min-height:100vh;font-family:'Inter',sans-serif">
-  <!-- Cover böyük -->
-  <div style="position:relative;height:260px;overflow:hidden;background:linear-gradient(160deg,${col},${col}88)">
+  <div style="position:relative;height:255px;overflow:hidden;background:linear-gradient(160deg,${col},${col}77)">
     ${c.cover?`<img src="${esc(c.cover)}" style="width:100%;height:100%;object-fit:cover">`:`<div style="width:100%;height:100%;background:linear-gradient(160deg,${col},${col}66)"></div>`}
-    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.1),rgba(0,0,0,.6))"></div>
-    <!-- Alt sol info -->
-    <div style="position:absolute;bottom:1.25rem;left:1.25rem;right:1.25rem;display:flex;align-items:flex-end;gap:1rem">
-      <div style="width:76px;height:76px;border-radius:50%;overflow:hidden;border:3px solid #fff;flex-shrink:0;box-shadow:0 4px 16px rgba(0,0,0,.2)">${avImg(c.photo,name.charAt(0).toUpperCase())}</div>
+    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.08),rgba(0,0,0,.55))"></div>
+    <div style="position:absolute;bottom:1.1rem;left:1.25rem;right:1.25rem;display:flex;align-items:flex-end;gap:1rem">
+      <div style="width:72px;height:72px;border-radius:50%;overflow:hidden;border:3px solid #fff;flex-shrink:0;box-shadow:0 4px 14px rgba(0,0,0,.2)">${avImg(c.photo,name.charAt(0))}</div>
       <div>
-        <div style="font-size:22px;font-weight:800;color:#fff">${esc(name)||'—'}</div>
-        ${c.position?`<div style="font-size:13px;color:rgba(255,255,255,.8)">${esc(c.position)}</div>`:''}
-        ${c.company?`<div style="font-size:12px;color:rgba(255,255,255,.6)">${esc(c.company)}</div>`:''}
+        <div style="font-size:21px;font-weight:800;color:#fff;line-height:1.15">${esc(name)||'—'}</div>
+        ${c.position?`<div style="font-size:12px;color:rgba(255,255,255,.78);margin-top:3px">${esc(c.position)}</div>`:''}
+        ${c.company?`<div style="font-size:11px;color:rgba(255,255,255,.5);margin-top:2px">${esc(c.company)}</div>`:''}
       </div>
     </div>
   </div>
-  <!-- İki düymə -->
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:1rem 1.25rem">
-    <button onclick="svContact()" style="padding:14px;background:${col};border:none;border-radius:14px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">${t('save')}</button>
-    <button onclick="shProfile()" style="padding:14px;background:#f5f5f5;border:none;border-radius:14px;color:#333;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">${t('share')}</button>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:.9rem 1.25rem">
+    <button onclick="svContact()" style="padding:13px;background:${col};border:none;border-radius:13px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit">${t('save')}</button>
+    <button onclick="shProfile()" style="padding:13px;background:#f5f5f5;border:none;border-radius:13px;color:#333;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">${t('share')}</button>
   </div>
-  ${c.bio?`<div style="padding:0 1.25rem;margin-bottom:.75rem"><div style="font-size:13px;color:#555;line-height:1.6;padding:12px;background:#f8f9fa;border-radius:12px">${esc(c.bio)}</div></div>`:''}
-  <!-- Achievements -->
-  <div style="padding:0 1.25rem;margin-bottom:.75rem">
-    <div style="font-size:11px;font-weight:700;color:#999;letter-spacing:1px;text-transform:uppercase;margin-bottom:.6rem">Əlaqə məlumatları</div>
-    <div style="background:#f8f9fa;border-radius:16px;overflow:hidden">
-      ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(c.whatsapp||c.phone)}','')" style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #eee;cursor:pointer"><div style="width:38px;height:38px;border-radius:12px;background:${col}15;display:flex;align-items:center;justify-content:center;color:${col}">${ico.phone}</div><div><div style="font-size:14px;font-weight:500;color:#1a1a1a">${esc(c.phone)}</div></div><svg style="margin-left:auto" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>`:''}
-      ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #eee;cursor:pointer"><div style="width:38px;height:38px;border-radius:12px;background:${col}15;display:flex;align-items:center;justify-content:center;color:${col}">${ico.email}</div><div><div style="font-size:14px;font-weight:500;color:#1a1a1a">${esc(c.email)}</div></div><svg style="margin-left:auto" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>`:''}
-      ${c.web?`<a href="${htp(c.web)}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #eee;text-decoration:none"><div style="width:38px;height:38px;border-radius:12px;background:${col}15;display:flex;align-items:center;justify-content:center;color:${col}">${ico.web}</div><div><div style="font-size:14px;font-weight:500;color:${col}">${esc(c.web)}</div></div><svg style="margin-left:auto" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`:''}
-      ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:14px 16px;text-decoration:none"><div style="width:38px;height:38px;border-radius:12px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#888">${ico.loc}</div><div><div style="font-size:14px;color:#555">${esc(c.address)}</div></div><svg style="margin-left:auto" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`:''}
+  ${c.bio?`<div style="padding:0 1.25rem;margin-bottom:.75rem"><div style="font-size:13px;color:#555;line-height:1.6;padding:12px 13px;background:#f8f9fa;border-radius:12px">${esc(c.bio)}</div></div>`:''}
+  <div style="padding:0 1.25rem">
+    <div style="background:#f8f9fa;border-radius:16px;overflow:hidden;margin-bottom:.75rem">
+      ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')" style="display:flex;align-items:center;gap:12px;padding:13px 15px;border-bottom:1px solid #eee;cursor:pointer"><div style="width:36px;height:36px;border-radius:11px;background:${col}15;display:flex;align-items:center;justify-content:center;color:${col};flex-shrink:0">${ico.phone}</div><div style="flex:1"><div style="font-size:14px;font-weight:500;color:#1a1a1a">${esc(c.phone)}</div></div><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>`:''}
+      ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="display:flex;align-items:center;gap:12px;padding:13px 15px;border-bottom:1px solid #eee;cursor:pointer"><div style="width:36px;height:36px;border-radius:11px;background:${col}15;display:flex;align-items:center;justify-content:center;color:${col};flex-shrink:0">${ico.email}</div><div style="flex:1"><div style="font-size:14px;font-weight:500;color:#1a1a1a">${esc(c.email)}</div></div><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></div>`:''}
+      ${c.web?`<a href="${htp(c.web)}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:13px 15px;border-bottom:1px solid #eee;text-decoration:none"><div style="width:36px;height:36px;border-radius:11px;background:${col}15;display:flex;align-items:center;justify-content:center;color:${col};flex-shrink:0">${ico.web}</div><div style="flex:1"><div style="font-size:14px;font-weight:500;color:${col}">${esc(c.web)}</div></div><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`:''}
+      ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:13px 15px;text-decoration:none"><div style="width:36px;height:36px;border-radius:11px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#888;flex-shrink:0">${ico.loc}</div><div style="flex:1"><div style="font-size:14px;color:#555">${esc(c.address)}</div></div><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></a>`:''}
     </div>
-  </div>
-  ${sk.length?`<div style="padding:0 1.25rem;margin-bottom:.75rem"><div style="font-size:11px;font-weight:700;color:#999;letter-spacing:1px;text-transform:uppercase;margin-bottom:.6rem">Sosial media</div><div style="display:flex;gap:8px;flex-wrap:wrap">${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="display:flex;align-items:center;gap:8px;padding:9px 16px;background:#f8f9fa;border-radius:24px;text-decoration:none;font-size:13px;font-weight:500;color:#333;border:1px solid #eee">${socIco[x]||''}<span>${socLab[x]||x}</span></a>`).join('')}</div></div>`:''}
-  ${qrBtn()}${videoH(d)}${pdfsH(d)}
-  <div style="height:2rem"></div></div>`;
+    ${sk.length?`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:.75rem">${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="display:flex;align-items:center;gap:8px;padding:8px 15px;background:#f8f9fa;border-radius:24px;text-decoration:none;font-size:12px;font-weight:500;color:#333;border:1px solid #eee">${socIco[x]||''}<span>${socLab[x]||x}</span></a>`).join('')}</div>`:''}
+    ${qrBtn()}${videoH(d)}${pdfsH(d)}
+  </div><div style="height:2rem"></div></div>`;
 }
 
 // ── QR ─────────────────────────────────────────────────────────────────────
