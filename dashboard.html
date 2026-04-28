@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>mycontact — Dashboard</title>
+<title>VizitAz — İdarə Paneli</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -297,7 +297,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-brand">
     <div class="brand-mark"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="3" y="6" width="18" height="13" rx="2"/><circle cx="12" cy="13" r="2"/></svg></div>
-    <span class="brand-name">Card<span>Pro</span></span>
+    <span class="brand-name">Vizit<span>Az</span></span>
   </div>
   <nav class="sidebar-nav">
     <div class="nav-section">Menyü</div>
@@ -910,7 +910,7 @@ function loadUD(){
   const badge=document.getElementById('contactLimitBadge');
   if(badge){if(!isPro){badge.style.display='block';badge.innerHTML=allContacts.length>=5?`<span style="color:var(--error)">⚠️ ${allContacts.length}/5 — <a href="#" onclick="openUpgradeModal();return false" style="color:var(--blue)">Pro-ya keç</a></span>`:`${allContacts.length}/5 kontakt`;}else{badge.style.display='none';}}
   const slug=d.slug||'';
-  const link=slug?'apps.mycontact.az/'+slug:'—';
+  const link=slug?'apps.vizitaz.az/'+slug:'—';
   ['linkText','overviewLink','wLink'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=link;});
   if(!_udLoaded){
     _udLoaded=true;
@@ -975,8 +975,8 @@ window.saveDefaultLang=async function(){
 // SLUG
 function renderSlugSection(slug,isPro){
   const el=document.getElementById('slugSection');
-  if(isPro){el.innerHTML=`<div style="display:flex;align-items:center;gap:7px;margin-bottom:.75rem"><span style="font-size:12px;color:var(--gray)">Pro plan — linkinizi dəyişə bilərsiniz</span><span class="pro-badge">✦ PRO</span></div><div class="slug-row"><span class="slug-prefix">apps.mycontact.az/</span><input class="slug-input" id="slugInput" value="${slug}" maxlength="60"></div><div style="font-size:11px;color:var(--gray);margin-bottom:.75rem">Yalnız latın hərf, rəqəm, tire. Min 3, max 60 simvol.</div><button class="btn btn-primary btn-sm" onclick="saveSlug()">Linki yenilə</button>`;}
-  else{el.innerHTML=`<div style="font-size:13px;color:var(--navy);margin-bottom:.5rem;word-break:break-all"><strong>apps.mycontact.az/${slug||'—'}</strong></div><div class="lock-msg"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Linki dəyişmək yalnız Pro planda mümkündür</div><button class="btn btn-sm" style="margin-top:.75rem" onclick="openUpgradeModal()">Pro-ya keç →</button>`;}
+  if(isPro){el.innerHTML=`<div style="display:flex;align-items:center;gap:7px;margin-bottom:.75rem"><span style="font-size:12px;color:var(--gray)">Pro plan — linkinizi dəyişə bilərsiniz</span><span class="pro-badge">✦ PRO</span></div><div class="slug-row"><span class="slug-prefix">apps.vizitaz.az/</span><input class="slug-input" id="slugInput" value="${slug}" maxlength="60"></div><div style="font-size:11px;color:var(--gray);margin-bottom:.75rem">Yalnız latın hərf, rəqəm, tire. Min 3, max 60 simvol.</div><button class="btn btn-primary btn-sm" onclick="saveSlug()">Linki yenilə</button>`;}
+  else{el.innerHTML=`<div style="font-size:13px;color:var(--navy);margin-bottom:.5rem;word-break:break-all"><strong>apps.vizitaz.az/${slug||'—'}</strong></div><div class="lock-msg"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Linki dəyişmək yalnız Pro planda mümkündür</div><button class="btn btn-sm" style="margin-top:.75rem" onclick="openUpgradeModal()">Pro-ya keç →</button>`;}
 }
 window.renderBrandSection=function(isPro){
   const el=document.getElementById('brandLinkSection');if(!el)return;
@@ -987,7 +987,7 @@ window.renderBrandSection=function(isPro){
       Brand Link
       <span style="background:rgba(201,168,76,.2);color:#b45309;font-size:10px;padding:2px 7px;border-radius:8px;font-weight:600">PRO</span>
     </div>
-    <div style="font-size:12px;color:var(--gray);margin-bottom:10px">Profil altındakı "mycontact ilə yaradılmışdır" linkini idarə edin</div>
+    <div style="font-size:12px;color:var(--gray);margin-bottom:10px">Profil altındakı "VizitAz ilə yaradılmışdır" linkini idarə edin</div>
     <div style="display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-radius:9px;padding:10px 14px;border:1px solid var(--gray-light)">
       <div>
         <div style="font-size:13px;color:var(--navy)">Brand linki göstər</div>
@@ -1244,7 +1244,7 @@ window.renderSigPreview=function(){
   if(sigState.email&&d.email)html+=`<tr><td style="padding-bottom:3px"><a href="mailto:${d.email}" style="color:#185FA5;text-decoration:none">✉️ ${d.email}</a></td></tr>`;
   if(sigState.web&&d.web)html+=`<tr><td style="padding-bottom:6px"><a href="${d.web.startsWith('http')?d.web:'https://'+d.web}" style="color:#185FA5;text-decoration:none">🌐 ${d.web}</a></td></tr>`;
   if(sigState.socials){const s=Object.entries(soc).filter(([,v])=>v).map(([k,v])=>`<a href="${v.startsWith('http')?v:'https://'+v}" style="margin-right:6px;color:#185FA5;font-size:11px;text-decoration:none">${k}</a>`).join('');if(s)html+=`<tr><td style="padding-bottom:6px">${s}</td></tr>`;}
-  if(sigState.cardlink&&slug)html+=`<tr><td style="padding-top:6px;border-top:1px solid #E8EDF5"><a href="https://apps.mycontact.az/${slug}" style="display:inline-block;background:#185FA5;color:#fff;padding:5px 12px;border-radius:6px;font-size:11px;text-decoration:none;margin-top:4px">🪪 Profilim</a></td></tr>`;
+  if(sigState.cardlink&&slug)html+=`<tr><td style="padding-top:6px;border-top:1px solid #E8EDF5"><a href="https://apps.vizitaz.az/${slug}" style="display:inline-block;background:#185FA5;color:#fff;padding:5px 12px;border-radius:6px;font-size:11px;text-decoration:none;margin-top:4px">🪪 Profilim</a></td></tr>`;
   html+=`</table>`;
   document.getElementById('sigPreview').innerHTML=html;
   return html;
@@ -1262,208 +1262,18 @@ window.toggleSigBlockPro=function(btn,key){
 // ── TEMPLATES ─────────────────────────────────────────────────────────────
 // tmplNum → profile.html-in t1..t12 sistemi ilə sinxronizasiya
 const TEMPLATES=[
-  {id:1,  name:'Classic',     cat:'Klassik',   free:true,  preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg">
-<rect width="220" height="290" fill="#f0f4f8" rx="12"/>
-<!-- Cover -->
-<rect width="220" height="85" fill="#0a1628" rx="12"/>
-<rect y="73" width="220" height="12" fill="#0a1628"/>
-<!-- Office pattern -->
-<rect x="0" y="0" width="220" height="85" fill="url(#t1bg)" rx="12"/>
-<defs>
-<linearGradient id="t1bg" x1="0" y1="0" x2="220" y2="85" gradientUnits="userSpaceOnUse">
-<stop offset="0" stop-color="#112040"/>
-<stop offset="1" stop-color="#185FA5"/>
-</linearGradient>
-</defs>
-<circle cx="180" cy="20" r="45" fill="rgba(79,172,254,.07)"/>
-<circle cx="10" cy="75" r="30" fill="rgba(255,255,255,.04)"/>
-<rect x="14" y="18" width="80" height="2" rx="1" fill="rgba(255,255,255,.15)"/>
-<rect x="14" y="23" width="55" height="1.5" rx=".75" fill="rgba(255,255,255,.08)"/>
-<!-- Avatar -->
-<circle cx="38" cy="85" r="28" fill="#fff"/>
-<circle cx="38" cy="85" r="24" fill="#c8ddf0"/>
-<circle cx="38" cy="78" r="9" fill="#8ab0d0"/>
-<ellipse cx="38" cy="94" rx="13" ry="10" fill="#7aa0c0"/>
-<ellipse cx="38" cy="104" rx="16" ry="8" fill="#c8ddf0"/>
-<!-- Name & title -->
-<text x="74" y="96" font-family="Georgia,serif" font-size="11" font-weight="700" fill="#0a1628">Anar Həsənov</text>
-<text x="74" y="108" font-family="Arial,sans-serif" font-size="8" fill="#185FA5">Chief Executive Officer</text>
-<text x="74" y="119" font-family="Arial,sans-serif" font-size="7.5" fill="#8A9BB5">Nexus Capital Group</text>
-<!-- Bio -->
-<rect x="14" y="130" width="192" height="1" rx=".5" fill="#e0e8f0"/>
-<text x="14" y="143" font-family="Arial,sans-serif" font-size="7" fill="#6a7f95">15+ il maliyyə və korporativ idarəetmə üzrə</text>
-<text x="14" y="153" font-family="Arial,sans-serif" font-size="7" fill="#6a7f95">təcrübəyə sahib lider. Strateji inkişaf mütəxəssisi.</text>
-<!-- Contacts -->
-<rect x="14" y="161" width="192" height="22" rx="6" fill="#fff"/>
-<circle cx="26" cy="172" r="6" fill="rgba(24,95,165,.1)"/>
-<circle cx="26" cy="172" r="4" fill="rgba(24,95,165,.2)"/>
-<text x="36" y="175" font-family="Arial,sans-serif" font-size="7.5" fill="#0a1628">+994 55 000 00 00</text>
-<rect x="14" y="186" width="192" height="22" rx="6" fill="#fff"/>
-<circle cx="26" cy="197" r="6" fill="rgba(24,95,165,.1)"/>
-<text x="36" y="200" font-family="Arial,sans-serif" font-size="7.5" fill="#0a1628">info@nexuscapital.az</text>
-<rect x="14" y="211" width="192" height="22" rx="6" fill="#fff"/>
-<circle cx="26" cy="222" r="6" fill="rgba(24,95,165,.1)"/>
-<text x="36" y="225" font-family="Arial,sans-serif" font-size="7.5" fill="#185FA5">www.nexuscapital.az</text>
-<rect x="14" y="236" width="192" height="22" rx="6" fill="#fff"/>
-<circle cx="26" cy="247" r="6" fill="rgba(24,95,165,.1)"/>
-<text x="36" y="250" font-family="Arial,sans-serif" font-size="7.5" fill="#6a7f95">Bakı, Azərbaycan</text>
-<!-- Social icons -->
-<rect x="14" y="264" width="40" height="18" rx="5" fill="#0077B5"/>
-<text x="34" y="276" font-family="Arial,sans-serif" font-size="7" fill="#fff" text-anchor="middle">in</text>
-<rect x="58" y="264" width="40" height="18" rx="5" fill="#C13584"/>
-<text x="78" y="276" font-family="Arial,sans-serif" font-size="7" fill="#fff" text-anchor="middle">IG</text>
-<rect x="102" y="264" width="40" height="18" rx="5" fill="#25D366"/>
-<text x="122" y="276" font-family="Arial,sans-serif" font-size="7" fill="#fff" text-anchor="middle">WA</text>
-<rect x="146" y="264" width="60" height="18" rx="5" fill="#0a1628"/>
-<text x="176" y="276" font-family="Arial,sans-serif" font-size="7" fill="#fff" text-anchor="middle">Əlaqə saxla</text>
-</svg>`},
-  {id:2,  name:'Minimal',     cat:'Minimal',   free:true,  preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg">
-<rect width="220" height="290" fill="#ffffff" rx="12"/>
-<rect width="220" height="5" fill="#185FA5" rx="2"/>
-<!-- Avatar square minimal -->
-<rect x="14" y="20" width="48" height="48" rx="10" fill="#e8f0fa"/>
-<circle cx="38" cy="36" r="10" fill="#a0b8d0"/>
-<ellipse cx="38" cy="52" rx="14" ry="10" fill="#8aaac8"/>
-<!-- Name block -->
-<text x="72" y="34" font-family="Georgia,serif" font-size="12" font-weight="700" fill="#0a1628">Leyla Əliyeva</text>
-<text x="72" y="46" font-family="Arial,sans-serif" font-size="8" fill="#185FA5">CFO / Finance Director</text>
-<text x="72" y="57" font-family="Arial,sans-serif" font-size="7" fill="#8A9BB5">Atlas Investment Bank</text>
-<!-- Divider -->
-<rect x="14" y="74" width="192" height="1" rx=".5" fill="#e8edf5"/>
-<!-- Bio -->
-<text x="14" y="87" font-family="Arial,sans-serif" font-size="7" fill="#6a7f95">Maliyyə planlaması, risk idarəetməsi və audit</text>
-<text x="14" y="97" font-family="Arial,sans-serif" font-size="7" fill="#6a7f95">sahəsində 12 illik beynəlxalq təcrübə.</text>
-<!-- Contact rows -->
-<rect x="14" y="107" width="192" height="1" rx=".5" fill="#f0f4f8"/>
-<circle cx="24" cy="120" r="7" fill="#e8f0fa"/>
-<text x="36" y="124" font-family="Arial,sans-serif" font-size="7.5" fill="#0a1628">+994 55 000 00 00</text>
-<rect x="14" y="130" width="192" height="1" rx=".5" fill="#f0f4f8"/>
-<circle cx="24" cy="143" r="7" fill="#e8f0fa"/>
-<text x="36" y="147" font-family="Arial,sans-serif" font-size="7.5" fill="#0a1628">info@atlasinvest.az</text>
-<rect x="14" y="153" width="192" height="1" rx=".5" fill="#f0f4f8"/>
-<circle cx="24" cy="166" r="7" fill="#e8f0fa"/>
-<text x="36" y="170" font-family="Arial,sans-serif" font-size="7.5" fill="#185FA5">www.atlasinvest.az</text>
-<rect x="14" y="176" width="192" height="1" rx=".5" fill="#f0f4f8"/>
-<circle cx="24" cy="189" r="7" fill="#e8f0fa"/>
-<text x="36" y="193" font-family="Arial,sans-serif" font-size="7.5" fill="#6a7f95">Bakı, Azərbaycan</text>
-<rect x="14" y="199" width="192" height="1" rx=".5" fill="#f0f4f8"/>
-<!-- Social pills -->
-<rect x="14" y="210" width="45" height="16" rx="8" fill="#e8f0fa" stroke="#c8d8ee" stroke-width=".5"/>
-<text x="36" y="221" font-family="Arial,sans-serif" font-size="6.5" fill="#185FA5" text-anchor="middle">LinkedIn</text>
-<rect x="64" y="210" width="45" height="16" rx="8" fill="#fce8f4" stroke="#e8c8e0" stroke-width=".5"/>
-<text x="86" y="221" font-family="Arial,sans-serif" font-size="6.5" fill="#C13584" text-anchor="middle">Instagram</text>
-<rect x="114" y="210" width="45" height="16" rx="8" fill="#e8faf0" stroke="#c8e8d8" stroke-width=".5"/>
-<text x="136" y="221" font-family="Arial,sans-serif" font-size="6.5" fill="#25D366" text-anchor="middle">WhatsApp</text>
-<!-- Save button -->
-<rect x="14" y="234" width="192" height="30" rx="8" fill="#0a1628"/>
-<text x="110" y="253" font-family="Arial,sans-serif" font-size="9" font-weight="600" fill="#fff" text-anchor="middle">Kontaktı Saxla</text>
-<!-- QR -->
-<rect x="14" y="270" width="192" height="14" rx="5" fill="#f0f4f8"/>
-<text x="110" y="280" font-family="Arial,sans-serif" font-size="6.5" fill="#8A9BB5" text-anchor="middle">QR Kod · Paylaş</text>
-</svg>`},
-  {id:3,  name:'Bold Dark',   cat:'Dark',      free:true,  preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg">
-<rect width="220" height="290" fill="#0d1117" rx="12"/>
-<defs>
-<linearGradient id="t3g" x1="0" y1="0" x2="220" y2="100" gradientUnits="userSpaceOnUse">
-<stop offset="0" stop-color="#0a1628"/>
-<stop offset="1" stop-color="#0d2240"/>
-</linearGradient>
-</defs>
-<rect width="220" height="100" fill="url(#t3g)"/>
-<!-- Tech grid pattern -->
-<line x1="0" y1="25" x2="220" y2="25" stroke="rgba(79,172,254,.06)" stroke-width="1"/>
-<line x1="0" y1="50" x2="220" y2="50" stroke="rgba(79,172,254,.06)" stroke-width="1"/>
-<line x1="0" y1="75" x2="220" y2="75" stroke="rgba(79,172,254,.06)" stroke-width="1"/>
-<line x1="55" y1="0" x2="55" y2="100" stroke="rgba(79,172,254,.04)" stroke-width="1"/>
-<line x1="110" y1="0" x2="110" y2="100" stroke="rgba(79,172,254,.04)" stroke-width="1"/>
-<line x1="165" y1="0" x2="165" y2="100" stroke="rgba(79,172,254,.04)" stroke-width="1"/>
-<rect x="0" y="97" width="220" height="3" fill="#4FACFE" opacity=".4"/>
-<!-- Avatar -->
-<circle cx="38" cy="100" r="26" fill="#0d1117"/>
-<circle cx="38" cy="100" r="23" fill="#1a2540"/>
-<circle cx="38" cy="94" r="9" fill="#2a3a5a"/>
-<ellipse cx="38" cy="110" rx="13" ry="10" fill="#1e2e4a"/>
-<circle cx="38" cy="100" r="23" fill="none" stroke="#4FACFE" stroke-width="1.5" opacity=".6"/>
-<!-- Name -->
-<text x="74" y="97" font-family="monospace,sans-serif" font-size="11" font-weight="700" fill="#ffffff">Tural Quliyev</text>
-<text x="74" y="108" font-family="monospace,sans-serif" font-size="7.5" fill="#4FACFE">Senior Software Engineer</text>
-<text x="74" y="118" font-family="monospace,sans-serif" font-size="7" fill="rgba(255,255,255,.4)">TechNova Solutions</text>
-<!-- Bio -->
-<text x="14" y="136" font-family="Arial,sans-serif" font-size="7" fill="rgba(255,255,255,.55)">Full-stack developer. Cloud arxitekturası,</text>
-<text x="14" y="146" font-family="Arial,sans-serif" font-size="7" fill="rgba(255,255,255,.55)">microservices və AI inteqrasiyası üzrə 8 il.</text>
-<!-- Divider -->
-<rect x="14" y="154" width="192" height="1" rx=".5" fill="rgba(255,255,255,.08)"/>
-<!-- Contact rows dark style -->
-<rect x="14" y="160" width="192" height="20" rx="5" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.08)" stroke-width=".5"/>
-<text x="28" y="173" font-family="monospace,sans-serif" font-size="7.5" fill="rgba(255,255,255,.8)">+994 55 000 00 00</text>
-<rect x="14" y="183" width="192" height="20" rx="5" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.08)" stroke-width=".5"/>
-<text x="28" y="196" font-family="monospace,sans-serif" font-size="7.5" fill="rgba(255,255,255,.8)">info@technova.az</text>
-<rect x="14" y="206" width="192" height="20" rx="5" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.08)" stroke-width=".5"/>
-<text x="28" y="219" font-family="monospace,sans-serif" font-size="7.5" fill="#4FACFE">www.technova.az</text>
-<rect x="14" y="229" width="192" height="20" rx="5" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.08)" stroke-width=".5"/>
-<text x="28" y="242" font-family="monospace,sans-serif" font-size="7.5" fill="rgba(255,255,255,.5)">Bakı, Azərbaycan</text>
-<!-- Social dark -->
-<rect x="14" y="256" width="44" height="16" rx="4" fill="rgba(0,119,181,.3)" stroke="rgba(0,119,181,.5)" stroke-width=".5"/>
-<text x="36" y="267" font-family="Arial,sans-serif" font-size="6.5" fill="#4FACFE" text-anchor="middle">in</text>
-<rect x="62" y="256" width="44" height="16" rx="4" fill="rgba(79,172,254,.15)" stroke="rgba(79,172,254,.3)" stroke-width=".5"/>
-<text x="84" y="267" font-family="Arial,sans-serif" font-size="6.5" fill="#4FACFE" text-anchor="middle">GitHub</text>
-<rect x="110" y="256" width="44" height="16" rx="4" fill="rgba(37,211,102,.15)" stroke="rgba(37,211,102,.3)" stroke-width=".5"/>
-<text x="132" y="267" font-family="Arial,sans-serif" font-size="6.5" fill="#25D366" text-anchor="middle">WA</text>
-<!-- Save button -->
-<rect x="14" y="276" width="192" height="10" rx="4" fill="#4FACFE" opacity=".15"/>
-<text x="110" y="284" font-family="monospace,sans-serif" font-size="6.5" fill="#4FACFE" text-anchor="middle">[ Kontaktı Saxla ]</text>
-</svg>`},
-  {id:4,  name:'Wave',        cat:'Modern',    free:false,  preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg">
-<rect width="220" height="290" fill="#f8faff" rx="12"/>
-<rect width="220" height="80" fill="#185FA5" rx="12"/>
-<rect y="68" width="220" height="12" fill="#185FA5"/>
-<path d="M0,68 C36,88 72,60 110,68 C148,76 184,52 220,68 L220,80 L0,80Z" fill="#f8faff"/>
-<!-- Dots decoration -->
-<circle cx="190" cy="20" r="25" fill="rgba(255,255,255,.06)"/>
-<circle cx="190" cy="20" r="15" fill="rgba(255,255,255,.06)"/>
-<!-- Avatar -->
-<circle cx="110" cy="80" r="28" fill="#fff"/>
-<circle cx="110" cy="80" r="24" fill="#ddeeff"/>
-<circle cx="110" cy="73" r="9" fill="#99bbdd"/>
-<ellipse cx="110" cy="89" rx="14" ry="11" fill="#88aacc"/>
-<ellipse cx="110" cy="100" rx="17" ry="9" fill="#ddeeff"/>
-<!-- Name centered -->
-<text x="110" y="118" font-family="Georgia,serif" font-size="11.5" font-weight="700" fill="#0a1628" text-anchor="middle">Nigar Babayeva</text>
-<text x="110" y="130" font-family="Arial,sans-serif" font-size="8" fill="#185FA5" text-anchor="middle">Marketing Director</text>
-<text x="110" y="141" font-family="Arial,sans-serif" font-size="7.5" fill="#8A9BB5" text-anchor="middle">Vanguard Agency</text>
-<!-- Bio -->
-<text x="110" y="155" font-family="Arial,sans-serif" font-size="7" fill="#6a7f95" text-anchor="middle">Digital marketing, brend strategiyası</text>
-<text x="110" y="165" font-family="Arial,sans-serif" font-size="7" fill="#6a7f95" text-anchor="middle">və media planlaması üzrə mütəxəssis.</text>
-<!-- Contact left-bar style -->
-<rect x="5" y="175" width="3" height="72" rx="1.5" fill="#185FA5" opacity=".3"/>
-<text x="16" y="187" font-family="Arial,sans-serif" font-size="7.5" fill="#0a1628">+994 55 000 00 00</text>
-<rect x="14" y="192" width="192" height=".8" rx=".4" fill="#e8edf5"/>
-<text x="16" y="204" font-family="Arial,sans-serif" font-size="7.5" fill="#0a1628">info@vanguard.az</text>
-<rect x="14" y="209" width="192" height=".8" rx=".4" fill="#e8edf5"/>
-<text x="16" y="221" font-family="Arial,sans-serif" font-size="7.5" fill="#185FA5">www.vanguard.az</text>
-<rect x="14" y="226" width="192" height=".8" rx=".4" fill="#e8edf5"/>
-<text x="16" y="238" font-family="Arial,sans-serif" font-size="7.5" fill="#6a7f95">Bakı, Azərbaycan</text>
-<!-- Social centered -->
-<circle cx="74" cy="256" r="12" fill="#0077B5" opacity=".9"/>
-<text x="74" y="260" font-family="Arial,sans-serif" font-size="7" fill="#fff" text-anchor="middle">in</text>
-<circle cx="98" cy="256" r="12" fill="#C13584" opacity=".9"/>
-<text x="98" y="260" font-family="Arial,sans-serif" font-size="7" fill="#fff" text-anchor="middle">IG</text>
-<circle cx="122" cy="256" r="12" fill="#25D366" opacity=".9"/>
-<text x="122" y="260" font-family="Arial,sans-serif" font-size="7" fill="#fff" text-anchor="middle">WA</text>
-<circle cx="146" cy="256" r="12" fill="#185FA5" opacity=".9"/>
-<text x="146" y="260" font-family="Arial,sans-serif" font-size="7" fill="#fff" text-anchor="middle">@</text>
-<!-- Save -->
-<rect x="14" y="274" width="192" height="12" rx="6" fill="#185FA5"/>
-<text x="110" y="283" font-family="Arial,sans-serif" font-size="7" font-weight="600" fill="#fff" text-anchor="middle">Kontaktı Saxla</text>
-</svg>`},
-  {id:5,  name:'HiHello',  cat:'Popular',  free:false, preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="290" fill="#060a14" rx="14"/><defs><radialGradient id="rg5" cx="50%" cy="30%" r="60%"><stop offset="0%" stop-color="#3b82f6" stop-opacity=".3"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><rect width="220" height="290" fill="url(#rg5)" rx="14"/><circle cx="110" cy="70" r="45" fill="none" stroke="rgba(59,130,246,.2)" stroke-width="1"/><circle cx="110" cy="70" r="32" fill="none" stroke="rgba(59,130,246,.15)" stroke-width="1"/><circle cx="110" cy="70" r="20" fill="rgba(59,130,246,.15)"/><line x1="110" y1="25" x2="110" y2="115" stroke="rgba(59,130,246,.1)" stroke-width="1"/><line x1="65" y1="70" x2="155" y2="70" stroke="rgba(59,130,246,.1)" stroke-width="1"/><text x="20" y="160" font-family="Arial,sans-serif" font-size="9" fill="rgba(59,130,246,.7)" letter-spacing="3">HIHELLO</text><text x="20" y="182" font-family="Arial,sans-serif" font-size="17" font-weight="800" fill="#fff">HiHello</text><rect x="20" y="195" width="80" height="2" rx="1" fill="rgba(59,130,246,.5)"/><text x="20" y="215" font-family="Arial,sans-serif" font-size="8" fill="rgba(255,255,255,.35)">Cover + Avatar + Pill sosial</text></svg>`},
-  {id:6,  name:'Blinq',  cat:'Business',  free:false, preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="290" fill="#fff" rx="14"/><rect width="110" height="290" fill="#0f172a" rx="14"/><rect x="100" width="10" height="290" fill="#0f172a"/><rect x="20" y="30" width="70" height="90" rx="10" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.1)" stroke-width="1"/><circle cx="55" cy="60" r="20" fill="rgba(255,255,255,.12)"/><line x1="20" y1="140" x2="90" y2="140" stroke="rgba(255,255,255,.06)" stroke-width="1"/><line x1="20" y1="160" x2="90" y2="160" stroke="rgba(255,255,255,.06)" stroke-width="1"/><line x1="20" y1="180" x2="90" y2="180" stroke="rgba(255,255,255,.06)" stroke-width="1"/><text x="55" y="250" font-family="Arial,sans-serif" font-size="9" fill="rgba(255,255,255,.4)" text-anchor="middle" letter-spacing="2">BLINQ</text><text x="55" y="268" font-family="Arial,sans-serif" font-size="13" font-weight="800" fill="#fff" text-anchor="middle">Blinq</text><rect x="120" y="30" width="80" height="25" rx="8" fill="#f5f5f5"/><rect x="120" y="60" width="80" height="25" rx="8" fill="#f5f5f5"/><rect x="120" y="90" width="80" height="25" rx="8" fill="#f5f5f5"/><rect x="120" y="120" width="80" height="25" rx="8" fill="#f5f5f5"/><rect x="120" y="250" width="38" height="24" rx="8" fill="#0f172a"/><rect x="162" y="250" width="38" height="24" rx="8" fill="#f0f0f0"/></svg>`},
-  {id:7,  name:'Popl Dark',  cat:'Bold',  free:false, preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="290" fill="#000" rx="14"/><defs><radialGradient id="rg7" cx="50%" cy="100%" r="80%"><stop offset="0%" stop-color="#6366f1" stop-opacity=".4"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><rect width="220" height="290" fill="url(#rg7)" rx="14"/><rect x="14" y="120" width="192" height="40" rx="10" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.1)" stroke-width=".8"/><rect x="14" y="168" width="192" height="40" rx="10" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.08)" stroke-width=".8"/><rect x="14" y="216" width="192" height="40" rx="10" fill="rgba(99,102,241,.15)" stroke="rgba(99,102,241,.3)" stroke-width=".8"/><circle cx="30" cy="140" r="12" fill="rgba(255,255,255,.15)"/><circle cx="30" cy="188" r="12" fill="rgba(255,255,255,.1)"/><circle cx="30" cy="236" r="12" fill="rgba(99,102,241,.4)"/><text x="20" y="50" font-family="Arial,sans-serif" font-size="9" fill="rgba(255,255,255,.35)" letter-spacing="3">POPL DARK</text><text x="20" y="74" font-family="Arial,sans-serif" font-size="18" font-weight="800" fill="#fff">Popl Dark</text><rect x="20" y="86" width="60" height="2" rx="1" fill="#6366f1"/></svg>`},
-  {id:8,  name:'Linq Bio',  cat:'Links',  free:false, preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="290" fill="#f0fdf4" rx="14"/><defs><linearGradient id="lg8" x1="0" y1="0" x2="0" y2="290" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#059669" stop-opacity=".12"/><stop offset="40%" stop-color="#fff"/></linearGradient></defs><rect width="220" height="290" fill="url(#lg8)" rx="14"/><rect x="14" y="30" width="192" height="44" rx="16" fill="#fff" stroke="#d1fae5" stroke-width="1.5"/><rect x="14" y="80" width="192" height="44" rx="16" fill="#fff" stroke="#d1fae5" stroke-width="1.5"/><rect x="14" y="130" width="192" height="44" rx="16" fill="#fff" stroke="#d1fae5" stroke-width="1.5"/><rect x="14" y="180" width="192" height="44" rx="16" fill="#fff" stroke="#d1fae5" stroke-width="1.5"/><rect x="24" y="42" width="24" height="24" rx="8" fill="#059669"/><rect x="24" y="92" width="24" height="24" rx="8" fill="#059669"/><rect x="24" y="142" width="24" height="24" rx="8" fill="#059669"/><rect x="24" y="192" width="24" height="24" rx="8" fill="#059669"/><text x="20" y="255" font-family="Arial,sans-serif" font-size="9" fill="#059669" letter-spacing="2">LINQ BIO</text><text x="20" y="275" font-family="Arial,sans-serif" font-size="17" font-weight="700" fill="#0f172a">Linq Bio</text></svg>`},
-  {id:9,  name:'Dot',  cat:'Clean',  free:false, preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="290" fill="#fff" rx="14"/><rect width="220" height="170" fill="#f5f5f5" rx="14"/><rect y="158" width="220" height="12" fill="#f5f5f5"/><path d="M0,148 Q110,170 220,148 L220,170 L0,170Z" fill="#fff"/><circle cx="110" cy="85" r="55" fill="#e8e8e8"/><circle cx="110" cy="75" r="22" fill="#d0d0d0"/><ellipse cx="110" cy="110" rx="32" ry="26" fill="#c0c0c0"/><text x="20" y="200" font-family="Arial,sans-serif" font-size="9" fill="#333" letter-spacing="2">DOT</text><text x="20" y="220" font-family="Arial,sans-serif" font-size="18" font-weight="700" fill="#1a1a1a">Ultra Minimal</text><rect x="20" y="230" width="40" height="2" rx="1" fill="#1a1a1a"/><rect x="20" y="245" width="180" height="1" fill="#f0f0f0"/><rect x="20" y="255" width="180" height="1" fill="#f0f0f0"/><rect x="20" y="265" width="180" height="1" fill="#f0f0f0"/></svg>`},
-  {id:10,  name:'Mobilo',  cat:'Corporate',  free:false, preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="290" fill="#f8fafc" rx="14"/><rect width="220" height="55" fill="#1d4ed8" rx="14"/><rect y="43" width="220" height="12" fill="#1d4ed8"/><rect x="14" y="65" width="50" height="50" rx="12" fill="#fff" stroke="#e2e8f0" stroke-width="1"/><circle cx="39" cy="82" r="12" fill="#bfdbfe"/><ellipse cx="39" cy="100" rx="16" ry="12" fill="#93c5fd"/><rect x="72" y="70" width="80" height="10" rx="4" fill="#1e293b"/><rect x="72" y="85" width="55" height="8" rx="3" fill="#1d4ed8" opacity=".6"/><rect x="72" y="98" width="40" height="7" rx="3" fill="#94a3b8"/><rect x="14" y="126" width="96" height="48" rx="12" fill="#fff" stroke="#e2e8f0" stroke-width="1"/><rect x="118" y="126" width="96" height="48" rx="12" fill="#fff" stroke="#e2e8f0" stroke-width="1"/><rect x="14" y="182" width="96" height="48" rx="12" fill="#fff" stroke="#e2e8f0" stroke-width="1"/><rect x="118" y="182" width="96" height="48" rx="12" fill="#fff" stroke="#e2e8f0" stroke-width="1"/><text x="20" y="255" font-family="Arial,sans-serif" font-size="9" fill="#1d4ed8" letter-spacing="2">MOBILO</text><text x="20" y="274" font-family="Arial,sans-serif" font-size="16" font-weight="700" fill="#0f172a">Mobilo</text></svg>`},
-  {id:11,  name:'Stackteam',  cat:'Team',  free:false, preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="290" fill="#fff" rx="14"/><rect width="220" height="50" fill="#0f172a" rx="14"/><rect y="38" width="220" height="12" fill="#0f172a"/><rect width="220" height="100" fill="#0f172a" opacity=".0"/><rect x="14" y="58" width="52" height="52" rx="14" fill="#e2e8f0" stroke="#fff" stroke-width="3"/><rect x="76" y="70" width="80" height="10" rx="4" fill="#1e293b"/><rect x="76" y="86" width="55" height="8" rx="3" fill="#0f172a" opacity=".5"/><rect x="14" y="122" width="192" height="1" fill="#e2e8f0"/><rect x="14" y="134" width="192" height="22" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width=".8"/><rect x="14" y="162" width="192" height="22" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width=".8"/><rect x="14" y="190" width="192" height="22" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width=".8"/><rect x="14" y="218" width="192" height="22" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width=".8"/><rect x="14" y="252" width="96" height="26" rx="10" fill="#0f172a"/><rect x="118" y="252" width="96" height="26" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/><text x="62" y="268" font-family="Arial,sans-serif" font-size="8" fill="#fff" text-anchor="middle">Saxla</text><text x="166" y="268" font-family="Arial,sans-serif" font-size="8" fill="#475569" text-anchor="middle">Paylaş</text></svg>`},
-  {id:12,  name:'HiHello Pro',  cat:'Premium',  free:false, preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="290" fill="#fff" rx="14"/><defs><linearGradient id="lg12" x1="0" y1="0" x2="0" y2="160" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#4f46e5"/></linearGradient></defs><rect width="220" height="160" fill="url(#lg12)" rx="14"/><rect y="148" width="220" height="12" fill="url(#lg12)"/><circle cx="185" cy="30" r="50" fill="rgba(255,255,255,.06)"/><circle cx="30" cy="130" r="40" fill="rgba(255,255,255,.05)"/><circle cx="52" cy="145" r="30" fill="#fff" stroke="rgba(255,255,255,.3)" stroke-width="3"/><rect x="96" y="168" width="96" height="26" rx="10" fill="#7c3aed"/><rect x="14" y="168" width="78" height="26" rx="10" fill="#f5f5f5"/><text x="52" y="184" font-family="Arial,sans-serif" font-size="7.5" fill="#333" text-anchor="middle">Paylaş</text><text x="144" y="184" font-family="Arial,sans-serif" font-size="7.5" fill="#fff" text-anchor="middle">Saxla</text><rect x="14" y="204" width="192" height="20" rx="8" fill="#f8f9fa"/><rect x="14" y="228" width="192" height="20" rx="8" fill="#f8f9fa"/><rect x="14" y="252" width="192" height="20" rx="8" fill="#f8f9fa"/><text x="20" y="140" font-family="Arial,sans-serif" font-size="9" fill="rgba(255,255,255,.6)" letter-spacing="2">HIHELLO PRO</text></svg>`},
+  {id:1,  name:'Klassik',    cat:'Klassik',    free:true,  preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="290" fill="#f0f4f8" rx="12"/><rect width="220" height="85" fill="#0a1628" rx="12"/><rect y="73" width="220" height="12" fill="#0a1628"/><rect x="0" y="0" width="220" height="85" fill="url(#t1bg)" rx="12"/><defs><linearGradient id="t1bg" x1="0" y1="0" x2="220" y2="85" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#112040"/><stop offset="1" stop-color="#185FA5"/></linearGradient></defs><circle cx="180" cy="20" r="45" fill="rgba(79,172,254,.07)"/><circle cx="10" cy="75" r="30" fill="rgba(255,255,255,.04)"/><rect x="14" y="18" width="80" height="2" rx="1" fill="rgba(255,255,255,.15)"/><rect x="14" y="23" width="55" height="1.5" rx=".75" fill="rgba(255,255,255,.08)"/><circle cx="38" cy="85" r="28" fill="#fff"/><circle cx="38" cy="85" r="24" fill="#c8ddf0"/><circle cx="38" cy="78" r="9" fill="#8ab0d0"/><ellipse cx="38" cy="94" rx="13" ry="10" fill="#7aa0c0"/><ellipse cx="38" cy="104" rx="16" ry="8" fill="#c8ddf0"/><rect x="74" y="89" width="88" height="8" rx="4" fill="#0a1628" opacity=".8"/><rect x="74" y="101" width="110" height="6" rx="3" fill="#185FA5" opacity=".7"/><rect x="74" y="112" width="82" height="5" rx="2.5" fill="#8A9BB5" opacity=".6"/><rect x="14" y="130" width="192" height="1" rx=".5" fill="#e0e8f0"/><rect x="14" y="138" width="170" height="5" rx="2.5" fill="#6a7f95" opacity=".5"/><rect x="14" y="148" width="130" height="5" rx="2.5" fill="#6a7f95" opacity=".4"/><rect x="14" y="161" width="192" height="22" rx="6" fill="#fff"/><circle cx="26" cy="172" r="6" fill="rgba(24,95,165,.1)"/><circle cx="26" cy="172" r="4" fill="rgba(24,95,165,.2)"/><rect x="36" y="169" width="100" height="6" rx="3" fill="#0a1628" opacity=".6"/><rect x="14" y="186" width="192" height="22" rx="6" fill="#fff"/><circle cx="26" cy="197" r="6" fill="rgba(24,95,165,.1)"/><rect x="36" y="194" width="112" height="6" rx="3" fill="#0a1628" opacity=".6"/><rect x="14" y="211" width="192" height="22" rx="6" fill="#fff"/><circle cx="26" cy="222" r="6" fill="rgba(24,95,165,.1)"/><rect x="36" y="219" width="98" height="6" rx="3" fill="#185FA5" opacity=".7"/><rect x="14" y="236" width="192" height="22" rx="6" fill="#fff"/><circle cx="26" cy="247" r="6" fill="rgba(24,95,165,.1)"/><rect x="36" y="244" width="82" height="6" rx="3" fill="#6a7f95" opacity=".6"/><rect x="14" y="264" width="40" height="18" rx="5" fill="#0077B5"/><rect x="58" y="264" width="40" height="18" rx="5" fill="#C13584"/><rect x="102" y="264" width="40" height="18" rx="5" fill="#25D366"/><rect x="146" y="264" width="60" height="18" rx="5" fill="#0a1628"/></svg>`},
+  {id:2,  name:'Sadə',       cat:'Minimal',    free:true,  preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="290" fill="#ffffff" rx="12"/><rect width="220" height="5" fill="#185FA5" rx="2"/><rect x="14" y="20" width="48" height="48" rx="10" fill="#e8f0fa"/><circle cx="38" cy="36" r="10" fill="#a0b8d0"/><ellipse cx="38" cy="52" rx="14" ry="10" fill="#8aaac8"/><rect x="72" y="27" width="88" height="8" rx="4" fill="#0a1628" opacity=".8"/><rect x="72" y="39" width="108" height="6" rx="3" fill="#185FA5" opacity=".7"/><rect x="72" y="50" width="72" height="5" rx="2.5" fill="#8A9BB5" opacity=".6"/><rect x="14" y="74" width="192" height="1" rx=".5" fill="#e8edf5"/><rect x="14" y="82" width="168" height="5" rx="2.5" fill="#6a7f95" opacity=".5"/><rect x="14" y="92" width="138" height="5" rx="2.5" fill="#6a7f95" opacity=".4"/><rect x="14" y="107" width="192" height="1" rx=".5" fill="#f0f4f8"/><circle cx="24" cy="120" r="7" fill="#e8f0fa"/><rect x="36" y="117" width="100" height="6" rx="3" fill="#0a1628" opacity=".7"/><rect x="14" y="130" width="192" height="1" rx=".5" fill="#f0f4f8"/><circle cx="24" cy="143" r="7" fill="#e8f0fa"/><rect x="36" y="140" width="112" height="6" rx="3" fill="#0a1628" opacity=".7"/><rect x="14" y="153" width="192" height="1" rx=".5" fill="#f0f4f8"/><circle cx="24" cy="166" r="7" fill="#e8f0fa"/><rect x="36" y="163" width="98" height="6" rx="3" fill="#185FA5" opacity=".7"/><rect x="14" y="176" width="192" height="1" rx=".5" fill="#f0f4f8"/><circle cx="24" cy="189" r="7" fill="#e8f0fa"/><rect x="36" y="186" width="88" height="6" rx="3" fill="#6a7f95" opacity=".6"/><rect x="14" y="199" width="192" height="1" rx=".5" fill="#f0f4f8"/><rect x="14" y="210" width="45" height="16" rx="8" fill="#e8f0fa" stroke="#c8d8ee" stroke-width=".5"/><rect x="64" y="210" width="45" height="16" rx="8" fill="#fce8f4" stroke="#e8c8e0" stroke-width=".5"/><rect x="114" y="210" width="45" height="16" rx="8" fill="#e8faf0" stroke="#c8e8d8" stroke-width=".5"/><rect x="14" y="234" width="192" height="30" rx="8" fill="#0a1628"/><rect x="14" y="270" width="192" height="14" rx="5" fill="#f0f4f8"/></svg>`},
+  {id:3,  name:'Tünd',       cat:'Dark',       free:true,  preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="290" fill="#0d1117" rx="12"/><defs><linearGradient id="t3g" x1="0" y1="0" x2="220" y2="100" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#0a1628"/><stop offset="1" stop-color="#0d2240"/></linearGradient></defs><rect width="220" height="100" fill="url(#t3g)"/><line x1="0" y1="25" x2="220" y2="25" stroke="rgba(79,172,254,.06)" stroke-width="1"/><line x1="0" y1="50" x2="220" y2="50" stroke="rgba(79,172,254,.06)" stroke-width="1"/><line x1="0" y1="75" x2="220" y2="75" stroke="rgba(79,172,254,.06)" stroke-width="1"/><line x1="55" y1="0" x2="55" y2="100" stroke="rgba(79,172,254,.04)" stroke-width="1"/><line x1="110" y1="0" x2="110" y2="100" stroke="rgba(79,172,254,.04)" stroke-width="1"/><line x1="165" y1="0" x2="165" y2="100" stroke="rgba(79,172,254,.04)" stroke-width="1"/><rect x="0" y="97" width="220" height="3" fill="#4FACFE" opacity=".4"/><circle cx="38" cy="100" r="26" fill="#0d1117"/><circle cx="38" cy="100" r="23" fill="#1a2540"/><circle cx="38" cy="94" r="9" fill="#2a3a5a"/><ellipse cx="38" cy="110" rx="13" ry="10" fill="#1e2e4a"/><circle cx="38" cy="100" r="23" fill="none" stroke="#4FACFE" stroke-width="1.5" opacity=".6"/><rect x="74" y="91" width="92" height="8" rx="4" fill="#ffffff" opacity=".85"/><rect x="74" y="103" width="112" height="6" rx="3" fill="#4FACFE" opacity=".8"/><rect x="74" y="113" width="88" height="5" rx="2.5" fill="rgba(255,255,255,.4)"/><rect x="14" y="129" width="162" height="5" rx="2.5" fill="rgba(255,255,255,.4)"/><rect x="14" y="139" width="142" height="5" rx="2.5" fill="rgba(255,255,255,.35)"/><rect x="14" y="154" width="192" height="1" rx=".5" fill="rgba(255,255,255,.08)"/><rect x="14" y="160" width="192" height="20" rx="5" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.08)" stroke-width=".5"/><rect x="28" y="167" width="100" height="6" rx="3" fill="rgba(255,255,255,.7)"/><rect x="14" y="183" width="192" height="20" rx="5" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.08)" stroke-width=".5"/><rect x="28" y="190" width="110" height="6" rx="3" fill="rgba(255,255,255,.7)"/><rect x="14" y="206" width="192" height="20" rx="5" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.08)" stroke-width=".5"/><rect x="28" y="213" width="100" height="6" rx="3" fill="#4FACFE" opacity=".8"/><rect x="14" y="229" width="192" height="20" rx="5" fill="rgba(255,255,255,.05)" stroke="rgba(255,255,255,.08)" stroke-width=".5"/><rect x="28" y="236" width="88" height="6" rx="3" fill="rgba(255,255,255,.5)"/><rect x="14" y="256" width="44" height="16" rx="4" fill="rgba(0,119,181,.3)" stroke="rgba(0,119,181,.5)" stroke-width=".5"/><rect x="62" y="256" width="44" height="16" rx="4" fill="rgba(79,172,254,.15)" stroke="rgba(79,172,254,.3)" stroke-width=".5"/><rect x="110" y="256" width="44" height="16" rx="4" fill="rgba(37,211,102,.15)" stroke="rgba(37,211,102,.3)" stroke-width=".5"/><rect x="14" y="276" width="192" height="10" rx="4" fill="#4FACFE" opacity=".15"/></svg>`},
+  {id:4,  name:'Dalğa',      cat:'Modern',     free:false, preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="290" fill="#f8faff" rx="12"/><rect width="220" height="80" fill="#185FA5" rx="12"/><rect y="68" width="220" height="12" fill="#185FA5"/><path d="M0,68 C36,88 72,60 110,68 C148,76 184,52 220,68 L220,80 L0,80Z" fill="#f8faff"/><circle cx="190" cy="20" r="25" fill="rgba(255,255,255,.06)"/><circle cx="190" cy="20" r="15" fill="rgba(255,255,255,.06)"/><circle cx="110" cy="80" r="28" fill="#fff"/><circle cx="110" cy="80" r="24" fill="#ddeeff"/><circle cx="110" cy="73" r="9" fill="#99bbdd"/><ellipse cx="110" cy="89" rx="14" ry="11" fill="#88aacc"/><ellipse cx="110" cy="100" rx="17" ry="9" fill="#ddeeff"/><rect x="70" y="111" width="80" height="8" rx="4" fill="#0a1628" opacity=".8"/><rect x="80" y="123" width="60" height="6" rx="3" fill="#185FA5" opacity=".7"/><rect x="85" y="134" width="50" height="5" rx="2.5" fill="#8A9BB5" opacity=".6"/><rect x="30" y="149" width="160" height="5" rx="2.5" fill="#6a7f95" opacity=".5"/><rect x="50" y="159" width="120" height="5" rx="2.5" fill="#6a7f95" opacity=".4"/><rect x="5" y="175" width="3" height="72" rx="1.5" fill="#185FA5" opacity=".3"/><rect x="16" y="181" width="100" height="6" rx="3" fill="#0a1628" opacity=".7"/><rect x="14" y="192" width="192" height=".8" rx=".4" fill="#e8edf5"/><rect x="16" y="198" width="110" height="6" rx="3" fill="#0a1628" opacity=".7"/><rect x="14" y="209" width="192" height=".8" rx=".4" fill="#e8edf5"/><rect x="16" y="215" width="100" height="6" rx="3" fill="#185FA5" opacity=".7"/><rect x="14" y="226" width="192" height=".8" rx=".4" fill="#e8edf5"/><rect x="16" y="232" width="85" height="6" rx="3" fill="#6a7f95" opacity=".6"/><circle cx="74" cy="256" r="12" fill="#0077B5" opacity=".9"/><circle cx="98" cy="256" r="12" fill="#C13584" opacity=".9"/><circle cx="122" cy="256" r="12" fill="#25D366" opacity=".9"/><circle cx="146" cy="256" r="12" fill="#185FA5" opacity=".9"/><rect x="14" y="274" width="192" height="12" rx="6" fill="#185FA5"/></svg>`},
+  {id:5,  name:'Parlaq',     cat:'Populyar',   free:false, preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="290" fill="#060a14" rx="14"/><defs><radialGradient id="rg5" cx="50%" cy="30%" r="60%"><stop offset="0%" stop-color="#3b82f6" stop-opacity=".3"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><rect width="220" height="290" fill="url(#rg5)" rx="14"/><circle cx="110" cy="70" r="45" fill="none" stroke="rgba(59,130,246,.2)" stroke-width="1"/><circle cx="110" cy="70" r="32" fill="none" stroke="rgba(59,130,246,.15)" stroke-width="1"/><circle cx="110" cy="70" r="20" fill="rgba(59,130,246,.15)"/><line x1="110" y1="25" x2="110" y2="115" stroke="rgba(59,130,246,.1)" stroke-width="1"/><line x1="65" y1="70" x2="155" y2="70" stroke="rgba(59,130,246,.1)" stroke-width="1"/><rect x="20" y="153" width="120" height="8" rx="4" fill="#ffffff" opacity=".85"/><rect x="20" y="165" width="80" height="5" rx="2.5" fill="rgba(59,130,246,.7)"/><rect x="20" y="178" width="160" height="5" rx="2.5" fill="rgba(255,255,255,.3)"/><rect x="20" y="191" width="140" height="5" rx="2.5" fill="rgba(255,255,255,.2)"/></svg>`},
+  {id:6,  name:'İki Sütun',  cat:'Biznes',     free:false, preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="290" fill="#fff" rx="14"/><rect width="110" height="290" fill="#0f172a" rx="14"/><rect x="100" width="10" height="290" fill="#0f172a"/><rect x="20" y="30" width="70" height="90" rx="10" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.1)" stroke-width="1"/><circle cx="55" cy="60" r="20" fill="rgba(255,255,255,.12)"/><line x1="20" y1="140" x2="90" y2="140" stroke="rgba(255,255,255,.06)" stroke-width="1"/><line x1="20" y1="160" x2="90" y2="160" stroke="rgba(255,255,255,.06)" stroke-width="1"/><line x1="20" y1="180" x2="90" y2="180" stroke="rgba(255,255,255,.06)" stroke-width="1"/><rect x="20" y="145" width="70" height="6" rx="3" fill="rgba(255,255,255,.4)"/><rect x="20" y="164" width="55" height="5" rx="2.5" fill="rgba(255,255,255,.3)"/><rect x="20" y="184" width="60" height="5" rx="2.5" fill="rgba(255,255,255,.25)"/><rect x="120" y="30" width="80" height="25" rx="8" fill="#f5f5f5"/><rect x="120" y="60" width="80" height="25" rx="8" fill="#f5f5f5"/><rect x="120" y="90" width="80" height="25" rx="8" fill="#f5f5f5"/><rect x="120" y="120" width="80" height="25" rx="8" fill="#f5f5f5"/><rect x="120" y="250" width="38" height="24" rx="8" fill="#0f172a"/><rect x="162" y="250" width="38" height="24" rx="8" fill="#f0f0f0"/></svg>`},
+  {id:7,  name:'Gecə',       cat:'Güclü',      free:false, preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="290" fill="#000" rx="14"/><defs><radialGradient id="rg7" cx="50%" cy="100%" r="80%"><stop offset="0%" stop-color="#6366f1" stop-opacity=".4"/><stop offset="100%" stop-color="transparent"/></radialGradient></defs><rect width="220" height="290" fill="url(#rg7)" rx="14"/><rect x="14" y="120" width="192" height="40" rx="10" fill="rgba(255,255,255,.07)" stroke="rgba(255,255,255,.1)" stroke-width=".8"/><rect x="14" y="168" width="192" height="40" rx="10" fill="rgba(255,255,255,.06)" stroke="rgba(255,255,255,.08)" stroke-width=".8"/><rect x="14" y="216" width="192" height="40" rx="10" fill="rgba(99,102,241,.15)" stroke="rgba(99,102,241,.3)" stroke-width=".8"/><circle cx="30" cy="140" r="12" fill="rgba(255,255,255,.15)"/><circle cx="30" cy="188" r="12" fill="rgba(255,255,255,.1)"/><circle cx="30" cy="236" r="12" fill="rgba(99,102,241,.4)"/><rect x="20" y="43" width="110" height="8" rx="4" fill="#ffffff" opacity=".85"/><rect x="20" y="55" width="80" height="6" rx="3" fill="#6366f1" opacity=".8"/><rect x="20" y="69" width="60" height="3" rx="1.5" fill="#6366f1"/><rect x="50" y="134" width="100" height="6" rx="3" fill="rgba(255,255,255,.5)"/><rect x="50" y="182" width="120" height="6" rx="3" fill="rgba(255,255,255,.45)"/><rect x="50" y="230" width="80" height="6" rx="3" fill="rgba(99,102,241,.8)"/></svg>`},
+  {id:8,  name:'Linklər',    cat:'Linklər',    free:false, preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="290" fill="#f0fdf4" rx="14"/><defs><linearGradient id="lg8" x1="0" y1="0" x2="0" y2="290" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#059669" stop-opacity=".12"/><stop offset="40%" stop-color="#fff"/></linearGradient></defs><rect width="220" height="290" fill="url(#lg8)" rx="14"/><rect x="14" y="30" width="192" height="44" rx="16" fill="#fff" stroke="#d1fae5" stroke-width="1.5"/><rect x="14" y="80" width="192" height="44" rx="16" fill="#fff" stroke="#d1fae5" stroke-width="1.5"/><rect x="14" y="130" width="192" height="44" rx="16" fill="#fff" stroke="#d1fae5" stroke-width="1.5"/><rect x="14" y="180" width="192" height="44" rx="16" fill="#fff" stroke="#d1fae5" stroke-width="1.5"/><rect x="24" y="42" width="24" height="24" rx="8" fill="#059669"/><rect x="24" y="92" width="24" height="24" rx="8" fill="#059669"/><rect x="24" y="142" width="24" height="24" rx="8" fill="#059669"/><rect x="24" y="192" width="24" height="24" rx="8" fill="#059669"/><rect x="58" y="50" width="100" height="7" rx="3.5" fill="#0f172a" opacity=".7"/><rect x="58" y="100" width="85" height="7" rx="3.5" fill="#0f172a" opacity=".7"/><rect x="58" y="150" width="110" height="7" rx="3.5" fill="#0f172a" opacity=".7"/><rect x="58" y="200" width="90" height="7" rx="3.5" fill="#0f172a" opacity=".7"/><circle cx="110" cy="248" r="18" fill="#e8f5f0"/><rect x="80" y="272" width="60" height="7" rx="3.5" fill="#0f172a" opacity=".7"/></svg>`},
+  {id:9,  name:'Sıfır',      cat:'Təmiz',      free:false, preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="290" fill="#fff" rx="14"/><rect width="220" height="170" fill="#f5f5f5" rx="14"/><rect y="158" width="220" height="12" fill="#f5f5f5"/><path d="M0,148 Q110,170 220,148 L220,170 L0,170Z" fill="#fff"/><circle cx="110" cy="85" r="55" fill="#e8e8e8"/><circle cx="110" cy="75" r="22" fill="#d0d0d0"/><ellipse cx="110" cy="110" rx="32" ry="26" fill="#c0c0c0"/><rect x="20" y="192" width="60" height="5" rx="2.5" fill="#333" opacity=".5"/><rect x="20" y="205" width="130" height="12" rx="4" fill="#1a1a1a" opacity=".8"/><rect x="20" y="222" width="40" height="2" rx="1" fill="#1a1a1a"/><rect x="20" y="238" width="180" height="1" fill="#f0f0f0"/><rect x="20" y="248" width="180" height="1" fill="#f0f0f0"/><rect x="20" y="258" width="180" height="1" fill="#f0f0f0"/></svg>`},
+  {id:10, name:'Korporativ', cat:'Korporativ',  free:false, preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="290" fill="#f8fafc" rx="14"/><rect width="220" height="55" fill="#1d4ed8" rx="14"/><rect y="43" width="220" height="12" fill="#1d4ed8"/><rect x="14" y="65" width="50" height="50" rx="12" fill="#fff" stroke="#e2e8f0" stroke-width="1"/><circle cx="39" cy="82" r="12" fill="#bfdbfe"/><ellipse cx="39" cy="100" rx="16" ry="12" fill="#93c5fd"/><rect x="72" y="72" width="90" height="8" rx="4" fill="#1e293b" opacity=".8"/><rect x="72" y="85" width="65" height="6" rx="3" fill="#1d4ed8" opacity=".6"/><rect x="72" y="97" width="45" height="5" rx="2.5" fill="#94a3b8" opacity=".8"/><rect x="14" y="126" width="96" height="48" rx="12" fill="#fff" stroke="#e2e8f0" stroke-width="1"/><rect x="118" y="126" width="96" height="48" rx="12" fill="#fff" stroke="#e2e8f0" stroke-width="1"/><rect x="14" y="182" width="96" height="48" rx="12" fill="#fff" stroke="#e2e8f0" stroke-width="1"/><rect x="118" y="182" width="96" height="48" rx="12" fill="#fff" stroke="#e2e8f0" stroke-width="1"/><rect x="25" y="145" width="60" height="6" rx="3" fill="#1e293b" opacity=".5"/><rect x="25" y="156" width="45" height="5" rx="2.5" fill="#94a3b8" opacity=".6"/><rect x="130" y="145" width="60" height="6" rx="3" fill="#1e293b" opacity=".5"/><rect x="130" y="156" width="45" height="5" rx="2.5" fill="#94a3b8" opacity=".6"/><rect x="25" y="201" width="60" height="6" rx="3" fill="#1e293b" opacity=".5"/><rect x="25" y="212" width="45" height="5" rx="2.5" fill="#94a3b8" opacity=".6"/><rect x="130" y="201" width="60" height="6" rx="3" fill="#1e293b" opacity=".5"/><rect x="130" y="212" width="45" height="5" rx="2.5" fill="#94a3b8" opacity=".6"/><rect x="20" y="248" width="55" height="5" rx="2.5" fill="#1d4ed8" opacity=".7"/><rect x="20" y="261" width="80" height="10" rx="4" fill="#0f172a" opacity=".8"/></svg>`},
+  {id:11, name:'Komanda',    cat:'Komanda',    free:false, preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="290" fill="#fff" rx="14"/><rect width="220" height="50" fill="#0f172a" rx="14"/><rect y="38" width="220" height="12" fill="#0f172a"/><rect x="14" y="58" width="52" height="52" rx="14" fill="#e2e8f0" stroke="#fff" stroke-width="3"/><rect x="76" y="68" width="90" height="8" rx="4" fill="#1e293b" opacity=".8"/><rect x="76" y="80" width="65" height="5" rx="2.5" fill="#0f172a" opacity=".5"/><rect x="14" y="122" width="192" height="1" fill="#e2e8f0"/><rect x="14" y="134" width="192" height="22" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width=".8"/><rect x="14" y="162" width="192" height="22" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width=".8"/><rect x="14" y="190" width="192" height="22" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width=".8"/><rect x="14" y="218" width="192" height="22" rx="8" fill="#f8fafc" stroke="#e2e8f0" stroke-width=".8"/><rect x="24" y="141" width="120" height="6" rx="3" fill="#1e293b" opacity=".5"/><rect x="24" y="169" width="100" height="6" rx="3" fill="#1e293b" opacity=".5"/><rect x="24" y="197" width="110" height="6" rx="3" fill="#1e293b" opacity=".5"/><rect x="24" y="225" width="90" height="6" rx="3" fill="#1e293b" opacity=".5"/><rect x="14" y="252" width="96" height="26" rx="10" fill="#0f172a"/><rect x="118" y="252" width="96" height="26" rx="10" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/></svg>`},
+  {id:12, name:'Premium',    cat:'Premium',    free:false, preview:`<svg viewBox="0 0 220 290" xmlns="http://www.w3.org/2000/svg"><rect width="220" height="290" fill="#fff" rx="14"/><defs><linearGradient id="lg12" x1="0" y1="0" x2="0" y2="160" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#4f46e5"/></linearGradient></defs><rect width="220" height="160" fill="url(#lg12)" rx="14"/><rect y="148" width="220" height="12" fill="url(#lg12)"/><circle cx="185" cy="30" r="50" fill="rgba(255,255,255,.06)"/><circle cx="30" cy="130" r="40" fill="rgba(255,255,255,.05)"/><circle cx="52" cy="145" r="30" fill="#fff" stroke="rgba(255,255,255,.3)" stroke-width="3"/><rect x="20" y="125" width="60" height="5" rx="2.5" fill="rgba(255,255,255,.5)"/><rect x="96" y="168" width="96" height="26" rx="10" fill="#7c3aed"/><rect x="14" y="168" width="78" height="26" rx="10" fill="#f5f5f5"/><rect x="14" y="204" width="192" height="20" rx="8" fill="#f8f9fa"/><rect x="14" y="228" width="192" height="20" rx="8" fill="#f8f9fa"/><rect x="14" y="252" width="192" height="20" rx="8" fill="#f8f9fa"/><rect x="24" y="210" width="120" height="6" rx="3" fill="#1a1a1a" opacity=".5"/><rect x="24" y="234" width="100" height="6" rx="3" fill="#1a1a1a" opacity=".5"/><rect x="24" y="258" width="110" height="6" rx="3" fill="#1a1a1a" opacity=".5"/></svg>`},
 ];
 
 // ── LIVE PREVIEW ──────────────────────────────────────────────────────────
@@ -1683,7 +1493,7 @@ function renderActivityFeed(d){
   el.innerHTML=items.map(i=>`<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--gray-light)"><span style="font-size:18px">${i.icon}</span><span style="font-size:13px;color:var(--navy)">${i.text}</span></div>`).join('');
 }
 
-window.copyLink=function(){const s=UD?.slug;if(!s){showToast('Profil linki yoxdur','error');return;}navigator.clipboard.writeText('https://apps.mycontact.az/'+s);showToast('Link kopyalandı','success');};
+window.copyLink=function(){const s=UD?.slug;if(!s){showToast('Profil linki yoxdur','error');return;}navigator.clipboard.writeText('https://apps.vizitaz.az/'+s);showToast('Link kopyalandı','success');};
 window.viewProfile=function(){const s=UD?.slug;if(!s){showToast('Profil linki yoxdur','error');return;}window.open('profile.html?u='+s,'_blank');};
 window.showPanel=function(n){
   const isPro=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
@@ -1829,7 +1639,7 @@ window.testAutoWebhook=async function(){
   const btn=document.getElementById('autoTestBtn');
   const orig=btn.innerHTML;
   btn.disabled=true;btn.innerHTML='Göndərilir...';
-  const payload={name:'Test Contact',email:'test@example.com',phone:'+994 55 000 00 00',company:'MyContact',savedAt:new Date().toISOString()};
+  const payload={name:'Test Contact',email:'test@example.com',phone:'+994 55 000 00 00',company:'VizitAz',savedAt:new Date().toISOString()};
   try{
     await fetch(url,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
     showToast('Test data göndərildi ✓','success');
