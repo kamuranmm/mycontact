@@ -588,7 +588,7 @@ function applyColor(c){
   document.querySelectorAll('.cdot').forEach(d=>d.classList.toggle('on',d.dataset.c===c));
 }
 window.setColor=function(c){applyColor(c);localStorage.setItem('cp_col_'+slug,c);if(PD)render();};
-window.setTmpl=function(n){tmpl=n;localStorage.setItem('cp_tmpl_'+slug,n);document.querySelectorAll('.to').forEach(t=>t.classList.remove('on'));document.getElementById('t-'+n)?.classList.add('on');if(PD)render();};
+window.setTmpl=function(n){tmpl=parseInt(n)||1;document.querySelectorAll('.to').forEach(t=>t.classList.remove('on'));document.getElementById('t-'+n)?.classList.add('on');if(PD)render();};
 // fab removed
 document.addEventListener('click',e=>{if(!e.target.closest('.lang-dropdown')){const m=document.getElementById('lmenu');if(m)m.classList.remove('open');}});
 // set active template button on load
@@ -771,308 +771,249 @@ function t4(d,c,name){
   </div></div>`;
 }
 
-
-// ── T5: LUXURY CEO ────────────────────────────────────────────────────────
+// ── T5 TEAM ───────────────────────────────────────────────────────────────
 function t5(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
+  let lrows='';
+  if(c.phone) lrows+=`<div class="c5-lrow" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ic('c5-lico',ico.phone)}<div><div class="c5-lval">${esc(c.phone)}</div><div class="c5-llbl">${t('phone')}</div></div></div>`;
+  if(c.email) lrows+=`<div class="c5-lrow" onclick="oEm('${esc(c.email)}')">${ic('c5-lico',ico.email)}<div><div class="c5-lval">${esc(c.email)}</div><div class="c5-llbl">${t('email')}</div></div></div>`;
+  if(c.web) lrows+=`<a class="c5-lrow" href="${htp(c.web)}" target="_blank">${ic('c5-lico',ico.web)}<div><div class="c5-lval">${esc(c.web)}</div><div class="c5-llbl">${t('web')}</div></div></a>`;
+  if(c.address) lrows+=`<a class="c5-lrow" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ic('c5-lico',ico.loc)}<div><div class="c5-lval">${esc(c.address)}</div><div class="c5-llbl">${t('addr')}</div></div></a>`;
   const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
-  return`<div style="background:#0a0a0a;min-height:100vh;font-family:'Inter',sans-serif">
-  <!-- Cover -->
-  <div style="position:relative;height:220px;overflow:hidden">
-    ${c.cover?`<img src="${esc(c.cover)}" style="width:100%;height:100%;object-fit:cover;filter:brightness(.5) blur(1px)">`:`<div style="width:100%;height:100%;background:linear-gradient(160deg,#111 0%,#1a1a1a 50%,#0d0d0d 100%)"></div>`}
-    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,#0a0a0a 100%)"></div>
-    <!-- Gold top line -->
-    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#C9A84C,transparent)"></div>
+  return`<div class="c5">
+  <div class="c5-head" style="background:var(--p)">
+    <button class="c5-share" onclick="shProfile()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg></button>
   </div>
-  <!-- Avatar overlapping cover -->
-  <div style="display:flex;justify-content:center;margin-top:-56px;position:relative;z-index:2">
-    <div style="width:110px;height:110px;border-radius:50%;overflow:hidden;border:3px solid #C9A84C;box-shadow:0 8px 32px rgba(201,168,76,.3)">${avImg(c.photo,name.charAt(0).toUpperCase())}</div>
-  </div>
-  <!-- Info -->
-  <div style="text-align:center;padding:1rem 1.5rem 0">
-    <div style="font-size:24px;font-weight:700;color:#fff;letter-spacing:-.3px">${esc(name)||'—'}</div>
-    ${c.position?`<div style="font-size:11px;color:#C9A84C;letter-spacing:3px;text-transform:uppercase;margin-top:6px">${esc(c.position)}</div>`:''}
-    ${c.company?`<div style="font-size:13px;color:rgba(255,255,255,.35);margin-top:4px">${esc(c.company)}</div>`:''}
-    <!-- Gold divider -->
-    <div style="display:flex;align-items:center;gap:12px;margin:1.25rem auto;max-width:200px">
-      <div style="flex:1;height:.5px;background:linear-gradient(90deg,transparent,#C9A84C)"></div>
-      <div style="width:5px;height:5px;border-radius:50%;background:#C9A84C"></div>
-      <div style="flex:1;height:.5px;background:linear-gradient(90deg,#C9A84C,transparent)"></div>
+  <div class="c5-body">
+    <div class="c5-av-wrap"><div class="c5-av">${avImg(c.photo,name.charAt(0).toUpperCase())}</div></div>
+    <div class="c5-name">${esc(name)||'—'}</div>
+    ${c.position?`<div class="c5-pos">${esc(c.position)}</div>`:''}
+    ${c.company?`<div class="c5-co">${esc(c.company)}</div>`:''}
+    ${c.bio?`<div class="c5-bio">${esc(c.bio)}</div>`:''}
+    <div class="c5-icorow">
+      <div class="c5-icoitem" onclick="svContact()"><div class="c5-ico">${ico.save}</div><span class="c5-ilbl">${t('ko')}</span></div>
+      ${c.phone?`<a class="c5-icoitem" href="tel:${c.phone}"><div class="c5-ico">${ico.phone}</div><span class="c5-ilbl">${t('anrufen')}</span></a>`:'<div></div>'}
+      <div class="c5-icoitem" onclick="document.getElementById('moQr').classList.add('open')"><div class="c5-ico">${ico.qr}</div><span class="c5-ilbl">${t('termin')}</span></div>
     </div>
-    ${c.bio?`<div style="font-size:13px;color:rgba(255,255,255,.45);line-height:1.7;margin-bottom:1.25rem;font-style:italic">${esc(c.bio)}</div>`:''}
-  </div>
-  <!-- Contacts -->
-  <div style="padding:0 1.25rem">
-    ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(c.whatsapp||c.phone)}','')" style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(201,168,76,.15);border-radius:14px;margin-bottom:10px;cursor:pointer;transition:all .2s"><div style="width:38px;height:38px;border-radius:10px;background:rgba(201,168,76,.12);display:flex;align-items:center;justify-content:center;border:1px solid rgba(201,168,76,.2)">${ico.phoneW}</div><span style="font-size:15px;color:rgba(255,255,255,.85);font-weight:400">${esc(c.phone)}</span></div>`:''}
-    ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;margin-bottom:10px;cursor:pointer"><div style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center">${ico.emailW}</div><span style="font-size:15px;color:rgba(255,255,255,.75)">${esc(c.email)}</span></div>`:''}
-    ${c.web?`<a href="${htp(c.web)}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(201,168,76,.06);border:1px solid rgba(201,168,76,.2);border-radius:14px;margin-bottom:10px;text-decoration:none"><div style="width:38px;height:38px;border-radius:10px;background:rgba(201,168,76,.1);display:flex;align-items:center;justify-content:center">${ico.webW}</div><span style="font-size:15px;color:#C9A84C">${esc(c.web)}</span></a>`:''}
-    ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.05);border-radius:14px;margin-bottom:10px;text-decoration:none"><div style="width:38px;height:38px;border-radius:10px;background:rgba(255,255,255,.04);display:flex;align-items:center;justify-content:center">${ico.locW}</div><span style="font-size:15px;color:rgba(255,255,255,.35)">${esc(c.address)}</span></a>`:''}
-    <!-- Social -->
-    ${sk.length?`<div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:1rem 0">${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.05);border:1px solid rgba(201,168,76,.2);color:rgba(255,255,255,.7);text-decoration:none">${socIco[x]||'<span>'+x.substring(0,2).toUpperCase()+'</span>'}</a>`).join('')}</div>`:''}
-    ${qrBtn(true)}${videoH(d,true)}${pdfsH(d,true)}
-    <!-- Save button luxury -->
-    <button onclick="svContact()" style="width:100%;padding:16px;background:linear-gradient(90deg,#C9A84C,#e8d080,#C9A84C);border:none;border-radius:14px;color:#0a0a0a;font-size:15px;font-weight:700;cursor:pointer;margin-top:.5rem;letter-spacing:.5px;font-family:inherit">KONTAKTI SAXLA</button>
-    <button onclick="shProfile()" style="width:100%;padding:13px;background:transparent;border:1px solid rgba(201,168,76,.25);border-radius:14px;color:rgba(201,168,76,.7);font-size:13px;cursor:pointer;margin-top:10px;font-family:inherit">${t('share')}</button>
-  </div>
-  <div style="height:2rem"></div></div>`;
-}
-
-// ── T6: SILICON VALLEY STARTUP ────────────────────────────────────────────
-function t6(d,c,name){
-  const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
-  return`<div style="min-height:100vh;font-family:'Inter',sans-serif;background:#06010f;overflow:hidden">
-  <!-- Animated gradient bg -->
-  <div style="position:fixed;inset:0;background:radial-gradient(ellipse at 20% 20%,rgba(120,40,200,.25) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(40,80,255,.2) 0%,transparent 60%);pointer-events:none;z-index:0"></div>
-  <div style="position:relative;z-index:1;padding:2rem 1.25rem">
-    <!-- Header split -->
-    <div style="display:flex;align-items:center;gap:1.25rem;margin-bottom:1.5rem">
-      <div style="width:80px;height:80px;border-radius:20px;overflow:hidden;border:2px solid rgba(150,80,255,.5);box-shadow:0 0 24px rgba(150,80,255,.2);flex-shrink:0">${avImg(c.photo,name.charAt(0).toUpperCase())}</div>
-      <div style="flex:1">
-        <div style="font-size:22px;font-weight:800;color:#fff;line-height:1.1">${esc(name)||'—'}</div>
-        ${c.position?`<div style="font-size:12px;background:linear-gradient(90deg,#a855f7,#3b82f6);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:600;margin-top:4px">${esc(c.position)}</div>`:''}
-        ${c.company?`<div style="font-size:11px;color:rgba(255,255,255,.3);margin-top:2px">${esc(c.company)}</div>`:''}
-      </div>
-    </div>
-    ${c.bio?`<div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:14px 16px;font-size:13px;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:1.25rem">${esc(c.bio)}</div>`:''}
-    <!-- CTA button -->
-    <button onclick="svContact()" style="width:100%;padding:16px;background:linear-gradient(135deg,#a855f7,#3b82f6);border:none;border-radius:16px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;margin-bottom:10px;font-family:inherit;box-shadow:0 8px 24px rgba(120,80,255,.35)">🚀 Let's Connect</button>
-    <!-- Contact blocks -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem">
-      ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(c.whatsapp||c.phone)}','')" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px;cursor:pointer;text-align:center"><div style="font-size:20px;margin-bottom:6px">📞</div><div style="font-size:11px;color:rgba(255,255,255,.5)">Zəng et</div></div>`:``}
-      ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px;cursor:pointer;text-align:center"><div style="font-size:20px;margin-bottom:6px">✉️</div><div style="font-size:11px;color:rgba(255,255,255,.5)">Email</div></div>`:``}
-      ${c.web?`<a href="${htp(c.web)}" target="_blank" style="background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.25);border-radius:14px;padding:14px;text-align:center;text-decoration:none;display:block"><div style="font-size:20px;margin-bottom:6px">🌐</div><div style="font-size:11px;color:rgba(255,255,255,.5)">Website</div></a>`:``}
-      ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:14px;text-align:center;text-decoration:none;display:block"><div style="font-size:20px;margin-bottom:6px">📍</div><div style="font-size:11px;color:rgba(255,255,255,.5)">Ünvan</div></a>`:``}
-    </div>
-    <!-- Social floating -->
-    ${sk.length?`<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:1rem">${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="flex:1;min-width:44px;padding:10px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.7);text-decoration:none">${socIco[x]||'<span>'+x.substring(0,2).toUpperCase()+'</span>'}</a>`).join('')}</div>`:''}
-    ${qrBtn(true)}${videoH(d,true)}${pdfsH(d,true)}
-    <button onclick="shProfile()" style="width:100%;padding:13px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;color:rgba(255,255,255,.5);font-size:13px;cursor:pointer;font-family:inherit">${t('share')}</button>
+    <div style="text-align:left;font-size:10px;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.5rem">Əlaqə</div>
+    <div class="c5-links">${lrows}</div>
+    ${sk.length?`<div style="font-size:10px;font-weight:700;color:#bbb;text-transform:uppercase;letter-spacing:.07em;margin:.75rem 0 .5rem">Sosial</div><div style="display:flex;flex-wrap:wrap;gap:6px">${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" title="${socLab[x]||x}" style="display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:${socCol[x]||'#888'};color:#fff;text-decoration:none">${socIco[x]||'<span>'+x.substring(0,2).toUpperCase()+'</span>'}</a>`).join('')}</div>`:''}
+    ${videoH(d)}${pdfsH(d)}${qrBtn()}
+    <button class="abtn" style="width:100%;background:var(--s);color:var(--dark)" onclick="document.getElementById('moScan').classList.add('open');rstScan()">${ico.scan} ${t('scan')}</button>
   </div></div>`;
 }
 
-// ── T7: PERSONAL BRAND / INFLUENCER ───────────────────────────────────────
+// ── T6 SPLIT ──────────────────────────────────────────────────────────────
+function t6(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
+  const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
+  let rows='';
+  if(c.phone) rows+=`<div class="c6-row" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ico.phone}<div><div class="c6-val">${esc(c.phone)}</div><div class="c6-lbl">${t('phone')}</div></div></div>`;
+  if(c.email) rows+=`<div class="c6-row" onclick="oEm('${esc(c.email)}')">${ico.email}<div><div class="c6-val">${esc(c.email)}</div><div class="c6-lbl">${t('email')}</div></div></div>`;
+  if(c.web) rows+=`<a class="c6-row" href="${htp(c.web)}" target="_blank">${ico.web}<div><div class="c6-val">${esc(c.web)}</div><div class="c6-lbl">${t('web')}</div></div></a>`;
+  if(c.address) rows+=`<a class="c6-row" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ico.loc}<div><div class="c6-val">${esc(c.address)}</div><div class="c6-lbl">${t('addr')}</div></div></a>`;
+  const sdots=sk.slice(0,5).map(x=>`<a class="c6-sdot" href="${htp(soc[x])}" target="_blank" style="background:${socCol[x]||'#888'}">${(socLab[x]||x).substring(0,2).toUpperCase()}</a>`).join('');
+  return`<div class="c6">
+  <div class="c6-left" style="background:var(--p)">
+    <div class="c6-photo">${c.photo?`<img src="${esc(c.photo)}" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'">`:(name||'?').charAt(0).toUpperCase()}</div>
+    <div class="c6-btnrow">
+      ${c.phone?`<a class="c6-ibtn" href="tel:${c.phone}">${ico.phoneW}</a>`:''}
+      ${c.email?`<a class="c6-ibtn" href="mailto:${c.email}">${ico.emailW}</a>`:''}
+      <button class="c6-ibtn" onclick="svContact()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.8)" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg></button>
+      <button class="c6-ibtn" onclick="document.getElementById('moQr').classList.add('open')">${ico.qr.replace('var(--p)','rgba(255,255,255,.8)').replace('currentColor','rgba(255,255,255,.8)')}</button>
+      <button class="c6-ibtn" onclick="document.getElementById('moScan').classList.add('open');rstScan()">${ico.scan.replace('currentColor','rgba(255,255,255,.8)')}</button>
+    </div>
+    ${sdots?`<div class="c6-socdots" style="margin-top:auto">${sdots}</div>`:''}
+  </div>
+  <div class="c6-right">
+    <div class="c6-name">${esc(name)||'—'}</div>
+    ${c.position?`<div class="c6-pos">${esc(c.position)}</div>`:''}
+    ${c.company?`<div class="c6-co">${esc(c.company)}</div>`:''}
+    ${c.bio?`<div class="c6-bio">${esc(c.bio)}</div>`:''}
+    <div class="c6-list">${rows}</div>
+    ${pdfsH(d)}${videoH(d)}
+  </div></div>`;
+}
+
+// ── T7 LINKO ──────────────────────────────────────────────────────────────
 function t7(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
   const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
-  return`<div style="background:#fff;min-height:100vh;font-family:'Inter',sans-serif">
-  <!-- Big face cover -->
-  <div style="position:relative;height:260px;overflow:hidden;background:#f0f0f0">
-    ${c.photo?`<img src="${esc(c.photo)}" style="width:100%;height:100%;object-fit:cover;object-position:center top">`:`<div style="width:100%;height:100%;background:linear-gradient(135deg,#f8a4d8,#a78bfa)"></div>`}
-    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(255,255,255,.95) 100%)"></div>
+  let rows='';
+  if(c.phone) rows+=`<div class="c7-row" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ic('c7-ico',ico.phoneW)}<div><div class="c7-val">${esc(c.phone)}</div><div class="c7-lbl">${t('phone')}</div></div></div>`;
+  if(c.email) rows+=`<div class="c7-row" onclick="oEm('${esc(c.email)}')">${ic('c7-ico',ico.emailW)}<div><div class="c7-val">${esc(c.email)}</div><div class="c7-lbl">${t('email')}</div></div></div>`;
+  if(c.web) rows+=`<a class="c7-row" href="${htp(c.web)}" target="_blank">${ic('c7-ico',ico.webW)}<div><div class="c7-val">${esc(c.web)}</div><div class="c7-lbl">${t('web')}</div></div></a>`;
+  if(c.address) rows+=`<a class="c7-row" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ic('c7-ico',ico.locW)}<div><div class="c7-val">${esc(c.address)}</div><div class="c7-lbl">${t('addr')}</div></div></a>`;
+  return`<div class="c7">
+  <div class="c7-img">${avPortrait(c.photo||c.cover,name)}<div class="c7-grad"></div>
+    <div class="c7-nameblock"><div class="c7-name">${esc(name)||'—'}</div>${c.position?`<div class="c7-pos">${esc(c.position)}</div>`:''}${c.company?`<div class="c7-co">${esc(c.company)}</div>`:''}</div>
   </div>
-  <!-- Info overlapping -->
-  <div style="padding:0 1.25rem;margin-top:-60px;position:relative;z-index:2">
-    <div style="font-size:26px;font-weight:800;color:#1a1a1a;line-height:1.1">${esc(name)||'—'}</div>
-    ${c.position?`<div style="font-size:14px;color:#f97316;font-weight:600;margin-top:4px">${esc(c.position)}</div>`:''}
-    ${c.company?`<div style="font-size:12px;color:#8a9bb5;margin-top:2px">${esc(c.company)}</div>`:''}
-    <!-- Bio block -->
-    ${c.bio?`<div style="margin:1rem 0;padding:14px 16px;background:#fafafa;border-left:3px solid #f97316;border-radius:0 12px 12px 0;font-size:13px;color:#555;line-height:1.7">${esc(c.bio)}</div>`:''}
-    <!-- Social proof -->
-    <div style="display:flex;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap">
-      ${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:#f8f8f8;border-radius:24px;text-decoration:none;font-size:12px;color:#333;border:1px solid #e8e8e8">${socIco[x]||''}<span>${socLab[x]||x}</span></a>`).join('')}
-    </div>
-    <!-- Contact -->
-    ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(c.whatsapp||c.phone)}','')" style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:#fff;border:1.5px solid #f0f0f0;border-radius:16px;margin-bottom:10px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)"><div style="width:40px;height:40px;border-radius:12px;background:#fff5f0;border:1px solid #fde8d8;display:flex;align-items:center;justify-content:center;color:#f97316">${ico.phone}</div><div><div style="font-size:14px;font-weight:500;color:#1a1a1a">${esc(c.phone)}</div><div style="font-size:11px;color:#8a9bb5">Telefon</div></div></div>`:''}
-    ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:#fff;border:1.5px solid #f0f0f0;border-radius:16px;margin-bottom:10px;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.06)"><div style="width:40px;height:40px;border-radius:12px;background:#f0f5ff;border:1px solid #dbeafe;display:flex;align-items:center;justify-content:center;color:#3b82f6">${ico.email}</div><div><div style="font-size:14px;font-weight:500;color:#1a1a1a">${esc(c.email)}</div><div style="font-size:11px;color:#8a9bb5">Email</div></div></div>`:''}
-    ${c.web?`<a href="${htp(c.web)}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:#fff;border:1.5px solid #f0f0f0;border-radius:16px;margin-bottom:10px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.06)"><div style="width:40px;height:40px;border-radius:12px;background:#f0fdf4;border:1px solid #d1fae5;display:flex;align-items:center;justify-content:center;color:#10b981">${ico.web}</div><div><div style="font-size:14px;font-weight:500;color:#1a1a1a">${esc(c.web)}</div><div style="font-size:11px;color:#8a9bb5">Website</div></div></a>`:''}
-    ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px 16px;background:#fff;border:1.5px solid #f0f0f0;border-radius:16px;margin-bottom:10px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.06)"><div style="width:40px;height:40px;border-radius:12px;background:#fafafa;border:1px solid #e8e8e8;display:flex;align-items:center;justify-content:center;color:#8a9bb5">${ico.loc}</div><div><div style="font-size:14px;font-weight:500;color:#1a1a1a">${esc(c.address)}</div><div style="font-size:11px;color:#8a9bb5">Ünvan</div></div></a>`:''}
-    ${qrBtn()}${videoH(d)}${pdfsH(d)}
-    <button onclick="svContact()" style="width:100%;padding:16px;background:#f97316;border:none;border-radius:16px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;margin-top:.5rem;font-family:inherit">${t('save')}</button>
-    <button onclick="shProfile()" style="width:100%;padding:13px;background:#f8f8f8;border:none;border-radius:16px;color:#666;font-size:13px;cursor:pointer;margin-top:10px;font-family:inherit">${t('share')}</button>
-  </div>
-  <div style="height:2rem"></div></div>`;
+  <div class="c7-body">
+    ${c.bio?`<div class="c7-bio">${esc(c.bio)}</div>`:''}
+    <div class="c7-list">${rows}</div>
+    ${sk.length?`<div class="c7-soc">${sk.map(x=>`<a class="c7-sp" href="${htp(soc[x])}" target="_blank">${socIco[x]||'<span>'+x.substring(0,2).toUpperCase()+'</span>'}</a>`).join('')}</div>`:''}
+    ${videoH(d,true)}${pdfsH(d,true)}${qrBtn(true)}
+    ${actBtns('var(--a)','rgba(255,255,255,.09)','#111','rgba(255,255,255,.8)','rgba(255,255,255,.05)','rgba(255,255,255,.6)',';border:1px solid rgba(255,255,255,.1)')}
+  </div></div>`;
 }
 
-// ── T8: CORPORATE CV STYLE ────────────────────────────────────────────────
+// ── T8 CARD ───────────────────────────────────────────────────────────────
 function t8(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
   const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
-  const skills=(c.skills||'').split(',').map(s=>s.trim()).filter(Boolean);
-  return`<div style="background:#f4f6f9;min-height:100vh;font-family:'Inter',sans-serif">
-  <!-- Header -->
-  <div style="background:#fff;border-bottom:3px solid #1d4ed8;padding:1.25rem">
-    <div style="display:flex;align-items:center;gap:1rem">
-      <div style="width:76px;height:76px;border-radius:12px;overflow:hidden;border:2px solid #e0e7ff;flex-shrink:0;box-shadow:0 2px 8px rgba(29,78,216,.15)">${avImg(c.photo,name.charAt(0).toUpperCase())}</div>
-      <div style="flex:1">
-        <div style="font-size:20px;font-weight:700;color:#1e293b">${esc(name)||'—'}</div>
-        ${c.position?`<div style="font-size:13px;color:#1d4ed8;font-weight:500;margin-top:3px">${esc(c.position)}</div>`:''}
-        ${c.company?`<div style="font-size:12px;color:#64748b;margin-top:2px">${esc(c.company)}</div>`:''}
-      </div>
-    </div>
-    ${c.bio?`<div style="margin-top:1rem;font-size:13px;color:#475569;line-height:1.6;padding-top:1rem;border-top:1px solid #f0f4f8">${esc(c.bio)}</div>`:''}
+  let rows='';
+  if(c.phone) rows+=`<div class="c8-row" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ic('c8-ico',ico.phone)}<div><div class="c8-val">${esc(c.phone)}</div><div class="c8-lbl">${t('phone')}</div></div><svg style="margin-left:auto;opacity:.25" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>`;
+  if(c.email) rows+=`<div class="c8-row" onclick="oEm('${esc(c.email)}')">${ic('c8-ico',ico.email)}<div><div class="c8-val">${esc(c.email)}</div><div class="c8-lbl">${t('email')}</div></div><svg style="margin-left:auto;opacity:.25" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg></div>`;
+  if(c.web) rows+=`<a class="c8-row" href="${htp(c.web)}" target="_blank">${ic('c8-ico',ico.web)}<div><div class="c8-val">${esc(c.web)}</div><div class="c8-lbl">${t('web')}</div></div></a>`;
+  if(c.address) rows+=`<a class="c8-row" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ic('c8-ico',ico.loc)}<div><div class="c8-val">${esc(c.address)}</div><div class="c8-lbl">${t('addr')}</div></div></a>`;
+  return`<div class="c8">
+  <div class="c8-top" style="background:var(--p)">
+    <div class="c8-logo"><div class="c8-circle">${(c.company||'C').charAt(0).toUpperCase()}</div><span class="c8-brand">${esc(c.company||'CardPro')}</span></div>
+    <button onclick="shProfile()" style="background:rgba(255,255,255,.15);border:none;border-radius:8px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;cursor:pointer">${ico.shr.replace('currentColor','rgba(255,255,255,.8)')}</button>
   </div>
-  <!-- Contact section -->
-  <div style="background:#fff;margin:10px 0;padding:1rem 1.25rem">
-    <div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:.75rem">Əlaqə məlumatları</div>
-    ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(c.whatsapp||c.phone)}','')" style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f1f5f9;cursor:pointer"><div style="width:32px;height:32px;border-radius:8px;background:#eff6ff;display:flex;align-items:center;justify-content:center;color:#1d4ed8;flex-shrink:0">${ico.phone}</div><span style="font-size:14px;color:#1e293b">${esc(c.phone)}</span></div>`:''}
-    ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f1f5f9;cursor:pointer"><div style="width:32px;height:32px;border-radius:8px;background:#eff6ff;display:flex;align-items:center;justify-content:center;color:#1d4ed8;flex-shrink:0">${ico.email}</div><span style="font-size:14px;color:#1e293b">${esc(c.email)}</span></div>`:''}
-    ${c.web?`<a href="${htp(c.web)}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #f1f5f9;text-decoration:none"><div style="width:32px;height:32px;border-radius:8px;background:#eff6ff;display:flex;align-items:center;justify-content:center;color:#1d4ed8;flex-shrink:0">${ico.web}</div><span style="font-size:14px;color:#1d4ed8">${esc(c.web)}</span></a>`:''}
-    ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:10px 0;text-decoration:none"><div style="width:32px;height:32px;border-radius:8px;background:#f8fafc;display:flex;align-items:center;justify-content:center;color:#64748b;flex-shrink:0">${ico.loc}</div><span style="font-size:14px;color:#64748b">${esc(c.address)}</span></a>`:''}
+  <div class="c8-hero">
+    <div class="c8-av">${avImg(c.photo,name.charAt(0).toUpperCase())}</div>
+    <div><div class="c8-name">${esc(name)||'—'}</div>${c.position?`<div class="c8-pos">${esc(c.position)}</div>`:''}${c.company?`<div class="c8-co">${esc(c.company)}</div>`:''}</div>
   </div>
-  <!-- Skills (from bio keywords if no skills field) -->
-  ${skills.length?`<div style="background:#fff;margin:10px 0;padding:1rem 1.25rem"><div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:.75rem">Bacarıqlar</div><div style="display:flex;flex-wrap:wrap;gap:6px">${skills.map(s=>`<span style="padding:5px 12px;background:#eff6ff;color:#1d4ed8;border-radius:6px;font-size:12px;font-weight:500">${s}</span>`).join('')}</div></div>`:''}
-  <!-- Social -->
-  ${sk.length?`<div style="background:#fff;margin:10px 0;padding:1rem 1.25rem"><div style="font-size:11px;font-weight:700;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-bottom:.75rem">Sosial şəbəkələr</div><div style="display:flex;gap:8px;flex-wrap:wrap">${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="padding:8px 14px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;font-size:12px;color:#475569;text-decoration:none;display:flex;align-items:center;gap:6px">${socIco[x]||''}<span>${socLab[x]||x}</span></a>`).join('')}</div></div>`:''}
-  ${qrBtn()}${videoH(d)}${pdfsH(d)}
-  <div style="padding:1rem 1.25rem;display:flex;gap:10px">
-    <button onclick="svContact()" style="flex:2;padding:14px;background:#1d4ed8;border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit">${t('save')}</button>
-    <button onclick="shProfile()" style="flex:1;padding:14px;background:#fff;border:1px solid #e2e8f0;border-radius:10px;color:#64748b;font-size:13px;cursor:pointer;font-family:inherit">${t('share')}</button>
+  <div class="c8-actbar">
+    <div class="c8-acti" onclick="svContact()"><div class="c8-aci-c">${ico.save.replace('currentColor','var(--p)')}</div><span class="c8-aci-l">${t('ko')}</span></div>
+    ${c.phone?`<a class="c8-acti" href="tel:${c.phone}"><div class="c8-aci-c">${ico.phone}</div><span class="c8-aci-l">${t('anrufen')}</span></a>`:''}
+    <div class="c8-acti" onclick="document.getElementById('moQr').classList.add('open')"><div class="c8-aci-c">${ico.qr.replace('currentColor','var(--p)')}</div><span class="c8-aci-l">${t('termin')}</span></div>
+    <div class="c8-acti" onclick="document.getElementById('moScan').classList.add('open');rstScan()"><div class="c8-aci-c">${ico.scan.replace('currentColor','var(--p)')}</div><span class="c8-aci-l">Skan</span></div>
   </div>
-  <div style="height:1rem"></div></div>`;
+  <div class="c8-body">
+    ${c.bio?`<div style="font-size:13px;color:#777;line-height:1.6;margin-bottom:.75rem;padding-bottom:.75rem;border-bottom:1px solid #f5f5f5">${esc(c.bio)}</div>`:''}
+    <div class="c8-sec">Əlaqə</div><div class="c8-list">${rows}</div>
+    ${sk.length?`<div class="c8-sec" style="margin-top:.75rem">Sosial</div><div class="c8-soc">${sk.map(x=>`<a class="c8-sp" href="${htp(soc[x])}" target="_blank">${socIco[x]||'<span>'+x.substring(0,2).toUpperCase()+'</span>'}</a>`).join('')}</div>`:''}
+    ${videoH(d)}${pdfsH(d)}
+  </div></div>`;
 }
 
-// ── T9: CREATIVE PORTFOLIO / NEON ─────────────────────────────────────────
+// ── T9 LINKO FULL ─────────────────────────────────────────────────────────
 function t9(d,c,name){
+  let rows='';
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
+  if(c.phone) rows+=`<div class="c9-row" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ic('c9-ico',ico.phoneW)}<div><div class="c9-val">${esc(c.phone)}</div><div class="c9-lbl">${t('phone')}</div></div></div>`;
+  if(c.email) rows+=`<div class="c9-row" onclick="oEm('${esc(c.email)}')">${ic('c9-ico',ico.emailW)}<div><div class="c9-val">${esc(c.email)}</div><div class="c9-lbl">${t('email')}</div></div></div>`;
+  if(c.web) rows+=`<a class="c9-row" href="${htp(c.web)}" target="_blank">${ic('c9-ico',ico.webW)}<div><div class="c9-val">${esc(c.web)}</div><div class="c9-lbl">${t('web')}</div></div></a>`;
+  if(c.address) rows+=`<a class="c9-row" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ic('c9-ico',ico.locW)}<div><div class="c9-val">${esc(c.address)}</div><div class="c9-lbl">${t('addr')}</div></div></a>`;
   const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
-  return`<div style="background:#0d0d0d;min-height:100vh;font-family:'Inter',sans-serif">
-  <!-- Asymmetric header -->
-  <div style="position:relative;height:200px;overflow:hidden">
-    ${c.cover?`<img src="${esc(c.cover)}" style="width:100%;height:100%;object-fit:cover">`:`<div style="width:100%;height:100%;background:#111"></div>`}
-    <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,255,136,.15),rgba(255,0,128,.1),transparent 60%)"></div>
-    <div style="position:absolute;bottom:-1px;left:0;right:0;height:40px;background:#0d0d0d;clip-path:polygon(0 100%,100% 100%,100% 0)"></div>
-  </div>
-  <div style="padding:0 1.25rem;margin-top:-30px;position:relative;z-index:2">
-    <!-- Avatar left-aligned -->
-    <div style="display:flex;align-items:flex-end;gap:1rem;margin-bottom:1rem">
-      <div style="width:78px;height:78px;border-radius:16px;overflow:hidden;border:2px solid #00ff88;box-shadow:0 0 20px rgba(0,255,136,.25);flex-shrink:0">${avImg(c.photo,name.charAt(0).toUpperCase())}</div>
-      <div style="padding-bottom:6px">
-        <div style="font-size:22px;font-weight:800;color:#fff">${esc(name)||'—'}</div>
-        ${c.position?`<div style="font-size:12px;color:#00ff88;font-weight:600;letter-spacing:1px">${esc(c.position)}</div>`:''}
-        ${c.company?`<div style="font-size:11px;color:rgba(255,255,255,.3)">${esc(c.company)}</div>`:''}
-      </div>
+  return`<div class="c9">
+  <div class="c9-hero">
+    ${c.photo?`<img class="av" src="${esc(c.photo)}" onerror="this.style.display='none'">`:`<span style="font-size:80px;font-family:'Playfair Display',serif;color:rgba(255,255,255,.2)">${(name||'?').charAt(0).toUpperCase()}</span>`}
+    <div class="c9-grad"></div>
+    <div class="c9-ph">
+      <a class="c9-pill" onclick="svContact()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>${t('save')}</a>
+      <a class="c9-pill" onclick="shProfile()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>${t('share')}</a>
     </div>
-    ${c.bio?`<div style="font-size:13px;color:rgba(255,255,255,.5);line-height:1.7;margin-bottom:1.25rem;padding:12px;background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.12);border-radius:10px">${esc(c.bio)}</div>`:''}
-    <!-- Bold contact grid -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1rem">
-      ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(c.whatsapp||c.phone)}','')" style="background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.2);border-radius:12px;padding:14px;cursor:pointer;text-align:center"><div style="font-size:22px;margin-bottom:6px">📞</div><div style="font-size:10px;color:rgba(255,255,255,.5)">Zəng</div></div>`:``}
-      ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px;cursor:pointer;text-align:center"><div style="font-size:22px;margin-bottom:6px">✉️</div><div style="font-size:10px;color:rgba(255,255,255,.5)">Email</div></div>`:``}
-      ${c.web?`<a href="${htp(c.web)}" target="_blank" style="background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.2);border-radius:12px;padding:14px;text-align:center;text-decoration:none;display:block"><div style="font-size:22px;margin-bottom:6px">🌐</div><div style="font-size:10px;color:rgba(255,255,255,.5)">Web</div></a>`:``}
-      ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;text-align:center;text-decoration:none;display:block"><div style="font-size:22px;margin-bottom:6px">📍</div><div style="font-size:10px;color:rgba(255,255,255,.5)">Ünvan</div></a>`:``}
+    <div class="c9-info">
+      <div class="c9-name">${esc(name)||'—'}</div>
+      ${c.position?`<div class="c9-pos">${esc(c.position)}</div>`:''}
+      ${c.company?`<div class="c9-co">${esc(c.company)}</div>`:''}
     </div>
-    ${sk.length?`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem">${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="flex:1;min-width:40px;padding:10px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.2);color:#00ff88;text-decoration:none">${socIco[x]||'<span>'+x.substring(0,2).toUpperCase()+'</span>'}</a>`).join('')}</div>`:''}
-    ${qrBtn(true)}${videoH(d,true)}${pdfsH(d,true)}
-    <button onclick="svContact()" style="width:100%;padding:15px;background:#00ff88;border:none;border-radius:12px;color:#0d0d0d;font-size:16px;font-weight:800;cursor:pointer;margin-top:.5rem;font-family:inherit">SAXLA</button>
-    <button onclick="shProfile()" style="width:100%;padding:13px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;color:rgba(255,255,255,.5);font-size:13px;cursor:pointer;margin-top:8px;font-family:inherit">${t('share')}</button>
   </div>
-  <div style="height:2rem"></div></div>`;
+  <div class="c9-body">
+    ${c.bio?`<div style="font-size:13px;color:rgba(255,255,255,.4);line-height:1.6;margin-bottom:.9rem;padding-bottom:.9rem;border-bottom:1px solid rgba(255,255,255,.08)">${esc(c.bio)}</div>`:''}
+    <div class="c9-list">${rows}</div>
+    ${sk.length?`<div class="c9-soc">${sk.map(x=>`<a class="c9-sp" href="${htp(soc[x])}" target="_blank">${socIco[x]||'<span>'+x.substring(0,2).toUpperCase()+'</span>'}</a>`).join('')}</div>`:''}
+    ${videoH(d,true)}${pdfsH(d,true)}${qrBtn(true)}
+    <div class="c9-actions">
+      <button class="abtn" style="background:rgba(255,255,255,.09);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.12)" onclick="document.getElementById('moScan').classList.add('open');rstScan()">${ico.scan} ${t('scan')}</button>
+      <button class="abtn" style="background:var(--p);color:#fff" onclick="svContact()">${ico.save} ${t('save')}</button>
+    </div>
+  </div></div>`;
 }
 
-// ── T10: TEAM / SAAS CORPORATE ────────────────────────────────────────────
+// ── T10 ACHIEVEMENT ────────────────────────────────────────────────────────
 function t10(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
+  let rows='';
+  if(c.phone) rows+=`<div class="c10-row" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ic('c10-lico',ico.phone)}<div><div class="c10-val">${esc(c.phone)}</div><div class="c10-lbl">${t('phone')}</div></div></div>`;
+  if(c.email) rows+=`<div class="c10-row" onclick="oEm('${esc(c.email)}')">${ic('c10-lico',ico.email)}<div><div class="c10-val">${esc(c.email)}</div><div class="c10-lbl">${t('email')}</div></div></div>`;
+  if(c.web) rows+=`<a class="c10-row" href="${htp(c.web)}" target="_blank">${ic('c10-lico',ico.web)}<div><div class="c10-val">${esc(c.web)}</div><div class="c10-lbl">${t('web')}</div></div></a>`;
+  if(c.address) rows+=`<a class="c10-row" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ic('c10-lico',ico.loc)}<div><div class="c10-val">${esc(c.address)}</div><div class="c10-lbl">${t('addr')}</div></div></a>`;
   const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
-  return`<div style="background:#f8fafc;min-height:100vh;font-family:'Inter',sans-serif">
-  <!-- Company top bar -->
-  <div style="background:#1d4ed8;padding:.75rem 1.25rem;display:flex;align-items:center;justify-content:space-between">
-    <div style="font-size:14px;font-weight:700;color:#fff">${esc(c.company)||'Company'}</div>
-    <div style="font-size:10px;color:rgba(255,255,255,.5);letter-spacing:1px">TEAM CARD</div>
+  return`<div class="c10">
+  <div class="c10-header">
+    ${c.company?`<div class="c10-brand">${esc(c.company)}</div>`:''}
   </div>
-  <!-- Cover + avatar -->
-  <div style="position:relative;height:140px;background:linear-gradient(135deg,#1e40af,#1d4ed8)">
-    ${c.cover?`<img src="${esc(c.cover)}" style="width:100%;height:100%;object-fit:cover;opacity:.4">`:''}
-    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(248,250,252,.8) 100%)"></div>
-  </div>
-  <div style="display:flex;align-items:flex-end;gap:1rem;padding:0 1.25rem;margin-top:-40px;position:relative;z-index:2;margin-bottom:1rem">
-    <div style="width:78px;height:78px;border-radius:16px;overflow:hidden;border:3px solid #fff;box-shadow:0 4px 16px rgba(0,0,0,.12);flex-shrink:0">${avImg(c.photo,name.charAt(0).toUpperCase())}</div>
-    <div style="padding-bottom:6px">
-      <div style="font-size:20px;font-weight:700;color:#1e293b">${esc(name)||'—'}</div>
-      ${c.position?`<div style="font-size:12px;color:#1d4ed8;font-weight:500">${esc(c.position)}</div>`:''}
+  <div class="c10-av-wrap"><div class="c10-av">${avImg(c.photo,(name||'?').charAt(0).toUpperCase())}</div></div>
+  <div class="c10-body">
+    <div class="c10-name">${esc(name)||'—'}</div>
+    ${c.position?`<div class="c10-pos">${esc(c.position)}</div>`:''}
+    ${c.position||c.company?`<div class="c10-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>${esc(c.position||c.company)}</div>`:''}
+    ${c.bio?`<div class="c10-bio">${esc(c.bio)}</div>`:''}
+    <div class="c10-icorow">
+      <div class="c10-icoitem" onclick="svContact()"><div class="c10-ico">${ico.save.replace('currentColor','var(--p)')}</div><span class="c10-ilbl">${t('ko')}</span></div>
+      ${c.phone?`<a class="c10-icoitem" href="tel:${c.phone}"><div class="c10-ico">${ico.phone}</div><span class="c10-ilbl">${t('anrufen')}</span></a>`:`<div class="c10-icoitem"><div class="c10-ico" style="opacity:.3">${ico.phone}</div><span class="c10-ilbl">—</span></div>`}
+      <div class="c10-icoitem" onclick="document.getElementById('moQr').classList.add('open')"><div class="c10-ico">${ico.qr.replace('currentColor','var(--p)')}</div><span class="c10-ilbl">QR</span></div>
+      <div class="c10-icoitem" onclick="shProfile()"><div class="c10-ico">${ico.shr.replace('currentColor','var(--p)')}</div><span class="c10-ilbl">${t('share')}</span></div>
     </div>
-  </div>
-  <div style="padding:0 1.25rem">
-    ${c.bio?`<div style="font-size:13px;color:#64748b;line-height:1.6;padding:12px;background:#fff;border-radius:12px;margin-bottom:1rem;border:1px solid #e2e8f0">${esc(c.bio)}</div>`:''}
-    <!-- Quick action grid -->
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem">
-      ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(c.whatsapp||c.phone)}','')" style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:12px;cursor:pointer;text-align:center"><div style="color:#1d4ed8;margin-bottom:4px">${ico.phone}</div><div style="font-size:10px;color:#94a3b8">Zəng</div></div>`:``}
-      ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:12px;cursor:pointer;text-align:center"><div style="color:#1d4ed8;margin-bottom:4px">${ico.email}</div><div style="font-size:10px;color:#94a3b8">Email</div></div>`:``}
-      ${c.web?`<a href="${htp(c.web)}" target="_blank" style="background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:12px;text-align:center;text-decoration:none;display:block"><div style="color:#1d4ed8;margin-bottom:4px">${ico.web}</div><div style="font-size:10px;color:#94a3b8">Web</div></a>`:``}
-    </div>
-    <!-- Full contact -->
-    <div style="background:#fff;border-radius:14px;border:1px solid #e2e8f0;overflow:hidden;margin-bottom:1rem">
-      ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(c.whatsapp||c.phone)}','')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid #f1f5f9;cursor:pointer"><span style="font-size:14px;color:#1e293b">${esc(c.phone)}</span></div>`:''}
-      ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid #f1f5f9;cursor:pointer"><span style="font-size:14px;color:#1e293b">${esc(c.email)}</span></div>`:''}
-      ${c.web?`<a href="${htp(c.web)}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid #f1f5f9;text-decoration:none"><span style="font-size:14px;color:#1d4ed8">${esc(c.web)}</span></a>`:''}
-      ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="display:flex;align-items:center;gap:12px;padding:12px 14px;text-decoration:none"><span style="font-size:14px;color:#64748b">${esc(c.address)}</span></a>`:''}
-    </div>
-    ${sk.length?`<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1rem">${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#eff6ff;color:#1d4ed8;text-decoration:none">${socIco[x]||'<span>'+x.substring(0,2).toUpperCase()+'</span>'}</a>`).join('')}</div>`:''}
-    ${qrBtn()}${videoH(d)}${pdfsH(d)}
-    <button onclick="svContact()" style="width:100%;padding:14px;background:#1d4ed8;border:none;border-radius:12px;color:#fff;font-size:15px;font-weight:600;cursor:pointer;font-family:inherit">${t('save')}</button>
-    <button onclick="shProfile()" style="width:100%;padding:12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;color:#64748b;font-size:13px;cursor:pointer;margin-top:8px;font-family:inherit">${t('share')}</button>
-  </div>
-  <div style="height:2rem"></div></div>`;
+    <div class="c10-list">${rows}</div>
+    ${sk.length?`<div style="display:flex;flex-wrap:wrap;gap:7px;margin-top:.75rem;padding-top:.75rem;border-top:1px solid #f5f5f5">${sk.map(x=>`<a style="display:flex;align-items:center;gap:5px;padding:6px 13px;border-radius:20px;font-size:12px;font-weight:500;text-decoration:none;border:1px solid #eee;color:#333" href="${htp(soc[x])}" target="_blank"><span style="width:7px;height:7px;border-radius:50%;background:${socCol[x]||'#888'};display:inline-block"></span>${socLab[x]||x}</a>`).join('')}</div>`:''}
+    ${videoH(d)}${pdfsH(d)}
+    <div style="margin-top:.9rem">${actBtns()}</div>
+  </div></div>`;
 }
 
-// ── T11: ULTRA LUXURY / PRIVATE CLUB ─────────────────────────────────────
+// ── T11 HIHELLO ────────────────────────────────────────────────────────────
 function t11(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
+  let rows='';
+  if(c.phone) rows+=`<div class="c11-row" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ic('c11-ico',ico.phone)}<div><div class="c11-val">${esc(c.phone)}</div><div class="c11-lbl">${t('phone')}</div></div></div>`;
+  if(c.email) rows+=`<div class="c11-row" onclick="oEm('${esc(c.email)}')">${ic('c11-ico',ico.email)}<div><div class="c11-val">${esc(c.email)}</div><div class="c11-lbl">${t('email')}</div></div></div>`;
+  if(c.web) rows+=`<a class="c11-row" href="${htp(c.web)}" target="_blank">${ic('c11-ico',ico.web)}<div><div class="c11-val">${esc(c.web)}</div><div class="c11-lbl">${t('web')}</div></div></a>`;
+  if(c.address) rows+=`<a class="c11-row" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ic('c11-ico',ico.loc)}<div><div class="c11-val">${esc(c.address)}</div><div class="c11-lbl">${t('addr')}</div></div></a>`;
   const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
-  return`<div style="background:#080808;min-height:100vh;font-family:'Georgia',serif">
-  <!-- Cinematic cover -->
-  <div style="position:relative;height:280px;overflow:hidden">
-    ${c.cover?`<img src="${esc(c.cover)}" style="width:100%;height:100%;object-fit:cover;filter:brightness(.4) saturate(.8)">`:`<div style="width:100%;height:100%;background:linear-gradient(160deg,#0a0a0a,#181818,#0a0a0a)"></div>`}
-    <!-- Marble texture overlay -->
-    <div style="position:absolute;inset:0;background:linear-gradient(135deg,rgba(201,168,76,.08) 0%,transparent 50%,rgba(201,168,76,.05) 100%)"></div>
-    <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,#080808 100%)"></div>
-    <!-- Gold lines -->
-    <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#C9A84C,transparent)"></div>
+  // wave SVG with accent color
+  const waveColor=encodeURIComponent(getComputedStyle(document.documentElement).getPropertyValue('--p').trim()||'#185FA5');
+  return`<div class="c11">
+  <div class="c11-photo">
+    ${c.photo?`<img src="${esc(c.photo)}" onerror="this.style.display='none'">`:`<span>${(name||'?').charAt(0).toUpperCase()}</span>`}
   </div>
-  <!-- Minimal centered info -->
-  <div style="text-align:center;padding:0 2rem;margin-top:-80px;position:relative;z-index:2">
-    <div style="width:100px;height:100px;margin:0 auto 1.5rem;border-radius:50%;overflow:hidden;border:2px solid #C9A84C;box-shadow:0 0 40px rgba(201,168,76,.2)">${avImg(c.photo,name.charAt(0).toUpperCase())}</div>
-    <div style="font-size:26px;font-weight:400;color:#fff;letter-spacing:2px;margin-bottom:6px">${esc(name)||'—'}</div>
-    ${c.position?`<div style="font-size:10px;color:#C9A84C;letter-spacing:5px;text-transform:uppercase">${esc(c.position)}</div>`:''}
-    ${c.company?`<div style="font-size:11px;color:rgba(255,255,255,.25);margin-top:6px;letter-spacing:2px">${esc(c.company)}</div>`:''}
-    <!-- Ornament -->
-    <div style="display:flex;align-items:center;gap:16px;margin:2rem auto;max-width:180px">
-      <div style="flex:1;height:.5px;background:linear-gradient(90deg,transparent,rgba(201,168,76,.5))"></div>
-      <svg width="8" height="8" viewBox="0 0 8 8"><polygon points="4,0 8,4 4,8 0,4" fill="#C9A84C"/></svg>
-      <div style="flex:1;height:.5px;background:linear-gradient(90deg,rgba(201,168,76,.5),transparent)"></div>
-    </div>
-    <!-- Ultra minimal contacts -->
-    ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(c.whatsapp||c.phone)}','')" style="font-size:16px;color:rgba(255,255,255,.7);margin-bottom:1rem;cursor:pointer;letter-spacing:1px">${esc(c.phone)}</div>`:''}
-    ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="font-size:14px;color:rgba(255,255,255,.4);margin-bottom:1rem;cursor:pointer;letter-spacing:.5px">${esc(c.email)}</div>`:''}
-    ${c.web?`<a href="${htp(c.web)}" target="_blank" style="display:block;font-size:14px;color:#C9A84C;margin-bottom:1rem;text-decoration:none;letter-spacing:1px;opacity:.8">${esc(c.web)}</a>`:''}
-    ${c.address?`<div style="font-size:12px;color:rgba(255,255,255,.25);margin-bottom:1.5rem;letter-spacing:1px">${esc(c.address)}</div>`:''}
-    ${sk.length?`<div style="display:flex;gap:12px;justify-content:center;margin-bottom:2rem">${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(201,168,76,.3);color:rgba(201,168,76,.7);text-decoration:none">${socIco[x]||'<span>'+x.substring(0,2).toUpperCase()+'</span>'}</a>`).join('')}</div>`:''}
-    ${qrBtn(true)}${videoH(d,true)}${pdfsH(d,true)}
-    <button onclick="svContact()" style="width:100%;padding:16px;background:transparent;border:1px solid #C9A84C;color:#C9A84C;font-size:13px;cursor:pointer;letter-spacing:3px;font-family:'Georgia',serif;text-transform:uppercase;margin-top:1rem">KONTAKTI SAXLA</button>
-    <button onclick="shProfile()" style="width:100%;padding:13px;background:transparent;border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.25);font-size:11px;cursor:pointer;margin-top:10px;letter-spacing:2px;font-family:'Georgia',serif;text-transform:uppercase">${t('share').toUpperCase()}</button>
-  </div>
-  <div style="height:3rem"></div></div>`;
+  <svg class="c11-wave" viewBox="0 0 430 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0 C80,38 160,42 220,28 C280,14 360,0 430,32 L430,0 Z" fill="var(--p)"/><path d="M0,32 C80,10 160,44 220,30 C280,16 360,2 430,40 L430,40 L0,40 Z" fill="#fff"/></svg>
+  <div class="c11-body">
+    <div class="c11-nameblock"><div class="c11-accent"></div><div class="c11-ninfo"><div class="c11-name">${esc(name)||'—'}</div>${c.position?`<div class="c11-pos">${esc(c.position)}</div>`:''}${c.company?`<div class="c11-co">${esc(c.company)}</div>`:''}</div></div>
+    ${c.bio?`<div class="c11-bio">${esc(c.bio)}</div>`:''}
+    <div class="c11-list">${rows}</div>
+    ${sk.length?`<div class="c11-soc">${sk.map(x=>`<a class="c11-srow" href="${htp(soc[x])}" target="_blank"><span class="c11-sdot" style="background:${socCol[x]||'#888'}"></span>${socLab[x]||x}</a>`).join('')}</div>`:''}
+    ${videoH(d)}${pdfsH(d)}${qrBtn()}
+    <button class="c11-send" onclick="svContact()">${ico.save} ${t('save')}</button>
+    <button class="abtn" style="width:100%;margin-top:8px;background:var(--s);color:var(--dark)" onclick="document.getElementById('moScan').classList.add('open');rstScan()">${ico.scan} ${t('scan')}</button>
+  </div></div>`;
 }
 
-// ── T12: MOBILE-FIRST APP STYLE ───────────────────────────────────────────
+// ── T12 VITAWILL ───────────────────────────────────────────────────────────
 function t12(d,c,name){
+  const waP=c.whatsapp||c.phone;const waB=c.whatsappBusiness||'';
+  let rows='';
+  if(c.phone) rows+=`<div class="c12-lrow" onclick="oPh('${esc(c.phone)}','${esc(waP)}','${esc(waB)}')">${ic('c12-lico',ico.phone)}<div><div class="c12-val">${esc(c.phone)}</div><div class="c12-lbl">${t('phone')}</div></div></div>`;
+  if(c.email) rows+=`<div class="c12-lrow" onclick="oEm('${esc(c.email)}')">${ic('c12-lico',ico.email)}<div><div class="c12-val">${esc(c.email)}</div><div class="c12-lbl">${t('email')}</div></div></div>`;
+  if(c.web) rows+=`<a class="c12-lrow" href="${htp(c.web)}" target="_blank">${ic('c12-lico',ico.web)}<div><div class="c12-val">${esc(c.web)}</div><div class="c12-lbl">${t('web')}</div></div></a>`;
+  if(c.address) rows+=`<a class="c12-lrow" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ic('c12-lico',ico.loc)}<div><div class="c12-val">${esc(c.address)}</div><div class="c12-lbl">${t('addr')}</div></div></a>`;
   const soc=d.socials||{};const sk=Object.keys(soc).filter(x=>soc[x]);
-  return`<div style="background:#f0f2f5;min-height:100vh;font-family:'Inter',sans-serif;max-width:100%;overflow-x:hidden">
-  <!-- Profile card -->
-  <div style="background:#fff;margin:0;padding:1.5rem 1.25rem 1.25rem">
-    <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1rem">
-      <div style="width:80px;height:80px;border-radius:24px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.12);flex-shrink:0">${avImg(c.photo,name.charAt(0).toUpperCase())}</div>
-      <div>
-        <div style="font-size:20px;font-weight:700;color:#1a1a1a;line-height:1.2">${esc(name)||'—'}</div>
-        ${c.position?`<div style="font-size:13px;color:#6366f1;font-weight:500;margin-top:3px">${esc(c.position)}</div>`:''}
-        ${c.company?`<div style="font-size:12px;color:#8a9bb5;margin-top:2px">${esc(c.company)}</div>`:''}
-      </div>
+  return`<div class="c12">
+  <div class="c12-topbar">
+    <div class="c12-brand">${c.company?esc(c.company):'CardPro'}</div>
+    <button class="c12-share" onclick="shProfile()">${ico.shr.replace('currentColor','var(--p)')}</button>
+  </div>
+  <div class="c12-hero"></div>
+  <div class="c12-av-wrap"><div class="c12-av">${avImg(c.photo,(name||'?').charAt(0).toUpperCase())}</div></div>
+  <div class="c12-body">
+    <div class="c12-name">${esc(name)||'—'}</div>
+    ${c.position?`<div class="c12-pos">${esc(c.position)}</div>`:''}
+    ${c.company?`<div class="c12-co">${esc(c.company)}</div>`:''}
+    <div class="c12-actgrid">
+      <div class="c12-acti" onclick="svContact()"><div class="c12-aci-c">${ico.save.replace('currentColor','var(--p)')}</div><span class="c12-aci-l">${t('ko')}</span></div>
+      ${c.phone?`<a class="c12-acti" href="tel:${c.phone}"><div class="c12-aci-c">${ico.phone}</div><span class="c12-aci-l">${t('anrufen')}</span></a>`:`<div class="c12-acti" style="opacity:.3"><div class="c12-aci-c">${ico.phone}</div><span class="c12-aci-l">—</span></div>`}
+      <div class="c12-acti" onclick="document.getElementById('moQr').classList.add('open')"><div class="c12-aci-c">${ico.qr.replace('currentColor','var(--p)')}</div><span class="c12-aci-l">QR</span></div>
     </div>
-    ${c.bio?`<div style="font-size:13px;color:#64748b;line-height:1.6">${esc(c.bio)}</div>`:''}
-  </div>
-  <!-- Quick tap actions -->
-  <div style="padding:.75rem 1rem;display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
-    ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(c.whatsapp||c.phone)}','')" style="background:#fff;border-radius:16px;padding:14px 8px;cursor:pointer;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)"><div style="font-size:22px;margin-bottom:4px">📞</div><div style="font-size:9px;color:#8a9bb5;font-weight:500">Zəng</div></div>`:``}
-    ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="background:#fff;border-radius:16px;padding:14px 8px;cursor:pointer;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.06)"><div style="font-size:22px;margin-bottom:4px">✉️</div><div style="font-size:9px;color:#8a9bb5;font-weight:500">Email</div></div>`:``}
-    ${c.web?`<a href="${htp(c.web)}" target="_blank" style="background:#fff;border-radius:16px;padding:14px 8px;text-align:center;text-decoration:none;display:block;box-shadow:0 2px 8px rgba(0,0,0,.06)"><div style="font-size:22px;margin-bottom:4px">🌐</div><div style="font-size:9px;color:#8a9bb5;font-weight:500">Web</div></a>`:``}
-    ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="background:#fff;border-radius:16px;padding:14px 8px;text-align:center;text-decoration:none;display:block;box-shadow:0 2px 8px rgba(0,0,0,.06)"><div style="font-size:22px;margin-bottom:4px">📍</div><div style="font-size:9px;color:#8a9bb5;font-weight:500">Ünvan</div></a>`:``}
-  </div>
-  <!-- Full contact rows -->
-  <div style="background:#fff;margin:.5rem 1rem;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.06)">
-    ${c.phone?`<div onclick="oPh('${esc(c.phone)}','${esc(c.whatsapp||c.phone)}','')" style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid #f5f5f5;cursor:pointer"><div style="width:36px;height:36px;border-radius:10px;background:#f0f0ff;display:flex;align-items:center;justify-content:center;color:#6366f1">${ico.phone}</div><span style="font-size:15px;color:#1a1a1a">${esc(c.phone)}</span><span style="margin-left:auto;font-size:18px">›</span></div>`:''}
-    ${c.email?`<div onclick="oEm('${esc(c.email)}')" style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid #f5f5f5;cursor:pointer"><div style="width:36px;height:36px;border-radius:10px;background:#f0f0ff;display:flex;align-items:center;justify-content:center;color:#6366f1">${ico.email}</div><span style="font-size:15px;color:#1a1a1a">${esc(c.email)}</span><span style="margin-left:auto;font-size:18px">›</span></div>`:''}
-    ${c.web?`<a href="${htp(c.web)}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px 16px;border-bottom:1px solid #f5f5f5;text-decoration:none"><div style="width:36px;height:36px;border-radius:10px;background:#f0f0ff;display:flex;align-items:center;justify-content:center;color:#6366f1">${ico.web}</div><span style="font-size:15px;color:#6366f1">${esc(c.web)}</span><span style="margin-left:auto;font-size:18px;color:#ccc">›</span></a>`:''}
-    ${c.address?`<a href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank" style="display:flex;align-items:center;gap:14px;padding:14px 16px;text-decoration:none"><div style="width:36px;height:36px;border-radius:10px;background:#f8f8f8;display:flex;align-items:center;justify-content:center;color:#8a9bb5">${ico.loc}</div><span style="font-size:15px;color:#64748b">${esc(c.address)}</span><span style="margin-left:auto;font-size:18px;color:#ccc">›</span></a>`:''}
-  </div>
-  <!-- Social -->
-  ${sk.length?`<div style="background:#fff;margin:.5rem 1rem;border-radius:16px;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,.06)"><div style="display:flex;gap:10px;flex-wrap:wrap">${sk.map(x=>`<a href="${htp(soc[x])}" target="_blank" style="width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:${socCol[x]||'#888'};color:#fff;text-decoration:none">${socIco[x]||'<span>'+x.substring(0,2).toUpperCase()+'</span>'}</a>`).join('')}</div></div>`:''}
-  ${qrBtn()}${videoH(d)}${pdfsH(d)}
-  <!-- Sticky save button -->
-  <div style="padding:1rem;position:sticky;bottom:0;background:#f0f2f5">
-    <button onclick="svContact()" style="width:100%;padding:16px;background:#6366f1;border:none;border-radius:16px;color:#fff;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 4px 16px rgba(99,102,241,.35)">${t('save')}</button>
-    <button onclick="shProfile()" style="width:100%;padding:13px;background:#fff;border:none;border-radius:16px;color:#64748b;font-size:13px;cursor:pointer;margin-top:8px;font-family:inherit;box-shadow:0 2px 8px rgba(0,0,0,.06)">${t('share')}</button>
+    ${c.bio?`<div style="font-size:13px;color:#888;line-height:1.6;margin-bottom:.75rem;text-align:left">${esc(c.bio)}</div>`:''}
+    ${rows?`<div class="c12-sec">Əlaqə</div><div class="c12-links">${rows}</div>`:''}
+    ${sk.length?`<div class="c12-sec" style="margin-top:.75rem">Sosial</div><div class="c12-links">${sk.map(x=>`<a class="c12-lrow" href="${htp(soc[x])}" target="_blank">${ic('c12-lico',`<span style="width:9px;height:9px;border-radius:50%;background:${socCol[x]||'#888'};display:inline-block"></span>`)}<div><div class="c12-val">${socLab[x]||x}</div></div></a>`).join('')}</div>`:''}
+    ${videoH(d)}${pdfsH(d)}
+    <div class="c12-qr-row" onclick="document.getElementById('moScan').classList.add('open');rstScan()">${ico.scan.replace('currentColor','#bbb')}<span class="c12-qrlbl">${t('scan')}</span></div>
+    <button class="abtn" style="width:100%;margin-top:.75rem;background:var(--p);color:#fff" onclick="svContact()">${ico.save} ${t('save')}</button>
   </div></div>`;
 }
 
@@ -1147,7 +1088,9 @@ async function init(){
     color=localStorage.getItem('cp_col_'+slug)||'#185FA5';
     // tmplNum — dashboard-dan seçilmiş şablon (1-12), lokal override var ise onu götür
     const _urlTmpl=new URLSearchParams(location.search).get('tmpl');
-    const savedTmpl=parseInt(_urlTmpl||PD.tmplNum||PD.template||localStorage.getItem('cp_tmpl_'+slug)||'1');
+    // Prioritet: URL tmpl > Firebase tmplNum > Firebase template > default 1
+    // localStorage-a güvənmirik — dashboard hər dəfə URL-ə tmpl yazır
+    const savedTmpl=parseInt(_urlTmpl||PD.tmplNum||PD.template||'1');
     tmpl=isNaN(savedTmpl)?1:Math.min(Math.max(savedTmpl,1),12);
     applyColor(color);
     // Arxa fon rəngi
