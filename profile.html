@@ -523,10 +523,33 @@ document.addEventListener('click',e=>{if(!e.target.closest('.lang-dropdown')){co
 
 // ── LOAD ───────────────────────────────────────────────────────────────────
 
-// ── postMessage: dashboard iframe-dən anlıq rəng ──────────────────────────
+// ── postMessage: dashboard iframe-dən şablon və rəng ─────────────────────
 window.addEventListener('message',function(e){
   if(!e.data||typeof e.data!=='object')return;
-  if(e.data.type==='setColor'&&e.data.color){applyColor(e.data.color);if(PD)render();}
+
+  // Tək rəng (köhnə format)
+  if(e.data.type==='setColor'&&e.data.color){
+    applyColor(e.data.color);
+    if(PD)render();
+  }
+
+  // Şablon dəyişimi — dashboard-dan gəlir
+  if(e.data.type==='setTmpl'&&e.data.tmpl){
+    tmpl=parseInt(e.data.tmpl)||1;
+    document.querySelectorAll('.to').forEach(t=>t.classList.remove('on'));
+    document.getElementById('t-'+tmpl)?.classList.add('on');
+    if(PD)render();
+  }
+
+  // Çoxlu rəng — dashboard-dan gəlir
+  if(e.data.type==='setColors'){
+    if(e.data.btn)    document.documentElement.style.setProperty('--p', e.data.btn);
+    if(e.data.cover1) document.documentElement.style.setProperty('--cover1', e.data.cover1);
+    if(e.data.cover2) document.documentElement.style.setProperty('--cover2', e.data.cover2);
+    if(e.data.bg)     document.documentElement.style.setProperty('--bg', e.data.bg);
+    if(e.data.btn)    applyColor(e.data.btn);
+    if(PD)render();
+  }
 });
 async function init(){
   if(!slug){
