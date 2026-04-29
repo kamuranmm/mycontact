@@ -172,13 +172,14 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
     <div class="nav-item" onclick="showPanel('cards')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2"/></svg>Bütün kartlar</div>
     <div class="nav-section">B2B</div>
     <div class="nav-item" onclick="showPanel('team')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><circle cx="20" cy="7" r="3"/></svg>Team & Şirkət</div>
-    <div class="nav-item" onclick="showPanel('bulk')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Bulk Upload</div>
-    <div class="nav-section">Konfiqurasiya</div>
-    <div class="nav-item" onclick="showPanel('domains')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>Domain idarəsi</div>
-    <div class="nav-item" onclick="showPanel('plans')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Plan idarəsi</div>
+    <div class="nav-item master-only" onclick="showPanel('bulk')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Bulk Upload</div>
+    <div class="nav-section master-only">Konfiqurasiya</div>
+    <div class="nav-item master-only" onclick="showPanel('companyadmins')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Şirkət Adminləri</div>
+    <div class="nav-item master-only" onclick="showPanel('domains')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>Domain idarəsi</div>
+    <div class="nav-item master-only" onclick="showPanel('plans')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Plan idarəsi</div>
   </nav>
   <div class="sidebar-footer">
-    <div class="admin-info"><div class="admin-av" id="adminInitials">A</div><div><div class="admin-name" id="adminName">Admin</div><div class="admin-role">Master Admin</div></div></div>
+    <div class="admin-info"><div class="admin-av" id="adminInitials">A</div><div><div class="admin-name" id="adminName">Admin</div><div class="admin-role" id="adminRoleLabel">Master Admin</div></div></div>
     <button class="logout-btn" onclick="doLogout()">Çıxış</button>
   </div>
 </aside>
@@ -186,7 +187,7 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
 <main class="main">
   <div class="topbar">
     <div class="topbar-title" id="topbarTitle">İcmal</div>
-    <div><span class="badge-admin">🔐 Master Admin</span></div>
+    <div><span class="badge-admin" id="topbarBadge">🔐 Master Admin</span></div>
   </div>
   <div class="content">
 
@@ -449,6 +450,49 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
       </div>
     </div>
 
+    <!-- COMPANY ADMINS PANEL (master-only) -->
+    <div class="panel" id="panel-companyadmins">
+      <div style="max-width:760px">
+        <div style="margin-bottom:1.25rem">
+          <div style="font-size:15px;font-weight:500;color:var(--navy);margin-bottom:4px">Şirkət Adminləri</div>
+          <div style="font-size:13px;color:var(--gray)">Müəyyən şirkətin istifadəçisinə həmin şirkətin profilləri üzərində idarə icazəsi verin.</div>
+        </div>
+
+        <!-- How it works info box -->
+        <div style="background:rgba(24,95,165,.05);border:1px solid rgba(24,95,165,.15);border-radius:12px;padding:1.1rem;margin-bottom:1.25rem">
+          <div style="font-size:13px;font-weight:500;color:var(--blue);margin-bottom:.6rem">ℹ️ Necə işləyir?</div>
+          <div style="font-size:12px;color:var(--navy);line-height:1.9">
+            <div>1️⃣ Şirkətin bir işçisini seçirsiniz (məs. ABB Bankın IT müdiri)</div>
+            <div>2️⃣ Ona <strong>Şirkət Admini</strong> icazəsi verirsiniz</div>
+            <div>3️⃣ O, admin panelinə giriş edəndə <strong>yalnız öz şirkətinin profilləri</strong>ni görür və redaktə edir</div>
+            <div>4️⃣ Plan, billing, domain, digər şirkətlər — <strong>ona görünmür</strong></div>
+          </div>
+        </div>
+
+        <!-- Grant access form -->
+        <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1rem">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.9rem">Şirkət Admini Təyin Et</div>
+          <div class="form-group">
+            <label class="form-label">İstifadəçi (email ilə axtar)</label>
+            <input class="form-input" id="caSearch" placeholder="Email daxil edin..." oninput="searchForCA()">
+          </div>
+          <div id="caSearchResults" style="margin-bottom:.75rem"></div>
+          <div class="form-group">
+            <label class="form-label">Şirkət (bu şirkətin profillərinə giriş veriləcək)</label>
+            <input class="form-input" id="caCompany" placeholder="Məs: ABB Bank" readonly style="background:var(--surface)">
+          </div>
+          <input type="hidden" id="caUid">
+          <button class="btn btn-primary" onclick="grantCompanyAdmin()" id="caGrantBtn" disabled>✅ İcazə ver</button>
+        </div>
+
+        <!-- Current company admins list -->
+        <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.9rem">Mövcud Şirkət Adminləri</div>
+          <div id="caList"><div style="font-size:12px;color:var(--gray);text-align:center;padding:1rem">Yüklənir...</div></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </main>
 
@@ -601,18 +645,30 @@ import{getDatabase,ref,get,set,update,remove,onValue}from"https://www.gstatic.co
 const cfg={apiKey:"AIzaSyBx81QDpjHSPvhkmnnSUNkJYMvR_fnRTaU",authDomain:"mycontact-e626e.firebaseapp.com",databaseURL:"https://mycontact-e626e-default-rtdb.firebaseio.com",projectId:"mycontact-e626e",storageBucket:"mycontact-e626e.firebasestorage.app",messagingSenderId:"420594516827",appId:"1:420594516827:web:f30266800c690c6ff9107e"};
 const app=initializeApp(cfg);const auth=getAuth(app);const db=getDatabase(app);
 let allUsers=[],selectedPlan='free',selectedEditPlan='free',selectedRole='user',selectedEditRole='user',selectedAssignRole='user',bulkData=[];
+let currentAdminRole='admin',currentAdminCompany='',currentAdminUid='';
 
 onAuthStateChanged(auth,async u=>{
   if(!u){location.href='index.html';return;}
-  // Double check — həm client həm DB
   try{
     const s=await get(ref(db,`users/${u.uid}`));
     const data=s.val();
-    if(!data||data.role!=='admin'){
+    if(!data||(data.role!=='admin'&&data.role!=='company_admin')){
       alert('Giriş icazəsi yoxdur');
       await signOut(auth);
       location.href='index.html';
       return;
+    }
+    currentAdminRole=data.role;
+    currentAdminCompany=data.company||'';
+    currentAdminUid=u.uid;
+
+    // Apply UI for company_admin — hide master-only sections
+    if(data.role==='company_admin'){
+      document.querySelectorAll('.master-only').forEach(el=>el.style.display='none');
+      document.getElementById('topbarBadge').textContent='🏢 Şirkət Admini';
+      document.getElementById('adminRoleLabel').textContent=data.company||'Şirkət Admin';
+      // Hide "create user" button — company admin cannot create new users
+      document.querySelectorAll('[onclick="openCreateModal()"]').forEach(el=>el.style.display='none');
     }
   }catch(e){
     await signOut(auth);
@@ -629,8 +685,17 @@ onAuthStateChanged(auth,async u=>{
 function loadAll(){
   onValue(ref(db,'users'),s=>{
     const d=s.val()||{};
-    allUsers=Object.entries(d).filter(([,u])=>u.role!=='admin').map(([uid,u])=>({uid,...u}));
+    let users=Object.entries(d)
+      .filter(([,u])=>u.role!=='admin'&&u.role!=='company_admin')
+      .map(([uid,u])=>({uid,...u}));
+    // Company admin sees only their company's users
+    if(currentAdminRole==='company_admin'&&currentAdminCompany){
+      const comp=currentAdminCompany.toLowerCase().trim();
+      users=users.filter(u=>(u.company||u.card?.company||'').toLowerCase().trim()===comp);
+    }
+    allUsers=users;
     renderStats();renderCharts();renderRecentUsers();renderUsers(allUsers);renderCards();renderTeam();renderPlanCounts();renderDomains();
+    if(currentAdminRole==='admin')renderCompanyAdmins();
   });
 }
 
@@ -778,11 +843,12 @@ window.showPanel=function(n){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
   document.getElementById('panel-'+n).classList.add('active');
-  const t={overview:'İcmal',users:'İstifadəçilər',cards:'Bütün kartlar',team:'Team & Şirkət',bulk:'Bulk Upload',domains:'Domain İdarəsi',plans:'Plan İdarəsi'};
+  const t={overview:'İcmal',users:'İstifadəçilər',cards:'Bütün kartlar',team:'Team & Şirkət',bulk:'Bulk Upload',companyadmins:'Şirkət Adminləri',domains:'Domain İdarəsi',plans:'Plan İdarəsi'};
   document.getElementById('topbarTitle').textContent=t[n]||n;
-  const m={overview:0,users:1,cards:2,team:3,bulk:4,domains:5,plans:6};
+  const m={overview:0,users:1,cards:2,team:3,bulk:4,companyadmins:5,domains:6,plans:7};
   const items=document.querySelectorAll('.nav-item');if(items[m[n]])items[m[n]].classList.add('active');
   if(n==='domains')renderDomains();
+  if(n==='companyadmins')renderCompanyAdmins();
   closeSidebar();
 };
 
@@ -1071,6 +1137,121 @@ window.bulkChangePlan=async function(){
 };
 
 window.doLogout=async function(){await signOut(auth);location.href='index.html';};
+
+// ── COMPANY ADMIN MANAGEMENT ──────────────────────────────────────────────
+let caSelectedUser=null;
+
+// Search users for company admin grant
+window.searchForCA=function(){
+  const q=document.getElementById('caSearch').value.toLowerCase().trim();
+  const res=document.getElementById('caSearchResults');
+  if(q.length<3){res.innerHTML='';return;}
+  // Search all DB users (including company admins)
+  get(ref(db,'users')).then(s=>{
+    const d=s.val()||{};
+    const matches=Object.entries(d)
+      .filter(([uid,[,u]])=>true) // remap below
+      .map(([uid,u])=>({uid,...u}))
+      .filter(u=>u.role!=='admin'&&(
+        (u.email||'').toLowerCase().includes(q)||
+        (u.name||'').toLowerCase().includes(q)
+      )).slice(0,5);
+    if(!matches.length){res.innerHTML='<div style="font-size:12px;color:var(--gray);padding:6px 0">Nəticə tapılmadı</div>';return;}
+    res.innerHTML=matches.map(u=>`
+      <div onclick="selectCAUser('${u.uid}','${(u.name||'').replace(/'/g,"\\'")}','${(u.company||u.card?.company||'').replace(/'/g,"\\'")}','${(u.email||'').replace(/'/g,"\\'")}','${u.role||'user'}')"
+        style="padding:9px 11px;border:1.5px solid var(--gray-light);border-radius:9px;cursor:pointer;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;font-size:13px;transition:border-color .15s"
+        onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-light)'">
+        <div>
+          <span style="font-weight:500">${u.name||'—'}</span>
+          <span style="font-size:11px;color:var(--gray);margin-left:8px">${u.email||''}</span>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center">
+          ${u.company||u.card?.company?`<span style="font-size:11px;background:var(--surface);padding:2px 7px;border-radius:8px;color:var(--gray)">${u.company||u.card?.company}</span>`:''}
+          ${u.role==='company_admin'?'<span style="font-size:10px;background:rgba(39,174,96,.12);color:var(--success);padding:2px 7px;border-radius:8px;font-weight:600">✅ Admin</span>':''}
+        </div>
+      </div>`).join('');
+  });
+};
+
+window.selectCAUser=function(uid,name,company,email,role){
+  caSelectedUser={uid,name,company,email,role};
+  document.getElementById('caSearch').value=`${name} (${email})`;
+  document.getElementById('caSearchResults').innerHTML='';
+  document.getElementById('caCompany').value=company||'';
+  const btn=document.getElementById('caGrantBtn');
+  btn.disabled=!company;
+  if(!company){
+    document.getElementById('caCompany').readOnly=false;
+    document.getElementById('caCompany').style.background='var(--white)';
+    document.getElementById('caCompany').placeholder='Bu istifadəçinin şirkəti yoxdur — əl ilə daxil edin';
+    document.getElementById('caCompany').oninput=function(){btn.disabled=!this.value.trim();};
+  }
+};
+
+window.grantCompanyAdmin=async function(){
+  if(!caSelectedUser){showToast('İstifadəçi seçilməyib','error');return;}
+  const company=document.getElementById('caCompany').value.trim();
+  if(!company){showToast('Şirkət adı boş ola bilməz','error');return;}
+  const isAlreadyAdmin=caSelectedUser.role==='company_admin';
+  if(!confirm(`${caSelectedUser.name} (${caSelectedUser.email}) — "${company}" şirkətinin admini edilsin?\n\nO, yalnız bu şirkətin profillərinə giriş edə biləcək.`))return;
+  await update(ref(db,`users/${caSelectedUser.uid}`),{role:'company_admin',company});
+  showToast(`${caSelectedUser.name} şirkət admini edildi`,'success');
+  caSelectedUser=null;
+  document.getElementById('caSearch').value='';
+  document.getElementById('caCompany').value='';
+  document.getElementById('caGrantBtn').disabled=true;
+  renderCompanyAdmins();
+};
+
+async function renderCompanyAdmins(){
+  const el=document.getElementById('caList');
+  if(!el)return;
+  const s=await get(ref(db,'users'));
+  const d=s.val()||{};
+  const admins=Object.entries(d)
+    .map(([uid,u])=>({uid,...u}))
+    .filter(u=>u.role==='company_admin');
+  if(!admins.length){
+    el.innerHTML='<div style="font-size:12px;color:var(--gray);text-align:center;padding:1.5rem">Hələ heç bir şirkət admini yoxdur</div>';
+    return;
+  }
+  el.innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:13px">
+    <thead><tr>
+      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">İstifadəçi</th>
+      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Şirkət</th>
+      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Profil sayı</th>
+      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Əməliyyat</th>
+    </tr></thead>
+    <tbody>${admins.map(u=>{
+      const comp=u.company||'—';
+      const profileCount=Object.values(d).filter(x=>x.role!=='admin'&&x.role!=='company_admin'&&((x.company||x.card?.company||'').toLowerCase().trim()===comp.toLowerCase().trim())).length;
+      return`<tr>
+        <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light)">
+          <div style="font-weight:500">${u.name||'—'}</div>
+          <div style="font-size:11px;color:var(--gray)">${u.email||''}</div>
+        </td>
+        <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light)">
+          <span style="background:rgba(24,95,165,.08);color:var(--blue);padding:3px 9px;border-radius:8px;font-size:12px;font-weight:500">🏢 ${comp}</span>
+        </td>
+        <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light);font-size:13px;color:var(--navy)">${profileCount} profil</td>
+        <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light)">
+          <button class="btn btn-sm btn-danger" onclick="revokeCompanyAdmin('${u.uid}','${(u.name||'').replace(/'/g,"\\'")}')">İcazəni sil</button>
+        </td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table>`;
+}
+
+window.revokeCompanyAdmin=async function(uid,name){
+  if(!confirm(`${name} şirkət admini icazəsi silinsin? O, artıq admin panelinə girə bilməyəcək.`))return;
+  await update(ref(db,`users/${uid}`),{role:'user'});
+  showToast(`${name} icazəsi silindi`,'success');
+  renderCompanyAdmins();
+};
+
+
+
+
 function showToast(m,t=''){const el=document.getElementById('toast');el.textContent=m;el.className='toast show '+t;setTimeout(()=>el.className='toast',3000);}
 window.showToast=showToast;
 </script>
