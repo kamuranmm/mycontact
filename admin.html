@@ -1691,6 +1691,8 @@ window.removeFromCompany=async function(uid,name){
 // Expose loadCompanies so showPanel can call it
 window._loadCompanies=loadCompanies;
 // ═══════════════════════════════════════════════════════
+
+window.revokeCompanyAdmin=async function(uid,name){
   if(!confirm(`${name} şirkət admini icazəsi silinsin? O, artıq admin panelinə girə bilməyəcək.`))return;
   await update(ref(db,`users/${uid}`),{role:'user'});
   showToast(`${name} icazəsi silindi`,'success');
