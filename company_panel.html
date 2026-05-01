@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyContact — Şirkət Paneli</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0a1628;--navy-mid:#112040;--blue:#185FA5;--blue-light:#378ADD;--accent:#4FACFE;--white:#fff;--gray:#8A9BB5;--gray-light:#E8EDF5;--surface:#f4f6fb;--error:#e74c3c;--success:#27ae60;--warning:#f39c12;--sidebar:240px}
+body{font-family:'DM Sans',sans-serif;background:var(--surface);display:flex;min-height:100vh;color:var(--navy)}
+.sidebar{width:var(--sidebar);background:var(--navy);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;transition:transform .3s}
+.sidebar-brand{padding:1.25rem 1rem;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:9px}
+.brand-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--blue),var(--accent));border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.brand-name{font-family:'DM Serif Display',serif;font-size:17px;color:var(--white)}
+.brand-name span{color:var(--accent)}
+.sidebar-nav{flex:1;padding:.75rem 0;overflow-y:auto}
+.nav-section{padding:.4rem 1rem .2rem;font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-top:.4rem}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 1rem;font-size:13px;color:rgba(255,255,255,.6);cursor:pointer;transition:all .15s;border-left:3px solid transparent}
+.nav-item:hover{color:var(--white);background:rgba(255,255,255,.05)}
+.nav-item.active{color:var(--white);background:rgba(79,172,254,.12);border-left-color:var(--accent)}
+.sidebar-footer{padding:.75rem 1rem;border-top:1px solid rgba(255,255,255,.08)}
+.admin-info{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.admin-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--white);flex-shrink:0}
+.admin-name{font-size:13px;color:var(--white);font-weight:500}
+.admin-role{font-size:11px;color:rgba(255,255,255,.4)}
+.logout-btn{width:100%;padding:7px;background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.2);color:#e74c3c;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.hamburger{display:none;position:fixed;top:12px;left:12px;z-index:200;width:40px;height:40px;background:var(--navy);border:none;border-radius:9px;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.hamburger span{width:18px;height:2px;background:#fff;border-radius:2px;display:block}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:var(--white);border-bottom:1px solid var(--gray-light);padding:0 1.5rem;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.topbar-title{font-size:14px;font-weight:500;color:var(--navy)}
+.badge-company{background:rgba(39,174,96,.1);color:var(--success);font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500;border:1px solid rgba(39,174,96,.2)}
+.badge-readonly{background:rgba(243,156,18,.1);color:var(--warning);font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500;border:1px solid rgba(243,156,18,.2)}
+.content{padding:1.5rem;flex:1}
+.panel{display:none}.panel.active{display:block}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.25rem}
+.stat-card{background:var(--white);border-radius:11px;padding:1rem;border:1px solid var(--gray-light)}
+.stat-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.stat-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center}
+.stat-icon.blue{background:rgba(24,95,165,.1)}.stat-icon.green{background:rgba(39,174,96,.1)}.stat-icon.gold{background:rgba(201,168,76,.1)}.stat-icon.red{background:rgba(231,76,60,.1)}
+.stat-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--navy);line-height:1}
+.stat-label{font-size:12px;color:var(--gray);margin-top:3px}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem;flex-wrap:wrap;gap:8px}
+.section-title{font-size:14px;font-weight:500;color:var(--navy)}
+.card{background:var(--white);border-radius:12px;border:1px solid var(--gray-light);overflow:hidden}
+.table-toolbar{padding:.9rem 1.1rem;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--gray-light);flex-wrap:wrap}
+.search-input{flex:1;min-width:160px;padding:7px 11px;border:1.5px solid var(--gray-light);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--navy);outline:none;background:var(--surface)}
+.search-input:focus{border-color:var(--blue)}
+.btn{padding:7px 14px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;border:1.5px solid var(--gray-light);background:var(--white);color:var(--navy);display:inline-flex;align-items:center;gap:5px}
+.btn:hover{background:var(--surface)}
+.btn-primary{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.btn-primary:hover{background:var(--navy-mid)}
+.btn-sm{padding:4px 9px;font-size:12px}
+.btn-danger{border-color:rgba(231,76,60,.3);color:var(--error);background:rgba(231,76,60,.05)}
+.btn-success{background:var(--success);color:var(--white);border-color:var(--success)}
+.badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:20px;font-size:11px;font-weight:500}
+.badge-pro{background:#eff6ff;color:#1d4ed8}.badge-premium{background:#fffbeb;color:#b45309}.badge-business{background:rgba(124,58,237,.1);color:#7C3AED}.badge-free{background:var(--surface);color:var(--gray)}.badge-active{background:#f0fdf4;color:var(--success)}.badge-blocked{background:#fef2f2;color:var(--error)}.badge-pending{background:#fffbeb;color:var(--warning)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{text-align:left;padding:8px 1.1rem;font-size:11px;font-weight:500;color:var(--gray);background:var(--surface);letter-spacing:.03em;border-bottom:1px solid var(--gray-light)}
+tbody td{padding:11px 1.1rem;border-bottom:1px solid var(--gray-light);color:var(--navy);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:#fafbfd}
+.user-cell{display:flex;align-items:center;gap:9px}
+.user-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--blue-light),var(--accent));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--white);flex-shrink:0;overflow:hidden}
+.user-av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.user-name{font-weight:500;font-size:13px}
+.user-email{font-size:11px;color:var(--gray)}
+.action-btns{display:flex;gap:5px;flex-wrap:wrap}
+.form-group{margin-bottom:11px}
+.form-label{display:block;font-size:12px;font-weight:500;color:var(--navy);margin-bottom:4px}
+.form-input{width:100%;padding:8px 11px;border:1.5px solid var(--gray-light);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--navy);outline:none;background:var(--surface);transition:border-color .2s}
+.form-input:focus{border-color:var(--blue);background:var(--white)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(10,22,40,.5);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--white);border-radius:16px;padding:1.75rem;width:calc(100% - 2rem);max-width:480px;transform:translateY(12px);transition:transform .2s;max-height:90vh;overflow-y:auto}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-title{font-family:'DM Serif Display',serif;font-size:21px;color:var(--navy);margin-bottom:3px}
+.modal-sub{font-size:13px;color:var(--gray);margin-bottom:1.25rem}
+.modal-footer{display:flex;gap:9px;margin-top:1.25rem}
+.modal-footer .btn{flex:1;justify-content:center}
+.error-box{background:#fef2f2;border:1px solid #fecaca;color:var(--error);font-size:12px;padding:8px 11px;border-radius:8px;margin-bottom:.9rem;display:none}
+.error-box.show{display:block}
+.success-box{background:#f0fdf4;border:1px solid #bbf7d0;color:var(--success);font-size:12px;padding:8px 11px;border-radius:8px;margin-bottom:.9rem;display:none}
+.success-box.show{display:block}
+.mobile-card{display:none;background:var(--white);border:1px solid var(--gray-light);border-radius:11px;padding:1rem;margin-bottom:8px}
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--navy);color:var(--white);padding:11px 16px;border-radius:10px;font-size:13px;z-index:999;transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none;max-width:280px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:var(--success)}.toast.error{background:var(--error)}
+/* Company header banner */
+.company-banner{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:13px;padding:1.25rem 1.5rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(79,172,254,.15)}
+.company-logo{width:48px;height:48px;background:linear-gradient(135deg,var(--blue),var(--accent));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.company-info-text{flex:1}
+.company-name-display{font-family:'DM Serif Display',serif;font-size:20px;color:var(--white);margin-bottom:3px}
+.company-meta{font-size:12px;color:rgba(255,255,255,.5)}
+.permission-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.permission-badge.can-edit{background:rgba(39,174,96,.2);color:#4ade80;border:1px solid rgba(39,174,96,.3)}
+.permission-badge.view-only{background:rgba(243,156,18,.2);color:#fbbf24;border:1px solid rgba(243,156,18,.3)}
+/* Pending section */
+.pending-section{background:var(--white);border-radius:12px;border:1px solid rgba(243,156,18,.3);overflow:hidden;margin-bottom:1.25rem}
+.pending-header{background:rgba(243,156,18,.05);padding:.75rem 1.1rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(243,156,18,.2)}
+.pending-title{font-size:13px;font-weight:500;color:var(--warning);display:flex;align-items:center;gap:6px}
+/* Readonly notice */
+.readonly-notice{background:rgba(243,156,18,.08);border:1px solid rgba(243,156,18,.25);border-radius:10px;padding:.9rem 1.1rem;margin-bottom:1.25rem;display:flex;align-items:flex-start;gap:9px}
+.readonly-notice p{font-size:12px;color:#b45309;line-height:1.6}
+/* Stats row */
+.mini-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:.75rem}
+.mini-stat{background:var(--surface);border-radius:9px;padding:9px 12px}
+.mini-stat-num{font-size:18px;font-weight:600;color:var(--navy)}
+.mini-stat-label{font-size:11px;color:var(--gray);margin-top:2px}
+@media(max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}
+  .sidebar-overlay.open{display:block}.hamburger{display:flex}
+  .main{margin-left:0}.topbar{padding-left:60px}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}.content{padding:1rem}
+  table{display:none}.mobile-card{display:block}
+  .table-toolbar{flex-direction:column;align-items:stretch}.search-input{min-width:100%}
+  .form-row{grid-template-columns:1fr}
+  .company-banner{flex-direction:column;align-items:flex-start}
+}
+@media(max-width:480px){.stats-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<button class="hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-mark"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="3" y="6" width="18" height="13" rx="2"/><circle cx="12" cy="13" r="2"/></svg></div>
+    <span class="brand-name">My<span>Contact</span></span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Panel</div>
+    <div class="nav-item active" onclick="showPanel('overview')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>İcmal
+    </div>
+    <div class="nav-section">Şirkət</div>
+    <div class="nav-item" onclick="showPanel('employees')">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Əməkdaşlar
+    </div>
+    <div class="nav-item" id="navPending" onclick="showPanel('pending')" style="display:none">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Gözləyənlər
+      <span id="pendingBadgeNav" style="margin-left:auto;background:rgba(243,156,18,.25);color:var(--warning);font-size:10px;padding:1px 6px;border-radius:10px;font-weight:600"></span>
+    </div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="admin-info">
+      <div class="admin-av" id="adminInitials">A</div>
+      <div>
+        <div class="admin-name" id="adminName">Yüklənir...</div>
+        <div class="admin-role" id="adminCompanyLabel">Şirkət Admini</div>
+      </div>
+    </div>
+    <button class="logout-btn" onclick="doLogout()">Çıxış</button>
+  </div>
+</aside>
+
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbarTitle">İcmal</div>
+    <div id="permissionBadgeWrap">
+      <span class="badge-company" id="topbarBadge">🏢 Şirkət Admini</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- OVERVIEW PANEL -->
+    <div class="panel active" id="panel-overview">
+      <!-- Company banner -->
+      <div class="company-banner" id="companyBanner">
+        <div class="company-logo" id="companyLogoIcon">🏢</div>
+        <div class="company-info-text">
+          <div class="company-name-display" id="companyNameDisplay">Yüklənir...</div>
+          <div class="company-meta" id="companyMetaDisplay">—</div>
+        </div>
+        <div id="permBadgeOverview"></div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon blue"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+          </div>
+          <div class="stat-num" id="statTotal">—</div>
+          <div class="stat-label">Ümumi əməkdaş</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon green"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+          </div>
+          <div class="stat-num" id="statActive">—</div>
+          <div class="stat-label">Aktiv profillər</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon gold"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+          </div>
+          <div class="stat-num" id="statViews">—</div>
+          <div class="stat-label">Ümumi baxış</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-top">
+            <div class="stat-icon red"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+          </div>
+          <div class="stat-num" id="statPending">—</div>
+          <div class="stat-label">Gözləyən təsdiq</div>
+        </div>
+      </div>
+
+      <!-- Readonly notice if can't edit -->
+      <div class="readonly-notice" id="readonlyNotice" style="display:none">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" style="flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <p>Hal-hazırda <strong>Yalnız baxış</strong> rejimindəsiniz. Profilləri redaktə etmək üçün ana admindən icazə tələb edin.</p>
+      </div>
+
+      <!-- Recent employees -->
+      <div class="section-head">
+        <div class="section-title">Son əməkdaşlar</div>
+        <button class="btn btn-sm" onclick="showPanel('employees')">Hamısına bax</button>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Əməkdaş</th><th>Vəzifə</th><th>Plan</th><th>Status</th><th>Baxış</th></tr></thead>
+          <tbody id="recentBody"><tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray)">Yüklənir...</td></tr></tbody>
+        </table>
+        <div id="recentMobile"></div>
+      </div>
+    </div>
+
+    <!-- EMPLOYEES PANEL -->
+    <div class="panel" id="panel-employees">
+      <div class="section-head">
+        <div class="section-title">Əməkdaşlar</div>
+        <div style="font-size:12px;color:var(--gray)" id="employeeCountLabel"></div>
+      </div>
+      <div class="card">
+        <div class="table-toolbar">
+          <input class="search-input" type="text" placeholder="Ad, email axtar..." id="empSearch" oninput="filterEmployees()">
+          <select class="form-input" id="empStatusFilter" onchange="filterEmployees()" style="width:auto;padding:7px 9px;font-size:12px">
+            <option value="">Bütün statuslar</option>
+            <option value="active">Aktiv</option>
+            <option value="blocked">Bloklu</option>
+            <option value="pending_approval">Gözləyən</option>
+          </select>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Əməkdaş</th>
+              <th>Vəzifə</th>
+              <th>Plan</th>
+              <th>Status</th>
+              <th>Baxış</th>
+              <th id="actionsHeader">Əməliyyat</th>
+            </tr>
+          </thead>
+          <tbody id="empBody"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--gray)">Yüklənir...</td></tr></tbody>
+        </table>
+        <div id="empMobile"></div>
+      </div>
+    </div>
+
+    <!-- PENDING PANEL -->
+    <div class="panel" id="panel-pending">
+      <div class="section-head">
+        <div class="section-title" style="display:flex;align-items:center;gap:8px">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Təsdiq Gözləyən İstifadəçilər
+        </div>
+      </div>
+      <div class="card">
+        <table>
+          <thead><tr><th>İstifadəçi</th><th>Qeydiyyat tarixi</th><th>Status</th><th>Əməliyyat</th></tr></thead>
+          <tbody id="pendingBody"><tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--gray)">Yüklənir...</td></tr></tbody>
+        </table>
+        <div id="pendingMobile"></div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</main>
+
+<!-- EDIT EMPLOYEE MODAL -->
+<div class="modal-overlay" id="editEmpModal">
+  <div class="modal">
+    <div class="modal-title">Profili Redaktə Et</div>
+    <div class="modal-sub" id="editEmpSub">—</div>
+    <div class="error-box" id="editEmpErr"></div>
+    <input type="hidden" id="editEmpUid">
+    <div class="form-group">
+      <label class="form-label">Ad Soyad</label>
+      <input class="form-input" id="editEmpName" placeholder="Ad və soyad">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Vəzifə</label>
+        <input class="form-input" id="editEmpPosition" placeholder="Menecer, Mühasib...">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Şöbə</label>
+        <input class="form-input" id="editEmpDepartment" placeholder="Satış, IT...">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">Telefon</label>
+        <input class="form-input" id="editEmpPhone" placeholder="+994 50 xxx xx xx">
+      </div>
+      <div class="form-group">
+        <label class="form-label">WhatsApp</label>
+        <input class="form-input" id="editEmpWhatsapp" placeholder="+994 50 xxx xx xx">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Status</label>
+      <select class="form-input" id="editEmpStatus">
+        <option value="active">✅ Aktiv</option>
+        <option value="blocked">🚫 Bloklu</option>
+      </select>
+    </div>
+    <div style="background:var(--surface);border-radius:9px;padding:10px 12px;border:1px solid var(--gray-light)">
+      <div style="font-size:11px;color:var(--gray);margin-bottom:4px">Profil linki</div>
+      <div style="font-size:13px;color:var(--blue);font-weight:500" id="editEmpSlugDisplay">—</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('editEmpModal')">Ləğv et</button>
+      <button class="btn btn-primary" onclick="saveEmployee()">Saxla</button>
+    </div>
+  </div>
+</div>
+
+<!-- VIEW EMPLOYEE MODAL (read-only) -->
+<div class="modal-overlay" id="viewEmpModal">
+  <div class="modal">
+    <div class="modal-title">Profil Məlumatları</div>
+    <div class="modal-sub" id="viewEmpSub">—</div>
+    <div style="display:flex;flex-direction:column;gap:10px" id="viewEmpContent"></div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="closeModal('viewEmpModal')">Bağla</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import{getDatabase,ref,get,update}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const cfg={apiKey:"AIzaSyBx81QDpjHSPvhkmnnSUNkJYMvR_fnRTaU",authDomain:"mycontact-e626e.firebaseapp.com",databaseURL:"https://mycontact-e626e-default-rtdb.firebaseio.com",projectId:"mycontact-e626e",storageBucket:"mycontact-e626e.firebasestorage.app",messagingSenderId:"420594516827",appId:"1:420594516827:web:f30266800c690c6ff9107e"};
+const app=initializeApp(cfg);const auth=getAuth(app);const db=getDatabase(app);
+
+let myUid='',myCompanyId='',myCompanyName='',canEdit=false;
+let allEmployees=[],filteredEmployees=[];
+
+// ── Auth Check ──
+onAuthStateChanged(auth,async u=>{
+  if(!u){location.href='index.html';return;}
+  const snap=await get(ref(db,`users/${u.uid}`));
+  const data=snap.val();
+  if(!data||data.role!=='company_admin'){
+    alert('Bu panelə giriş icazəniz yoxdur.');
+    await signOut(auth);
+    location.href='index.html';
+    return;
+  }
+  myUid=u.uid;
+  myCompanyId=data.companyId||'';
+  myCompanyName=data.company||'Şirkət';
+
+  document.getElementById('adminName').textContent=data.name||u.email;
+  document.getElementById('adminInitials').textContent=(data.name||'A').charAt(0).toUpperCase();
+  document.getElementById('adminCompanyLabel').textContent=myCompanyName;
+
+  // Get company settings
+  if(myCompanyId){
+    const cSnap=await get(ref(db,`companies/${myCompanyId}`));
+    const cData=cSnap.val()||{};
+    canEdit=!!cData.canEditProfiles;
+    myCompanyName=cData.name||myCompanyName;
+  } else {
+    // fallback: check canEditProfiles on user node or company string match
+    const cSnap=await get(ref(db,'companies'));
+    const allCo=cSnap.val()||{};
+    for(const [cid,co] of Object.entries(allCo)){
+      if(co.adminUid===u.uid){
+        myCompanyId=cid;
+        canEdit=!!co.canEditProfiles;
+        myCompanyName=co.name||myCompanyName;
+        break;
+      }
+    }
+    // update user with companyId for future
+    if(myCompanyId) await update(ref(db,`users/${u.uid}`),{companyId:myCompanyId});
+  }
+
+  renderBanner();
+  await loadEmployees();
+  setupUI();
+});
+
+function renderBanner(){
+  document.getElementById('companyNameDisplay').textContent=myCompanyName;
+  document.getElementById('companyLogoIcon').textContent=myCompanyName.charAt(0)||'🏢';
+  const firstLetter=myCompanyName.charAt(0).toUpperCase();
+  document.getElementById('companyLogoIcon').textContent=firstLetter;
+  document.getElementById('companyLogoIcon').style.fontSize='22px';
+  document.getElementById('companyLogoIcon').style.color='#fff';
+  document.getElementById('companyLogoIcon').style.fontFamily="'DM Serif Display',serif";
+
+  const permBadge=canEdit
+    ?'<span class="permission-badge can-edit">✏️ Redaktə İcazəsi Var</span>'
+    :'<span class="permission-badge view-only">👁 Yalnız Baxış</span>';
+  document.getElementById('permBadgeOverview').innerHTML=permBadge;
+  document.getElementById('topbarBadge').textContent=canEdit?'✏️ Şirkət Admini':'👁 Yalnız Baxış';
+  document.getElementById('topbarBadge').className=canEdit?'badge-company':'badge-readonly';
+
+  if(!canEdit){
+    document.getElementById('readonlyNotice').style.display='flex';
+  }
+}
+
+function setupUI(){
+  // Hide actions column if no edit permission
+  if(!canEdit){
+    document.getElementById('actionsHeader').style.display='none';
+  }
+}
+
+async function loadEmployees(){
+  const snap=await get(ref(db,'users'));
+  const data=snap.val()||{};
+
+  // Match employees by companyId or company name
+  allEmployees=Object.entries(data)
+    .map(([uid,u])=>({uid,...u}))
+    .filter(u=>u.role!=='admin'&&(
+      (myCompanyId&&u.companyId===myCompanyId)||
+      (!myCompanyId&&(u.company||'').toLowerCase().trim()===(myCompanyName||'').toLowerCase().trim())
+    ));
+
+  filteredEmployees=[...allEmployees];
+
+  renderStats();
+  renderRecent();
+  renderEmployees(filteredEmployees);
+  renderPending();
+}
+
+function renderStats(){
+  const total=allEmployees.length;
+  const active=allEmployees.filter(u=>u.status==='active').length;
+  const views=allEmployees.reduce((s,u)=>s+(u.stats?.views||0),0);
+  const pending=allEmployees.filter(u=>u.status==='pending_approval').length;
+
+  document.getElementById('statTotal').textContent=total;
+  document.getElementById('statActive').textContent=active;
+  document.getElementById('statViews').textContent=views;
+  document.getElementById('statPending').textContent=pending;
+  document.getElementById('companyMetaDisplay').textContent=`${total} əməkdaş · ${active} aktiv`;
+
+  // Show pending nav if there are pending
+  if(pending>0){
+    document.getElementById('navPending').style.display='flex';
+    document.getElementById('pendingBadgeNav').textContent=pending;
+  }
+}
+
+function planBadge(p){if(p==='business')return'<span class="badge badge-business">Business</span>';if(p==='pro')return'<span class="badge badge-pro">Pro</span>';if(p==='premium')return'<span class="badge badge-premium">Premium</span>';return'<span class="badge badge-free">Free</span>';}
+function statusBadge(s){
+  if(s==='blocked')return'<span class="badge badge-blocked">Bloklu</span>';
+  if(s==='pending_approval')return'<span class="badge badge-pending">Gözləyir</span>';
+  return'<span class="badge badge-active">Aktiv</span>';
+}
+
+function renderRecent(){
+  const recent=[...allEmployees].filter(u=>u.status==='active').sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).slice(0,5);
+  const tbody=document.getElementById('recentBody');
+  const mc=document.getElementById('recentMobile');
+  if(!recent.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray)">Əməkdaş yoxdur</td></tr>';mc.innerHTML='';return;}
+  tbody.innerHTML=recent.map(u=>`<tr>
+    <td><div class="user-cell">
+      <div class="user-av">${u.card?.photo?`<img src="${u.card.photo}">`:(u.name||'?').charAt(0).toUpperCase()}</div>
+      <div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div>
+    </div></td>
+    <td style="font-size:12px;color:var(--gray)">${u.card?.position||'—'}</td>
+    <td>${planBadge(u.plan)}</td>
+    <td>${statusBadge(u.status)}</td>
+    <td style="font-size:12px;color:var(--gray)">${u.stats?.views||0}</td>
+  </tr>`).join('');
+  mc.innerHTML=recent.map(u=>`<div class="mobile-card">
+    <div class="mobile-card-top">
+      <div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div>
+      <div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.card?.position||u.email||''}</div></div></div>
+      ${statusBadge(u.status)}
+    </div>
+    <div class="mobile-card-meta" style="margin-top:6px">${planBadge(u.plan)} · ${u.stats?.views||0} baxış</div>
+  </div>`).join('');
+}
+
+function renderEmployees(users){
+  const tbody=document.getElementById('empBody');
+  const mc=document.getElementById('empMobile');
+  document.getElementById('employeeCountLabel').textContent=`${users.length} nəfər`;
+  if(!users.length){tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--gray)">Nəticə tapılmadı</td></tr>`;mc.innerHTML='';return;}
+  tbody.innerHTML=users.map(u=>`<tr>
+    <td><div class="user-cell">
+      <div class="user-av">${u.card?.photo?`<img src="${u.card.photo}">`:(u.name||'?').charAt(0).toUpperCase()}</div>
+      <div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div>
+    </div></td>
+    <td style="font-size:12px;color:var(--gray)">${u.card?.position||'—'}</td>
+    <td>${planBadge(u.plan)}</td>
+    <td>${statusBadge(u.status)}</td>
+    <td style="font-size:12px;color:var(--gray)">${u.stats?.views||0}</td>
+    <td ${canEdit?'':'style="display:none"'}>
+      <div class="action-btns">
+        ${canEdit?`<button class="btn btn-sm btn-primary" onclick="openEditEmployee('${u.uid}')">Redaktə</button>`:''}
+        <button class="btn btn-sm" onclick="openViewEmployee('${u.uid}')" style="${canEdit?'':'display:none'}">Gör</button>
+        ${u.slug?`<a class="btn btn-sm" href="https://apps.mycontact.az/${u.slug}" target="_blank">🔗</a>`:''}
+      </div>
+    </td>
+  </tr>`).join('');
+
+  mc.innerHTML=users.map(u=>`<div class="mobile-card">
+    <div class="mobile-card-top">
+      <div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div>
+      <div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div>
+      ${statusBadge(u.status)}
+    </div>
+    <div class="mobile-card-meta" style="margin-top:5px">${u.card?.position||'—'} · ${u.stats?.views||0} baxış · ${planBadge(u.plan)}</div>
+    <div style="display:flex;gap:5px;margin-top:8px;flex-wrap:wrap">
+      ${canEdit?`<button class="btn btn-sm btn-primary" onclick="openEditEmployee('${u.uid}')">Redaktə</button>`:''}
+      ${u.slug?`<a class="btn btn-sm" href="https://apps.mycontact.az/${u.slug}" target="_blank">Profili gör</a>`:''}
+    </div>
+  </div>`).join('');
+}
+
+function renderPending(){
+  const pending=allEmployees.filter(u=>u.status==='pending_approval');
+  const tbody=document.getElementById('pendingBody');
+  const mc=document.getElementById('pendingMobile');
+  if(!pending.length){tbody.innerHTML='<tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--gray)">Gözləyən istifadəçi yoxdur ✓</td></tr>';mc.innerHTML='';return;}
+  tbody.innerHTML=pending.map(u=>`<tr>
+    <td><div class="user-cell">
+      <div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div>
+      <div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div>
+    </div></td>
+    <td style="font-size:12px;color:var(--gray)">${u.orderedAt?new Date(u.orderedAt).toLocaleDateString('az'):'—'}</td>
+    <td>${statusBadge(u.status)}</td>
+    <td><div style="font-size:11px;color:var(--gray);font-style:italic">Ana admin tərəfindən təsdiq ediləcək</div></td>
+  </tr>`).join('');
+  mc.innerHTML=pending.map(u=>`<div class="mobile-card">
+    <div class="mobile-card-top">
+      <div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div>
+      <div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div>
+      ${statusBadge(u.status)}
+    </div>
+    <div class="mobile-card-meta" style="margin-top:5px;color:var(--gray);font-size:11px;font-style:italic">Ana admin tərəfindən təsdiq ediləcək</div>
+  </div>`).join('');
+}
+
+window.filterEmployees=function(){
+  const q=document.getElementById('empSearch').value.toLowerCase();
+  const st=document.getElementById('empStatusFilter').value;
+  filteredEmployees=allEmployees.filter(u=>{
+    const matchQ=!q||(u.name||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q)||(u.card?.position||'').toLowerCase().includes(q);
+    const matchSt=!st||u.status===st;
+    return matchQ&&matchSt;
+  });
+  renderEmployees(filteredEmployees);
+};
+
+// ── Edit Employee ──
+window.openEditEmployee=function(uid){
+  if(!canEdit){showToast('Redaktə icazəniz yoxdur','error');return;}
+  const u=allEmployees.find(e=>e.uid===uid);
+  if(!u)return;
+  document.getElementById('editEmpUid').value=uid;
+  document.getElementById('editEmpSub').textContent=u.email||'';
+  document.getElementById('editEmpName').value=u.name||'';
+  document.getElementById('editEmpPosition').value=u.card?.position||'';
+  document.getElementById('editEmpDepartment').value=u.card?.department||'';
+  document.getElementById('editEmpPhone').value=u.card?.phone||'';
+  document.getElementById('editEmpWhatsapp').value=u.card?.whatsapp||'';
+  document.getElementById('editEmpStatus').value=u.status||'active';
+  document.getElementById('editEmpSlugDisplay').textContent=u.slug?`apps.mycontact.az/${u.slug}`:'Link yoxdur';
+  document.getElementById('editEmpErr').classList.remove('show');
+  openModal('editEmpModal');
+};
+
+window.saveEmployee=async function(){
+  const uid=document.getElementById('editEmpUid').value;
+  const name=document.getElementById('editEmpName').value.trim();
+  const position=document.getElementById('editEmpPosition').value.trim();
+  const department=document.getElementById('editEmpDepartment').value.trim();
+  const phone=document.getElementById('editEmpPhone').value.trim();
+  const whatsapp=document.getElementById('editEmpWhatsapp').value.trim();
+  const status=document.getElementById('editEmpStatus').value;
+  if(!name){document.getElementById('editEmpErr').textContent='Ad boş ola bilməz';document.getElementById('editEmpErr').classList.add('show');return;}
+  try{
+    await update(ref(db,`users/${uid}`),{
+      name,status,
+      'card/position':position,'card/department':department,'card/phone':phone,'card/whatsapp':whatsapp,'card/name':name
+    });
+    const idx=allEmployees.findIndex(e=>e.uid===uid);
+    if(idx>-1){
+      allEmployees[idx]={...allEmployees[idx],name,status,card:{...allEmployees[idx].card,position,department,phone,whatsapp,name}};
+      filteredEmployees=[...allEmployees];
+      renderEmployees(filteredEmployees);
+      renderRecent();
+      renderStats();
+    }
+    closeModal('editEmpModal');
+    showToast(`${name} — profil yeniləndi`,'success');
+  }catch(e){
+    document.getElementById('editEmpErr').textContent='Xəta baş verdi: '+e.message;
+    document.getElementById('editEmpErr').classList.add('show');
+  }
+};
+
+// ── View Employee (readonly) ──
+window.openViewEmployee=function(uid){
+  const u=allEmployees.find(e=>e.uid===uid);
+  if(!u)return;
+  document.getElementById('viewEmpSub').textContent=u.email||'';
+  document.getElementById('viewEmpContent').innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
+      ${field('Ad Soyad',u.name)}
+      ${field('Vəzifə',u.card?.position)}
+      ${field('Şöbə',u.card?.department)}
+      ${field('Telefon',u.card?.phone)}
+      ${field('WhatsApp',u.card?.whatsapp)}
+      ${field('Plan',u.plan||'free')}
+      ${field('Status',u.status==='blocked'?'Bloklu':u.status==='active'?'Aktiv':'Gözləyir')}
+      ${field('Profil linki',u.slug?`apps.mycontact.az/${u.slug}`:'Yoxdur')}
+    </div>
+    ${u.slug?`<a href="https://apps.mycontact.az/${u.slug}" target="_blank" class="btn btn-primary" style="margin-top:4px;justify-content:center">Profili aç →</a>`:''}
+  `;
+  openModal('viewEmpModal');
+};
+function field(label,val){return`<div style="background:var(--surface);border-radius:9px;padding:9px 12px"><div style="font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px">${label}</div><div style="font-size:13px;color:var(--navy);font-weight:500">${val||'—'}</div></div>`;}
+
+// ── Panels ──
+window.showPanel=function(name){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('panel-'+name).classList.add('active');
+  const titles={overview:'İcmal',employees:'Əməkdaşlar',pending:'Gözləyənlər'};
+  document.getElementById('topbarTitle').textContent=titles[name]||name;
+  const navMap={overview:0,employees:1,pending:2};
+  document.querySelectorAll('.nav-item')[navMap[name]||0].classList.add('active');
+  closeSidebar();
+};
+
+window.openModal=function(id){document.getElementById(id).classList.add('open');};
+window.closeModal=function(id){document.getElementById(id).classList.remove('open');};
+window.doLogout=async function(){await signOut(auth);location.href='index.html';};
+function showToast(m,t=''){const el=document.getElementById('toast');el.textContent=m;el.className='toast show '+t;setTimeout(()=>el.className='toast',3000);}
+window.showToast=showToast;
+</script>
+
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('open');}
+</script>
+</body>
+</html>
