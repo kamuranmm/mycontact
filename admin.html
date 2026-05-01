@@ -1157,6 +1157,7 @@ window.searchForCA=function(){
         (u.name||'').toLowerCase().includes(q)
       )).slice(0,5);
     if(!matches.length){res.innerHTML='<div style="font-size:12px;color:var(--gray);padding:6px 0">Nəticə tapılmadı</div>';return;}
+    if(matches.length===1){selectCAUser(matches[0].uid,matches[0].name||'',matches[0].company||matches[0].card?.company||'',matches[0].email||'',matches[0].role||'user');return;}
     res.innerHTML=matches.map(u=>`
       <div onclick="selectCAUser('${u.uid}','${(u.name||'').replace(/'/g,"\\'")}','${(u.company||u.card?.company||'').replace(/'/g,"\\'")}','${(u.email||'').replace(/'/g,"\\'")}','${u.role||'user'}')"
         style="padding:9px 11px;border:1.5px solid var(--gray-light);border-radius:9px;cursor:pointer;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;font-size:13px;transition:border-color .15s"
@@ -1189,9 +1190,14 @@ window.selectCAUser=function(uid,name,company,email,role){
 
 window.grantCompanyAdmin=async function(){
   if(!caSelectedUser){
-    showToast('Əvvəlcə istifadəçi seçin','error');
-    document.getElementById('caSearch').focus();
-    return;
+    // try to find user by typed email
+    const q=document.getElementById('caSearch').value.toLowerCase().trim();
+    if(!q){showToast('Əvvəlcə istifadəçi seçin','error');document.getElementById('caSearch').focus();return;}
+    const s=await get(ref(db,'users'));
+    const d=s.val()||{};
+    const found=Object.entries(d).map(([uid,u])=>({uid,...u})).find(u=>u.role!=='admin'&&(u.email||'').toLowerCase()===q);
+    if(!found){showToast('İstifadəçi tapılmadı — axtarış nəticəsindən seçin','error');return;}
+    caSelectedUser=found;
   }
   const company=document.getElementById('caCompany').value.trim();
   if(!company){
