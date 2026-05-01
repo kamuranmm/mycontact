@@ -479,7 +479,7 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
           <div id="caSearchResults" style="margin-bottom:.75rem"></div>
           <div class="form-group">
             <label class="form-label">Şirkət (bu şirkətin profillərinə giriş veriləcək)</label>
-            <input class="form-input" id="caCompany" placeholder="Məs: ABB Bank" readonly style="background:var(--surface)">
+            <input class="form-input" id="caCompany" placeholder="Məs: ABB Bank">
           </div>
           <input type="hidden" id="caUid">
           <button class="btn btn-primary" onclick="grantCompanyAdmin()" id="caGrantBtn" disabled>✅ İcazə ver</button>
@@ -1177,21 +1177,19 @@ window.selectCAUser=function(uid,name,company,email,role){
   caSelectedUser={uid,name,company,email,role};
   document.getElementById('caSearch').value=`${name} (${email})`;
   document.getElementById('caSearchResults').innerHTML='';
-  document.getElementById('caCompany').value=company||'';
+  const companyInput=document.getElementById('caCompany');
+  companyInput.value=company||'';
+  companyInput.readOnly=false;
+  companyInput.style.background='var(--white)';
+  companyInput.placeholder=company?'Şirkət adını dəyişə bilərsiniz':'Bu istifadəçinin şirkəti yoxdur — əl ilə daxil edin';
   const btn=document.getElementById('caGrantBtn');
-  btn.disabled=!company;
-  if(!company){
-    document.getElementById('caCompany').readOnly=false;
-    document.getElementById('caCompany').style.background='var(--white)';
-    document.getElementById('caCompany').placeholder='Bu istifadəçinin şirkəti yoxdur — əl ilə daxil edin';
-    document.getElementById('caCompany').oninput=function(){btn.disabled=!this.value.trim();};
-  }
+  btn.disabled=!companyInput.value.trim();
+  companyInput.oninput=function(){btn.disabled=!this.value.trim();};
 };
 
 window.grantCompanyAdmin=async function(){
   if(!caSelectedUser){showToast('İstifadəçi seçilməyib','error');return;}
-  const company=document.getElementById('caCompany').value.trim();
-  if(!company){showToast('Şirkət adı boş ola bilməz','error');return;}
+  const company=document.getElementById('caCompany').value.trim();  if(!company){showToast('Şirkət adı boş ola bilməz','error');return;}
   const isAlreadyAdmin=caSelectedUser.role==='company_admin';
   if(!confirm(`${caSelectedUser.name} (${caSelectedUser.email}) — "${company}" şirkətinin admini edilsin?\n\nO, yalnız bu şirkətin profillərinə giriş edə biləcək.`))return;
   await update(ref(db,`users/${caSelectedUser.uid}`),{role:'company_admin',company});
