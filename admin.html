@@ -482,7 +482,7 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
             <input class="form-input" id="caCompany" placeholder="Məs: ABB Bank">
           </div>
           <input type="hidden" id="caUid">
-          <button class="btn btn-primary" onclick="grantCompanyAdmin()" id="caGrantBtn" disabled>✅ İcazə ver</button>
+          <button class="btn btn-primary" onclick="grantCompanyAdmin()" id="caGrantBtn">✅ İcazə ver</button>
         </div>
 
         <!-- Current company admins list -->
@@ -1188,16 +1188,23 @@ window.selectCAUser=function(uid,name,company,email,role){
 };
 
 window.grantCompanyAdmin=async function(){
-  if(!caSelectedUser){showToast('İstifadəçi seçilməyib','error');return;}
-  const company=document.getElementById('caCompany').value.trim();  if(!company){showToast('Şirkət adı boş ola bilməz','error');return;}
-  const isAlreadyAdmin=caSelectedUser.role==='company_admin';
+  if(!caSelectedUser){
+    showToast('Əvvəlcə istifadəçi seçin','error');
+    document.getElementById('caSearch').focus();
+    return;
+  }
+  const company=document.getElementById('caCompany').value.trim();
+  if(!company){
+    showToast('Şirkət adı boş ola bilməz','error');
+    document.getElementById('caCompany').focus();
+    return;
+  }
   if(!confirm(`${caSelectedUser.name} (${caSelectedUser.email}) — "${company}" şirkətinin admini edilsin?\n\nO, yalnız bu şirkətin profillərinə giriş edə biləcək.`))return;
   await update(ref(db,`users/${caSelectedUser.uid}`),{role:'company_admin',company});
   showToast(`${caSelectedUser.name} şirkət admini edildi`,'success');
   caSelectedUser=null;
   document.getElementById('caSearch').value='';
   document.getElementById('caCompany').value='';
-  document.getElementById('caGrantBtn').disabled=true;
   renderCompanyAdmins();
 };
 
