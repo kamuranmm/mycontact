@@ -503,7 +503,7 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
             <div style="font-size:15px;font-weight:500;color:var(--navy);margin-bottom:4px">Şirkətlər</div>
             <div style="font-size:13px;color:var(--gray)">Şirkətləri idarə edin, əməkdaşları təyin edin, redaktə icazəsi verin.</div>
           </div>
-          <button class="btn btn-primary" onclick="openModal('createCompanyModal')">
+          <button class="btn btn-primary" onclick="document.getElementById('createCompanyModal').classList.add('open')">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Yeni şirkət
           </button>
         </div>
@@ -766,7 +766,7 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
       <div style="font-size:11px;color:var(--gray);margin-top:4px">Aktiv olarsa, şirkət admini əməkdaşların profilini redaktə edə bilər</div>
     </div>
     <div class="modal-footer">
-      <button class="btn" onclick="closeModal('createCompanyModal')">Ləğv et</button>
+      <button class="btn" onclick="document.getElementById('createCompanyModal').classList.remove('open')">Ləğv et</button>
       <button class="btn btn-primary" onclick="createCompany()">Şirkət yarat</button>
     </div>
   </div>
@@ -788,7 +788,7 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
     </div>
     <input type="hidden" id="assignCoUid">
     <div class="modal-footer">
-      <button class="btn" onclick="closeModal('assignCompanyModal')">Ləğv et</button>
+      <button class="btn" onclick="document.getElementById('assignCompanyModal').classList.remove('open')">Ləğv et</button>
       <button class="btn btn-primary" onclick="assignUserToCompany()">Əlavə et</button>
     </div>
   </div>
@@ -796,6 +796,14 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
 
 <div class="toast" id="toast"></div>
 
+<script>
+// Fallback global modal helpers (in case module scope doesn't expose them fast enough)
+function openModal(id){var el=document.getElementById(id);if(el)el.classList.add('open');}
+function closeModal(id){var el=document.getElementById(id);if(el)el.classList.remove('open');}
+document.addEventListener('click',function(e){
+  if(e.target.classList&&e.target.classList.contains('modal-overlay'))e.target.classList.remove('open');
+});
+</script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
@@ -1042,6 +1050,7 @@ window.selectRole=function(el,r,containerId){
   else if(containerId==='editRoleOpts')selectedEditRole=r;
   else if(containerId==='assignRoleOpts')selectedAssignRole=r;
 };
+window.openModal=function(id){document.getElementById(id).classList.add('open');};
 window.closeModal=function(id){document.getElementById(id).classList.remove('open');};
 document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
 function genRandomSlug(){const c='abcdefghijklmnopqrstuvwxyz0123456789';return Array.from({length:8},()=>c[Math.floor(Math.random()*c.length)]).join('');}
