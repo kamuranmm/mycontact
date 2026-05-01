@@ -533,12 +533,14 @@ window.addEventListener('message',function(e){
     if(PD)render();
   }
 
-  // Şablon dəyişimi — dashboard-dan gəlir
+  // Şablon dəyişimi — dashboard-dan gəlir (PREVIEW ONLY — localStorage-a yazma)
   if(e.data.type==='setTmpl'&&e.data.tmpl){
     tmpl=parseInt(e.data.tmpl)||1;
     document.querySelectorAll('.to').forEach(t=>t.classList.remove('on'));
     document.getElementById('t-'+tmpl)?.classList.add('on');
     if(PD)render();
+    // NOTE: intentionally NOT writing to localStorage here.
+    // Only _doApplyTemplate (via Firebase save) should persist the template.
   }
 
   // Çoxlu rəng — dashboard-dan gəlir
@@ -570,9 +572,13 @@ async function init(){
     lang=localStorage.getItem('cp_lang_'+slug)||PD.defaultLang||'az';
     const lm=LM[lang]||LM.az;const _lfl=document.getElementById('lfl');const _lco=document.getElementById('lco');if(_lfl)_lfl.textContent=lm.f;if(_lco)_lco.textContent=lm.c;document.querySelectorAll('.lang-opt').forEach(o=>o.classList.toggle('sel',o.dataset.l===lang));
     color=localStorage.getItem('cp_col_'+slug)||'#185FA5';
-    // tmplNum — dashboard-dan seçilmiş şablon (1-12), lokal override var ise onu götür
-    const savedTmpl=parseInt(localStorage.getItem('cp_tmpl_'+slug)||PD.tmplNum||PD.template||'1');
+    // tmplNum — priority: Firebase (tmplNum) > URL param > localStorage
+    // localStorage is LAST so it never overrides a saved template from dashboard
+    const _urlTmpl=parseInt(new URLSearchParams(location.search).get('tmpl')||'0');
+    const savedTmpl=parseInt(PD.tmplNum||PD.template||(_urlTmpl||localStorage.getItem('cp_tmpl_'+slug))||'1');
     tmpl=isNaN(savedTmpl)?1:Math.min(Math.max(savedTmpl,1),12);
+    // Sync localStorage to match Firebase so future loads stay consistent
+    try{localStorage.setItem('cp_tmpl_'+slug,String(tmpl));}catch(e){}
     applyColor(color);
     document.getElementById('lw').style.display='none';
     document.getElementById('cardWrap').style.display='block';
