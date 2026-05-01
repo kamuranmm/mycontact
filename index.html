@@ -629,6 +629,7 @@
     const data = snap.val();
     if (!data) { await signOut(auth); showScreen('login'); return; }
     if (data.role === 'admin') { window.location.href = 'admin.html'; return; }
+    if (data.role === 'company_admin') { window.location.href = 'company_panel.html'; return; }
     const st = data.status || 'active';
     if (st === 'pending_order')    { showScreen('order'); return; }
     if (st === 'pending_approval') { showScreen('wait');  return; }
