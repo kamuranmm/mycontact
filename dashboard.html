@@ -312,7 +312,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
     <div class="nav-item" onclick="showPanel('signature')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Email İmzası<span class="nav-pro">PRO</span></div>
     <div class="nav-item" onclick="showPanel('customize')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 010 20"/></svg>Dizayn</div>
     <div class="nav-section">İnteqrasiya</div>
-    <div class="nav-item" id="nav-hubspot" onclick="showPanel('zapier')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.06 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>HubSpot CRM</div>
+    <div class="nav-item" id="nav-hubspot" onclick="showPanel('zapier')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.06 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>HubSpot CRM<span class="nav-pro">PRO</span></div>
     <div class="nav-item" onclick="showPanel('settings')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Ayarlar</div>
   </nav>
   <div class="sidebar-footer">
@@ -702,113 +702,138 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 
     <!-- MAKE.COM INTEGRATION -->
     <div class="panel" id="panel-zapier">
-      <div style="max-width:640px;display:flex;flex-direction:column;gap:1rem">
+      <div style="max-width:620px;display:flex;flex-direction:column;gap:1rem">
 
         <!-- Header -->
-        <div style="background:linear-gradient(135deg,rgba(255,122,89,.07),rgba(255,122,89,.02));border:1.5px solid rgba(255,122,89,.2);border-radius:13px;padding:1.1rem 1.25rem;display:flex;align-items:center;gap:13px">
-          <div style="width:44px;height:44px;border-radius:11px;background:#FF7A59;display:flex;align-items:center;justify-content:center;flex-shrink:0">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.06 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>
+        <div style="background:linear-gradient(135deg,rgba(24,95,165,.06),rgba(79,172,254,.02));border:1.5px solid rgba(24,95,165,.15);border-radius:13px;padding:1.1rem 1.25rem;display:flex;align-items:center;gap:12px">
+          <div style="width:42px;height:42px;border-radius:10px;background:var(--navy);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
           </div>
           <div>
-            <div style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:3px">HubSpot CRM İnteqrasiyası</div>
-            <div style="font-size:12px;color:var(--gray);line-height:1.5">Kontaktlarınızı birbaşa HubSpot-a göndərin — Make.com, webhook, üçüncü tərəf xidmət olmadan.</div>
+            <div style="font-size:14px;font-weight:500;color:var(--navy);margin-bottom:3px">HubSpot CRM İnteqrasiyası</div>
+            <div style="font-size:12px;color:var(--gray);line-height:1.5">Kontaktlarınızı birbaşa HubSpot-a göndərin — heç bir vasitəçi xidmət olmadan.</div>
           </div>
         </div>
 
-        <!-- Connection card -->
-        <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem" id="hsConnectCard">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:8px">
+        <!-- HubSpot Token — PRO Feature -->
+        <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem" id="hsDirectCard">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;flex-wrap:wrap;gap:8px">
             <div>
-              <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:3px">Private App Token</div>
-              <div style="font-size:12px;color:var(--gray)">HubSpot → Settings → Integrations → Private Apps → Create a private app</div>
+              <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:3px">HubSpot Private App Token
+                <span style="background:linear-gradient(135deg,#185FA5,#378ADD);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;margin-left:6px;vertical-align:middle">PRO</span>
+              </div>
+              <div style="font-size:12px;color:var(--gray)">HubSpot → Settings → Integrations → Private Apps → Create</div>
             </div>
             <span id="hsConnBadge" style="display:none;align-items:center;gap:5px;padding:4px 10px;border-radius:10px;font-size:11px;font-weight:600;background:rgba(39,174,96,.1);color:var(--success);border:1px solid rgba(39,174,96,.2)">
               <span style="width:6px;height:6px;border-radius:50%;background:var(--success);display:inline-block"></span> Qoşulub
             </span>
           </div>
-
           <div style="display:flex;gap:8px;margin-bottom:.75rem">
             <div style="position:relative;flex:1">
               <input class="form-input" id="hsTokenInput" type="password" placeholder="pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                style="padding-right:40px;font-family:monospace;font-size:12px">
-              <button onclick="toggleHsTokenVis()" title="Göstər/gizlət"
-                style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--gray);padding:0">
-                <svg id="hsEyeIcon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                style="padding-right:40px;font-family:monospace;font-size:12px"
+                onclick="if(!(UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business')){openUpgradeModal();this.blur();}">
+              <button onclick="toggleHsTokenVis()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--gray);padding:0">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
               </button>
             </div>
-            <button class="btn btn-primary" onclick="saveHsToken()" id="hsSaveBtn">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-              Saxla
-            </button>
-            <button class="btn" onclick="testHsToken()" id="hsTestBtn" style="white-space:nowrap">
-              Test et
-            </button>
+            <button class="btn btn-primary" onclick="saveHsToken()" id="hsSaveBtn">Saxla</button>
+            <button class="btn" onclick="testHsToken()" id="hsTestBtn">Test et</button>
           </div>
-
           <div id="hsTokenMsg" style="font-size:12px;border-radius:8px;padding:8px 12px;display:none;margin-bottom:.5rem"></div>
-
-          <div style="background:var(--surface);border-radius:9px;padding:.75rem 1rem;border:1px solid var(--gray-light)">
-            <div style="font-size:11px;font-weight:600;color:var(--navy);margin-bottom:6px">Token necə alınır?</div>
-            <div style="display:flex;flex-direction:column;gap:5px">
-              <div style="font-size:11px;color:var(--gray);line-height:1.5">① HubSpot-a daxil olun → <strong style="color:var(--navy)">Settings (⚙)</strong> → <strong style="color:var(--navy)">Integrations → Private Apps</strong></div>
-              <div style="font-size:11px;color:var(--gray);line-height:1.5">② <strong style="color:var(--navy)">Create a private app</strong> → Ad yazın → <strong style="color:var(--navy)">Scopes</strong> tabına keçin</div>
-              <div style="font-size:11px;color:var(--gray);line-height:1.5">③ <code style="background:rgba(0,0,0,.06);padding:1px 5px;border-radius:4px;font-size:10px">crm.objects.contacts.write</code> scope-u seçin</div>
-              <div style="font-size:11px;color:var(--gray);line-height:1.5">④ <strong style="color:var(--navy)">Create app</strong> → Token-i kopyalayın → yuxarıya yapışdırın ✓</div>
-            </div>
-          </div>
         </div>
 
-        <!-- Sync controls — visible only when token saved -->
-        <div id="hsSyncPanel" style="display:none;flex-direction:column;gap:1rem">
+        <!-- Tabbed Guide -->
+        <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
+          <div style="font-size:13px;font-weight:500;color:var(--navy);margin-bottom:.9rem">Hansı CRM-ə qoşmaq istəyirsiniz?</div>
 
-          <!-- Stats + bulk sync -->
-          <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
-            <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:.9rem">Kontaktları Sinxronlaşdır</div>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:1rem" class="mini-stats">
-              <div class="mini-stat"><div class="mini-stat-num" id="hsTotalCt">0</div><div class="mini-stat-label">Kontakt</div></div>
-              <div class="mini-stat"><div class="mini-stat-num" id="hsSyncedCt" style="color:var(--success)">0</div><div class="mini-stat-label">Göndərildi</div></div>
-              <div class="mini-stat"><div class="mini-stat-num" id="hsErrCt" style="color:var(--error)">0</div><div class="mini-stat-label">Xəta</div></div>
-            </div>
+          <!-- Tabs -->
+          <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem" id="autoGuideTabs">
+            <button onclick="showAutoGuide('hubspot')" id="autoTab-hubspot" style="padding:5px 10px;border-radius:8px;font-size:11px;font-weight:500;cursor:pointer;border:1.5px solid #FF7A59;background:rgba(255,122,89,.1);color:#FF7A59;font-family:'DM Sans',sans-serif">🟠 HubSpot</button>
+            <button onclick="showAutoGuide('salesforce')" id="autoTab-salesforce" style="padding:5px 10px;border-radius:8px;font-size:11px;font-weight:500;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--surface);color:var(--gray);font-family:'DM Sans',sans-serif">🔵 Salesforce</button>
+            <button onclick="showAutoGuide('pipedrive')" id="autoTab-pipedrive" style="padding:5px 10px;border-radius:8px;font-size:11px;font-weight:500;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--surface);color:var(--gray);font-family:'DM Sans',sans-serif">🟢 Pipedrive</button>
+            <button onclick="showAutoGuide('zoho')" id="autoTab-zoho" style="padding:5px 10px;border-radius:8px;font-size:11px;font-weight:500;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--surface);color:var(--gray);font-family:'DM Sans',sans-serif">🔴 Zoho CRM</button>
+            <button onclick="showAutoGuide('agile')" id="autoTab-agile" style="padding:5px 10px;border-radius:8px;font-size:11px;font-weight:500;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--surface);color:var(--gray);font-family:'DM Sans',sans-serif">🟣 Agile CRM</button>
+            <button onclick="showAutoGuide('dynamics')" id="autoTab-dynamics" style="padding:5px 10px;border-radius:8px;font-size:11px;font-weight:500;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--surface);color:var(--gray);font-family:'DM Sans',sans-serif">🔷 MS Dynamics</button>
+            <button onclick="showAutoGuide('sheets')" id="autoTab-sheets" style="padding:5px 10px;border-radius:8px;font-size:11px;font-weight:500;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--surface);color:var(--gray);font-family:'DM Sans',sans-serif">📊 Google Sheets</button>
+          </div>
 
-            <!-- Progress bar -->
-            <div id="hsPBar" style="display:none;height:6px;background:var(--gray-light);border-radius:3px;overflow:hidden;margin-bottom:.9rem">
-              <div id="hsPBarInner" style="height:100%;background:linear-gradient(90deg,#FF7A59,#ff9e7a);border-radius:3px;width:0;transition:width .3s"></div>
-            </div>
-
-            <div style="display:flex;gap:8px;flex-wrap:wrap">
-              <button class="btn btn-primary" onclick="syncAllToHubspot()" id="hsSyncAllBtn" style="background:#FF7A59;border-color:#FF7A59;flex:1">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>
-                Hamısını HubSpot-a göndər
-              </button>
-              <button class="btn" onclick="disconnectHubspot()" style="color:var(--error);border-color:rgba(231,76,60,.3)">Ayır</button>
+          <!-- HubSpot Guide -->
+          <div id="autoGuide-hubspot">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(255,122,89,.15);color:#FF7A59;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:12px;color:var(--gray);line-height:1.6"><a href="https://make.com" target="_blank" style="color:var(--blue)">make.com</a>-da qeydiyyat edin → <strong style="color:var(--navy)">Create a scenario</strong></div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(255,122,89,.15);color:#FF7A59;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:12px;color:var(--gray);line-height:1.6">Trigger: <strong style="color:var(--navy)">Webhooks → Custom webhook → Add</strong> → URL kopyalayın, yuxarıya yapışdırın, Saxla</div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(255,122,89,.15);color:#FF7A59;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:12px;color:var(--gray);line-height:1.6"><strong style="color:var(--navy)">Test et</strong> düyməsinə basın — Make-də data gəlsin</div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(255,122,89,.15);color:#FF7A59;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div><div style="font-size:12px;color:var(--gray);line-height:1.6">Make-də <strong style="color:var(--navy)">+</strong> → <strong style="color:var(--navy)">HubSpot CRM → Create or Update a Contact</strong></div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(255,122,89,.15);color:#FF7A59;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">5</div><div style="font-size:12px;color:var(--gray);line-height:1.6">HubSpot-a qoşun → Properties → Map toggle <strong style="color:var(--navy)">ON</strong> edin → sahələri birləşdirin:<br><code style="background:var(--surface);padding:4px 8px;border-radius:6px;font-size:11px;display:inline-block;margin-top:4px">firstname=name &nbsp;|&nbsp; email=email &nbsp;|&nbsp; phone=phone &nbsp;|&nbsp; company=company</code></div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(255,122,89,.15);color:#FF7A59;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">6</div><div style="font-size:12px;color:var(--gray);line-height:1.6">Scenario-nu <strong style="color:var(--navy)">ON</strong> edin → <strong style="color:var(--navy)">Save</strong> ✓</div></div>
             </div>
           </div>
 
-          <!-- Auto-sync toggle -->
-          <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
-            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
-              <div>
-                <div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:3px">Avtomatik Sinxronizasiya</div>
-                <div style="font-size:12px;color:var(--gray)">Yeni kontakt profildən saxlananda HubSpot-a avtomatik göndərilir</div>
-              </div>
-              <label style="position:relative;display:inline-block;width:42px;height:24px;flex-shrink:0">
-                <input type="checkbox" id="hsAutoSync" onchange="toggleHsAutoSync(this.checked)"
-                  style="opacity:0;width:0;height:0;position:absolute">
-                <span id="hsAutoTrack" style="position:absolute;cursor:pointer;inset:0;border-radius:24px;background:var(--gray-light);transition:.3s;"></span>
-                <span id="hsAutoThumb" style="position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,.2)"></span>
-              </label>
+          <!-- Salesforce Guide -->
+          <div id="autoGuide-salesforce" style="display:none">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(0,161,224,.15);color:#00A1E0;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:12px;color:var(--gray);line-height:1.6"><a href="https://make.com" target="_blank" style="color:var(--blue)">make.com</a>-da scenario yaradın → Webhooks → Custom webhook → URL alın</div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(0,161,224,.15);color:#00A1E0;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:12px;color:var(--gray);line-height:1.6">Make-də <strong style="color:var(--navy)">+</strong> → <strong style="color:var(--navy)">Salesforce → Create a Record → Contact</strong></div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(0,161,224,.15);color:#00A1E0;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:12px;color:var(--gray);line-height:1.6">Salesforce-a qoşun → sahələri birləşdirin:<br><code style="background:var(--surface);padding:4px 8px;border-radius:6px;font-size:11px;display:inline-block;margin-top:4px">FirstName=name &nbsp;|&nbsp; Email=email &nbsp;|&nbsp; Phone=phone &nbsp;|&nbsp; AccountName=company</code></div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(0,161,224,.15);color:#00A1E0;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div><div style="font-size:12px;color:var(--gray);line-height:1.6">Scenario-nu <strong style="color:var(--navy)">ON</strong> edin → <strong style="color:var(--navy)">Save</strong> ✓</div></div>
             </div>
           </div>
 
-          <!-- Sync log -->
-          <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem" id="hsSyncLogCard">
-            <div style="font-size:13px;font-weight:600;color:var(--navy);margin-bottom:.75rem">Son sinxronizasiyalar</div>
-            <div id="hsSyncLog" style="display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--gray)">
-              <div>Hələ sinxronizasiya edilməyib</div>
+          <!-- Pipedrive Guide -->
+          <div id="autoGuide-pipedrive" style="display:none">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(26,127,75,.15);color:#1A7F4B;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:12px;color:var(--gray);line-height:1.6"><a href="https://make.com" target="_blank" style="color:var(--blue)">make.com</a>-da scenario yaradın → Webhooks → Custom webhook → URL alın</div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(26,127,75,.15);color:#1A7F4B;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:12px;color:var(--gray);line-height:1.6">Make-də <strong style="color:var(--navy)">+</strong> → <strong style="color:var(--navy)">Pipedrive → Create a Person</strong></div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(26,127,75,.15);color:#1A7F4B;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:12px;color:var(--gray);line-height:1.6">Pipedrive-a qoşun → sahələri birləşdirin:<br><code style="background:var(--surface);padding:4px 8px;border-radius:6px;font-size:11px;display:inline-block;margin-top:4px">Name=name &nbsp;|&nbsp; Email=email &nbsp;|&nbsp; Phone=phone &nbsp;|&nbsp; Organization=company</code></div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(26,127,75,.15);color:#1A7F4B;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div><div style="font-size:12px;color:var(--gray);line-height:1.6">Scenario-nu <strong style="color:var(--navy)">ON</strong> edin → <strong style="color:var(--navy)">Save</strong> ✓</div></div>
             </div>
           </div>
 
-        </div><!-- /hsSyncPanel -->
+          <!-- Zoho Guide -->
+          <div id="autoGuide-zoho" style="display:none">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(228,37,39,.15);color:#E42527;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:12px;color:var(--gray);line-height:1.6"><a href="https://make.com" target="_blank" style="color:var(--blue)">make.com</a>-da scenario yaradın → Webhooks → Custom webhook → URL alın</div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(228,37,39,.15);color:#E42527;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:12px;color:var(--gray);line-height:1.6">Make-də <strong style="color:var(--navy)">+</strong> → <strong style="color:var(--navy)">Zoho CRM → Create a Contact</strong></div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(228,37,39,.15);color:#E42527;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:12px;color:var(--gray);line-height:1.6">Zoho-ya qoşun → sahələri birləşdirin:<br><code style="background:var(--surface);padding:4px 8px;border-radius:6px;font-size:11px;display:inline-block;margin-top:4px">First_Name=name &nbsp;|&nbsp; Email=email &nbsp;|&nbsp; Phone=phone &nbsp;|&nbsp; Account_Name=company</code></div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(228,37,39,.15);color:#E42527;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div><div style="font-size:12px;color:var(--gray);line-height:1.6">Scenario-nu <strong style="color:var(--navy)">ON</strong> edin → <strong style="color:var(--navy)">Save</strong> ✓</div></div>
+            </div>
+          </div>
+
+          <!-- Agile CRM Guide -->
+          <div id="autoGuide-agile" style="display:none">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(109,31,255,.15);color:#6d1fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:12px;color:var(--gray);line-height:1.6"><a href="https://make.com" target="_blank" style="color:var(--blue)">make.com</a>-da scenario yaradın → Webhooks → Custom webhook → URL alın</div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(109,31,255,.15);color:#6d1fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:12px;color:var(--gray);line-height:1.6">Make-də <strong style="color:var(--navy)">+</strong> → <strong style="color:var(--navy)">Agile CRM → Create a Contact</strong></div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(109,31,255,.15);color:#6d1fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:12px;color:var(--gray);line-height:1.6">Agile CRM-ə qoşun → sahələri birləşdirin:<br><code style="background:var(--surface);padding:4px 8px;border-radius:6px;font-size:11px;display:inline-block;margin-top:4px">first_name=name &nbsp;|&nbsp; email=email &nbsp;|&nbsp; phone=phone &nbsp;|&nbsp; company=company</code></div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(109,31,255,.15);color:#6d1fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div><div style="font-size:12px;color:var(--gray);line-height:1.6">Scenario-nu <strong style="color:var(--navy)">ON</strong> edin → <strong style="color:var(--navy)">Save</strong> ✓</div></div>
+            </div>
+          </div>
+
+          <!-- MS Dynamics Guide -->
+          <div id="autoGuide-dynamics" style="display:none">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(0,120,212,.15);color:#0078D4;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:12px;color:var(--gray);line-height:1.6"><a href="https://make.com" target="_blank" style="color:var(--blue)">make.com</a>-da scenario yaradın → Webhooks → Custom webhook → URL alın</div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(0,120,212,.15);color:#0078D4;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:12px;color:var(--gray);line-height:1.6">Make-də <strong style="color:var(--navy)">+</strong> → <strong style="color:var(--navy)">Microsoft Dynamics 365 → Create a Record → Contact</strong></div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(0,120,212,.15);color:#0078D4;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:12px;color:var(--gray);line-height:1.6">Microsoft hesabına qoşun → sahələri birləşdirin:<br><code style="background:var(--surface);padding:4px 8px;border-radius:6px;font-size:11px;display:inline-block;margin-top:4px">firstname=name &nbsp;|&nbsp; emailaddress1=email &nbsp;|&nbsp; telephone1=phone &nbsp;|&nbsp; companyname=company</code></div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(0,120,212,.15);color:#0078D4;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div><div style="font-size:12px;color:var(--gray);line-height:1.6">Scenario-nu <strong style="color:var(--navy)">ON</strong> edin → <strong style="color:var(--navy)">Save</strong> ✓</div></div>
+            </div>
+          </div>
+
+          <!-- Google Sheets Guide -->
+          <div id="autoGuide-sheets" style="display:none">
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(39,174,96,.15);color:var(--success);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">1</div><div style="font-size:12px;color:var(--gray);line-height:1.6">Google Sheets-də yeni cədvəl yaradın. Sütunlar: <code style="background:var(--surface);padding:2px 6px;border-radius:4px;font-size:11px">Ad | Email | Telefon | Şirkət | Tarix</code></div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(39,174,96,.15);color:var(--success);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">2</div><div style="font-size:12px;color:var(--gray);line-height:1.6"><a href="https://make.com" target="_blank" style="color:var(--blue)">make.com</a>-da scenario yaradın → Webhooks → Custom webhook → URL alın</div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(39,174,96,.15);color:var(--success);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">3</div><div style="font-size:12px;color:var(--gray);line-height:1.6">Make-də <strong style="color:var(--navy)">+</strong> → <strong style="color:var(--navy)">Google Sheets → Add a Row</strong> → sahələri birləşdirin:<br><code style="background:var(--surface);padding:4px 8px;border-radius:6px;font-size:11px;display:inline-block;margin-top:4px">Ad=name &nbsp;|&nbsp; Email=email &nbsp;|&nbsp; Telefon=phone &nbsp;|&nbsp; Şirkət=company &nbsp;|&nbsp; Tarix=savedAt</code></div></div>
+              <div style="display:flex;gap:10px;align-items:flex-start"><div style="width:22px;height:22px;border-radius:50%;background:rgba(39,174,96,.15);color:var(--success);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0">4</div><div style="font-size:12px;color:var(--gray);line-height:1.6">Scenario-nu <strong style="color:var(--navy)">ON</strong> edin → <strong style="color:var(--navy)">Save</strong> ✓</div></div>
+            </div>
+          </div>
+
+          <div style="margin-top:1rem;padding:.75rem;background:var(--surface);border-radius:8px;font-size:11px;color:var(--gray);line-height:1.5">
+            <strong style="color:var(--navy)">Göndərilən data:</strong> <code style="background:rgba(24,95,165,.07);padding:1px 5px;border-radius:4px;font-size:10px">name, email, phone, company, position, note, savedAt</code>
+          </div>
+        </div>
 
       </div>
     </div>
@@ -951,9 +976,6 @@ onAuthStateChanged(auth,async u=>{
     renderContacts(allContacts);
     document.getElementById('contactsBadge').textContent=allContacts.length;
     document.getElementById('ovContacts').textContent=allContacts.length;
-    // HubSpot panelindəki Kontakt sayını da yenilə (contacts Firebase-dən gəldikdən sonra)
-    const _hsTot=document.getElementById('hsTotalCt');
-    if(_hsTot)_hsTot.textContent=allContacts.length;
     // Limit badge
     const isPro=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
     const badge=document.getElementById('contactLimitBadge');
@@ -1282,22 +1304,27 @@ window.addManualContact=async function(){
 
 // CRM
 function loadCrmStatus(crm,plan){
-  // HubSpot direct token
-  const token=crm?.hubspot?.apiKey||'';
-  if(token){
-    const inp=document.getElementById('hsTokenInput');
-    if(inp)inp.value=token;
-    _showHsConnected(crm);
+  const isPro=plan==='pro'||plan==='premium';
+  // Show/hide all pro locks
+  ['sfLock','zohoLock','pipeLock','gcLock','dynLock'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.style.display=isPro?'none':'flex';
+  });
+  // HubSpot — direkt API token
+  const hsToken=crm?.hubspot?.apiKey||'';
+  const hsInp=document.getElementById('hsTokenInput');
+  if(hsInp&&hsToken){hsInp.value=hsToken;}
+  if(hsToken){
+    const b=document.getElementById('hsConnBadge');if(b)b.style.display='flex';
+    const p=document.getElementById('hsSyncPanel');if(p)p.style.display='flex';
+    const tot=document.getElementById('hsTotalCt');if(tot)tot.textContent=allContacts?.length||0;
+    const syn=document.getElementById('hsSyncedCt');if(syn)syn.textContent=crm?.hubspot?.syncCount||0;
   }
-  // Auto-sync toggle state
-  const chk=document.getElementById('hsAutoSync');
-  if(chk){
-    const on=crm?.hubspot?.autoSync===true;
-    chk.checked=on;
-    _applyHsToggle(on);
-  }
-  // Sync log
-  _renderHsSyncLog(crm?.log||[]);
+  // Legacy elements — hide if present
+  ['hsDot','hsStatusText','hsSyncRow'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
+  try{if(document.getElementById('hsCard'))document.getElementById('hsCard').classList.toggle('connected',!!hsToken);}catch(e){}
+  if(crm.salesforce&&isPro){document.getElementById('sfDot').className='crm-dot on';document.getElementById('sfStatusText').textContent='Qoşulub';document.getElementById('sfSyncRow').style.display='flex';document.getElementById('sfSyncCount').textContent=(crm.salesforce.syncCount||0)+' sync edilib';document.getElementById('sfCard').classList.add('connected');}
+  if(crm.hubspot||crm.salesforce){document.getElementById('crmLogCard').style.display='block';const log=crm.log||[];document.getElementById('crmLog').innerHTML=log.length?log.slice(-5).reverse().map(l=>`<div style="display:flex;justify-content:space-between"><span>${l.msg}</span><span>${new Date(l.at).toLocaleDateString('az')}</span></div>`).join(''):'<div>Hələ sync edilməyib</div>';}
 }
 window.openCrmModal=function(t){crmTarget=t;const crm=UD?.crm||{};
   const configs={
@@ -1311,203 +1338,121 @@ window.openCrmModal=function(t){crmTarget=t;const crm=UD?.crm||{};
   document.getElementById('crmModalTitle').textContent=c.title;document.getElementById('crmModalSub').textContent=c.sub;document.getElementById('crmModalFields').innerHTML=c.html;
   document.getElementById('crmModal').classList.add('open');
 };
-// ── HUBSPOT DIRECT API ENGINE ─────────────────────────────────────────────
+// ── HUBSPOT DIRECT API (PRO) ──────────────────────────────────────────────
+const HS_PROXY='https://tiny-rain-6251.bykamran.workers.dev';
 
-// Low-level: send one contact to HubSpot, returns {ok, status}
-async function _hsPushContact(token, contact){
-  const nameParts=(contact.name||'').trim().split(/\s+/);
-  const body={properties:{
-    firstname: nameParts[0]||'',
-    lastname:  nameParts.slice(1).join(' ')||'',
-    phone:     contact.phone||'',
-    email:     contact.email||'',
-    company:   contact.company||'',
-    jobtitle:  contact.position||'',
-    hs_lead_status:'NEW'
-  }};
+async function _hsPush(token,contact){
+  const nm=(contact.name||'').trim().split(/\s+/);
   try{
-    const r=await fetch('https://tiny-rain-6251.bykamran.workers.dev/crm/v3/objects/contacts',{
+    const r=await fetch(HS_PROXY+'/crm/v3/objects/contacts',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
-      body:JSON.stringify(body)
+      body:JSON.stringify({properties:{
+        firstname:nm[0]||'',lastname:nm.slice(1).join(' ')||'',
+        phone:contact.phone||'',email:contact.email||'',
+        company:contact.company||'',jobtitle:contact.position||''
+      }})
     });
-    if(r.status===409)return{ok:true,status:409}; // artıq mövcuddur = OK
-    if(!r.ok){
-      let errBody='';
-      try{const j=await r.json();errBody=j?.message||j?.error||JSON.stringify(j);}catch(e2){}
-      console.error(`HubSpot ${r.status}:`,errBody,'| contact:',contact.email||contact.name);
-      return{ok:false,status:r.status,msg:errBody};
-    }
+    if(r.status===409)return{ok:true,status:409};
+    if(!r.ok){const j=await r.json().catch(()=>({}));console.error(`HS ${r.status}:`,j?.message||'');return{ok:false,status:r.status};}
     return{ok:true,status:r.status};
-  }catch(e){
-    console.warn('HubSpot fetch xətası:',e.message);
-    return{ok:false,status:0,msg:e.message};
-  }
+  }catch(e){console.warn('HS fetch:',e.message);return{ok:false,status:0};}
 }
 
-// UI helpers
-function _showHsConnected(crm){
-  const badge=document.getElementById('hsConnBadge');
-  if(badge)badge.style.display='flex';
-  const panel=document.getElementById('hsSyncPanel');
-  if(panel)panel.style.display='flex';
-  const tot=document.getElementById('hsTotalCt');
-  if(tot)tot.textContent=allContacts?.length||0;
-  const synced=document.getElementById('hsSyncedCt');
-  if(synced)synced.textContent=crm?.hubspot?.syncCount||0;
-}
-function _applyHsToggle(on){
-  const track=document.getElementById('hsAutoTrack');
-  const thumb=document.getElementById('hsAutoThumb');
-  if(track)track.style.background=on?'#FF7A59':'var(--gray-light)';
-  if(thumb)thumb.style.transform=on?'translateX(18px)':'translateX(0)';
-}
-function _renderHsSyncLog(log){
-  const el=document.getElementById('hsSyncLog');
-  if(!el)return;
-  if(!log||!log.length){el.innerHTML='<div>Hələ sinxronizasiya edilməyib</div>';return;}
-  el.innerHTML=log.slice(-8).reverse().map(l=>{
-    const icon=l.err?'✗':'✓';
-    const col=l.err?'var(--error)':'var(--success)';
-    return`<div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--gray-light)">
-      <span style="color:${col};font-weight:500">${icon} ${l.msg}</span>
-      <span style="font-size:11px">${new Date(l.at).toLocaleDateString('az')}</span>
-    </div>`;
-  }).join('');
-}
-
-// Save token
 window.saveHsToken=async function(){
+  if(!(UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business')){openUpgradeModal();return;}
   const token=(document.getElementById('hsTokenInput')?.value||'').trim();
   if(!token){showToast('Token daxil edin','error');return;}
   if(!token.startsWith('pat-')){showToast('Token pat- ilə başlamalıdır','error');return;}
-  const btn=document.getElementById('hsSaveBtn');
-  if(btn){btn.disabled=true;btn.textContent='Saxlanır...';}
+  const btn=document.getElementById('hsSaveBtn');if(btn){btn.disabled=true;btn.textContent='Saxlanır...';}
   await update(ref(db,`users/${CU.uid}/crm/hubspot`),{apiKey:token,connectedAt:Date.now()});
   if(UD){if(!UD.crm)UD.crm={};if(!UD.crm.hubspot)UD.crm.hubspot={};UD.crm.hubspot.apiKey=token;}
-  _showHsConnected(UD?.crm||{});
+  const b=document.getElementById('hsConnBadge');if(b)b.style.display='flex';
+  const p=document.getElementById('hsSyncPanel');if(p)p.style.display='flex';
   showToast('HubSpot token saxlanıldı ✓','success');
   if(btn){btn.disabled=false;btn.textContent='Saxla';}
 };
 
-// Test token
 window.testHsToken=async function(){
+  if(!(UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business')){openUpgradeModal();return;}
   const token=(document.getElementById('hsTokenInput')?.value||'').trim()||UD?.crm?.hubspot?.apiKey;
-  const msg=document.getElementById('hsTokenMsg');
-  const btn=document.getElementById('hsTestBtn');
-  if(!token){showToast('Əvvəlcə token daxil edin','error');return;}
-  if(btn){btn.disabled=true;btn.textContent='Yoxlanır...';}
-  if(msg){msg.style.display='none';}
+  if(!token){showToast('Token daxil edin','error');return;}
+  const btn=document.getElementById('hsTestBtn');if(btn){btn.disabled=true;btn.textContent='Yoxlanır...';}
+  const msg=document.getElementById('hsTokenMsg');if(msg)msg.style.display='none';
   try{
-    const r=await fetch('https://tiny-rain-6251.bykamran.workers.dev/crm/v3/objects/contacts?limit=1',{
-      headers:{'Authorization':'Bearer '+token}
-    });
+    const r=await fetch(HS_PROXY+'/crm/v3/objects/contacts?limit=1',{headers:{'Authorization':'Bearer '+token}});
     if(r.ok){
       if(msg){msg.textContent='✓ Token düzgündür — HubSpot bağlantısı aktiv';msg.style.background='#f0fdf4';msg.style.color='var(--success)';msg.style.border='1px solid #bbf7d0';msg.style.display='block';}
       showToast('HubSpot bağlantısı aktiv ✓','success');
-    } else {
+    }else{
       const err=await r.json().catch(()=>({}));
-      const detail=err?.message||`HTTP ${r.status}`;
-      if(msg){msg.textContent=`✗ Token yanlışdır: ${detail}`;msg.style.background='#fef2f2';msg.style.color='var(--error)';msg.style.border='1px solid #fecaca';msg.style.display='block';}
+      if(msg){msg.textContent='✗ Token yanlışdır: '+(err?.message||`HTTP ${r.status}`);msg.style.background='#fef2f2';msg.style.color='var(--error)';msg.style.border='1px solid #fecaca';msg.style.display='block';}
       showToast('Token yanlışdır','error');
     }
   }catch(e){
-    if(msg){msg.textContent='✗ CORS xətası — bu normal, token yenə də işləyə bilər. Saxla düyməsinə basın.';msg.style.background='#fffbeb';msg.style.color='#d97706';msg.style.border='1px solid #fed7aa';msg.style.display='block';}
+    if(msg){msg.textContent='Xəta: '+e.message;msg.style.background='#fffbeb';msg.style.color='#d97706';msg.style.border='1px solid #fed7aa';msg.style.display='block';}
   }
   if(btn){btn.disabled=false;btn.textContent='Test et';}
 };
-
-// Toggle token visibility
-window.toggleHsTokenVis=function(){
-  const inp=document.getElementById('hsTokenInput');
-  if(!inp)return;
-  inp.type=inp.type==='password'?'text':'password';
-};
-
-// Disconnect
+window.toggleHsTokenVis=function(){const i=document.getElementById('hsTokenInput');if(i)i.type=i.type==='password'?'text':'password';};
 window.disconnectHubspot=async function(){
-  if(!confirm('HubSpot inteqrasiyasını silmək istəyirsiniz?'))return;
+  if(!confirm('HubSpot inteqrasiyasını silirsiniz?'))return;
   await update(ref(db,`users/${CU.uid}/crm`),{hubspot:null});
   if(UD?.crm)UD.crm.hubspot=null;
-  const inp=document.getElementById('hsTokenInput');if(inp)inp.value='';
-  const badge=document.getElementById('hsConnBadge');if(badge)badge.style.display='none';
-  const panel=document.getElementById('hsSyncPanel');if(panel)panel.style.display='none';
+  const i=document.getElementById('hsTokenInput');if(i)i.value='';
+  const b=document.getElementById('hsConnBadge');if(b)b.style.display='none';
+  const p=document.getElementById('hsSyncPanel');if(p)p.style.display='none';
   showToast('HubSpot ayırıldı','success');
 };
-
-// Auto-sync toggle
 window.toggleHsAutoSync=async function(on){
-  _applyHsToggle(on);
+  const track=document.getElementById('hsAutoTrack');const thumb=document.getElementById('hsAutoThumb');
+  if(track)track.style.background=on?'#FF7A59':'var(--gray-light)';
+  if(thumb)thumb.style.transform=on?'translateX(18px)':'translateX(0)';
   await update(ref(db,`users/${CU.uid}/crm/hubspot`),{autoSync:on});
-  if(UD?.crm?.hubspot)UD.crm.hubspot.autoSync=on;
-  showToast(on?'Avtomatik sync aktiv ✓':'Avtomatik sync deaktiv','success');
+  showToast(on?'Avtomatik sync aktiv ✓':'Deaktiv edildi','success');
 };
 
-// Bulk sync all contacts
 window.syncAllToHubspot=async function(){
+  if(!(UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business')){openUpgradeModal();return;}
   const token=UD?.crm?.hubspot?.apiKey;
-  if(!token){showToast('HubSpot token tapılmadı','error');return;}
-  // allContacts boşdursa Firebase-dən yenidən oxu (race condition fix)
+  if(!token){showToast('Əvvəlcə HubSpot token daxil edin','error');return;}
   if(!allContacts?.length){
     const _snap=await get(ref(db,`contacts/${CU.uid}`));
     const _d=_snap.val()||{};
     allContacts=Object.entries(_d).map(([id,ct])=>({id,...ct}));
-    const _hsTot=document.getElementById('hsTotalCt');
-    if(_hsTot)_hsTot.textContent=allContacts.length;
   }
   if(!allContacts?.length){showToast('Göndəriləcək kontakt yoxdur','error');return;}
   const btn=document.getElementById('hsSyncAllBtn');
-  const pbar=document.getElementById('hsPBar');
-  const pbarIn=document.getElementById('hsPBarInner');
+  const pbar=document.getElementById('hsPBar');const pbarIn=document.getElementById('hsPBarInner');
   if(btn){btn.disabled=true;btn.textContent='Göndərilir...';}
   if(pbar)pbar.style.display='block';
   let count=0,errors=0;
   for(let i=0;i<allContacts.length;i++){
-    const res=await _hsPushContact(token,allContacts[i]);
+    const res=await _hsPush(token,allContacts[i]);
     if(res.ok)count++;else errors++;
     const pct=Math.round(((i+1)/allContacts.length)*100);
     if(pbarIn)pbarIn.style.width=pct+'%';
-    document.getElementById('hsSyncedCt').textContent=count;
-    document.getElementById('hsErrCt').textContent=errors;
+    const sc=document.getElementById('hsSyncedCt');if(sc)sc.textContent=count;
+    const ec=document.getElementById('hsErrCt');if(ec)ec.textContent=errors;
   }
   if(pbar)setTimeout(()=>pbar.style.display='none',1500);
-
-  // Button həmişə sıfırlanır (xəta olsa belə)
-  if(btn){btn.disabled=false;btn.textContent='Hamısını HubSpot-a göndər';}
-
-
-  // Proxy aktiv — CORS problemi yoxdur
-
-
-  // Show last error details in log
-  const lastResults=[];
-  const logEntry={msg:`${count} kontakt göndərildi${errors?' ('+errors+' xəta — konsola bax)':''}`,at:Date.now(),err:errors>0};
-  console.log('HubSpot sync nəticəsi:','göndərildi:',count,'xəta:',errors);
+  const logEntry={msg:`${count} kontakt göndərildi${errors?' ('+errors+' xəta)':''}`,at:Date.now(),err:errors>0};
   const newLog=[...(UD?.crm?.log||[]),logEntry];
   await update(ref(db,`users/${CU.uid}/crm`),{'hubspot/syncCount':count,log:newLog});
-  if(UD?.crm){if(!UD.crm.hubspot)UD.crm.hubspot={};UD.crm.hubspot.syncCount=count;UD.crm.log=newLog;}
-  _renderHsSyncLog(newLog);
+  if(UD?.crm?.hubspot)UD.crm.hubspot.syncCount=count;
+  const logEl=document.getElementById('hsSyncLog');
+  if(logEl)logEl.innerHTML=newLog.slice(-5).reverse().map(l=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--gray-light);font-size:12px"><span style="color:${l.err?'var(--error)':'var(--success)'}">${l.err?'✗':'✓'} ${l.msg}</span><span style="color:var(--gray)">${new Date(l.at).toLocaleDateString('az')}</span></div>`).join('');
+  if(btn){btn.disabled=false;btn.textContent='Hamısını HubSpot-a göndər';}
   if(count>0)showToast(`${count} kontakt HubSpot-a göndərildi ✓`,'success');
-  else showToast('Xəta baş verdi — token yoxlanın','error');
+  else showToast('Xəta — token və ya proxy yoxlanın','error');
 };
-
-// Legacy wrapper (called from contacts panel "CRM-ə göndər" button)
 window.syncToHubspot=window.syncAllToHubspot;
 
-// Auto-sync single new contact (called when contact is saved from profile)
 async function syncContactToHubspot(contact){
   const token=UD?.crm?.hubspot?.apiKey;
   if(!token||!UD?.crm?.hubspot?.autoSync)return;
-  try{
-    const res=await _hsPushContact(token,contact);
-    if(res.ok){
-      const logEntry={msg:`${contact.name||contact.email||'Kontakt'} göndərildi`,at:Date.now()};
-      const newLog=[...(UD?.crm?.log||[]),logEntry];
-      await update(ref(db,`users/${CU.uid}/crm`),{log:newLog});
-      if(UD?.crm)UD.crm.log=newLog;
-      _renderHsSyncLog(newLog);
-    }
-  }catch(e){console.warn('HubSpot auto-sync xətası:',e);}
+  if(!(UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business'))return;
+  await _hsPush(token,contact);
 }
 window.renderSigPreview=function(){
   if(typeof sigState==='undefined'){sigState={name:true,position:true,phone:true,email:true,web:false,socials:false,photo:false,cardlink:true};}
