@@ -951,6 +951,9 @@ onAuthStateChanged(auth,async u=>{
     renderContacts(allContacts);
     document.getElementById('contactsBadge').textContent=allContacts.length;
     document.getElementById('ovContacts').textContent=allContacts.length;
+    // HubSpot panelindəki Kontakt sayını da yenilə (contacts Firebase-dən gəldikdən sonra)
+    const _hsTot=document.getElementById('hsTotalCt');
+    if(_hsTot)_hsTot.textContent=allContacts.length;
     // Limit badge
     const isPro=UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business';
     const badge=document.getElementById('contactLimitBadge');
@@ -1432,6 +1435,14 @@ window.toggleHsAutoSync=async function(on){
 window.syncAllToHubspot=async function(){
   const token=UD?.crm?.hubspot?.apiKey;
   if(!token){showToast('HubSpot token tapılmadı','error');return;}
+  // allContacts boşdursa Firebase-dən yenidən oxu (race condition fix)
+  if(!allContacts?.length){
+    const _snap=await get(ref(db,`contacts/${CU.uid}`));
+    const _d=_snap.val()||{};
+    allContacts=Object.entries(_d).map(([id,ct])=>({id,...ct}));
+    const _hsTot=document.getElementById('hsTotalCt');
+    if(_hsTot)_hsTot.textContent=allContacts.length;
+  }
   if(!allContacts?.length){showToast('Göndəriləcək kontakt yoxdur','error');return;}
   const btn=document.getElementById('hsSyncAllBtn');
   const pbar=document.getElementById('hsPBar');
