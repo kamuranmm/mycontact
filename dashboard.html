@@ -1326,17 +1326,22 @@ async function _hsPushContact(token, contact){
     hs_lead_status:'NEW'
   }};
   try{
-    const r=await fetch('https://mycontact.bykamran.workers.dev/crm/v3/objects/contacts',{
+    const r=await fetch('https://tiny-rain-6251.bykamran.workers.dev/crm/v3/objects/contacts',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
       body:JSON.stringify(body)
     });
-    if(r.status===409)return{ok:true,status:409}; // already exists = OK
-    return{ok:r.ok, status:r.status};
+    if(r.status===409)return{ok:true,status:409}; // artıq mövcuddur = OK
+    if(!r.ok){
+      let errBody='';
+      try{const j=await r.json();errBody=j?.message||j?.error||JSON.stringify(j);}catch(e2){}
+      console.error(`HubSpot ${r.status}:`,errBody,'| contact:',contact.email||contact.name);
+      return{ok:false,status:r.status,msg:errBody};
+    }
+    return{ok:true,status:r.status};
   }catch(e){
-    // CORS or network error — log and continue loop (don't freeze)
-    console.warn('HubSpot fetch error:',e.message);
-    return{ok:false,status:0,corsError:e.message.includes('CORS')||e.message.includes('fetch')};
+    console.warn('HubSpot fetch xətası:',e.message);
+    return{ok:false,status:0,msg:e.message};
   }
 }
 
@@ -1394,7 +1399,7 @@ window.testHsToken=async function(){
   if(btn){btn.disabled=true;btn.textContent='Yoxlanır...';}
   if(msg){msg.style.display='none';}
   try{
-    const r=await fetch('https://mycontact.bykamran.workers.dev/crm/v3/objects/contacts?limit=1',{
+    const r=await fetch('https://tiny-rain-6251.bykamran.workers.dev/crm/v3/objects/contacts?limit=1',{
       headers:{'Authorization':'Bearer '+token}
     });
     if(r.ok){
@@ -1474,7 +1479,10 @@ window.syncAllToHubspot=async function(){
   // Proxy aktiv — CORS problemi yoxdur
 
 
-  const logEntry={msg:`${count} kontakt göndərildi${errors?' ('+errors+' xəta)':''}`,at:Date.now(),err:errors>0};
+  // Show last error details in log
+  const lastResults=[];
+  const logEntry={msg:`${count} kontakt göndərildi${errors?' ('+errors+' xəta — konsola bax)':''}`,at:Date.now(),err:errors>0};
+  console.log('HubSpot sync nəticəsi:','göndərildi:',count,'xəta:',errors);
   const newLog=[...(UD?.crm?.log||[]),logEntry];
   await update(ref(db,`users/${CU.uid}/crm`),{'hubspot/syncCount':count,log:newLog});
   if(UD?.crm){if(!UD.crm.hubspot)UD.crm.hubspot={};UD.crm.hubspot.syncCount=count;UD.crm.log=newLog;}
