@@ -312,7 +312,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
     <div class="nav-item" onclick="showPanel('signature')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Email İmzası<span class="nav-pro">PRO</span></div>
     <div class="nav-item" onclick="showPanel('customize')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 010 20"/></svg>Dizayn</div>
     <div class="nav-section">İnteqrasiya</div>
-    <div class="nav-item" id="nav-hubspot" onclick="showPanel('zapier')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.06 1.18 2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92z"/></svg>HubSpot CRM<span class="nav-pro">PRO</span></div>
+    <div class="nav-item" onclick="showPanel('zapier')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>HubSpot CRM<span class="nav-pro">PRO</span></div>
     <div class="nav-item" onclick="showPanel('settings')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Ayarlar</div>
   </nav>
   <div class="sidebar-footer">
@@ -710,37 +710,31 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
           </div>
           <div>
-            <div style="font-size:14px;font-weight:500;color:var(--navy);margin-bottom:3px">HubSpot CRM İnteqrasiyası</div>
+            <div style="font-size:14px;font-weight:500;color:var(--navy);margin-bottom:3px">CRM İnteqrasiya</div>
             <div style="font-size:12px;color:var(--gray);line-height:1.5">Kontaktlarınızı birbaşa HubSpot-a göndərin — heç bir vasitəçi xidmət olmadan.</div>
           </div>
         </div>
 
-        <!-- HubSpot Token — PRO Feature -->
-        <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem" id="hsDirectCard">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;flex-wrap:wrap;gap:8px">
-            <div>
-              <div style="font-size:14px;font-weight:600;color:var(--navy);margin-bottom:3px">HubSpot Private App Token
-                <span style="background:linear-gradient(135deg,#185FA5,#378ADD);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;margin-left:6px;vertical-align:middle">PRO</span>
-              </div>
-              <div style="font-size:12px;color:var(--gray)">HubSpot → Settings → Integrations → Private Apps → Create</div>
+        <!-- Webhook URL -->
+        <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
+          <div style="font-size:14px;font-weight:500;color:var(--navy);margin-bottom:.25rem">HubSpot Private App Token <span style="background:linear-gradient(135deg,#185FA5,#378ADD);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;margin-left:4px;vertical-align:middle">PRO</span></div>
+          <div style="font-size:12px;color:var(--gray);margin-bottom:1rem">HubSpot → Settings → Integrations → Private Apps → Create a private app → Token kopyalayın.</div>
+          <div class="form-group" style="margin-bottom:0">
+            <label class="form-label">Webhook URL</label>
+            <div style="display:flex;gap:8px;align-items:center">
+              <input class="form-input" id="automationWebhookInput" placeholder="https://hook.eu1.make.com/..." style="flex:1" onclick="if(!(UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business')){openUpgradeModal();this.blur();}">
+              <div id="autoStatusDot" style="width:10px;height:10px;border-radius:50%;background:var(--gray-light);flex-shrink:0;transition:background .3s"></div>
             </div>
-            <span id="hsConnBadge" style="display:none;align-items:center;gap:5px;padding:4px 10px;border-radius:10px;font-size:11px;font-weight:600;background:rgba(39,174,96,.1);color:var(--success);border:1px solid rgba(39,174,96,.2)">
-              <span style="width:6px;height:6px;border-radius:50%;background:var(--success);display:inline-block"></span> Qoşulub
-            </span>
+            <div id="autoUrlError" style="font-size:11px;color:var(--error);margin-top:5px;display:none">Düzgün webhook URL daxil edin</div>
           </div>
-          <div style="display:flex;gap:8px;margin-bottom:.75rem">
-            <div style="position:relative;flex:1">
-              <input class="form-input" id="hsTokenInput" type="password" placeholder="pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-                style="padding-right:40px;font-family:monospace;font-size:12px"
-                onclick="if(!(UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business')){openUpgradeModal();this.blur();}">
-              <button onclick="toggleHsTokenVis()" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--gray);padding:0">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-              </button>
-            </div>
-            <button class="btn btn-primary" onclick="saveHsToken()" id="hsSaveBtn">Saxla</button>
-            <button class="btn" onclick="testHsToken()" id="hsTestBtn">Test et</button>
+          <div style="display:flex;gap:8px;margin-top:1rem;justify-content:flex-end">
+            <button class="btn" onclick="testAutoWebhook()" id="autoTestBtn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>Test et
+            </button>
+            <button class="btn btn-primary" onclick="saveAutoWebhook()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>Saxla
+            </button>
           </div>
-          <div id="hsTokenMsg" style="font-size:12px;border-radius:8px;padding:8px 12px;display:none;margin-bottom:.5rem"></div>
         </div>
 
         <!-- Tabbed Guide -->
@@ -1310,19 +1304,11 @@ function loadCrmStatus(crm,plan){
     const el=document.getElementById(id);
     if(el)el.style.display=isPro?'none':'flex';
   });
-  // HubSpot — direkt API token
-  const hsToken=crm?.hubspot?.apiKey||'';
-  const hsInp=document.getElementById('hsTokenInput');
-  if(hsInp&&hsToken){hsInp.value=hsToken;}
-  if(hsToken){
-    const b=document.getElementById('hsConnBadge');if(b)b.style.display='flex';
-    const p=document.getElementById('hsSyncPanel');if(p)p.style.display='flex';
-    const tot=document.getElementById('hsTotalCt');if(tot)tot.textContent=allContacts?.length||0;
-    const syn=document.getElementById('hsSyncedCt');if(syn)syn.textContent=crm?.hubspot?.syncCount||0;
-  }
-  // Legacy elements — hide if present
-  ['hsDot','hsStatusText','hsSyncRow'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display='none';});
-  try{if(document.getElementById('hsCard'))document.getElementById('hsCard').classList.toggle('connected',!!hsToken);}catch(e){}
+  // HubSpot — Make.com webhook qoşulub
+  document.getElementById('hsDot').className='crm-dot on';
+  document.getElementById('hsStatusText').textContent='Qoşulub ✓';
+  document.getElementById('hsSyncRow').style.display='flex';
+  if(true){document.getElementById('hsSyncCount').textContent=(crm.hubspot.syncCount||0)+' sync edilib';document.getElementById('hsCard').classList.add('connected');}
   if(crm.salesforce&&isPro){document.getElementById('sfDot').className='crm-dot on';document.getElementById('sfStatusText').textContent='Qoşulub';document.getElementById('sfSyncRow').style.display='flex';document.getElementById('sfSyncCount').textContent=(crm.salesforce.syncCount||0)+' sync edilib';document.getElementById('sfCard').classList.add('connected');}
   if(crm.hubspot||crm.salesforce){document.getElementById('crmLogCard').style.display='block';const log=crm.log||[];document.getElementById('crmLog').innerHTML=log.length?log.slice(-5).reverse().map(l=>`<div style="display:flex;justify-content:space-between"><span>${l.msg}</span><span>${new Date(l.at).toLocaleDateString('az')}</span></div>`).join(''):'<div>Hələ sync edilməyib</div>';}
 }
@@ -1338,121 +1324,58 @@ window.openCrmModal=function(t){crmTarget=t;const crm=UD?.crm||{};
   document.getElementById('crmModalTitle').textContent=c.title;document.getElementById('crmModalSub').textContent=c.sub;document.getElementById('crmModalFields').innerHTML=c.html;
   document.getElementById('crmModal').classList.add('open');
 };
-// ── HUBSPOT DIRECT API (PRO) ──────────────────────────────────────────────
-const HS_PROXY='https://tiny-rain-6251.bykamran.workers.dev';
+window.syncToHubspot=async function(){
+  if(!(UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business')){openUpgradeModal();return;}
+  const token=UD?.crm?.hubspot?.apiKey;
+  if(!token){showToast('Əvvəlcə HubSpot token daxil edin','error');openCrmModal('hubspot');return;}
+  if(!allContacts.length){showToast('Göndəriləcək kontakt yoxdur','error');return;}
+  showToast('HubSpot-a göndərilir...');
+  let count=0,errors=0;
+  for(const ct of allContacts){
+    try{
+      const r=await fetch('https://tiny-rain-6251.bykamran.workers.dev/crm/v3/objects/contacts',{
+        method:'POST',
+        headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+        body:JSON.stringify({properties:{
+          firstname:ct.name?.split(' ')[0]||'',
+          lastname:ct.name?.split(' ').slice(1).join(' ')||'',
+          phone:ct.phone||'',
+          email:ct.email||'',
+          company:ct.company||'',
+          jobtitle:ct.position||''
+        }})
+      });
+      if(r.ok||r.status===409)count++; // 409 = artıq mövcuddur
+      else{errors++;const e=await r.json();console.error('HubSpot err:',e);}
+    }catch(e){errors++;console.error(e);}
+  }
+  const log=[...(UD?.crm?.log||[]),{msg:`HubSpot: ${count} kontakt`,at:Date.now()}];
+  await update(ref(db,`users/${CU.uid}/crm`),{'hubspot/syncCount':count,log});
+  const el=document.getElementById('hsSyncCount');
+  if(el)el.textContent=count+' sync edilib';
+  if(count>0)showToast(`${count} kontakt HubSpot-a göndərildi ✓`,'success');
+  else showToast('Xəta baş verdi — token yoxlanın','error');
+};
 
-async function _hsPush(token,contact){
-  const nm=(contact.name||'').trim().split(/\s+/);
+// Yeni kontakt əlavə olunanda HubSpot-a avtomatik göndər
+async function syncContactToHubspot(contact){
+  if(!(UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business'))return;
+  const token=UD?.crm?.hubspot?.apiKey;
+  if(!token)return;
   try{
-    const r=await fetch(HS_PROXY+'/crm/v3/objects/contacts',{
+    await fetch('https://tiny-rain-6251.bykamran.workers.dev/crm/v3/objects/contacts',{
       method:'POST',
       headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
       body:JSON.stringify({properties:{
-        firstname:nm[0]||'',lastname:nm.slice(1).join(' ')||'',
-        phone:contact.phone||'',email:contact.email||'',
-        company:contact.company||'',jobtitle:contact.position||''
+        firstname:contact.name?.split(' ')[0]||'',
+        lastname:contact.name?.split(' ').slice(1).join(' ')||'',
+        phone:contact.phone||'',
+        email:contact.email||'',
+        company:contact.company||'',
+        jobtitle:contact.position||''
       }})
     });
-    if(r.status===409)return{ok:true,status:409};
-    if(!r.ok){const j=await r.json().catch(()=>({}));console.error(`HS ${r.status}:`,j?.message||'');return{ok:false,status:r.status};}
-    return{ok:true,status:r.status};
-  }catch(e){console.warn('HS fetch:',e.message);return{ok:false,status:0};}
-}
-
-window.saveHsToken=async function(){
-  if(!(UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business')){openUpgradeModal();return;}
-  const token=(document.getElementById('hsTokenInput')?.value||'').trim();
-  if(!token){showToast('Token daxil edin','error');return;}
-  if(!token.startsWith('pat-')){showToast('Token pat- ilə başlamalıdır','error');return;}
-  const btn=document.getElementById('hsSaveBtn');if(btn){btn.disabled=true;btn.textContent='Saxlanır...';}
-  await update(ref(db,`users/${CU.uid}/crm/hubspot`),{apiKey:token,connectedAt:Date.now()});
-  if(UD){if(!UD.crm)UD.crm={};if(!UD.crm.hubspot)UD.crm.hubspot={};UD.crm.hubspot.apiKey=token;}
-  const b=document.getElementById('hsConnBadge');if(b)b.style.display='flex';
-  const p=document.getElementById('hsSyncPanel');if(p)p.style.display='flex';
-  showToast('HubSpot token saxlanıldı ✓','success');
-  if(btn){btn.disabled=false;btn.textContent='Saxla';}
-};
-
-window.testHsToken=async function(){
-  if(!(UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business')){openUpgradeModal();return;}
-  const token=(document.getElementById('hsTokenInput')?.value||'').trim()||UD?.crm?.hubspot?.apiKey;
-  if(!token){showToast('Token daxil edin','error');return;}
-  const btn=document.getElementById('hsTestBtn');if(btn){btn.disabled=true;btn.textContent='Yoxlanır...';}
-  const msg=document.getElementById('hsTokenMsg');if(msg)msg.style.display='none';
-  try{
-    const r=await fetch(HS_PROXY+'/crm/v3/objects/contacts?limit=1',{headers:{'Authorization':'Bearer '+token}});
-    if(r.ok){
-      if(msg){msg.textContent='✓ Token düzgündür — HubSpot bağlantısı aktiv';msg.style.background='#f0fdf4';msg.style.color='var(--success)';msg.style.border='1px solid #bbf7d0';msg.style.display='block';}
-      showToast('HubSpot bağlantısı aktiv ✓','success');
-    }else{
-      const err=await r.json().catch(()=>({}));
-      if(msg){msg.textContent='✗ Token yanlışdır: '+(err?.message||`HTTP ${r.status}`);msg.style.background='#fef2f2';msg.style.color='var(--error)';msg.style.border='1px solid #fecaca';msg.style.display='block';}
-      showToast('Token yanlışdır','error');
-    }
-  }catch(e){
-    if(msg){msg.textContent='Xəta: '+e.message;msg.style.background='#fffbeb';msg.style.color='#d97706';msg.style.border='1px solid #fed7aa';msg.style.display='block';}
-  }
-  if(btn){btn.disabled=false;btn.textContent='Test et';}
-};
-window.toggleHsTokenVis=function(){const i=document.getElementById('hsTokenInput');if(i)i.type=i.type==='password'?'text':'password';};
-window.disconnectHubspot=async function(){
-  if(!confirm('HubSpot inteqrasiyasını silirsiniz?'))return;
-  await update(ref(db,`users/${CU.uid}/crm`),{hubspot:null});
-  if(UD?.crm)UD.crm.hubspot=null;
-  const i=document.getElementById('hsTokenInput');if(i)i.value='';
-  const b=document.getElementById('hsConnBadge');if(b)b.style.display='none';
-  const p=document.getElementById('hsSyncPanel');if(p)p.style.display='none';
-  showToast('HubSpot ayırıldı','success');
-};
-window.toggleHsAutoSync=async function(on){
-  const track=document.getElementById('hsAutoTrack');const thumb=document.getElementById('hsAutoThumb');
-  if(track)track.style.background=on?'#FF7A59':'var(--gray-light)';
-  if(thumb)thumb.style.transform=on?'translateX(18px)':'translateX(0)';
-  await update(ref(db,`users/${CU.uid}/crm/hubspot`),{autoSync:on});
-  showToast(on?'Avtomatik sync aktiv ✓':'Deaktiv edildi','success');
-};
-
-window.syncAllToHubspot=async function(){
-  if(!(UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business')){openUpgradeModal();return;}
-  const token=UD?.crm?.hubspot?.apiKey;
-  if(!token){showToast('Əvvəlcə HubSpot token daxil edin','error');return;}
-  if(!allContacts?.length){
-    const _snap=await get(ref(db,`contacts/${CU.uid}`));
-    const _d=_snap.val()||{};
-    allContacts=Object.entries(_d).map(([id,ct])=>({id,...ct}));
-  }
-  if(!allContacts?.length){showToast('Göndəriləcək kontakt yoxdur','error');return;}
-  const btn=document.getElementById('hsSyncAllBtn');
-  const pbar=document.getElementById('hsPBar');const pbarIn=document.getElementById('hsPBarInner');
-  if(btn){btn.disabled=true;btn.textContent='Göndərilir...';}
-  if(pbar)pbar.style.display='block';
-  let count=0,errors=0;
-  for(let i=0;i<allContacts.length;i++){
-    const res=await _hsPush(token,allContacts[i]);
-    if(res.ok)count++;else errors++;
-    const pct=Math.round(((i+1)/allContacts.length)*100);
-    if(pbarIn)pbarIn.style.width=pct+'%';
-    const sc=document.getElementById('hsSyncedCt');if(sc)sc.textContent=count;
-    const ec=document.getElementById('hsErrCt');if(ec)ec.textContent=errors;
-  }
-  if(pbar)setTimeout(()=>pbar.style.display='none',1500);
-  const logEntry={msg:`${count} kontakt göndərildi${errors?' ('+errors+' xəta)':''}`,at:Date.now(),err:errors>0};
-  const newLog=[...(UD?.crm?.log||[]),logEntry];
-  await update(ref(db,`users/${CU.uid}/crm`),{'hubspot/syncCount':count,log:newLog});
-  if(UD?.crm?.hubspot)UD.crm.hubspot.syncCount=count;
-  const logEl=document.getElementById('hsSyncLog');
-  if(logEl)logEl.innerHTML=newLog.slice(-5).reverse().map(l=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid var(--gray-light);font-size:12px"><span style="color:${l.err?'var(--error)':'var(--success)'}">${l.err?'✗':'✓'} ${l.msg}</span><span style="color:var(--gray)">${new Date(l.at).toLocaleDateString('az')}</span></div>`).join('');
-  if(btn){btn.disabled=false;btn.textContent='Hamısını HubSpot-a göndər';}
-  if(count>0)showToast(`${count} kontakt HubSpot-a göndərildi ✓`,'success');
-  else showToast('Xəta — token və ya proxy yoxlanın','error');
-};
-window.syncToHubspot=window.syncAllToHubspot;
-
-async function syncContactToHubspot(contact){
-  const token=UD?.crm?.hubspot?.apiKey;
-  if(!token||!UD?.crm?.hubspot?.autoSync)return;
-  if(!(UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business'))return;
-  await _hsPush(token,contact);
+  }catch(e){console.warn('HubSpot auto-sync xətası:',e);}
 }
 window.renderSigPreview=function(){
   if(typeof sigState==='undefined'){sigState={name:true,position:true,phone:true,email:true,web:false,socials:false,photo:false,cardlink:true};}
