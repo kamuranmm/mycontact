@@ -1325,12 +1325,19 @@ async function _hsPushContact(token, contact){
     jobtitle:  contact.position||'',
     hs_lead_status:'NEW'
   }};
-  const r=await fetch('https://api.hubapi.com/crm/v3/objects/contacts',{
-    method:'POST',
-    headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
-    body:JSON.stringify(body)
-  });
-  return{ok:r.ok||r.status===409, status:r.status};
+  try{
+    const r=await fetch('https://api.hubapi.com/crm/v3/objects/contacts',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},
+      body:JSON.stringify(body)
+    });
+    if(r.status===409)return{ok:true,status:409}; // already exists = OK
+    return{ok:r.ok, status:r.status};
+  }catch(e){
+    // CORS or network error — log and continue loop (don't freeze)
+    console.warn('HubSpot fetch error:',e.message);
+    return{ok:false,status:0,corsError:e.message.includes('CORS')||e.message.includes('fetch')};
+  }
 }
 
 // UI helpers
@@ -1459,14 +1466,47 @@ window.syncAllToHubspot=async function(){
     document.getElementById('hsErrCt').textContent=errors;
   }
   if(pbar)setTimeout(()=>pbar.style.display='none',1500);
+
+  // Button həmişə sıfırlanır (xəta olsa belə)
+  if(btn){btn.disabled=false;btn.textContent='Hamısını HubSpot-a göndər';}
+
+  // CORS xətası aşkar et (hamısı status:0 qaytardısa)
+  if(errors===allContacts.length&&count===0){
+    const corsMsg=document.getElementById('hsTokenMsg');
+    if(corsMsg){
+      corsMsg.textContent='⚠️ CORS xətası: HubSpot API birbaşa brauzerə cavab vermir. Aşağıdakı həllə baxın ↓';
+      corsMsg.style.background='#fffbeb';corsMsg.style.color='#d97706';
+      corsMsg.style.border='1px solid #fed7aa';corsMsg.style.display='block';
+    }
+    // Show CORS fix instructions
+    const logEl=document.getElementById('hsSyncLog');
+    if(logEl)logEl.innerHTML=`<div style="background:#fffbeb;border:1px solid #fed7aa;border-radius:8px;padding:10px 12px;color:#92400e;font-size:12px;line-height:1.7">
+      <strong>CORS xətası — həll yolu:</strong><br>
+      HubSpot API birbaşa brauzerə cavab vermir (təhlükəsizlik məhdudiyyəti).<br><br>
+      <strong>Ən sadə həll:</strong> Cloudflare Workers (pulsuz) vasitəsilə proxy qurun:<br>
+      1. <a href="https://workers.cloudflare.com" target="_blank" style="color:var(--blue)">workers.cloudflare.com</a> → qeydiyyat → <strong>Create a Worker</strong><br>
+      2. Bu kodu yapışdırın: <code style="background:rgba(0,0,0,.07);padding:2px 5px;border-radius:4px">worker kodu aşağıda</code><br>
+      3. Worker URL-ini "Proxy URL" sahəsinə yapışdırın
+      <div style="margin-top:8px;padding:8px;background:rgba(0,0,0,.05);border-radius:6px;font-family:monospace;font-size:10px;white-space:pre-wrap">addEventListener('fetch',e=>e.respondWith(handle(e.request)));
+async function handle(req){
+  const url=req.url.replace(self.location.origin,'https://api.hubapi.com');
+  const r=await fetch(url,{method:req.method,headers:req.headers,body:req.method!=='GET'?req.body:null});
+  const res=new Response(r.body,r);
+  res.headers.set('Access-Control-Allow-Origin','*');
+  return res;
+}</div>
+    </div>`;
+    showToast('CORS xətası — aşağıdakı təlimata baxın','error');
+    return;
+  }
+
   const logEntry={msg:`${count} kontakt göndərildi${errors?' ('+errors+' xəta)':''}`,at:Date.now(),err:errors>0};
   const newLog=[...(UD?.crm?.log||[]),logEntry];
   await update(ref(db,`users/${CU.uid}/crm`),{'hubspot/syncCount':count,log:newLog});
   if(UD?.crm){if(!UD.crm.hubspot)UD.crm.hubspot={};UD.crm.hubspot.syncCount=count;UD.crm.log=newLog;}
   _renderHsSyncLog(newLog);
-  if(btn){btn.disabled=false;btn.textContent='Hamısını HubSpot-a göndər';}
   if(count>0)showToast(`${count} kontakt HubSpot-a göndərildi ✓`,'success');
-  else showToast('Heç bir kontakt göndərilmədi — token yoxlanın','error');
+  else showToast('Xəta baş verdi — token yoxlanın','error');
 };
 
 // Legacy wrapper (called from contacts panel "CRM-ə göndər" button)
