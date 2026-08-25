@@ -333,6 +333,28 @@
   }
   .attempt-warn{background:#fff7ed;border:1px solid #fed7aa;color:#c2410c;font-size:12px;padding:9px 12px;border-radius:8px;margin-bottom:1rem;display:none;align-items:center;gap:6px}
   .attempt-warn.show{display:flex}
+  .auth-tabs{display:flex;border-bottom:1.5px solid var(--gray-light);margin-bottom:1.5rem}
+  .auth-tab{flex:1;padding:.7rem;font-size:13px;font-weight:500;color:var(--gray);text-align:center;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1.5px;transition:all .18s}
+  .auth-tab.active{color:var(--navy);border-bottom-color:var(--blue);font-weight:600}
+  .auth-panel{display:none !important}
+  .auth-panel.active{display:block !important}
+  .pending-screen{display:none !important}
+  .pending-screen.show{display:block !important}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .btn-register{width:100%;padding:12px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;margin-top:.25rem}
+  .btn-register:disabled{opacity:.6;cursor:not-allowed}
+  .btn-google{width:100%;padding:10px;background:#fff;color:var(--navy);border:1.5px solid var(--gray-light);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px}
+  .btn-ghost{width:100%;padding:10px;background:transparent;color:var(--gray);border:1.5px solid var(--gray-light);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;margin-top:.5rem}
+  .btn-order{width:100%;padding:12px;background:var(--blue);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:.5rem}
+  .btn-order:disabled{opacity:.5;cursor:not-allowed}
+  .badge-wait{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.25);color:#b45309;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:1rem}
+  .reg-err{background:#fef2f2;border:1px solid #fecaca;color:#e74c3c;font-size:12px;padding:8px 12px;border-radius:8px;margin-bottom:.75rem;display:none}
+  .reg-err.show{display:block}
+  .pend-icon{font-size:48px;display:block;margin-bottom:.75rem}
+  .pend-title{font-size:20px;font-weight:600;color:var(--navy);margin-bottom:.5rem}
+  .pend-sub{font-size:13px;color:var(--gray);line-height:1.7;margin-bottom:1.25rem}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}.blink{animation:blink 1.8s infinite}
+  
 </style>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 </head>
@@ -397,86 +419,53 @@
 
 <div class="right">
   <div class="login-box">
+
     <div class="auth-tabs" id="authTabs">
       <div class="auth-tab active" onclick="switchTab('login')">Daxil ol</div>
       <div class="auth-tab" onclick="switchTab('register')">Qeydiyyat</div>
     </div>
 
-    <!-- LOGIN -->
     <div class="auth-panel active" id="panelLogin">
       <div class="login-title" style="margin-bottom:4px">Xoş gəldiniz</div>
       <div class="login-sub" style="margin-bottom:1.25rem">Hesabınıza daxil olun</div>
       <div class="error-msg" id="errorMsg"></div>
       <div class="attempt-warn" id="attemptWarn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span id="attemptWarnTxt"></span></div>
-      <div class="form-group">
-        <label class="form-label">Email ünvanı</label>
-        <input type="email" class="form-input" id="emailInput" placeholder="email@nümunə.az" autocomplete="email">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Şifrə</label>
-        <input type="password" class="form-input" id="passInput" placeholder="••••••••" autocomplete="current-password">
-      </div>
+      <div class="form-group"><label class="form-label">Email ünvanı</label><input type="email" class="form-input" id="emailInput" placeholder="email@nümunə.az" autocomplete="email"></div>
+      <div class="form-group"><label class="form-label">Şifrə</label><input type="password" class="form-input" id="passInput" placeholder="••••••••" autocomplete="current-password"></div>
       <div id="cf-turnstile-wrap" style="margin:0.75rem 0 0.25rem"></div>
-      <button class="btn-login" id="loginBtn" onclick="doLogin()">
-        <span class="btn-text">Daxil ol</span>
-        <div class="spinner"></div>
-      </button>
+      <button class="btn-login" id="loginBtn" onclick="doLogin()"><span class="btn-text">Daxil ol</span><div class="spinner"></div></button>
       <div class="divider">və ya</div>
-      <button class="btn-google" onclick="doGoogle()">
-        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-        Google ilə daxil ol
-      </button>
-      <div class="secure-note" style="margin-top:1.25rem">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-        Firebase ilə qorunan giriş
-      </div>
+      <button class="btn-google" onclick="doGoogle()"><svg width="17" height="17" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Google ilə daxil ol</button>
+      <div class="secure-note" style="margin-top:1.25rem"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>Firebase ilə qorunan giriş</div>
     </div>
 
-    <!-- REGISTER -->
     <div class="auth-panel" id="panelRegister">
       <div class="login-title" style="margin-bottom:4px">Hesab yaradın</div>
       <div class="login-sub" style="margin-bottom:1.25rem">Qeydiyyatdan keçin</div>
       <div class="reg-err" id="regErr"></div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Ad</label><input type="text" class="form-input" id="regName" placeholder="Adınız"></div>
-        <div class="form-group"><label class="form-label">Soyad</label><input type="text" class="form-input" id="regSurname" placeholder="Soyadınız"></div>
-      </div>
-      <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" id="regEmail" placeholder="email@nümunə.az" autocomplete="email"></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">Ad</label><input type="text" class="form-input" id="regName" placeholder="Adınız"></div><div class="form-group"><label class="form-label">Soyad</label><input type="text" class="form-input" id="regSurname" placeholder="Soyadınız"></div></div>
+      <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" id="regEmail" placeholder="email@nümunə.az"></div>
       <div class="form-group"><label class="form-label">Şifrə</label><input type="password" class="form-input" id="regPass" placeholder="Minimum 6 simvol"></div>
       <button class="btn-register" id="btnRegister" onclick="doRegister()">Hesab yarat</button>
       <div class="divider">və ya</div>
-      <button class="btn-google" onclick="doGoogle()">
-        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-        Google ilə qeydiyyat
-      </button>
+      <button class="btn-google" onclick="doGoogle()"><svg width="17" height="17" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Google ilə qeydiyyat</button>
     </div>
 
-    <!-- ORDER SCREEN: ad, soyad, telefon -->
     <div class="pending-screen" id="screenOrder">
       <span class="pend-icon">📦</span>
       <div class="pend-title">Kart sifariş edin</div>
-      <div class="pend-sub">Məlumatlarınızı daxil edin — sifarişiniz adminin təsdiqi ilə aktivləşəcək.</div>
+      <div class="pend-sub">Məlumatlarınızı daxil edin — admin təsdiqindən sonra aktivləşəcək.</div>
       <div class="reg-err" id="orderErr"></div>
-      <div class="form-row" style="margin-bottom:.75rem;text-align:left">
-        <div class="form-group"><label class="form-label">Ad</label><input type="text" class="form-input" id="orderName" placeholder="Adınız"></div>
-        <div class="form-group"><label class="form-label">Soyad</label><input type="text" class="form-input" id="orderSurname" placeholder="Soyadınız"></div>
-      </div>
-      <div class="form-group" style="margin-bottom:.75rem;text-align:left">
-        <label class="form-label">Mobil nömrə</label>
-        <input type="tel" class="form-input" id="orderPhone" placeholder="+994 50 000 00 00">
-      </div>
-      <button class="btn-order" id="btnOrder" onclick="placeOrder()">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        Sifariş et
-      </button>
+      <div class="form-row" style="margin-bottom:.75rem;text-align:left"><div class="form-group"><label class="form-label">Ad</label><input type="text" class="form-input" id="orderName" placeholder="Adınız"></div><div class="form-group"><label class="form-label">Soyad</label><input type="text" class="form-input" id="orderSurname" placeholder="Soyadınız"></div></div>
+      <div class="form-group" style="margin-bottom:.75rem;text-align:left"><label class="form-label">Mobil nömrə</label><input type="tel" class="form-input" id="orderPhone" placeholder="+994 50 000 00 00"></div>
+      <button class="btn-order" id="btnOrder" onclick="placeOrder()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>Sifariş et</button>
       <button class="btn-ghost" onclick="doLogout()">Çıxış</button>
     </div>
 
-    <!-- WAIT SCREEN -->
     <div class="pending-screen" id="screenWait">
       <span class="pend-icon blink">⏳</span>
       <div class="pend-title">Sifarişiniz gözləyir</div>
-      <div class="pend-sub">Sifarişiniz qəbul edildi. Admin tərəfindən təsdiqlənəndən sonra <strong>hesabınız aktivləşəcək</strong> və daxil ola biləcəksiniz.</div>
+      <div class="pend-sub">Admin tərəfindən təsdiqlənəndən sonra <strong>hesabınız aktivləşəcək</strong>.</div>
       <div class="badge-wait"><span class="blink">●</span> Admin təsdiqi gözlənilir</div>
       <button class="btn-ghost" onclick="doLogout()">Çıxış</button>
     </div>
@@ -552,19 +541,31 @@
 
   function showScreen(name) {
     const tabs = document.getElementById('authTabs');
-    ['panelLogin','panelRegister'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('active');});
-    ['screenOrder','screenWait'].forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('show');});
-    document.querySelectorAll('.auth-tab').forEach(t=>t.classList.remove('active'));
-    if(name==='login'){if(tabs)tabs.style.display='flex';document.getElementById('panelLogin')?.classList.add('active');document.querySelectorAll('.auth-tab')[0]?.classList.add('active');}
-    else if(name==='register'){if(tabs)tabs.style.display='flex';document.getElementById('panelRegister')?.classList.add('active');document.querySelectorAll('.auth-tab')[1]?.classList.add('active');}
-    else if(name==='order'){if(tabs)tabs.style.display='none';document.getElementById('screenOrder')?.classList.add('show');}
-    else if(name==='wait'){if(tabs)tabs.style.display='none';document.getElementById('screenWait')?.classList.add('show');}
+    document.querySelectorAll('.auth-panel').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.pending-screen').forEach(el => el.classList.remove('show'));
+    document.querySelectorAll('.auth-tab').forEach(el => el.classList.remove('active'));
+    if (name === 'login') {
+      if(tabs) tabs.style.display = 'flex';
+      document.getElementById('panelLogin').classList.add('active');
+      document.querySelectorAll('.auth-tab')[0].classList.add('active');
+    } else if (name === 'register') {
+      if(tabs) tabs.style.display = 'flex';
+      document.getElementById('panelRegister').classList.add('active');
+      document.querySelectorAll('.auth-tab')[1].classList.add('active');
+    } else if (name === 'order') {
+      if(tabs) tabs.style.display = 'none';
+      document.getElementById('screenOrder').classList.add('show');
+    } else if (name === 'wait') {
+      if(tabs) tabs.style.display = 'none';
+      document.getElementById('screenWait').classList.add('show');
+    }
   }
 
   window.switchTab = function(t) {
-    document.querySelectorAll('.auth-tab').forEach((el,i)=>el.classList.toggle('active',(t==='login'&&i===0)||(t==='register'&&i===1)));
-    document.getElementById('panelLogin')?.classList.toggle('active',t==='login');
-    document.getElementById('panelRegister')?.classList.toggle('active',t==='register');
+    document.querySelectorAll('.auth-tab').forEach((el,i) =>
+      el.classList.toggle('active', (t==='login'&&i===0)||(t==='register'&&i===1)));
+    document.getElementById('panelLogin').classList.toggle('active', t==='login');
+    document.getElementById('panelRegister').classList.toggle('active', t==='register');
   };
 
   // ── Auth redirect ──
@@ -574,13 +575,14 @@
     const snap = await get(ref(db, `users/${user.uid}`));
     const data = snap.val();
     if (!data) { await signOut(auth); showScreen('login'); return; }
-    if (data.role === 'admin' || data.role === 'company_admin') { window.location.href = data.role==='admin'?'admin.html':'dashboard.html'; return; }
+    if (data.role === 'admin') { window.location.href = 'admin.html'; return; }
+    if (data.role === 'company_admin') { window.location.href = 'dashboard.html'; return; }
     const st = data.status || 'active';
-    if (st === 'pending_order') { showScreen('order'); return; }
-    if (st === 'pending_approval') { showScreen('wait'); return; }
+    if (st === 'pending_order')    { showScreen('order'); return; }
+    if (st === 'pending_approval') { showScreen('wait');  return; }
     if (st === 'cancelled') {
-      const err=document.getElementById('errorMsg');
-      if(err){err.textContent='Sifarişiniz ləğv edilmişdir. Əlaqə saxlayın.';err.classList.add('show');}
+      document.getElementById('errorMsg').textContent = 'Sifarişiniz ləğv edilmişdir. Əlaqə saxlayın.';
+      document.getElementById('errorMsg').classList.add('show');
       await signOut(auth); showScreen('login'); return;
     }
     window.location.href = 'dashboard.html';
@@ -654,120 +656,88 @@
     if (e.key === 'Enter') window.doLogin();
   });
 
-  // ── Register ──────────────────────────────────────────────────────────────
   window.doRegister = async function() {
     const err = document.getElementById('regErr');
     err.classList.remove('show');
-    const name    = document.getElementById('regName').value.trim();
-    const surname = document.getElementById('regSurname').value.trim();
-    const email   = document.getElementById('regEmail').value.trim();
-    const pass    = document.getElementById('regPass').value;
-    if (!name || !email || !pass) { err.textContent='Ad, email və şifrəni daxil edin.'; err.classList.add('show'); return; }
+    const name = (document.getElementById('regName')?.value||'').trim();
+    const surname = (document.getElementById('regSurname')?.value||'').trim();
+    const email = (document.getElementById('regEmail')?.value||'').trim();
+    const pass = document.getElementById('regPass')?.value || '';
+    if (!name||!email||!pass) { err.textContent='Ad, email və şifrəni daxil edin.'; err.classList.add('show'); return; }
     if (pass.length < 6) { err.textContent='Şifrə minimum 6 simvol olmalıdır.'; err.classList.add('show'); return; }
     const btn = document.getElementById('btnRegister');
-    btn.disabled=true; btn.textContent='Hesab yaradılır...';
+    btn.disabled = true; btn.textContent = 'Hesab yaradılır...';
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, pass);
-      const uid  = cred.user.uid;
+      const uid = cred.user.uid;
       const slug = email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g,'') + Math.floor(Math.random()*900+100);
-      await set(ref(db, `users/${uid}`), {
-        name: name+(surname?' '+surname:''), email, slug,
+      await set(ref(db,`users/${uid}`), {
+        name:name+(surname?' '+surname:''), email, slug,
         plan:'free', role:'user', userRole:'user',
-        status:'pending_order',
-        createdAt:Date.now(), registeredAt:Date.now(),
+        status:'pending_order', createdAt:Date.now(), registeredAt:Date.now(),
         card:{name, surname, email}, brandLink:true
       });
       CU = cred.user;
-      // Pre-fill order form
-      const on=document.getElementById('orderName');if(on)on.value=name;
-      const os=document.getElementById('orderSurname');if(os)os.value=surname;
+      const on = document.getElementById('orderName'); if(on) on.value = name;
+      const os = document.getElementById('orderSurname'); if(os) os.value = surname;
       showScreen('order');
     } catch(e) {
-      const msgs={'auth/email-already-in-use':'Bu email artıq qeydiyyatdan keçib.','auth/invalid-email':'Email formatı yanlışdır.','auth/weak-password':'Şifrə çox sadədir.'};
-      err.textContent=msgs[e.code]||'Xəta: '+e.message; err.classList.add('show');
-      btn.disabled=false; btn.textContent='Hesab yarat';
+      const msgs = {'auth/email-already-in-use':'Bu email artıq qeydiyyatdan keçib.','auth/invalid-email':'Email formatı yanlışdır.','auth/weak-password':'Şifrə çox sadədir.'};
+      err.textContent = msgs[e.code] || 'Xəta: '+e.message;
+      err.classList.add('show');
+      btn.disabled = false; btn.textContent = 'Hesab yarat';
     }
   };
 
-  // ── Google ────────────────────────────────────────────────────────────────
   window.doGoogle = async function() {
     try {
       const result = await signInWithPopup(auth, gProvider);
       const u = result.user;
       const snap = await get(ref(db, `users/${u.uid}`));
       if (!snap.exists()) {
-        const nameParts=(u.displayName||'').split(' ');
-        const slug=(u.displayName||u.email||'user').toLowerCase().replace(/[^a-z0-9]/g,'')+Math.floor(Math.random()*900+100);
-        await set(ref(db, `users/${u.uid}`), {
+        const np = (u.displayName||'').split(' ');
+        const slug = (u.displayName||u.email||'u').toLowerCase().replace(/[^a-z0-9]/g,'') + Math.floor(Math.random()*900+100);
+        await set(ref(db,`users/${u.uid}`), {
           name:u.displayName||u.email, email:u.email, slug,
           plan:'free', role:'user', userRole:'user',
-          status:'pending_order',
-          createdAt:Date.now(), registeredAt:Date.now(),
-          card:{name:nameParts[0]||'',surname:nameParts.slice(1).join(' ')||'',email:u.email},
-          brandLink:true
+          status:'pending_order', createdAt:Date.now(), registeredAt:Date.now(),
+          card:{name:np[0]||'', surname:np.slice(1).join(' ')||'', email:u.email}, brandLink:true
         });
-        CU=u;
-        const on=document.getElementById('orderName');if(on)on.value=nameParts[0]||'';
-        const os=document.getElementById('orderSurname');if(os)os.value=nameParts.slice(1).join(' ')||'';
+        CU = u;
+        const on=document.getElementById('orderName'); if(on) on.value=np[0]||'';
+        const os=document.getElementById('orderSurname'); if(os) os.value=np.slice(1).join(' ')||'';
         showScreen('order');
       }
     } catch(e) { if(e.code!=='auth/popup-closed-by-user') alert('Google xətası: '+e.message); }
   };
 
-  // ── Place Order → WhatsApp + Email bildiriş ───────────────────────────────
   window.placeOrder = async function() {
     if (!CU) return;
-    const err=document.getElementById('orderErr');err.classList.remove('show');
-    const name   =(document.getElementById('orderName')?.value||'').trim();
-    const surname=(document.getElementById('orderSurname')?.value||'').trim();
-    const phone  =(document.getElementById('orderPhone')?.value||'').trim();
+    const err = document.getElementById('orderErr'); err.classList.remove('show');
+    const name = (document.getElementById('orderName')?.value||'').trim();
+    const surname = (document.getElementById('orderSurname')?.value||'').trim();
+    const phone = (document.getElementById('orderPhone')?.value||'').trim();
     if (!name) { err.textContent='Adınızı daxil edin.'; err.classList.add('show'); return; }
     if (!phone) { err.textContent='Mobil nömrəni daxil edin.'; err.classList.add('show'); return; }
-
-    const btn=document.getElementById('btnOrder');
-    btn.disabled=true; btn.textContent='Göndərilir...';
-
-    const fullName=name+(surname?' '+surname:'');
-
-    // Firebase-ə yaz
-    await update(ref(db, `users/${CU.uid}`), {
+    const btn = document.getElementById('btnOrder');
+    btn.disabled = true; btn.textContent = 'Göndərilir...';
+    const fullName = name + (surname?' '+surname:'');
+    await update(ref(db,`users/${CU.uid}`), {
       status:'pending_approval', orderedAt:Date.now(),
-      phone, name:fullName,
-      'card/name':fullName,'card/surname':surname,'card/phone':phone
+      phone, name:fullName, 'card/name':fullName, 'card/surname':surname, 'card/phone':phone
     });
-    await set(ref(db, `orders/${CU.uid}`), {
-      uid:CU.uid, name:fullName, email:CU.email,
-      phone, orderedAt:Date.now(), status:'pending'
-    });
-
-    // Email bildiriş — FormSubmit.co vasitəsilə (pulsuz, backend yoxdur)
+    await set(ref(db,`orders/${CU.uid}`), {uid:CU.uid, name:fullName, email:CU.email, phone, orderedAt:Date.now(), status:'pending'});
     try {
-      await fetch('https://formsubmit.co/ajax/bykamran@gmail.com', {
-        method:'POST',
-        headers:{'Content-Type':'application/json','Accept':'application/json'},
-        body:JSON.stringify({
-          _subject:'🔔 Yeni MyContact sifarişi',
-          Ad:fullName, Email:CU.email, Telefon:phone,
-          Tarix:new Date().toLocaleString('az'),
-          _template:'table'
-        })
+      await fetch('https://formsubmit.co/ajax/bykamran@gmail.com',{
+        method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body:JSON.stringify({_subject:'🔔 Yeni MyContact sifarişi', Ad:fullName, Email:CU.email, Telefon:phone, Tarix:new Date().toLocaleString('az'), _template:'table'})
       });
-    } catch(e) { console.warn('Email bildiriş xətası:',e); }
-
-    // WhatsApp-a yönləndir
-    const msg=encodeURIComponent(
-      'Salam! MyContact kartı sifariş etmək istəyirəm.
-'+
-      'Ad: '+fullName+'
-Email: '+CU.email+'
-Telefon: '+phone
-    );
-    window.open('https://wa.me/994552829954?text='+msg,'_blank');
-
+    } catch(e) {}
+    const msg = encodeURIComponent('Salam! MyContact kartı sifariş etmək istəyirəm.\nAd: '+fullName+'\nEmail: '+CU.email+'\nTelefon: '+phone);
+    window.open('https://wa.me/994552829954?text='+msg, '_blank');
     showScreen('wait');
   };
 
-  // ── Logout ────────────────────────────────────────────────────────────────
   window.doLogout = async function() { await signOut(auth); showScreen('login'); };
 </script>
 </body>
