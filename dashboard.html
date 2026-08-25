@@ -313,10 +313,6 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
     <div class="nav-item" onclick="showPanel('customize')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 010 20"/></svg>Dizayn</div>
     <div class="nav-section">İnteqrasiya</div>
     <div class="nav-item" onclick="showPanel('zapier')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>HubSpot CRM<span class="nav-pro">PRO</span></div>
-    <div class="nav-item" id="navCompany" onclick="showPanel('company')" style="display:none">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      Şirkət İdarəsi
-    </div>
     <div class="nav-item" onclick="showPanel('settings')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Ayarlar</div>
   </nav>
   <div class="sidebar-footer">
@@ -724,7 +720,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
           <div style="font-size:14px;font-weight:500;color:var(--navy);margin-bottom:.25rem">HubSpot API Token</div>
           <div style="font-size:12px;color:var(--gray);margin-bottom:1rem">HubSpot → Settings → Integrations → Private Apps → Token kopyalayın.</div>
           <div class="form-group" style="margin-bottom:0">
-            <label class="form-label">HubSpot API Token <span style="background:linear-gradient(135deg,#185FA5,#378ADD);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;margin-left:4px">PRO</span></label>
+            <label class="form-label">HubSpot API Token</label>
             <div style="display:flex;gap:8px;align-items:center">
               <input class="form-input" id="automationWebhookInput" placeholder="pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" style="flex:1" onclick="if(!(UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business')){openUpgradeModal();this.blur();}">
               <div id="autoStatusDot" style="width:10px;height:10px;border-radius:50%;background:var(--gray-light);flex-shrink:0;transition:background .3s"></div>
@@ -836,38 +832,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
       </div>
     </div>
 
-    <div class="panel" id="panel-company">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:1.25rem">
-        <div><div style="font-size:15px;font-weight:600;color:var(--navy)">Şirkət Profil İdarəsi</div><div style="font-size:12px;color:var(--gray);margin-top:3px">Şirkət üzvlərinin profillərini yaradın və idarə edin</div></div>
-        <button class="btn btn-primary" onclick="openCreateMemberModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Yeni üzv</button>
-      </div>
-      <div id="companyMembersGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">
-        <div style="text-align:center;padding:3rem;color:var(--gray);grid-column:1/-1"><div style="font-size:32px;margin-bottom:.75rem">👥</div><div>Yüklənir...</div></div>
-      </div>
-    </div>
-
 </main>
-
-<!-- CREATE MEMBER MODAL -->
-<div id="createMemberModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center">
-  <div style="background:#fff;border-radius:16px;padding:1.5rem;width:100%;max-width:440px;max-height:90vh;overflow-y:auto">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
-      <div style="font-size:15px;font-weight:600;color:var(--navy)" id="memberModalTitle">Yeni üzv</div>
-      <button onclick="closeCreateMemberModal()" style="background:none;border:none;cursor:pointer;color:var(--gray)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
-    </div>
-    <div class="form-group"><label class="form-label">Ad Soyad</label><input class="form-input" id="memName" placeholder="Əli Əliyev"></div>
-    <div class="form-group"><label class="form-label">Vəzifə</label><input class="form-input" id="memPos" placeholder="Satış Meneceri"></div>
-    <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="memEmail" type="email" placeholder="ali@sirket.az"></div>
-    <div class="form-group" id="memPassGroup"><label class="form-label">Şifrə</label><input class="form-input" id="memPass" type="password" placeholder="Min 6 simvol"></div>
-    <div class="form-group"><label class="form-label">Telefon</label><input class="form-input" id="memPhone" placeholder="+994 50 000 00 00"></div>
-    <div id="memErr" style="background:#fef2f2;border:1px solid #fecaca;color:var(--error);font-size:12px;padding:8px 12px;border-radius:8px;margin-bottom:.75rem;display:none"></div>
-    <div style="display:flex;gap:8px"><button class="btn btn-primary" onclick="saveMember()" id="saveMemberBtn" style="flex:1">Yadda saxla</button><button class="btn" onclick="closeCreateMemberModal()">Ləğv et</button></div>
-    <div id="releaseSection" style="display:none;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--gray-light)">
-      <div style="font-size:12px;color:var(--gray);margin-bottom:.75rem">Profili azad etsəniz istifadəçi öz email/şifrəsi ilə müstəqil daxil ola bilər.</div>
-      <button onclick="releaseMember()" style="width:100%;padding:10px;background:transparent;color:var(--error);border:1.5px solid rgba(231,76,60,.3);border-radius:8px;font-size:13px;cursor:pointer">🔓 Profili azad et</button>
-    </div>
-  </div>
-</div>
 
 <!-- MODALS -->
     <!-- PRO TEMPLATE MODAL -->
@@ -1098,7 +1063,6 @@ function loadUD(){
   renderTemplates();
   loadCustomColors();
   renderSigPreview();
-  if(UD?.role==='company_admin'){const cn=document.getElementById('navCompany');if(cn)cn.style.display='flex';loadCompanyPanel();}
 }
 
 // DEFAULT LANG
@@ -1340,7 +1304,7 @@ function loadCrmStatus(crm,plan){
     const el=document.getElementById(id);
     if(el)el.style.display=isPro?'none':'flex';
   });
-  // HubSpot — Make.com webhook qoşulub
+  // HubSpot — birbaşa API token
   document.getElementById('hsDot').className='crm-dot on';
   document.getElementById('hsStatusText').textContent='Qoşulub ✓';
   document.getElementById('hsSyncRow').style.display='flex';
@@ -1361,9 +1325,8 @@ window.openCrmModal=function(t){crmTarget=t;const crm=UD?.crm||{};
   document.getElementById('crmModal').classList.add('open');
 };
 window.syncToHubspot=async function(){
-  if(!(UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business')){openUpgradeModal();return;}
   const token=UD?.crm?.hubspot?.apiKey;
-  if(!token){showToast('Əvvəlcə HubSpot token daxil edin','error');return;}
+  if(!token){showToast('Əvvəlcə HubSpot token daxil edin','error');openCrmModal('hubspot');return;}
   if(!allContacts.length){showToast('Göndəriləcək kontakt yoxdur','error');return;}
   showToast('HubSpot-a göndərilir...');
   let count=0,errors=0;
