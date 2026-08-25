@@ -140,6 +140,9 @@ const cfg={apiKey:"AIzaSyBx81QDpjHSPvhkmnnSUNkJYMvR_fnRTaU",authDomain:"mycontac
 const app=initializeApp(cfg);
 const auth=getAuth(app);
 const db=getDatabase(app);
+// Secondary app — yeni hesab yaratmaq üçün (cari session-u dəyişmir)
+const appSecondary=initializeApp(cfg,'secondary');
+const authSecondary=getAuth(appSecondary);
 let CU=null,UD=null,_members=[],_editUid=null;
 
 onAuthStateChanged(auth,async u=>{
@@ -153,8 +156,13 @@ onAuthStateChanged(auth,async u=>{
   const av=document.getElementById('topAv');
   if(UD.card?.photo){av.innerHTML=`<img src="${UD.card.photo}" loading="lazy">`;}
   else{av.textContent=(UD.name||u.email).charAt(0).toUpperCase();}
-  await loadMembers();
-  document.getElementById('loading').style.display='none';
+  try{
+    await loadMembers();
+  }catch(e){
+    console.error('loadMembers xətası:',e);
+  }finally{
+    document.getElementById('loading').style.display='none';
+  }
 });
 
 async function loadMembers(){
@@ -200,14 +208,18 @@ function renderMembers(){
       </div>
       <div class="mem-email">${email}</div>
       <div class="mem-actions">
-        <button class="btn btn-sm" onclick="editMember('${uid}')">
+        <button class="btn btn-sm" onclick="window.open('dashboard.html?manage=${uid}','_blank')">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          Redaktə
+          Tam redaktə
         </button>
         <a href="${profileUrl}" target="_blank" class="btn btn-sm" style="text-decoration:none">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           Profil
         </a>
+        <button class="btn btn-sm ${u.plan==='pro'||u.plan==='business'?'':'btn-pro-toggle'}" onclick="togglePro('${uid}','${u.plan||'free'}')"
+          style="${u.plan==='pro'||u.plan==='business'?'color:var(--blue);border-color:rgba(24,95,165,.3)':'color:var(--gray)'}">
+          ${u.plan==='pro'||u.plan==='business'?'★ PRO':'Pro et'}
+        </button>
         <button class="btn btn-sm btn-danger" onclick="deleteMember('${uid}')">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
         </button>
@@ -269,7 +281,8 @@ window.saveMember=async function(){
       const limit=UD.profileLimit||10;
       if(_members.length>=limit){err.textContent=`Limit dolubdur (${limit} üzv). Admindən limit artırmasını xahiş edin.`;err.classList.add('show');btn.disabled=false;btn.textContent='Yadda saxla';return;}
       if(pass.length<6){err.textContent='Şifrə minimum 6 simvol olmalıdır.';err.classList.add('show');btn.disabled=false;btn.textContent='Yadda saxla';return;}
-      const cred=await createUserWithEmailAndPassword(auth,email,pass);
+      const cred=await createUserWithEmailAndPassword(authSecondary,email,pass);
+      await signOut(authSecondary); // secondary-dən çıx, cari admin qalsın
       const uid=cred.user.uid;
       const slug=email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g,'')+Math.floor(Math.random()*900+100);
       const company=UD.company||CU.uid;
@@ -307,6 +320,17 @@ window.releaseMember=async function(){
   document.getElementById('statLeft').textContent=Math.max(0,(UD.profileLimit||10)-_members.length);
   closeModal();
   toast('Profil azad edildi ✓','success');
+};
+
+window.togglePro=async function(uid,currentPlan){
+  const isPro=currentPlan==='pro'||currentPlan==='business';
+  const newPlan=isPro?'free':'pro';
+  if(!confirm(isPro?'Bu üzvün PRO planını ləğv edirsiniz?':'Bu üzvü PRO plana yüksəldirsiz?'))return;
+  await update(ref(db,`users/${uid}`),{plan:newPlan,planChangedAt:Date.now(),planChangedBy:CU.uid});
+  const idx=_members.findIndex(m=>m.uid===uid);
+  if(idx>=0)_members[idx].plan=newPlan;
+  renderMembers();
+  toast(isPro?'PRO plan ləğv edildi':'Üzv PRO plana yüksəldildi ★','success');
 };
 
 window.doLogout=async function(){await signOut(auth);location.href='index.html';};
