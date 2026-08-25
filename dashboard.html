@@ -312,11 +312,11 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
     <div class="nav-item" onclick="showPanel('signature')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Email İmzası<span class="nav-pro">PRO</span></div>
     <div class="nav-item" onclick="showPanel('customize')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 010 20"/></svg>Dizayn</div>
     <div class="nav-section">İnteqrasiya</div>
+    <div class="nav-item" onclick="showPanel('zapier')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>HubSpot CRM<span class="nav-pro">PRO</span></div>
     <div class="nav-item" id="navCompany" onclick="showPanel('company')" style="display:none">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       Şirkət İdarəsi
     </div>
-    <div class="nav-item" onclick="showPanel('zapier')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>HubSpot CRM<span class="nav-pro">PRO</span></div>
     <div class="nav-item" onclick="showPanel('settings')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>Ayarlar</div>
   </nav>
   <div class="sidebar-footer">
@@ -724,9 +724,9 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
           <div style="font-size:14px;font-weight:500;color:var(--navy);margin-bottom:.25rem">HubSpot Private App Token <span style="background:linear-gradient(135deg,#185FA5,#378ADD);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;margin-left:4px;vertical-align:middle">PRO</span></div>
           <div style="font-size:12px;color:var(--gray);margin-bottom:1rem">HubSpot → Settings → Integrations → Private Apps → Create a private app → Token kopyalayın.</div>
           <div class="form-group" style="margin-bottom:0">
-            <label class="form-label">Webhook URL</label>
+            <label class="form-label">HubSpot API Token <span style="background:linear-gradient(135deg,#185FA5,#378ADD);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;margin-left:4px">PRO</span></label>
             <div style="display:flex;gap:8px;align-items:center">
-              <input class="form-input" id="automationWebhookInput" placeholder="https://hook.eu1.make.com/..." style="flex:1" onclick="if(!(UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business')){openUpgradeModal();this.blur();}">
+              <input class="form-input" id="automationWebhookInput" placeholder="pat-na1-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" style="flex:1" onclick="if(!(UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business')){openUpgradeModal();this.blur();}">
               <div id="autoStatusDot" style="width:10px;height:10px;border-radius:50%;background:var(--gray-light);flex-shrink:0;transition:background .3s"></div>
             </div>
             <div id="autoUrlError" style="font-size:11px;color:var(--error);margin-top:5px;display:none">Düzgün webhook URL daxil edin</div>
@@ -836,30 +836,38 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
       </div>
     </div>
 
-    <!-- COMPANY ADMIN PANEL -->
     <div class="panel" id="panel-company">
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:1.25rem">
-        <div>
-          <div style="font-size:15px;font-weight:600;color:var(--navy)">Şirkət Profil İdarəsi</div>
-          <div style="font-size:12px;color:var(--gray);margin-top:3px">Şirkət üzvlərinin profillərini yaradın, redaktə edin və idarə edin</div>
-        </div>
-        <button class="btn btn-primary" onclick="openCreateMemberModal()">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Yeni üzv əlavə et
-        </button>
+        <div><div style="font-size:15px;font-weight:600;color:var(--navy)">Şirkət Profil İdarəsi</div><div style="font-size:12px;color:var(--gray);margin-top:3px">Şirkət üzvlərinin profillərini yaradın, redaktə edin</div></div>
+        <button class="btn btn-primary" onclick="openCreateMemberModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Yeni üzv</button>
       </div>
-
-      <!-- Members grid -->
       <div id="companyMembersGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">
-        <div style="text-align:center;padding:3rem;color:var(--gray);grid-column:1/-1">
-          <div style="font-size:32px;margin-bottom:.75rem">👥</div>
-          <div style="font-size:14px;font-weight:500;color:var(--navy)">Şirkət üzvləri yüklənir...</div>
-        </div>
+        <div style="text-align:center;padding:3rem;color:var(--gray);grid-column:1/-1"><div style="font-size:32px;margin-bottom:.75rem">👥</div><div>Yüklənir...</div></div>
       </div>
     </div>
 
-
 </main>
+
+<!-- CREATE MEMBER MODAL -->
+<div id="createMemberModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:16px;padding:1.5rem;width:100%;max-width:440px;max-height:90vh;overflow-y:auto">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
+      <div style="font-size:15px;font-weight:600;color:var(--navy)" id="memberModalTitle">Yeni üzv</div>
+      <button onclick="closeCreateMemberModal()" style="background:none;border:none;cursor:pointer;color:var(--gray)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+    <div class="form-group"><label class="form-label">Ad Soyad</label><input class="form-input" id="memName" placeholder="Əli Əliyev"></div>
+    <div class="form-group"><label class="form-label">Vəzifə</label><input class="form-input" id="memPos" placeholder="Satış Meneceri"></div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" id="memEmail" type="email" placeholder="ali@sirket.az"></div>
+    <div class="form-group" id="memPassGroup"><label class="form-label">Şifrə</label><input class="form-input" id="memPass" type="password" placeholder="Min 6 simvol"></div>
+    <div class="form-group"><label class="form-label">Telefon</label><input class="form-input" id="memPhone" placeholder="+994 50 000 00 00"></div>
+    <div id="memErr" style="background:#fef2f2;border:1px solid #fecaca;color:var(--error);font-size:12px;padding:8px 12px;border-radius:8px;margin-bottom:.75rem;display:none"></div>
+    <div style="display:flex;gap:8px"><button class="btn btn-primary" onclick="saveMember()" id="saveMemberBtn" style="flex:1">Yadda saxla</button><button class="btn" onclick="closeCreateMemberModal()">Ləğv et</button></div>
+    <div id="releaseSection" style="display:none;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--gray-light)">
+      <div style="font-size:12px;color:var(--gray);margin-bottom:.75rem">Profili azad etsəniz istifadəçi öz email/şifrəsi ilə müstəqil daxil ola bilər.</div>
+      <button onclick="releaseMember()" style="width:100%;padding:10px;background:transparent;color:var(--error);border:1.5px solid rgba(231,76,60,.3);border-radius:8px;font-size:13px;cursor:pointer">🔓 Profili azad et</button>
+    </div>
+  </div>
+</div>
 
 <!-- MODALS -->
     <!-- PRO TEMPLATE MODAL -->
@@ -982,6 +990,9 @@ onAuthStateChanged(auth,async u=>{
   if(!u){location.href='index.html';return;}CU=u;
   const s=await get(ref(db,`users/${u.uid}/role`));
   if(s.val()==='admin'){location.href='admin.html';return;}
+  const _stSnap=await get(ref(db,`users/${u.uid}/status`));
+  const _st=_stSnap.val()||'active';
+  if(_st==='pending_order'||_st==='pending_approval'){location.href='index.html';return;}
   // Check pending status — redirect to index if not yet activated
   const _stSnap=await get(ref(db,`users/${u.uid}/status`));
   const _st=_stSnap.val()||'active';
@@ -1090,7 +1101,6 @@ function loadUD(){
   renderTemplates();
   loadCustomColors();
   renderSigPreview();
-  // Company admin nav
   if(UD?.role==='company_admin'){const cn=document.getElementById('navCompany');if(cn)cn.style.display='flex';loadCompanyPanel();}
 }
 
@@ -1831,196 +1841,6 @@ window.showPanel=function(n){
 };
 window.closeModal=function(id){document.getElementById(id).classList.remove('open');};
 document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
-// ── COMPANY ADMIN ─────────────────────────────────────────────────────────
-let _companyMembers = [];
-let _editingMemberUid = null;
-
-async function loadCompanyPanel() {
-  if(!UD?.company && UD?.role !== 'company_admin') return;
-  const company = UD.company || UD.uid;
-
-  // Load all users in this company
-  const snap = await get(ref(db, 'users'));
-  const all  = snap.val() || {};
-  _companyMembers = Object.entries(all)
-    .filter(([,u]) => u.company === company && u.role !== 'admin')
-    .map(([uid,u]) => ({uid, ...u}));
-
-  renderCompanyMembers();
-}
-
-function renderCompanyMembers() {
-  const grid = document.getElementById('companyMembersGrid');
-  if (!grid) return;
-
-  if (!_companyMembers.length) {
-    grid.innerHTML = `<div style="text-align:center;padding:3rem;color:var(--gray);grid-column:1/-1">
-      <div style="font-size:32px;margin-bottom:.75rem">👥</div>
-      <div style="font-size:14px;font-weight:500;color:var(--navy)">Hələ üzv yoxdur</div>
-      <div style="font-size:12px;margin-top:.25rem">Yeni üzv əlavə et düyməsinə basın</div>
-    </div>`;
-    return;
-  }
-
-  grid.innerHTML = _companyMembers.map(u => {
-    const name    = u.name || u.email || '—';
-    const pos     = u.card?.position || u.card?.pos || '—';
-    const email   = u.email || '—';
-    const isReleased = !u.company;
-    const av = u.card?.photo
-      ? `<img src="${u.card.photo}" loading="lazy" style="width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0">`
-      : `<div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#378ADD);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;color:#fff;flex-shrink:0">${name.charAt(0).toUpperCase()}</div>`;
-
-    return `<div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.1rem;display:flex;flex-direction:column;gap:.75rem">
-      <div style="display:flex;align-items:center;gap:10px">
-        ${av}
-        <div style="flex:1;min-width:0">
-          <div style="font-size:14px;font-weight:600;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${name}</div>
-          <div style="font-size:12px;color:var(--gray);margin-top:2px">${pos}</div>
-        </div>
-      </div>
-      <div style="font-size:11px;color:var(--gray);padding:6px 10px;background:var(--surface);border-radius:7px">${email}</div>
-      <div style="display:flex;gap:6px">
-        <button class="btn btn-sm" onclick="editMember('${u.uid}')" style="flex:1;justify-content:center">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-          Redaktə
-        </button>
-        <button class="btn btn-sm" onclick="deleteMember('${u.uid}')" style="color:var(--error);border-color:rgba(231,76,60,.3)">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
-          Sil
-        </button>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-window.openCreateMemberModal = function() {
-  _editingMemberUid = null;
-  document.getElementById('memberModalTitle').textContent = 'Yeni üzv əlavə et';
-  ['memName','memPos','memEmail','memPass','memPhone'].forEach(id => {
-    const el = document.getElementById(id); if(el) el.value = '';
-  });
-  document.getElementById('memErr').style.display = 'none';
-  document.getElementById('releaseSection').style.display = 'none';
-  document.getElementById('memPass').closest('.form-group').style.display = 'block';
-  document.getElementById('createMemberModal').style.display = 'flex';
-};
-
-window.editMember = function(uid) {
-  const member = _companyMembers.find(m => m.uid === uid);
-  if (!member) return;
-  _editingMemberUid = uid;
-  document.getElementById('memberModalTitle').textContent = 'Üzv məlumatlarını redaktə et';
-  document.getElementById('memName').value  = member.name || '';
-  document.getElementById('memPos').value   = member.card?.position || '';
-  document.getElementById('memEmail').value = member.email || '';
-  document.getElementById('memPhone').value = member.card?.phone || member.phone || '';
-  document.getElementById('memPass').closest('.form-group').style.display = 'none'; // edit modunda şifrə dəyişdirilmir
-  document.getElementById('memErr').style.display = 'none';
-  document.getElementById('releaseSection').style.display = 'block';
-  document.getElementById('createMemberModal').style.display = 'flex';
-};
-
-window.closeCreateMemberModal = function() {
-  document.getElementById('createMemberModal').style.display = 'none';
-  _editingMemberUid = null;
-};
-
-window.saveMember = async function() {
-  const err  = document.getElementById('memErr');
-  err.style.display = 'none';
-  const name  = document.getElementById('memName').value.trim();
-  const pos   = document.getElementById('memPos').value.trim();
-  const email = document.getElementById('memEmail').value.trim();
-  const pass  = document.getElementById('memPass').value;
-  const phone = document.getElementById('memPhone').value.trim();
-
-  if (!name) { err.textContent='Ad Soyad daxil edin.'; err.style.display='block'; return; }
-  if (!email) { err.textContent='Email daxil edin.'; err.style.display='block'; return; }
-
-  const btn = document.getElementById('saveMemberBtn');
-  btn.disabled = true; btn.textContent = 'Saxlanır...';
-
-  try {
-    const company = UD.company || UD.uid;
-
-    if (_editingMemberUid) {
-      // Edit mode — yalnız məlumatları yenilə
-      await update(ref(db, `users/${_editingMemberUid}`), {
-        name,
-        'card/name':    name,
-        'card/position':pos,
-        'card/phone':   phone,
-      });
-      const idx = _companyMembers.findIndex(m=>m.uid===_editingMemberUid);
-      if(idx>=0){_companyMembers[idx].name=name;_companyMembers[idx].card={..._companyMembers[idx].card,position:pos,phone};}
-      showToast('Məlumatlar yeniləndi ✓','success');
-    } else {
-      // Create mode — yeni Firebase Auth hesabı yarat
-      if (!pass || pass.length < 6) { err.textContent='Şifrə minimum 6 simvol olmalıdır.'; err.style.display='block'; btn.disabled=false; btn.textContent='Yadda saxla'; return; }
-
-      // Limit yoxla
-      const limit = UD?.profileLimit || 10;
-      if (_companyMembers.length >= limit) {
-        err.textContent=`Profil limiti dolubdur (${limit}). Admin ilə əlaqə saxlayın.`;
-        err.style.display='block'; btn.disabled=false; btn.textContent='Yadda saxla'; return;
-      }
-
-      const tmpAuth = getAuth();
-      const cred = await createUserWithEmailAndPassword(tmpAuth, email, pass);
-      const newUid = cred.user.uid;
-      const slug = email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g,'') + Math.floor(Math.random()*900+100);
-
-      await set(ref(db, `users/${newUid}`), {
-        name, email, slug, phone,
-        plan: 'free', role: 'user', userRole: 'user',
-        status: 'active', // şirkət admini yaratdığı üçün dərhal aktiv
-        company,          // şirkətə bağlı
-        managedBy: CU.uid,
-        createdAt: Date.now(),
-        card: { name, position: pos, phone, email },
-        brandLink: true
-      });
-
-      _companyMembers.push({ uid:newUid, name, email, company, card:{position:pos, phone} });
-      showToast('Üzv əlavə edildi ✓','success');
-
-      // Session qayıt (cari istifadəçi kimi)
-      // Auth state listener bunu idarə edir
-    }
-
-    renderCompanyMembers();
-    closeCreateMemberModal();
-  } catch(e) {
-    err.textContent = 'Xəta: ' + (e.message || e.code);
-    err.style.display = 'block';
-  }
-  btn.disabled=false; btn.textContent='Yadda saxla';
-};
-
-window.deleteMember = async function(uid) {
-  if (!confirm('Bu üzvü silmək istəyirsiniz? Profil tamamilə silinəcək.')) return;
-  await update(ref(db, `users/${uid}`), { status:'deleted', deletedAt:Date.now(), deletedBy:CU.uid });
-  _companyMembers = _companyMembers.filter(m=>m.uid!==uid);
-  renderCompanyMembers();
-  showToast('Üzv silindi','success');
-};
-
-window.releaseMember = async function() {
-  if (!_editingMemberUid) return;
-  if (!confirm('Bu profili şirkət idarəsindən azad edirsiniz. İstifadəçi öz email/şifrəsi ilə müstəqil daxil ola bilər. Davam edilsin?')) return;
-  await update(ref(db, `users/${_editingMemberUid}`), {
-    company:    null,
-    managedBy:  null,
-    releasedAt: Date.now(),
-    releasedBy: CU.uid,
-  });
-  _companyMembers = _companyMembers.filter(m=>m.uid!==_editingMemberUid);
-  renderCompanyMembers();
-  closeCreateMemberModal();
-  showToast('Profil azad edildi — istifadəçi müstəqil daxil ola bilər ✓','success');
-};
-
 window.doLogout=async function(){await signOut(auth);location.href='index.html';};
 function showToast(m,t=''){const el=document.getElementById('toast');el.textContent=m;el.className='toast show '+t;setTimeout(()=>el.className='toast',3000);}
 window.showToast=showToast;
@@ -2162,37 +1982,5 @@ window.testAutoWebhook=async function(){
 function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open');}
 function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('open');}
 </script>
-<!-- CREATE MEMBER MODAL -->
-<div class="modal-overlay" id="createMemberModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center">
-  <div class="modal" style="background:#fff;border-radius:16px;padding:1.5rem;width:100%;max-width:440px;max-height:90vh;overflow-y:auto">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem">
-      <div>
-        <div style="font-size:15px;font-weight:600;color:var(--navy)" id="memberModalTitle">Yeni üzv əlavə et</div>
-        <div style="font-size:12px;color:var(--gray);margin-top:2px">Profil yaradılacaq, üzv email ilə daxil ola bilər</div>
-      </div>
-      <button onclick="closeCreateMemberModal()" style="background:none;border:none;cursor:pointer;color:var(--gray);padding:4px">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-    <div class="form-group"><label class="form-label">Ad Soyad</label><input class="form-input" id="memName" placeholder="Əli Əliyev"></div>
-    <div class="form-group"><label class="form-label">Vəzifə</label><input class="form-input" id="memPos" placeholder="Satış Meneceri"></div>
-    <div class="form-group"><label class="form-label">Email (giriş üçün)</label><input class="form-input" id="memEmail" type="email" placeholder="ali@sirket.az"></div>
-    <div class="form-group"><label class="form-label">Şifrə</label><input class="form-input" id="memPass" type="password" placeholder="Minimum 6 simvol"></div>
-    <div class="form-group"><label class="form-label">Telefon</label><input class="form-input" id="memPhone" placeholder="+994 50 000 00 00"></div>
-    <div id="memErr" style="background:#fef2f2;border:1px solid #fecaca;color:#e74c3c;font-size:12px;padding:8px 12px;border-radius:8px;margin-bottom:.75rem;display:none"></div>
-    <div style="display:flex;gap:8px;margin-top:.5rem">
-      <button class="btn btn-primary" onclick="saveMember()" id="saveMemberBtn" style="flex:1">Yadda saxla</button>
-      <button class="btn" onclick="closeCreateMemberModal()">Ləğv et</button>
-    </div>
-    <!-- Release section (edit mode) -->
-    <div id="releaseSection" style="display:none;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--gray-light)">
-      <div style="font-size:12px;color:var(--gray);margin-bottom:.75rem">Bu profili şirkət idarəsindən azad etsəniz, istifadəçi öz email/şifrəsi ilə müstəqil daxil ola bilər.</div>
-      <button onclick="releaseMember()" style="width:100%;padding:10px;background:transparent;color:var(--error);border:1.5px solid rgba(231,76,60,.3);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer">
-        🔓 Profili azad et (müstəqil et)
-      </button>
-    </div>
-  </div>
-</div>
-
 </body>
 </html>
