@@ -1312,32 +1312,55 @@ window.filterOrders=function(f){
   renderOrders();
 };
 function renderOrders(){
-  const tbody=document.getElementById('ordersTableBody');const empty=document.getElementById('ordersEmpty');if(!tbody)return;
+  const tbody=document.getElementById('ordersTableBody');
+  const empty=document.getElementById('ordersEmpty');
+  if(!tbody)return;
   let rows=_allOrders;
-  if(_ordersFilter==='pending')rows=_allOrders.filter(o=>o.status==='pending_order'||o.status==='pending_approval');
-  else if(_ordersFilter==='approved')rows=_allOrders.filter(o=>o.status==='active'&&o.orderedAt);
-  else if(_ordersFilter==='cancelled')rows=_allOrders.filter(o=>o.status==='cancelled');
+  if(_ordersFilter==='pending') rows=_allOrders.filter(o=>o.status==='pending_order'||o.status==='pending_approval');
+  else if(_ordersFilter==='approved') rows=_allOrders.filter(o=>o.status==='active'&&o.orderedAt);
+  else if(_ordersFilter==='cancelled') rows=_allOrders.filter(o=>o.status==='cancelled');
   if(!rows.length){tbody.innerHTML='';if(empty)empty.style.display='block';return;}
   if(empty)empty.style.display='none';
   const wk=Date.now()-7*24*60*60*1000;
   tbody.innerHTML=rows.map(u=>{
-    const name=u.name||u.email||'—';const email=u.email||'—';const phone=u.phone||'';
-    const date=u.orderedAt?new Date(u.orderedAt).toLocaleDateString('az'):(u.registeredAt?new Date(u.registeredAt).toLocaleDateString('az'):'—');
+    const name=u.name||u.email||'—';
+    const email=u.email||'—';
+    const phone=u.phone||'';
+    const date=u.orderedAt?new Date(u.orderedAt).toLocaleDateString('az')
+      :(u.registeredAt?new Date(u.registeredAt).toLocaleDateString('az'):'—');
     const isNew=(u.registeredAt||0)>wk;
-    const newBadge=isNew?'<span style="background:rgba(124,58,237,.1);color:#7C3AED;font-size:9px;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:5px">YENİ</span>':'';
+    const newBadge=isNew
+      ?`<span style="background:rgba(124,58,237,.1);color:#7C3AED;font-size:9px;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:5px">YENİ</span>`
+      :'';
     let sb,ac;
-    if(u.status==='pending_order'){sb='<span style="background:rgba(59,130,246,.1);color:#1d4ed8;font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px">📋 Sifariş etməyib</span>';ac='<button class="btn btn-sm" onclick="cancelOrder(''+u.uid+'')" style="color:var(--error);border-color:rgba(231,76,60,.3)">✗ Sil</button>';}
-    else if(u.status==='pending_approval'){sb='<span style="background:rgba(217,119,6,.1);color:#d97706;font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px">⏳ Gözləyir</span>';ac='<button class="btn btn-sm btn-primary" onclick="approveOrder(''+u.uid+'')" style="margin-right:4px">✓ Aktivləşdir</button><button class="btn btn-sm" onclick="cancelOrder(''+u.uid+'')" style="color:var(--error);border-color:rgba(231,76,60,.3)">✗ Ləğv et</button>';}
-    else if(u.status==='active'&&u.orderedAt){sb='<span style="background:rgba(39,174,96,.1);color:var(--success);font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px">✓ Aktiv</span>';ac='<button class="btn btn-sm" onclick="cancelOrder(''+u.uid+'')" style="color:var(--error);border-color:rgba(231,76,60,.3)">Blokla</button>';}
-    else if(u.status==='cancelled'){sb='<span style="background:rgba(231,76,60,.1);color:var(--error);font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px">✗ Ləğv edildi</span>';ac='<button class="btn btn-sm btn-primary" onclick="approveOrder(''+u.uid+'')">↩ Bərpa et</button>';}
-    else{sb='<span style="color:var(--gray);font-size:11px">—</span>';ac='—';}
-    const av=u.card?.photo?'<img src="'+u.card.photo+'" loading="lazy" style="width:30px;height:30px;border-radius:50%;object-fit:cover">'
-      :'<div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#378ADD);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff">'+name.charAt(0).toUpperCase()+'</div>';
-    return'<tr style="border-bottom:1px solid var(--gray-light)"><td style="padding:10px 14px"><div style="display:flex;align-items:center;gap:8px">'+av+'<div style="font-size:13px;font-weight:500;color:var(--navy)">'+name+newBadge+'</div></div></td>'
-      +'<td style="padding:10px 14px;font-size:12px;color:var(--gray)">'+email+(phone?'<br><span style="color:var(--navy)">'+phone+'</span>':'')+'</td>'
-      +'<td style="padding:10px 14px;font-size:12px;color:var(--gray)">'+date+'</td>'
-      +'<td style="padding:10px 14px">'+sb+'</td>'
-      +'<td style="padding:10px 14px"><div style="display:flex;gap:4px;flex-wrap:wrap">'+ac+'</div></td></tr>';
+    const uid=u.uid;
+    if(u.status==='pending_order'){
+      sb=`<span style="background:rgba(59,130,246,.1);color:#1d4ed8;font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px">📋 Sifariş etməyib</span>`;
+      ac=`<button class="btn btn-sm" onclick="cancelOrder('${uid}')" style="color:var(--error);border-color:rgba(231,76,60,.3)">✗ Sil</button>`;
+    } else if(u.status==='pending_approval'){
+      sb=`<span style="background:rgba(217,119,6,.1);color:#d97706;font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px">⏳ Gözləyir</span>`;
+      ac=`<button class="btn btn-sm btn-primary" onclick="approveOrder('${uid}')" style="margin-right:4px">✓ Aktivləşdir</button>
+          <button class="btn btn-sm" onclick="cancelOrder('${uid}')" style="color:var(--error);border-color:rgba(231,76,60,.3)">✗ Ləğv et</button>`;
+    } else if(u.status==='active'&&u.orderedAt){
+      sb=`<span style="background:rgba(39,174,96,.1);color:var(--success);font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px">✓ Aktiv</span>`;
+      ac=`<button class="btn btn-sm" onclick="cancelOrder('${uid}')" style="color:var(--error);border-color:rgba(231,76,60,.3)">Blokla</button>`;
+    } else if(u.status==='cancelled'){
+      sb=`<span style="background:rgba(231,76,60,.1);color:var(--error);font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px">✗ Ləğv edildi</span>`;
+      ac=`<button class="btn btn-sm btn-primary" onclick="approveOrder('${uid}')">↩ Bərpa et</button>`;
+    } else {
+      sb=`<span style="color:var(--gray);font-size:11px">—</span>`;
+      ac='—';
+    }
+    const av=u.card?.photo
+      ?`<img src="${u.card.photo}" loading="lazy" style="width:30px;height:30px;border-radius:50%;object-fit:cover">`
+      :`<div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#378ADD);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff">${name.charAt(0).toUpperCase()}</div>`;
+    return `<tr style="border-bottom:1px solid var(--gray-light)">
+      <td style="padding:10px 14px"><div style="display:flex;align-items:center;gap:8px">${av}<div style="font-size:13px;font-weight:500;color:var(--navy)">${name}${newBadge}</div></div></td>
+      <td style="padding:10px 14px;font-size:12px;color:var(--gray)">${email}${phone?`<br><span style="color:var(--navy)">${phone}</span>`:''}</td>
+      <td style="padding:10px 14px;font-size:12px;color:var(--gray)">${date}</td>
+      <td style="padding:10px 14px">${sb}</td>
+      <td style="padding:10px 14px"><div style="display:flex;gap:4px;flex-wrap:wrap">${ac}</div></td>
+    </tr>`;
   }).join('');
 }
 window.approveOrder=async function(uid){
