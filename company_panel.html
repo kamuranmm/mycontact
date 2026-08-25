@@ -173,6 +173,14 @@ async function loadMembers(){
     .filter(([,u])=>u.company===company&&u.role!=='admin'&&u.uid!==CU.uid&&u.status!=='deleted')
     .map(([uid,u])=>({uid,...u}));
   const limit=UD.profileLimit||10;
+  // Auto-expire PRO planları
+  const now=Date.now();
+  for(const m of _members){
+    if((m.plan==='pro'||m.plan==='business')&&m.proExpiresAt&&m.proExpiresAt<now){
+      await update(ref(db,`users/${m.uid}`),{plan:'free',proExpiredAt:now});
+      m.plan='free';
+    }
+  }
   document.getElementById('statTotal').textContent=_members.length;
   document.getElementById('statLimit').textContent=limit;
   document.getElementById('statLeft').textContent=Math.max(0,limit-_members.length);
@@ -204,6 +212,9 @@ function renderMembers(){
         <div class="mem-info">
           <div class="mem-name">${name}</div>
           <div class="mem-pos">${pos}</div>
+          ${(u.plan==='pro'||u.plan==='business')&&u.proExpiresAt
+            ?`<div style="font-size:10px;color:var(--blue);margin-top:2px;font-weight:600">★ PRO — ${new Date(u.proExpiresAt).toLocaleDateString('az',{day:'2-digit',month:'2-digit',year:'numeric'})}-dək</div>`
+            :''}
         </div>
       </div>
       <div class="mem-email">${email}</div>
@@ -322,15 +333,63 @@ window.releaseMember=async function(){
   toast('Profil azad edildi ✓','success');
 };
 
-window.togglePro=async function(uid,currentPlan){
+let _proTargetUid=null;
+window.togglePro=function(uid,currentPlan){
   const isPro=currentPlan==='pro'||currentPlan==='business';
-  const newPlan=isPro?'free':'pro';
-  if(!confirm(isPro?'Bu üzvün PRO planını ləğv edirsiniz?':'Bu üzvü PRO plana yüksəldirsiz?'))return;
-  await update(ref(db,`users/${uid}`),{plan:newPlan,planChangedAt:Date.now(),planChangedBy:CU.uid});
+  if(isPro){
+    if(!confirm('Bu üzvün PRO planını ləğv edirsiniz?'))return;
+    _doPlanChange(uid,'free');
+    return;
+  }
+  // Check pro quota
+  const proLimit=UD.proLimit||0;
+  const proUsed=_members.filter(m=>m.plan==='pro'||m.plan==='business').length;
+  if(proLimit===0){
+    toast('PRO icazəniz yoxdur. Admin ilə əlaqə saxlayın.','error');
+    return;
+  }
+  if(proUsed>=proLimit){
+    toast(`PRO limiti dolubdur (${proLimit} ədəd). Admin ilə əlaqə saxlayın.`,'error');
+    return;
+  }
+  _proTargetUid=uid;
+  const expDate=new Date(Date.now()+365*24*60*60*1000).toLocaleDateString('az',{day:'2-digit',month:'2-digit',year:'numeric'});
+  const expEl=document.getElementById('proExpLabel');
+  if(expEl)expEl.textContent=expDate+'-dək aktiv';
+  document.getElementById('proModal').style.display='flex';
+};
+
+async function _doPlanChange(uid,plan){
+  const ONE_YEAR=365*24*60*60*1000;
+  const proExpiresAt=plan==='pro'?Date.now()+ONE_YEAR:null;
+  await update(ref(db,`users/${uid}`),{
+    plan,
+    planChangedAt:Date.now(),
+    planChangedBy:CU.uid,
+    proExpiresAt:proExpiresAt,
+    proStartedAt:plan==='pro'?Date.now():null
+  });
   const idx=_members.findIndex(m=>m.uid===uid);
-  if(idx>=0)_members[idx].plan=newPlan;
+  if(idx>=0){_members[idx].plan=plan;_members[idx].proExpiresAt=proExpiresAt;}
   renderMembers();
-  toast(isPro?'PRO plan ləğv edildi':'Üzv PRO plana yüksəldildi ★','success');
+  if(plan==='pro'){
+    const exp=new Date(proExpiresAt).toLocaleDateString('az',{day:'2-digit',month:'2-digit',year:'numeric'});
+    toast(`Üzv PRO plana yüksəldildi ★ — ${exp}-dək aktiv`,'success');
+  } else {
+    toast('PRO plan ləğv edildi','success');
+  }
+}
+
+window.confirmPro=async function(){
+  if(!_proTargetUid)return;
+  await _doPlanChange(_proTargetUid,'pro');
+  document.getElementById('proModal').style.display='none';
+  _proTargetUid=null;
+};
+
+window.openWhatsApp=function(){
+  const msg=encodeURIComponent('Salam! Şirkət üzvümü PRO plana yüksəltmək istəyirəm.');
+  window.open('https://wa.me/994552829954?text='+msg,'_blank');
 };
 
 window.doLogout=async function(){await signOut(auth);location.href='index.html';};
@@ -342,5 +401,58 @@ function toast(msg,type='success'){
 }
 
 </script>
+
+<!-- PRO Upgrade Modal -->
+<div id="proModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:center;justify-content:center;padding:1rem">
+  <div style="background:#fff;border-radius:18px;padding:1.75rem;width:100%;max-width:420px">
+    <div style="text-align:center;margin-bottom:1.25rem">
+      <div style="font-size:40px;margin-bottom:.5rem">🚀</div>
+      <div style="font-size:18px;font-weight:700;color:var(--navy);margin-bottom:.25rem">PRO Plana Yüksəlt</div>
+      <div style="font-size:13px;color:var(--gray)">Bu üzv aşağıdakı xüsusiyyətlərə sahib olacaq</div>
+      <div style="display:inline-flex;align-items:center;gap:6px;padding:5px 14px;background:rgba(24,95,165,.08);border-radius:10px;font-size:12px;color:var(--blue);font-weight:600;margin-top:8px">
+        📅 12 ay · ₼50 · <span id="proExpLabel"></span>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:1.25rem">
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--navy)">
+        <span style="width:20px;height:20px;border-radius:50%;background:rgba(39,174,96,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        </span>12 Pro şablon (bütün dizaynlar)
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--navy)">
+        <span style="width:20px;height:20px;border-radius:50%;background:rgba(39,174,96,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        </span>Limitsiz kontakt skan və əlavə
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--navy)">
+        <span style="width:20px;height:20px;border-radius:50%;background:rgba(39,174,96,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        </span>✓ Verified badge (adın yanında)
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--navy)">
+        <span style="width:20px;height:20px;border-radius:50%;background:rgba(39,174,96,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        </span>Rəng tənzimləmə, email imzası, CRM
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--navy)">
+        <span style="width:20px;height:20px;border-radius:50%;background:rgba(39,174,96,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+        </span>Brand link söndürmə, username seçimi
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;flex-direction:column">
+      <button onclick="confirmPro()" class="btn btn-primary" style="width:100%;justify-content:center;padding:13px;font-size:15px">
+        ★ PRO-ya yüksəlt
+      </button>
+      <button onclick="openWhatsApp()" class="btn" style="width:100%;justify-content:center;background:#25D366;color:#fff;border-color:#25D366;gap:8px">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp ilə əlaqə (+994552829954)
+      </button>
+      <button onclick="document.getElementById('proModal').style.display='none'" class="btn" style="width:100%;justify-content:center;color:var(--gray)">
+        Ləğv et
+      </button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
