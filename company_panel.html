@@ -2,675 +2,321 @@
 <html lang="az">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MyContact — Şirkət Paneli</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MyContact — Şirkət İdarəsi</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--navy:#0a1628;--navy-mid:#112040;--blue:#185FA5;--blue-light:#378ADD;--accent:#4FACFE;--white:#fff;--gray:#8A9BB5;--gray-light:#E8EDF5;--surface:#f4f6fb;--error:#e74c3c;--success:#27ae60;--warning:#f39c12;--sidebar:240px}
-body{font-family:'DM Sans',sans-serif;background:var(--surface);display:flex;min-height:100vh;color:var(--navy)}
-.sidebar{width:var(--sidebar);background:var(--navy);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;transition:transform .3s}
-.sidebar-brand{padding:1.25rem 1rem;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:9px}
-.brand-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--blue),var(--accent));border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.brand-name{font-family:'DM Serif Display',serif;font-size:17px;color:var(--white)}
-.brand-name span{color:var(--accent)}
-.sidebar-nav{flex:1;padding:.75rem 0;overflow-y:auto}
-.nav-section{padding:.4rem 1rem .2rem;font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-top:.4rem}
-.nav-item{display:flex;align-items:center;gap:9px;padding:8px 1rem;font-size:13px;color:rgba(255,255,255,.6);cursor:pointer;transition:all .15s;border-left:3px solid transparent}
-.nav-item:hover{color:var(--white);background:rgba(255,255,255,.05)}
-.nav-item.active{color:var(--white);background:rgba(79,172,254,.12);border-left-color:var(--accent)}
-.sidebar-footer{padding:.75rem 1rem;border-top:1px solid rgba(255,255,255,.08)}
-.admin-info{display:flex;align-items:center;gap:9px;margin-bottom:8px}
-.admin-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--white);flex-shrink:0}
-.admin-name{font-size:13px;color:var(--white);font-weight:500}
-.admin-role{font-size:11px;color:rgba(255,255,255,.4)}
-.logout-btn{width:100%;padding:7px;background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.2);color:#e74c3c;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif}
-.hamburger{display:none;position:fixed;top:12px;left:12px;z-index:200;width:40px;height:40px;background:var(--navy);border:none;border-radius:9px;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px}
-.hamburger span{width:18px;height:2px;background:#fff;border-radius:2px;display:block}
-.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
-.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100vh}
-.topbar{background:var(--white);border-bottom:1px solid var(--gray-light);padding:0 1.5rem;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
-.topbar-title{font-size:14px;font-weight:500;color:var(--navy)}
-.badge-company{background:rgba(39,174,96,.1);color:var(--success);font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500;border:1px solid rgba(39,174,96,.2)}
-.badge-readonly{background:rgba(243,156,18,.1);color:var(--warning);font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500;border:1px solid rgba(243,156,18,.2)}
-.content{padding:1.5rem;flex:1}
-.panel{display:none}.panel.active{display:block}
-.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.25rem}
-.stat-card{background:var(--white);border-radius:11px;padding:1rem;border:1px solid var(--gray-light)}
-.stat-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.stat-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center}
-.stat-icon.blue{background:rgba(24,95,165,.1)}.stat-icon.green{background:rgba(39,174,96,.1)}.stat-icon.gold{background:rgba(201,168,76,.1)}.stat-icon.red{background:rgba(231,76,60,.1)}
-.stat-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--navy);line-height:1}
-.stat-label{font-size:12px;color:var(--gray);margin-top:3px}
-.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem;flex-wrap:wrap;gap:8px}
-.section-title{font-size:14px;font-weight:500;color:var(--navy)}
-.card{background:var(--white);border-radius:12px;border:1px solid var(--gray-light);overflow:hidden}
-.table-toolbar{padding:.9rem 1.1rem;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--gray-light);flex-wrap:wrap}
-.search-input{flex:1;min-width:160px;padding:7px 11px;border:1.5px solid var(--gray-light);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--navy);outline:none;background:var(--surface)}
-.search-input:focus{border-color:var(--blue)}
-.btn{padding:7px 14px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;border:1.5px solid var(--gray-light);background:var(--white);color:var(--navy);display:inline-flex;align-items:center;gap:5px}
-.btn:hover{background:var(--surface)}
-.btn-primary{background:var(--navy);color:var(--white);border-color:var(--navy)}
-.btn-primary:hover{background:var(--navy-mid)}
-.btn-sm{padding:4px 9px;font-size:12px}
-.btn-danger{border-color:rgba(231,76,60,.3);color:var(--error);background:rgba(231,76,60,.05)}
-.btn-success{background:var(--success);color:var(--white);border-color:var(--success)}
-.badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:20px;font-size:11px;font-weight:500}
-.badge-pro{background:#eff6ff;color:#1d4ed8}.badge-premium{background:#fffbeb;color:#b45309}.badge-business{background:rgba(124,58,237,.1);color:#7C3AED}.badge-free{background:var(--surface);color:var(--gray)}.badge-active{background:#f0fdf4;color:var(--success)}.badge-blocked{background:#fef2f2;color:var(--error)}.badge-pending{background:#fffbeb;color:var(--warning)}
-table{width:100%;border-collapse:collapse;font-size:13px}
-thead th{text-align:left;padding:8px 1.1rem;font-size:11px;font-weight:500;color:var(--gray);background:var(--surface);letter-spacing:.03em;border-bottom:1px solid var(--gray-light)}
-tbody td{padding:11px 1.1rem;border-bottom:1px solid var(--gray-light);color:var(--navy);vertical-align:middle}
-tbody tr:last-child td{border-bottom:none}
-tbody tr:hover td{background:#fafbfd}
-.user-cell{display:flex;align-items:center;gap:9px}
-.user-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--blue-light),var(--accent));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--white);flex-shrink:0;overflow:hidden}
-.user-av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.user-name{font-weight:500;font-size:13px}
-.user-email{font-size:11px;color:var(--gray)}
-.action-btns{display:flex;gap:5px;flex-wrap:wrap}
-.form-group{margin-bottom:11px}
+:root{--navy:#0a1628;--blue:#185FA5;--blue2:#378ADD;--success:#27ae60;--error:#e74c3c;--gray:#8A9BB5;--gray-light:#E8EDF5;--surface:#f4f6fb;--white:#fff}
+body{font-family:'DM Sans',sans-serif;background:var(--surface);min-height:100vh;display:flex;flex-direction:column}
+.topbar{background:var(--navy);padding:.75rem 1.25rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.topbar-left{display:flex;align-items:center;gap:12px}
+.topbar-logo{height:30px;width:auto}
+#topCompany{font-size:13px;color:rgba(255,255,255,.6)}
+#topCompany strong{color:#fff}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.top-av{width:32px;height:32px;border-radius:50%;background:var(--blue);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:#fff;overflow:hidden;flex-shrink:0}
+.top-av img{width:100%;height:100%;object-fit:cover}
+#topName{font-size:13px;color:rgba(255,255,255,.85);font-weight:500}
+.btn-logout{padding:6px 12px;background:rgba(255,255,255,.1);color:rgba(255,255,255,.8);border:1px solid rgba(255,255,255,.15);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer}
+.btn-logout:hover{background:rgba(255,255,255,.18)}
+.main{flex:1;padding:1.5rem;max-width:1100px;margin:0 auto;width:100%}
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:1.5rem}
+.stat-card{background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1rem 1.25rem;text-align:center}
+.stat-num{font-size:28px;font-weight:700;color:var(--navy);margin-bottom:3px}
+.stat-label{font-size:12px;color:var(--gray)}
+.page-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:1.25rem}
+.page-title{font-size:18px;font-weight:600;color:var(--navy)}
+.page-sub{font-size:13px;color:var(--gray);margin-top:3px}
+.members-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.member-card{background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.1rem;display:flex;flex-direction:column;gap:.75rem;transition:box-shadow .2s}
+.member-card:hover{box-shadow:0 4px 16px rgba(0,0,0,.07)}
+.member-top{display:flex;align-items:center;gap:10px}
+.mem-av{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--blue2));display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;color:#fff;flex-shrink:0;overflow:hidden}
+.mem-av img{width:100%;height:100%;object-fit:cover}
+.mem-info{flex:1;min-width:0}
+.mem-name{font-size:14px;font-weight:600;color:var(--navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mem-pos{font-size:12px;color:var(--gray);margin-top:2px}
+.mem-email{font-size:11px;color:var(--gray);padding:6px 10px;background:var(--surface);border-radius:7px;word-break:break-all}
+.mem-actions{display:flex;gap:6px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--white);color:var(--navy);transition:all .18s;text-decoration:none}
+.btn:hover{border-color:var(--blue);color:var(--blue)}
+.btn-primary{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn-primary:hover{background:#112040}
+.btn-sm{padding:6px 10px;font-size:12px;border-radius:7px;flex:1;justify-content:center}
+.btn-danger{color:var(--error);border-color:rgba(231,76,60,.3)}
+.empty-state{text-align:center;padding:4rem 2rem;color:var(--gray);grid-column:1/-1}
+.empty-icon{font-size:48px;margin-bottom:1rem;display:block}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;align-items:center;justify-content:center;padding:1rem}
+.modal-overlay.open{display:flex}
+.modal{background:var(--white);border-radius:16px;padding:1.5rem;width:100%;max-width:460px;max-height:90vh;overflow-y:auto}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem}
+.modal-title{font-size:15px;font-weight:600;color:var(--navy)}
+.modal-close{background:none;border:none;cursor:pointer;color:var(--gray);padding:4px}
+.form-group{margin-bottom:.9rem}
 .form-label{display:block;font-size:12px;font-weight:500;color:var(--navy);margin-bottom:4px}
-.form-input{width:100%;padding:8px 11px;border:1.5px solid var(--gray-light);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--navy);outline:none;background:var(--surface);transition:border-color .2s}
+.form-input{width:100%;padding:10px 13px;border:1.5px solid var(--gray-light);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--navy);outline:none;background:var(--surface)}
 .form-input:focus{border-color:var(--blue);background:var(--white)}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-/* Modal */
-.modal-overlay{position:fixed;inset:0;background:rgba(10,22,40,.5);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
-.modal-overlay.open{opacity:1;pointer-events:all}
-.modal{background:var(--white);border-radius:16px;padding:1.75rem;width:calc(100% - 2rem);max-width:480px;transform:translateY(12px);transition:transform .2s;max-height:90vh;overflow-y:auto}
-.modal-overlay.open .modal{transform:translateY(0)}
-.modal-title{font-family:'DM Serif Display',serif;font-size:21px;color:var(--navy);margin-bottom:3px}
-.modal-sub{font-size:13px;color:var(--gray);margin-bottom:1.25rem}
-.modal-footer{display:flex;gap:9px;margin-top:1.25rem}
-.modal-footer .btn{flex:1;justify-content:center}
-.error-box{background:#fef2f2;border:1px solid #fecaca;color:var(--error);font-size:12px;padding:8px 11px;border-radius:8px;margin-bottom:.9rem;display:none}
-.error-box.show{display:block}
-.success-box{background:#f0fdf4;border:1px solid #bbf7d0;color:var(--success);font-size:12px;padding:8px 11px;border-radius:8px;margin-bottom:.9rem;display:none}
-.success-box.show{display:block}
-.mobile-card{display:none;background:var(--white);border:1px solid var(--gray-light);border-radius:11px;padding:1rem;margin-bottom:8px}
-.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--navy);color:var(--white);padding:11px 16px;border-radius:10px;font-size:13px;z-index:999;transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none;max-width:280px}
-.toast.show{transform:translateY(0);opacity:1}
-.toast.success{background:var(--success)}.toast.error{background:var(--error)}
-/* Company header banner */
-.company-banner{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-mid) 100%);border-radius:13px;padding:1.25rem 1.5rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:1rem;border:1px solid rgba(79,172,254,.15)}
-.company-logo{width:48px;height:48px;background:linear-gradient(135deg,var(--blue),var(--accent));border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.company-info-text{flex:1}
-.company-name-display{font-family:'DM Serif Display',serif;font-size:20px;color:var(--white);margin-bottom:3px}
-.company-meta{font-size:12px;color:rgba(255,255,255,.5)}
-.permission-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600}
-.permission-badge.can-edit{background:rgba(39,174,96,.2);color:#4ade80;border:1px solid rgba(39,174,96,.3)}
-.permission-badge.view-only{background:rgba(243,156,18,.2);color:#fbbf24;border:1px solid rgba(243,156,18,.3)}
-/* Pending section */
-.pending-section{background:var(--white);border-radius:12px;border:1px solid rgba(243,156,18,.3);overflow:hidden;margin-bottom:1.25rem}
-.pending-header{background:rgba(243,156,18,.05);padding:.75rem 1.1rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(243,156,18,.2)}
-.pending-title{font-size:13px;font-weight:500;color:var(--warning);display:flex;align-items:center;gap:6px}
-/* Readonly notice */
-.readonly-notice{background:rgba(243,156,18,.08);border:1px solid rgba(243,156,18,.25);border-radius:10px;padding:.9rem 1.1rem;margin-bottom:1.25rem;display:flex;align-items:flex-start;gap:9px}
-.readonly-notice p{font-size:12px;color:#b45309;line-height:1.6}
-/* Stats row */
-.mini-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:.75rem}
-.mini-stat{background:var(--surface);border-radius:9px;padding:9px 12px}
-.mini-stat-num{font-size:18px;font-weight:600;color:var(--navy)}
-.mini-stat-label{font-size:11px;color:var(--gray);margin-top:2px}
-@media(max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:768px){
-  .sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}
-  .sidebar-overlay.open{display:block}.hamburger{display:flex}
-  .main{margin-left:0}.topbar{padding-left:60px}
-  .stats-grid{grid-template-columns:repeat(2,1fr)}.content{padding:1rem}
-  table{display:none}.mobile-card{display:block}
-  .table-toolbar{flex-direction:column;align-items:stretch}.search-input{min-width:100%}
-  .form-row{grid-template-columns:1fr}
-  .company-banner{flex-direction:column;align-items:flex-start}
-}
-@media(max-width:480px){.stats-grid{grid-template-columns:1fr}}
+.err-box{background:#fef2f2;border:1px solid #fecaca;color:var(--error);font-size:12px;padding:8px 12px;border-radius:8px;margin-bottom:.75rem;display:none}
+.err-box.show{display:block}
+.release-zone{margin-top:1rem;padding-top:1rem;border-top:1px solid var(--gray-light)}
+.release-zone p{font-size:12px;color:var(--gray);margin-bottom:.75rem;line-height:1.6}
+#loading{position:fixed;inset:0;background:var(--navy);display:flex;align-items:center;justify-content:center;z-index:999}
+.spinner{width:32px;height:32px;border:3px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:500;color:#fff;z-index:500;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none}
+.toast.show{opacity:1;transform:translateY(0)}
+.toast.success{background:#1a7a3c}
+.toast.error{background:#c0392b}
 </style>
 </head>
 <body>
-<button class="hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></button>
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-brand">
-    <div class="brand-mark"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="3" y="6" width="18" height="13" rx="2"/><circle cx="12" cy="13" r="2"/></svg></div>
-    <span class="brand-name">My<span>Contact</span></span>
+<div id="loading"><div class="spinner"></div></div>
+<div class="topbar">
+  <div class="topbar-left">
+    <img src="data:image/png;base64,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" alt="MyContact" class="topbar-logo">
+    <div id="topCompany">Şirkət İdarəsi</div>
   </div>
-  <nav class="sidebar-nav">
-    <div class="nav-section">Panel</div>
-    <div class="nav-item active" onclick="showPanel('overview')">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>İcmal
-    </div>
-    <div class="nav-section">Şirkət</div>
-    <div class="nav-item" onclick="showPanel('employees')">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>Əməkdaşlar
-    </div>
-    <div class="nav-item" id="navPending" onclick="showPanel('pending')" style="display:none">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Gözləyənlər
-      <span id="pendingBadgeNav" style="margin-left:auto;background:rgba(243,156,18,.25);color:var(--warning);font-size:10px;padding:1px 6px;border-radius:10px;font-weight:600"></span>
-    </div>
-  </nav>
-  <div class="sidebar-footer">
-    <div class="admin-info">
-      <div class="admin-av" id="adminInitials">A</div>
-      <div>
-        <div class="admin-name" id="adminName">Yüklənir...</div>
-        <div class="admin-role" id="adminCompanyLabel">Şirkət Admini</div>
-      </div>
-    </div>
-    <button class="logout-btn" onclick="doLogout()">Çıxış</button>
+  <div class="topbar-right">
+    <div class="top-av" id="topAv">A</div>
+    <span id="topName">Admin</span>
+    <button class="btn-logout" onclick="doLogout()">Çıxış</button>
   </div>
-</aside>
-
-<main class="main">
-  <div class="topbar">
-    <div class="topbar-title" id="topbarTitle">İcmal</div>
-    <div id="permissionBadgeWrap">
-      <span class="badge-company" id="topbarBadge">🏢 Şirkət Admini</span>
-    </div>
+</div>
+<div class="main">
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-num" id="statTotal">0</div><div class="stat-label">Üzv profili</div></div>
+    <div class="stat-card"><div class="stat-num" id="statLimit" style="color:var(--blue)">0</div><div class="stat-label">Limit</div></div>
+    <div class="stat-card"><div class="stat-num" id="statLeft" style="color:var(--success)">0</div><div class="stat-label">Qalan</div></div>
   </div>
-
-  <div class="content">
-
-    <!-- OVERVIEW PANEL -->
-    <div class="panel active" id="panel-overview">
-      <!-- Company banner -->
-      <div class="company-banner" id="companyBanner">
-        <div class="company-logo" id="companyLogoIcon">🏢</div>
-        <div class="company-info-text">
-          <div class="company-name-display" id="companyNameDisplay">Yüklənir...</div>
-          <div class="company-meta" id="companyMetaDisplay">—</div>
-        </div>
-        <div id="permBadgeOverview"></div>
-      </div>
-
-      <!-- Stats -->
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-top">
-            <div class="stat-icon blue"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
-          </div>
-          <div class="stat-num" id="statTotal">—</div>
-          <div class="stat-label">Ümumi əməkdaş</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-top">
-            <div class="stat-icon green"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
-          </div>
-          <div class="stat-num" id="statActive">—</div>
-          <div class="stat-label">Aktiv profillər</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-top">
-            <div class="stat-icon gold"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
-          </div>
-          <div class="stat-num" id="statViews">—</div>
-          <div class="stat-label">Ümumi baxış</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-top">
-            <div class="stat-icon red"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-          </div>
-          <div class="stat-num" id="statPending">—</div>
-          <div class="stat-label">Gözləyən təsdiq</div>
-        </div>
-      </div>
-
-      <!-- Readonly notice if can't edit -->
-      <div class="readonly-notice" id="readonlyNotice" style="display:none">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" style="flex-shrink:0;margin-top:2px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-        <p>Hal-hazırda <strong>Yalnız baxış</strong> rejimindəsiniz. Profilləri redaktə etmək üçün ana admindən icazə tələb edin.</p>
-      </div>
-
-      <!-- Recent employees -->
-      <div class="section-head">
-        <div class="section-title">Son əməkdaşlar</div>
-        <button class="btn btn-sm" onclick="showPanel('employees')">Hamısına bax</button>
-      </div>
-      <div class="card">
-        <table>
-          <thead><tr><th>Əməkdaş</th><th>Vəzifə</th><th>Plan</th><th>Status</th><th>Baxış</th></tr></thead>
-          <tbody id="recentBody"><tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray)">Yüklənir...</td></tr></tbody>
-        </table>
-        <div id="recentMobile"></div>
-      </div>
+  <div class="page-header">
+    <div>
+      <div class="page-title">Şirkət Profilləri</div>
+      <div class="page-sub">Şirkət üzvlərinin vizit kartlarını yaradın və idarə edin</div>
     </div>
-
-    <!-- EMPLOYEES PANEL -->
-    <div class="panel" id="panel-employees">
-      <div class="section-head">
-        <div class="section-title">Əməkdaşlar</div>
-        <div style="font-size:12px;color:var(--gray)" id="employeeCountLabel"></div>
-      </div>
-      <div class="card">
-        <div class="table-toolbar">
-          <input class="search-input" type="text" placeholder="Ad, email axtar..." id="empSearch" oninput="filterEmployees()">
-          <select class="form-input" id="empStatusFilter" onchange="filterEmployees()" style="width:auto;padding:7px 9px;font-size:12px">
-            <option value="">Bütün statuslar</option>
-            <option value="active">Aktiv</option>
-            <option value="blocked">Bloklu</option>
-            <option value="pending_approval">Gözləyən</option>
-          </select>
-        </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Əməkdaş</th>
-              <th>Vəzifə</th>
-              <th>Plan</th>
-              <th>Status</th>
-              <th>Baxış</th>
-              <th id="actionsHeader">Əməliyyat</th>
-            </tr>
-          </thead>
-          <tbody id="empBody"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--gray)">Yüklənir...</td></tr></tbody>
-        </table>
-        <div id="empMobile"></div>
-      </div>
-    </div>
-
-    <!-- PENDING PANEL -->
-    <div class="panel" id="panel-pending">
-      <div class="section-head">
-        <div class="section-title" style="display:flex;align-items:center;gap:8px">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--warning)" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          Təsdiq Gözləyən İstifadəçilər
-        </div>
-      </div>
-      <div class="card">
-        <table>
-          <thead><tr><th>İstifadəçi</th><th>Qeydiyyat tarixi</th><th>Status</th><th>Əməliyyat</th></tr></thead>
-          <tbody id="pendingBody"><tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--gray)">Yüklənir...</td></tr></tbody>
-        </table>
-        <div id="pendingMobile"></div>
-      </div>
-    </div>
-
-  </div><!-- /content -->
-</main>
-
-<!-- EDIT EMPLOYEE MODAL -->
-<div class="modal-overlay" id="editEmpModal">
+    <button class="btn btn-primary" onclick="openModal()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      Yeni üzv əlavə et
+    </button>
+  </div>
+  <div class="members-grid" id="membersGrid">
+    <div class="empty-state"><span class="empty-icon">⏳</span><div>Yüklənir...</div></div>
+  </div>
+</div>
+<div class="modal-overlay" id="memberModal">
   <div class="modal">
-    <div class="modal-title">Profili Redaktə Et</div>
-    <div class="modal-sub" id="editEmpSub">—</div>
-    <div class="error-box" id="editEmpErr"></div>
-    <input type="hidden" id="editEmpUid">
-    <div class="form-group">
-      <label class="form-label">Ad Soyad</label>
-      <input class="form-input" id="editEmpName" placeholder="Ad və soyad">
+    <div class="modal-head">
+      <div class="modal-title" id="modalTitle">Yeni üzv</div>
+      <button class="modal-close" onclick="closeModal()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
     </div>
+    <div class="err-box" id="modalErr"></div>
     <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Vəzifə</label>
-        <input class="form-input" id="editEmpPosition" placeholder="Menecer, Mühasib...">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Şöbə</label>
-        <input class="form-input" id="editEmpDepartment" placeholder="Satış, IT...">
-      </div>
+      <div class="form-group"><label class="form-label">Ad</label><input class="form-input" id="mName" placeholder="Əli"></div>
+      <div class="form-group"><label class="form-label">Soyad</label><input class="form-input" id="mSurname" placeholder="Əliyev"></div>
     </div>
-    <div class="form-row">
-      <div class="form-group">
-        <label class="form-label">Telefon</label>
-        <input class="form-input" id="editEmpPhone" placeholder="+994 50 xxx xx xx">
-      </div>
-      <div class="form-group">
-        <label class="form-label">WhatsApp</label>
-        <input class="form-input" id="editEmpWhatsapp" placeholder="+994 50 xxx xx xx">
-      </div>
+    <div class="form-group"><label class="form-label">Vəzifə</label><input class="form-input" id="mPos" placeholder="Satış Meneceri"></div>
+    <div class="form-group"><label class="form-label">Telefon</label><input class="form-input" id="mPhone" type="tel" placeholder="+994 50 000 00 00"></div>
+    <div class="form-group"><label class="form-label">Email (giriş üçün)</label><input class="form-input" id="mEmail" type="email" placeholder="ali@sirket.az"></div>
+    <div id="passGroup" class="form-group"><label class="form-label">Şifrə</label><input class="form-input" id="mPass" type="password" placeholder="Min 6 simvol"></div>
+    <div style="display:flex;gap:8px;margin-top:.25rem">
+      <button class="btn btn-primary" onclick="saveMember()" id="saveBtn" style="flex:1">Yadda saxla</button>
+      <button class="btn" onclick="closeModal()">Ləğv et</button>
     </div>
-    <div class="form-group">
-      <label class="form-label">Status</label>
-      <select class="form-input" id="editEmpStatus">
-        <option value="active">✅ Aktiv</option>
-        <option value="blocked">🚫 Bloklu</option>
-      </select>
-    </div>
-    <div style="background:var(--surface);border-radius:9px;padding:10px 12px;border:1px solid var(--gray-light)">
-      <div style="font-size:11px;color:var(--gray);margin-bottom:4px">Profil linki</div>
-      <div style="font-size:13px;color:var(--blue);font-weight:500" id="editEmpSlugDisplay">—</div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn" onclick="closeModal('editEmpModal')">Ləğv et</button>
-      <button class="btn btn-primary" onclick="saveEmployee()">Saxla</button>
+    <div class="release-zone" id="releaseZone" style="display:none">
+      <p>Bu profili şirkət idarəsindən azad etsəniz, istifadəçi öz email/şifrəsi ilə müstəqil daxil ola bilər.</p>
+      <button class="btn btn-danger" onclick="releaseMember()" style="width:100%;justify-content:center;margin-top:.5rem">🔓 Profili azad et</button>
     </div>
   </div>
 </div>
-
-<!-- VIEW EMPLOYEE MODAL (read-only) -->
-<div class="modal-overlay" id="viewEmpModal">
-  <div class="modal">
-    <div class="modal-title">Profil Məlumatları</div>
-    <div class="modal-sub" id="viewEmpSub">—</div>
-    <div style="display:flex;flex-direction:column;gap:10px" id="viewEmpContent"></div>
-    <div class="modal-footer">
-      <button class="btn btn-primary" onclick="closeModal('viewEmpModal')">Bağla</button>
-    </div>
-  </div>
-</div>
-
 <div class="toast" id="toast"></div>
-
 <script type="module">
+
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import{getDatabase,ref,get,update}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import{getAuth,onAuthStateChanged,signOut,createUserWithEmailAndPassword}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import{getDatabase,ref,get,set,update}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const cfg={apiKey:"AIzaSyBx81QDpjHSPvhkmnnSUNkJYMvR_fnRTaU",authDomain:"mycontact-e626e.firebaseapp.com",databaseURL:"https://mycontact-e626e-default-rtdb.firebaseio.com",projectId:"mycontact-e626e",storageBucket:"mycontact-e626e.firebasestorage.app",messagingSenderId:"420594516827",appId:"1:420594516827:web:f30266800c690c6ff9107e"};
-const app=initializeApp(cfg);const auth=getAuth(app);const db=getDatabase(app);
+const app=initializeApp(cfg);
+const auth=getAuth(app);
+const db=getDatabase(app);
+let CU=null,UD=null,_members=[],_editUid=null;
 
-let myUid='',myCompanyId='',myCompanyName='',canEdit=false;
-let allEmployees=[],filteredEmployees=[];
-
-// ── Auth Check ──
 onAuthStateChanged(auth,async u=>{
   if(!u){location.href='index.html';return;}
+  CU=u;
   const snap=await get(ref(db,`users/${u.uid}`));
-  const data=snap.val();
-  if(!data||data.role!=='company_admin'){
-    alert('Bu panelə giriş icazəniz yoxdur.');
-    await signOut(auth);
-    location.href='index.html';
-    return;
-  }
-  myUid=u.uid;
-  myCompanyId=data.companyId||'';
-  myCompanyName=data.company||'Şirkət';
-
-  document.getElementById('adminName').textContent=data.name||u.email;
-  document.getElementById('adminInitials').textContent=(data.name||'A').charAt(0).toUpperCase();
-  document.getElementById('adminCompanyLabel').textContent=myCompanyName;
-
-  // Get company settings
-  if(myCompanyId){
-    const cSnap=await get(ref(db,`companies/${myCompanyId}`));
-    const cData=cSnap.val()||{};
-    canEdit=!!cData.canEditProfiles;
-    myCompanyName=cData.name||myCompanyName;
-  } else {
-    // fallback: check canEditProfiles on user node or company string match
-    const cSnap=await get(ref(db,'companies'));
-    const allCo=cSnap.val()||{};
-    for(const [cid,co] of Object.entries(allCo)){
-      if(co.adminUid===u.uid){
-        myCompanyId=cid;
-        canEdit=!!co.canEditProfiles;
-        myCompanyName=co.name||myCompanyName;
-        break;
-      }
-    }
-    // update user with companyId for future
-    if(myCompanyId) await update(ref(db,`users/${u.uid}`),{companyId:myCompanyId});
-  }
-
-  renderBanner();
-  await loadEmployees();
-  setupUI();
+  UD=snap.val();
+  if(!UD||UD.role!=='company_admin'){location.href='index.html';return;}
+  document.getElementById('topCompany').innerHTML=`<strong>${UD.company||'Şirkət'}</strong> — İdarə Paneli`;
+  document.getElementById('topName').textContent=UD.name||u.email;
+  const av=document.getElementById('topAv');
+  if(UD.card?.photo){av.innerHTML=`<img src="${UD.card.photo}" loading="lazy">`;}
+  else{av.textContent=(UD.name||u.email).charAt(0).toUpperCase();}
+  await loadMembers();
+  document.getElementById('loading').style.display='none';
 });
 
-function renderBanner(){
-  document.getElementById('companyNameDisplay').textContent=myCompanyName;
-  document.getElementById('companyLogoIcon').textContent=myCompanyName.charAt(0)||'🏢';
-  const firstLetter=myCompanyName.charAt(0).toUpperCase();
-  document.getElementById('companyLogoIcon').textContent=firstLetter;
-  document.getElementById('companyLogoIcon').style.fontSize='22px';
-  document.getElementById('companyLogoIcon').style.color='#fff';
-  document.getElementById('companyLogoIcon').style.fontFamily="'DM Serif Display',serif";
-
-  const permBadge=canEdit
-    ?'<span class="permission-badge can-edit">✏️ Redaktə İcazəsi Var</span>'
-    :'<span class="permission-badge view-only">👁 Yalnız Baxış</span>';
-  document.getElementById('permBadgeOverview').innerHTML=permBadge;
-  document.getElementById('topbarBadge').textContent=canEdit?'✏️ Şirkət Admini':'👁 Yalnız Baxış';
-  document.getElementById('topbarBadge').className=canEdit?'badge-company':'badge-readonly';
-
-  if(!canEdit){
-    document.getElementById('readonlyNotice').style.display='flex';
-  }
-}
-
-function setupUI(){
-  // Hide actions column if no edit permission
-  if(!canEdit){
-    document.getElementById('actionsHeader').style.display='none';
-  }
-}
-
-async function loadEmployees(){
+async function loadMembers(){
+  const company=UD.company||CU.uid;
   const snap=await get(ref(db,'users'));
-  const data=snap.val()||{};
-
-  // Match employees by companyId or company name
-  allEmployees=Object.entries(data)
-    .map(([uid,u])=>({uid,...u}))
-    .filter(u=>u.role!=='admin'&&(
-      (myCompanyId&&u.companyId===myCompanyId)||
-      (!myCompanyId&&(u.company||'').toLowerCase().trim()===(myCompanyName||'').toLowerCase().trim())
-    ));
-
-  filteredEmployees=[...allEmployees];
-
-  renderStats();
-  renderRecent();
-  renderEmployees(filteredEmployees);
-  renderPending();
+  const all=snap.val()||{};
+  _members=Object.entries(all)
+    .filter(([,u])=>u.company===company&&u.role!=='admin'&&u.uid!==CU.uid&&u.status!=='deleted')
+    .map(([uid,u])=>({uid,...u}));
+  const limit=UD.profileLimit||10;
+  document.getElementById('statTotal').textContent=_members.length;
+  document.getElementById('statLimit').textContent=limit;
+  document.getElementById('statLeft').textContent=Math.max(0,limit-_members.length);
+  renderMembers();
 }
 
-function renderStats(){
-  const total=allEmployees.length;
-  const active=allEmployees.filter(u=>u.status==='active').length;
-  const views=allEmployees.reduce((s,u)=>s+(u.stats?.views||0),0);
-  const pending=allEmployees.filter(u=>u.status==='pending_approval').length;
-
-  document.getElementById('statTotal').textContent=total;
-  document.getElementById('statActive').textContent=active;
-  document.getElementById('statViews').textContent=views;
-  document.getElementById('statPending').textContent=pending;
-  document.getElementById('companyMetaDisplay').textContent=`${total} əməkdaş · ${active} aktiv`;
-
-  // Show pending nav if there are pending
-  if(pending>0){
-    document.getElementById('navPending').style.display='flex';
-    document.getElementById('pendingBadgeNav').textContent=pending;
+function renderMembers(){
+  const grid=document.getElementById('membersGrid');
+  if(!_members.length){
+    grid.innerHTML=`<div class="empty-state">
+      <span class="empty-icon">👥</span>
+      <div style="font-size:15px;font-weight:600;color:var(--navy);margin-bottom:.5rem">Hələ üzv yoxdur</div>
+      <div style="font-size:13px">Yeni üzv əlavə et düyməsinə basın</div>
+    </div>`;
+    return;
   }
-}
-
-function planBadge(p){if(p==='business')return'<span class="badge badge-business">Business</span>';if(p==='pro')return'<span class="badge badge-pro">Pro</span>';if(p==='premium')return'<span class="badge badge-premium">Premium</span>';return'<span class="badge badge-free">Free</span>';}
-function statusBadge(s){
-  if(s==='blocked')return'<span class="badge badge-blocked">Bloklu</span>';
-  if(s==='pending_approval')return'<span class="badge badge-pending">Gözləyir</span>';
-  return'<span class="badge badge-active">Aktiv</span>';
-}
-
-function renderRecent(){
-  const recent=[...allEmployees].filter(u=>u.status==='active').sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).slice(0,5);
-  const tbody=document.getElementById('recentBody');
-  const mc=document.getElementById('recentMobile');
-  if(!recent.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray)">Əməkdaş yoxdur</td></tr>';mc.innerHTML='';return;}
-  tbody.innerHTML=recent.map(u=>`<tr>
-    <td><div class="user-cell">
-      <div class="user-av">${u.card?.photo?`<img src="${u.card.photo}">`:(u.name||'?').charAt(0).toUpperCase()}</div>
-      <div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div>
-    </div></td>
-    <td style="font-size:12px;color:var(--gray)">${u.card?.position||'—'}</td>
-    <td>${planBadge(u.plan)}</td>
-    <td>${statusBadge(u.status)}</td>
-    <td style="font-size:12px;color:var(--gray)">${u.stats?.views||0}</td>
-  </tr>`).join('');
-  mc.innerHTML=recent.map(u=>`<div class="mobile-card">
-    <div class="mobile-card-top">
-      <div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div>
-      <div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.card?.position||u.email||''}</div></div></div>
-      ${statusBadge(u.status)}
-    </div>
-    <div class="mobile-card-meta" style="margin-top:6px">${planBadge(u.plan)} · ${u.stats?.views||0} baxış</div>
-  </div>`).join('');
-}
-
-function renderEmployees(users){
-  const tbody=document.getElementById('empBody');
-  const mc=document.getElementById('empMobile');
-  document.getElementById('employeeCountLabel').textContent=`${users.length} nəfər`;
-  if(!users.length){tbody.innerHTML=`<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--gray)">Nəticə tapılmadı</td></tr>`;mc.innerHTML='';return;}
-  tbody.innerHTML=users.map(u=>`<tr>
-    <td><div class="user-cell">
-      <div class="user-av">${u.card?.photo?`<img src="${u.card.photo}">`:(u.name||'?').charAt(0).toUpperCase()}</div>
-      <div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div>
-    </div></td>
-    <td style="font-size:12px;color:var(--gray)">${u.card?.position||'—'}</td>
-    <td>${planBadge(u.plan)}</td>
-    <td>${statusBadge(u.status)}</td>
-    <td style="font-size:12px;color:var(--gray)">${u.stats?.views||0}</td>
-    <td ${canEdit?'':'style="display:none"'}>
-      <div class="action-btns">
-        ${canEdit?`<button class="btn btn-sm btn-primary" onclick="openEditEmployee('${u.uid}')">Redaktə</button>`:''}
-        <button class="btn btn-sm" onclick="openViewEmployee('${u.uid}')" style="${canEdit?'':'display:none'}">Gör</button>
-        ${u.slug?`<a class="btn btn-sm" href="https://apps.mycontact.az/${u.slug}" target="_blank">🔗</a>`:''}
+  grid.innerHTML=_members.map(u=>{
+    const name=u.name||u.email||'—';
+    const pos=u.card?.position||'—';
+    const email=u.email||'—';
+    const uid=u.uid;
+    const av=u.card?.photo
+      ?`<img src="${u.card.photo}" loading="lazy">`
+      :name.charAt(0).toUpperCase();
+    const profileUrl=`profile.html?u=${encodeURIComponent(u.slug||'')}`;
+    return `<div class="member-card">
+      <div class="member-top">
+        <div class="mem-av">${av}</div>
+        <div class="mem-info">
+          <div class="mem-name">${name}</div>
+          <div class="mem-pos">${pos}</div>
+        </div>
       </div>
-    </td>
-  </tr>`).join('');
-
-  mc.innerHTML=users.map(u=>`<div class="mobile-card">
-    <div class="mobile-card-top">
-      <div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div>
-      <div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div>
-      ${statusBadge(u.status)}
-    </div>
-    <div class="mobile-card-meta" style="margin-top:5px">${u.card?.position||'—'} · ${u.stats?.views||0} baxış · ${planBadge(u.plan)}</div>
-    <div style="display:flex;gap:5px;margin-top:8px;flex-wrap:wrap">
-      ${canEdit?`<button class="btn btn-sm btn-primary" onclick="openEditEmployee('${u.uid}')">Redaktə</button>`:''}
-      ${u.slug?`<a class="btn btn-sm" href="https://apps.mycontact.az/${u.slug}" target="_blank">Profili gör</a>`:''}
-    </div>
-  </div>`).join('');
+      <div class="mem-email">${email}</div>
+      <div class="mem-actions">
+        <button class="btn btn-sm" onclick="editMember('${uid}')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Redaktə
+        </button>
+        <a href="${profileUrl}" target="_blank" class="btn btn-sm" style="text-decoration:none">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          Profil
+        </a>
+        <button class="btn btn-sm btn-danger" onclick="deleteMember('${uid}')">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+        </button>
+      </div>
+    </div>`;
+  }).join('');
 }
 
-function renderPending(){
-  const pending=allEmployees.filter(u=>u.status==='pending_approval');
-  const tbody=document.getElementById('pendingBody');
-  const mc=document.getElementById('pendingMobile');
-  if(!pending.length){tbody.innerHTML='<tr><td colspan="4" style="text-align:center;padding:2rem;color:var(--gray)">Gözləyən istifadəçi yoxdur ✓</td></tr>';mc.innerHTML='';return;}
-  tbody.innerHTML=pending.map(u=>`<tr>
-    <td><div class="user-cell">
-      <div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div>
-      <div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div>
-    </div></td>
-    <td style="font-size:12px;color:var(--gray)">${u.orderedAt?new Date(u.orderedAt).toLocaleDateString('az'):'—'}</td>
-    <td>${statusBadge(u.status)}</td>
-    <td><div style="font-size:11px;color:var(--gray);font-style:italic">Ana admin tərəfindən təsdiq ediləcək</div></td>
-  </tr>`).join('');
-  mc.innerHTML=pending.map(u=>`<div class="mobile-card">
-    <div class="mobile-card-top">
-      <div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div>
-      <div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div>
-      ${statusBadge(u.status)}
-    </div>
-    <div class="mobile-card-meta" style="margin-top:5px;color:var(--gray);font-size:11px;font-style:italic">Ana admin tərəfindən təsdiq ediləcək</div>
-  </div>`).join('');
-}
-
-window.filterEmployees=function(){
-  const q=document.getElementById('empSearch').value.toLowerCase();
-  const st=document.getElementById('empStatusFilter').value;
-  filteredEmployees=allEmployees.filter(u=>{
-    const matchQ=!q||(u.name||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q)||(u.card?.position||'').toLowerCase().includes(q);
-    const matchSt=!st||u.status===st;
-    return matchQ&&matchSt;
-  });
-  renderEmployees(filteredEmployees);
+window.openModal=function(){
+  _editUid=null;
+  document.getElementById('modalTitle').textContent='Yeni üzv əlavə et';
+  ['mName','mSurname','mPos','mPhone','mEmail','mPass'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('modalErr').classList.remove('show');
+  document.getElementById('passGroup').style.display='block';
+  document.getElementById('releaseZone').style.display='none';
+  document.getElementById('memberModal').classList.add('open');
 };
 
-// ── Edit Employee ──
-window.openEditEmployee=function(uid){
-  if(!canEdit){showToast('Redaktə icazəniz yoxdur','error');return;}
-  const u=allEmployees.find(e=>e.uid===uid);
-  if(!u)return;
-  document.getElementById('editEmpUid').value=uid;
-  document.getElementById('editEmpSub').textContent=u.email||'';
-  document.getElementById('editEmpName').value=u.name||'';
-  document.getElementById('editEmpPosition').value=u.card?.position||'';
-  document.getElementById('editEmpDepartment').value=u.card?.department||'';
-  document.getElementById('editEmpPhone').value=u.card?.phone||'';
-  document.getElementById('editEmpWhatsapp').value=u.card?.whatsapp||'';
-  document.getElementById('editEmpStatus').value=u.status||'active';
-  document.getElementById('editEmpSlugDisplay').textContent=u.slug?`apps.mycontact.az/${u.slug}`:'Link yoxdur';
-  document.getElementById('editEmpErr').classList.remove('show');
-  openModal('editEmpModal');
+window.editMember=function(uid){
+  const m=_members.find(x=>x.uid===uid);if(!m)return;
+  _editUid=uid;
+  document.getElementById('modalTitle').textContent='Üzv məlumatlarını redaktə et';
+  document.getElementById('mName').value=m.name?.split(' ')[0]||'';
+  document.getElementById('mSurname').value=m.name?.split(' ').slice(1).join(' ')||'';
+  document.getElementById('mPos').value=m.card?.position||'';
+  document.getElementById('mPhone').value=m.card?.phone||m.phone||'';
+  document.getElementById('mEmail').value=m.email||'';
+  document.getElementById('modalErr').classList.remove('show');
+  document.getElementById('passGroup').style.display='none';
+  document.getElementById('releaseZone').style.display='block';
+  document.getElementById('memberModal').classList.add('open');
 };
 
-window.saveEmployee=async function(){
-  const uid=document.getElementById('editEmpUid').value;
-  const name=document.getElementById('editEmpName').value.trim();
-  const position=document.getElementById('editEmpPosition').value.trim();
-  const department=document.getElementById('editEmpDepartment').value.trim();
-  const phone=document.getElementById('editEmpPhone').value.trim();
-  const whatsapp=document.getElementById('editEmpWhatsapp').value.trim();
-  const status=document.getElementById('editEmpStatus').value;
-  if(!name){document.getElementById('editEmpErr').textContent='Ad boş ola bilməz';document.getElementById('editEmpErr').classList.add('show');return;}
+window.closeModal=function(){
+  document.getElementById('memberModal').classList.remove('open');
+  _editUid=null;
+};
+
+window.saveMember=async function(){
+  const err=document.getElementById('modalErr');
+  err.classList.remove('show');
+  const name=(document.getElementById('mName').value||'').trim();
+  const surname=(document.getElementById('mSurname').value||'').trim();
+  const pos=(document.getElementById('mPos').value||'').trim();
+  const phone=(document.getElementById('mPhone').value||'').trim();
+  const email=(document.getElementById('mEmail').value||'').trim();
+  const pass=document.getElementById('mPass').value||'';
+  if(!name){err.textContent='Ad daxil edin.';err.classList.add('show');return;}
+  if(!email){err.textContent='Email daxil edin.';err.classList.add('show');return;}
+  const btn=document.getElementById('saveBtn');btn.disabled=true;btn.textContent='Saxlanır...';
+  const fullName=name+(surname?' '+surname:'');
   try{
-    await update(ref(db,`users/${uid}`),{
-      name,status,
-      'card/position':position,'card/department':department,'card/phone':phone,'card/whatsapp':whatsapp,'card/name':name
-    });
-    const idx=allEmployees.findIndex(e=>e.uid===uid);
-    if(idx>-1){
-      allEmployees[idx]={...allEmployees[idx],name,status,card:{...allEmployees[idx].card,position,department,phone,whatsapp,name}};
-      filteredEmployees=[...allEmployees];
-      renderEmployees(filteredEmployees);
-      renderRecent();
-      renderStats();
+    if(_editUid){
+      await update(ref(db,`users/${_editUid}`),{name:fullName,'card/name':fullName,'card/position':pos,'card/phone':phone});
+      const idx=_members.findIndex(m=>m.uid===_editUid);
+      if(idx>=0){_members[idx]={..._members[idx],name:fullName,card:{..._members[idx].card,position:pos,phone}};}
+      toast('Məlumatlar yeniləndi ✓','success');
+    }else{
+      const limit=UD.profileLimit||10;
+      if(_members.length>=limit){err.textContent=`Limit dolubdur (${limit} üzv). Admindən limit artırmasını xahiş edin.`;err.classList.add('show');btn.disabled=false;btn.textContent='Yadda saxla';return;}
+      if(pass.length<6){err.textContent='Şifrə minimum 6 simvol olmalıdır.';err.classList.add('show');btn.disabled=false;btn.textContent='Yadda saxla';return;}
+      const cred=await createUserWithEmailAndPassword(auth,email,pass);
+      const uid=cred.user.uid;
+      const slug=email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g,'')+Math.floor(Math.random()*900+100);
+      const company=UD.company||CU.uid;
+      await set(ref(db,`users/${uid}`),{name:fullName,email,slug,phone,plan:'free',role:'user',userRole:'user',status:'active',company,managedBy:CU.uid,createdAt:Date.now(),card:{name:fullName,position:pos,phone,email},brandLink:true});
+      _members.push({uid,name:fullName,email,company,slug,card:{position:pos,phone}});
+      document.getElementById('statTotal').textContent=_members.length;
+      document.getElementById('statLeft').textContent=Math.max(0,(UD.profileLimit||10)-_members.length);
+      toast('Üzv əlavə edildi ✓','success');
     }
-    closeModal('editEmpModal');
-    showToast(`${name} — profil yeniləndi`,'success');
+    renderMembers();closeModal();
   }catch(e){
-    document.getElementById('editEmpErr').textContent='Xəta baş verdi: '+e.message;
-    document.getElementById('editEmpErr').classList.add('show');
+    const msgs={'auth/email-already-in-use':'Bu email artıq mövcuddur.','auth/weak-password':'Şifrə çox sadədir.','auth/invalid-email':'Email formatı yanlışdır.'};
+    err.textContent=msgs[e.code]||'Xəta: '+e.message;err.classList.add('show');
   }
+  btn.disabled=false;btn.textContent='Yadda saxla';
 };
 
-// ── View Employee (readonly) ──
-window.openViewEmployee=function(uid){
-  const u=allEmployees.find(e=>e.uid===uid);
-  if(!u)return;
-  document.getElementById('viewEmpSub').textContent=u.email||'';
-  document.getElementById('viewEmpContent').innerHTML=`
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">
-      ${field('Ad Soyad',u.name)}
-      ${field('Vəzifə',u.card?.position)}
-      ${field('Şöbə',u.card?.department)}
-      ${field('Telefon',u.card?.phone)}
-      ${field('WhatsApp',u.card?.whatsapp)}
-      ${field('Plan',u.plan||'free')}
-      ${field('Status',u.status==='blocked'?'Bloklu':u.status==='active'?'Aktiv':'Gözləyir')}
-      ${field('Profil linki',u.slug?`apps.mycontact.az/${u.slug}`:'Yoxdur')}
-    </div>
-    ${u.slug?`<a href="https://apps.mycontact.az/${u.slug}" target="_blank" class="btn btn-primary" style="margin-top:4px;justify-content:center">Profili aç →</a>`:''}
-  `;
-  openModal('viewEmpModal');
-};
-function field(label,val){return`<div style="background:var(--surface);border-radius:9px;padding:9px 12px"><div style="font-size:10px;color:var(--gray);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px">${label}</div><div style="font-size:13px;color:var(--navy);font-weight:500">${val||'—'}</div></div>`;}
-
-// ── Panels ──
-window.showPanel=function(name){
-  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('panel-'+name).classList.add('active');
-  const titles={overview:'İcmal',employees:'Əməkdaşlar',pending:'Gözləyənlər'};
-  document.getElementById('topbarTitle').textContent=titles[name]||name;
-  const navMap={overview:0,employees:1,pending:2};
-  document.querySelectorAll('.nav-item')[navMap[name]||0].classList.add('active');
-  closeSidebar();
+window.deleteMember=async function(uid){
+  if(!confirm('Bu üzvü silmək istəyirsiniz?'))return;
+  await update(ref(db,`users/${uid}`),{status:'deleted',deletedAt:Date.now(),deletedBy:CU.uid});
+  _members=_members.filter(m=>m.uid!==uid);
+  renderMembers();
+  document.getElementById('statTotal').textContent=_members.length;
+  document.getElementById('statLeft').textContent=Math.max(0,(UD.profileLimit||10)-_members.length);
+  toast('Üzv silindi','success');
 };
 
-window.openModal=function(id){document.getElementById(id).classList.add('open');};
-window.closeModal=function(id){document.getElementById(id).classList.remove('open');};
+window.releaseMember=async function(){
+  if(!_editUid)return;
+  if(!confirm('Bu profili şirkət idarəsindən azad edirsiniz. İstifadəçi müstəqil daxil ola bilər.'))return;
+  await update(ref(db,`users/${_editUid}`),{company:null,managedBy:null,releasedAt:Date.now(),releasedBy:CU.uid});
+  _members=_members.filter(m=>m.uid!==_editUid);
+  renderMembers();
+  document.getElementById('statTotal').textContent=_members.length;
+  document.getElementById('statLeft').textContent=Math.max(0,(UD.profileLimit||10)-_members.length);
+  closeModal();
+  toast('Profil azad edildi ✓','success');
+};
+
 window.doLogout=async function(){await signOut(auth);location.href='index.html';};
-function showToast(m,t=''){const el=document.getElementById('toast');el.textContent=m;el.className='toast show '+t;setTimeout(()=>el.className='toast',3000);}
-window.showToast=showToast;
-</script>
 
-<script>
-function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open');}
-function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('open');}
+function toast(msg,type='success'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast '+type+' show';
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
+
 </script>
 </body>
 </html>
