@@ -955,6 +955,26 @@ onAuthStateChanged(auth,async u=>{
   if(!u){location.href='index.html';return;}CU=u;
   const s=await get(ref(db,`users/${u.uid}/role`));
   if(s.val()==='admin'){location.href='admin.html';return;}
+  // Company admin üzv profilini idarə etmək üçün: ?manage=UID
+  const _manageUid=new URLSearchParams(location.search).get('manage');
+  if(_manageUid&&s.val()==='company_admin'){
+    // Company adminin öz məlumatları
+    const _mySnap=await get(ref(db,`users/${u.uid}`));
+    const _myData=_mySnap.val()||{};
+    // İdarə edilən üzvün məlumatları
+    onValue(ref(db,`users/${_manageUid}`),snap=>{
+      UD={...snap.val()||{},_managedUid:_manageUid,_managerUid:u.uid,_managerCompany:_myData.company};
+      loadUD();
+    });
+    onValue(ref(db,`contacts/${_manageUid}`),snap=>{
+      const d=snap.val()||{};
+      allContacts=Object.entries(d).map(([id,ct])=>({id,...ct})).sort((a,b)=>(b.addedAt||0)-(a.addedAt||0));
+      renderContacts(allContacts);
+    });
+    // CU-nu manage edilən uid kimi göstər ki, save əməliyyatları düzgün işləsin
+    CU={...u,uid:_manageUid};
+    return;
+  }
   // Check pending status — redirect to index if not yet activated
   const _stSnap=await get(ref(db,`users/${u.uid}/status`));
   const _st=_stSnap.val()||'active';
