@@ -160,12 +160,16 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
 <aside class="sidebar" id="sidebar">
-  <div class="sidebar-brand">
-    <div class="brand-mark"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="3" y="6" width="18" height="13" rx="2"/><circle cx="12" cy="13" r="2"/></svg></div>
-    <span class="brand-name">My<span>Contact</span></span>
+  <div class="sidebar-brand" style="justify-content:center;padding:.75rem 1rem">
+    <img src="data:image/png;base64,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" alt="MyContact" style="height:34px;width:auto;display:block">
   </div>
   <nav class="sidebar-nav">
     <div class="nav-section">Ümumi</div>
+    <div class="nav-item" id="nav-orders" onclick="showPanel('orders')" style="position:relative">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+      Sifarişlər
+      <span id="ordersNavBadge" style="display:none;background:rgba(217,119,6,.2);color:#d97706;font-size:9px;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:auto">0</span>
+    </div>
     <div class="nav-item active" onclick="showPanel('overview')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>İcmal</div>
     <div class="nav-section">İdarəetmə</div>
     <div class="nav-item" onclick="showPanel('users')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>İstifadəçilər</div>
@@ -469,20 +473,58 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
           </div>
         </div>
 
-        <!-- Grant access form -->
-        <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1rem">
-          <div style="font-size:13px;font-weight:500;margin-bottom:.9rem">Şirkət Admini Təyin Et</div>
-          <div class="form-group">
-            <label class="form-label">İstifadəçi (email ilə axtar)</label>
-            <input class="form-input" id="caSearch" placeholder="Email daxil edin..." oninput="searchForCA()">
+        <!-- Tabs -->
+        <div style="display:flex;border-bottom:1.5px solid var(--gray-light);margin-bottom:1.25rem">
+          <div onclick="switchCaTab(1)" id="caTab1" style="flex:1;padding:.65rem;font-size:13px;font-weight:500;color:var(--navy);text-align:center;cursor:pointer;border-bottom:2px solid var(--blue);margin-bottom:-1.5px">➕ Yeni hesab yarat</div>
+          <div onclick="switchCaTab(2)" id="caTab2" style="flex:1;padding:.65rem;font-size:13px;font-weight:500;color:var(--gray);text-align:center;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1.5px">👤 Mövcudu təyin et</div>
+        </div>
+
+        <!-- Tab 1: Create new -->
+        <div id="caPanel1">
+          <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1rem">
+            <div style="font-size:13px;font-weight:500;margin-bottom:.9rem">Yeni Şirkət Admini Hesabı Yarat</div>
+            <div class="error-box" id="caCreateErr"></div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Ad</label><input class="form-input" id="caNewName" placeholder="Aytən"></div>
+              <div class="form-group"><label class="form-label">Soyad</label><input class="form-input" id="caNewSurname" placeholder="Həsənova"></div>
+            </div>
+            <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" id="caNewEmail" placeholder="ayten@sirket.az"></div>
+            <div class="form-group"><label class="form-label">Şifrə</label><input class="form-input" type="password" id="caNewPass" placeholder="Min 6 simvol"></div>
+            <div class="form-group"><label class="form-label">Şirkət adı</label><input class="form-input" id="caNewCompany" placeholder="ABB Bank"></div>
+            <div class="form-group">
+              <label class="form-label">Profil yaratma limiti</label>
+              <div style="display:flex;align-items:center;gap:8px">
+                <input class="form-input" type="number" id="caNewLimit" value="10" min="1" max="999" style="width:100px">
+                <span style="font-size:12px;color:var(--gray)">üzv profili (sonradan dəyişdirilə bilər)</span>
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="createCompanyAdmin()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+              Hesab yarat və admin təyin et
+            </button>
           </div>
-          <div id="caSearchResults" style="margin-bottom:.75rem"></div>
-          <div class="form-group">
-            <label class="form-label">Şirkət (bu şirkətin profillərinə giriş veriləcək)</label>
-            <input class="form-input" id="caCompany" placeholder="Şirkət adı daxil edin (məs: ABB Bank)">
+        </div>
+
+        <!-- Tab 2: Assign existing -->
+        <div id="caPanel2" style="display:none">
+          <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1rem">
+            <div style="font-size:13px;font-weight:500;margin-bottom:.9rem">Mövcud İstifadəçini Təyin Et</div>
+            <div class="form-group">
+              <label class="form-label">İstifadəçi (email və ya ad ilə axtar)</label>
+              <input class="form-input" id="caSearch" placeholder="Minimum 3 hərf yazın..." oninput="searchForCA()">
+            </div>
+            <div id="caSearchResults" style="margin-bottom:.75rem"></div>
+            <div class="form-group">
+              <label class="form-label">Şirkət adı</label>
+              <input class="form-input" id="caCompany" placeholder="Şirkət adı daxil edin (məs: ABB Bank)">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Profil limiti</label>
+              <input class="form-input" type="number" id="caExistingLimit" value="10" min="1" max="999" style="width:100px">
+            </div>
+            <input type="hidden" id="caUid">
+            <button class="btn btn-primary" onclick="grantCompanyAdmin()" id="caGrantBtn" disabled>✅ İcazə ver</button>
           </div>
-          <input type="hidden" id="caUid">
-          <button class="btn btn-primary" onclick="grantCompanyAdmin()" id="caGrantBtn" disabled>✅ İcazə ver</button>
         </div>
 
         <!-- Current company admins list -->
@@ -494,6 +536,41 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
     </div>
 
   </div>
+
+  <!-- ORDERS PANEL -->
+  <div class="panel" id="panel-orders">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:1.25rem">
+      <div><div style="font-size:15px;font-weight:600;color:var(--navy)">Sifariş Sorğuları</div><div style="font-size:12px;color:var(--gray);margin-top:3px">Kart sifariş edən istifadəçiləri aktivləşdirin</div></div>
+      <button class="btn btn-sm" onclick="loadOrders()">🔄 Yenilə</button>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:1.25rem">
+      <div class="stat-card" style="text-align:center"><div class="stat-num" id="ordStatPending" style="color:#d97706;font-size:24px">0</div><div class="stat-label">Gözləyən</div></div>
+      <div class="stat-card" style="text-align:center"><div class="stat-num" id="ordStatApproved" style="color:var(--success);font-size:24px">0</div><div class="stat-label">Aktivlər</div></div>
+      <div class="stat-card" style="text-align:center"><div class="stat-num" id="ordStatCancelled" style="color:var(--error);font-size:24px">0</div><div class="stat-label">Ləğv edilən</div></div>
+    </div>
+    <div style="display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap">
+      <button class="btn btn-sm" id="ofAll" onclick="filterOrders('all')" style="background:var(--navy);color:#fff;border-color:var(--navy)">Hamısı</button>
+      <button class="btn btn-sm" id="ofPending" onclick="filterOrders('pending')">⏳ Gözləyən</button>
+      <button class="btn btn-sm" id="ofApproved" onclick="filterOrders('approved')">✓ Aktivlər</button>
+      <button class="btn btn-sm" id="ofCancelled" onclick="filterOrders('cancelled')">✗ Ləğv</button>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden">
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse">
+          <thead><tr style="border-bottom:1px solid var(--gray-light);background:var(--surface)">
+            <th style="padding:10px 14px;font-size:11px;font-weight:600;color:var(--gray);text-align:left">İSTİFADƏÇİ</th>
+            <th style="padding:10px 14px;font-size:11px;font-weight:600;color:var(--gray);text-align:left">EMAIL / TELEFON</th>
+            <th style="padding:10px 14px;font-size:11px;font-weight:600;color:var(--gray);text-align:left">TARİX</th>
+            <th style="padding:10px 14px;font-size:11px;font-weight:600;color:var(--gray);text-align:left">STATUS</th>
+            <th style="padding:10px 14px;font-size:11px;font-weight:600;color:var(--gray);text-align:left">ƏMƏLİYYAT</th>
+          </tr></thead>
+          <tbody id="ordersTableBody"><tr><td colspan="5" style="text-align:center;padding:2.5rem;color:var(--gray)">Yüklənir...</td></tr></tbody>
+        </table>
+      </div>
+      <div id="ordersEmpty" style="display:none;text-align:center;padding:3rem;color:var(--gray)"><div style="font-size:32px;margin-bottom:.75rem">📭</div><div>Sifariş yoxdur</div></div>
+    </div>
+  </div>
+
 </main>
 
 <!-- CREATE USER MODAL -->
@@ -843,12 +920,13 @@ window.showPanel=function(n){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
   document.getElementById('panel-'+n).classList.add('active');
-  const t={overview:'İcmal',users:'İstifadəçilər',cards:'Bütün kartlar',team:'Team & Şirkət',bulk:'Bulk Upload',companyadmins:'Şirkət Adminləri',domains:'Domain İdarəsi',plans:'Plan İdarəsi'};
+  const t={overview:'İcmal',orders:'Sifarişlər',users:'İstifadəçilər',cards:'Bütün kartlar',team:'Team & Şirkət',bulk:'Bulk Upload',companyadmins:'Şirkət Adminləri',domains:'Domain İdarəsi',plans:'Plan İdarəsi'};
   document.getElementById('topbarTitle').textContent=t[n]||n;
-  const m={overview:0,users:1,cards:2,team:3,bulk:4,companyadmins:5,domains:6,plans:7};
+  const m={overview:0,orders:1,users:2,cards:3,team:4,bulk:5,companyadmins:6,domains:7,plans:8};
   const items=document.querySelectorAll('.nav-item');if(items[m[n]])items[m[n]].classList.add('active');
   if(n==='domains')renderDomains();
   if(n==='companyadmins')renderCompanyAdmins();
+  if(n==='orders')loadOrders();
   closeSidebar();
 };
 
@@ -1136,6 +1214,144 @@ window.bulkChangePlan=async function(){
   showToast(`${targets.length} istifadəçi ${to} plana keçirildi`,'success');
 };
 
+// ── TAB ────────────────────────────────────────────────────────────────────
+window.switchCaTab=function(n){
+  document.getElementById('caPanel1').style.display=n===1?'block':'none';
+  document.getElementById('caPanel2').style.display=n===2?'block':'none';
+  document.getElementById('caTab1').style.cssText='flex:1;padding:.65rem;font-size:13px;font-weight:500;text-align:center;cursor:pointer;margin-bottom:-1.5px;color:'+(n===1?'var(--navy)':'var(--gray)')+';border-bottom:2px solid '+(n===1?'var(--blue)':'transparent');
+  document.getElementById('caTab2').style.cssText='flex:1;padding:.65rem;font-size:13px;font-weight:500;text-align:center;cursor:pointer;margin-bottom:-1.5px;color:'+(n===2?'var(--navy)':'var(--gray)')+';border-bottom:2px solid '+(n===2?'var(--blue)':'transparent');
+};
+
+// ── CREATE COMPANY ADMIN ────────────────────────────────────────────────────
+window.createCompanyAdmin=async function(){
+  const err=document.getElementById('caCreateErr');if(err)err.style.display='none';
+  const name=(document.getElementById('caNewName')?.value||'').trim();
+  const surname=(document.getElementById('caNewSurname')?.value||'').trim();
+  const email=(document.getElementById('caNewEmail')?.value||'').trim();
+  const pass=(document.getElementById('caNewPass')?.value||'');
+  const company=(document.getElementById('caNewCompany')?.value||'').trim();
+  const limit=parseInt(document.getElementById('caNewLimit')?.value||'10');
+  if(!name||!email||!pass||!company){if(err){err.textContent='Ad, email, şifrə və şirkət adı məcburidir.';err.style.display='block';}return;}
+  if(pass.length<6){if(err){err.textContent='Şifrə minimum 6 simvol olmalıdır.';err.style.display='block';}return;}
+  const btn=document.querySelector('#caPanel1 .btn-primary');if(btn){btn.disabled=true;btn.textContent='Yaradılır...';}
+  try{
+    const {createUserWithEmailAndPassword:cup}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
+    const cred=await cup(getAuth(),email,pass);
+    const uid=cred.user.uid;
+    const fullName=name+(surname?' '+surname:'');
+    const slug=email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g,'')+Math.floor(Math.random()*900+100);
+    await set(ref(db,`users/${uid}`),{name:fullName,email,slug,company,plan:'business',role:'company_admin',userRole:'company_admin',status:'active',profileLimit:limit,createdAt:Date.now(),createdBy:CU?.uid||'admin',card:{name,surname,email},brandLink:false});
+    showToast(`${fullName} şirkət admini yaradıldı ✓`,'success');
+    ['caNewName','caNewSurname','caNewEmail','caNewPass','caNewCompany'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+    if(document.getElementById('caNewLimit'))document.getElementById('caNewLimit').value='10';
+    renderCompanyAdmins();
+  }catch(e){
+    const msgs={'auth/email-already-in-use':'Bu email artıq mövcuddur.','auth/weak-password':'Şifrə çox sadədir.','auth/invalid-email':'Email formatı yanlışdır.'};
+    if(err){err.textContent=msgs[e.code]||'Xəta: '+e.message;err.style.display='block';}
+  }
+  if(btn){btn.disabled=false;btn.textContent='Hesab yarat və admin təyin et';}
+};
+
+// ── FIX: selectCAUser — always editable ────────────────────────────────────
+window.selectCAUser=function(uid,name,company,email,role){
+  caSelectedUser={uid,name,company,email,role};
+  document.getElementById('caSearch').value=name+' ('+email+')';
+  document.getElementById('caSearchResults').innerHTML='';
+  const compEl=document.getElementById('caCompany');
+  if(compEl){compEl.value=company||'';compEl.readOnly=false;compEl.style.background='var(--white)';}
+  const btn=document.getElementById('caGrantBtn');
+  if(btn)btn.disabled=!(compEl&&compEl.value.trim());
+  if(compEl)compEl.oninput=function(){if(btn)btn.disabled=!this.value.trim();};
+  if(compEl)compEl.focus();
+};
+
+// ── GRANT (existing user) ───────────────────────────────────────────────────
+window.grantCompanyAdmin=async function(){
+  if(!caSelectedUser){showToast('İstifadəçi seçilməyib','error');return;}
+  const company=(document.getElementById('caCompany')?.value||'').trim();
+  const limit=parseInt(document.getElementById('caExistingLimit')?.value||'10');
+  if(!company){showToast('Şirkət adı daxil edin','error');return;}
+  if(!confirm(caSelectedUser.name+' — "'+company+'" şirkətinin admini edilsin?'))return;
+  await update(ref(db,'users/'+caSelectedUser.uid),{role:'company_admin',company,profileLimit:limit});
+  showToast(caSelectedUser.name+' şirkət admini edildi','success');
+  caSelectedUser=null;
+  ['caSearch','caCompany'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  const btn=document.getElementById('caGrantBtn');if(btn)btn.disabled=true;
+  renderCompanyAdmins();
+};
+
+// ── UPDATE LIMIT ────────────────────────────────────────────────────────────
+window.updateProfileLimit=async function(uid){
+  const inp=document.getElementById('lim_'+uid);if(!inp)return;
+  const limit=parseInt(inp.value)||10;
+  await update(ref(db,'users/'+uid),{profileLimit:limit});
+  showToast('Limit yeniləndi ✓','success');
+};
+
+// ── ORDERS ──────────────────────────────────────────────────────────────────
+let _allOrders=[],_ordersFilter='all';
+window.loadOrders=async function(){
+  const snap=await get(ref(db,'users'));const ud=snap.val()||{};
+  const weekAgo=Date.now()-7*24*60*60*1000;
+  _allOrders=Object.entries(ud)
+    .filter(([,u])=>u.role!=='admin'&&(u.status==='pending_order'||u.status==='pending_approval'||u.status==='active'||u.status==='cancelled')&&(u.orderedAt||u.registeredAt))
+    .map(([uid,u])=>({uid,...u}))
+    .sort((a,b)=>(b.orderedAt||b.registeredAt||0)-(a.orderedAt||a.registeredAt||0));
+  const pending=_allOrders.filter(o=>o.status==='pending_approval'||o.status==='pending_order').length;
+  const badge=document.getElementById('ordersNavBadge');
+  if(badge){badge.textContent=pending;badge.style.display=pending>0?'inline':'none';}
+  const sp=document.getElementById('ordStatPending');if(sp)sp.textContent=pending;
+  const sa=document.getElementById('ordStatApproved');if(sa)sa.textContent=_allOrders.filter(o=>o.status==='active'&&o.orderedAt).length;
+  const sc=document.getElementById('ordStatCancelled');if(sc)sc.textContent=_allOrders.filter(o=>o.status==='cancelled').length;
+  renderOrders();
+};
+window.filterOrders=function(f){
+  _ordersFilter=f;
+  ['All','Pending','Approved','Cancelled'].forEach(x=>{const b=document.getElementById('of'+x);if(b){b.style.background='';b.style.color='';b.style.borderColor='';}});
+  const a=document.getElementById('of'+f.charAt(0).toUpperCase()+f.slice(1));
+  if(a){a.style.background='var(--navy)';a.style.color='#fff';a.style.borderColor='var(--navy)';}
+  renderOrders();
+};
+function renderOrders(){
+  const tbody=document.getElementById('ordersTableBody');const empty=document.getElementById('ordersEmpty');if(!tbody)return;
+  let rows=_allOrders;
+  if(_ordersFilter==='pending')rows=_allOrders.filter(o=>o.status==='pending_order'||o.status==='pending_approval');
+  else if(_ordersFilter==='approved')rows=_allOrders.filter(o=>o.status==='active'&&o.orderedAt);
+  else if(_ordersFilter==='cancelled')rows=_allOrders.filter(o=>o.status==='cancelled');
+  if(!rows.length){tbody.innerHTML='';if(empty)empty.style.display='block';return;}
+  if(empty)empty.style.display='none';
+  const wk=Date.now()-7*24*60*60*1000;
+  tbody.innerHTML=rows.map(u=>{
+    const name=u.name||u.email||'—';const email=u.email||'—';const phone=u.phone||'';
+    const date=u.orderedAt?new Date(u.orderedAt).toLocaleDateString('az'):(u.registeredAt?new Date(u.registeredAt).toLocaleDateString('az'):'—');
+    const isNew=(u.registeredAt||0)>wk;
+    const newBadge=isNew?'<span style="background:rgba(124,58,237,.1);color:#7C3AED;font-size:9px;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:5px">YENİ</span>':'';
+    let sb,ac;
+    if(u.status==='pending_order'){sb='<span style="background:rgba(59,130,246,.1);color:#1d4ed8;font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px">📋 Sifariş etməyib</span>';ac='<button class="btn btn-sm" onclick="cancelOrder(''+u.uid+'')" style="color:var(--error);border-color:rgba(231,76,60,.3)">✗ Sil</button>';}
+    else if(u.status==='pending_approval'){sb='<span style="background:rgba(217,119,6,.1);color:#d97706;font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px">⏳ Gözləyir</span>';ac='<button class="btn btn-sm btn-primary" onclick="approveOrder(''+u.uid+'')" style="margin-right:4px">✓ Aktivləşdir</button><button class="btn btn-sm" onclick="cancelOrder(''+u.uid+'')" style="color:var(--error);border-color:rgba(231,76,60,.3)">✗ Ləğv et</button>';}
+    else if(u.status==='active'&&u.orderedAt){sb='<span style="background:rgba(39,174,96,.1);color:var(--success);font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px">✓ Aktiv</span>';ac='<button class="btn btn-sm" onclick="cancelOrder(''+u.uid+'')" style="color:var(--error);border-color:rgba(231,76,60,.3)">Blokla</button>';}
+    else if(u.status==='cancelled'){sb='<span style="background:rgba(231,76,60,.1);color:var(--error);font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px">✗ Ləğv edildi</span>';ac='<button class="btn btn-sm btn-primary" onclick="approveOrder(''+u.uid+'')">↩ Bərpa et</button>';}
+    else{sb='<span style="color:var(--gray);font-size:11px">—</span>';ac='—';}
+    const av=u.card?.photo?'<img src="'+u.card.photo+'" loading="lazy" style="width:30px;height:30px;border-radius:50%;object-fit:cover">'
+      :'<div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#378ADD);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff">'+name.charAt(0).toUpperCase()+'</div>';
+    return'<tr style="border-bottom:1px solid var(--gray-light)"><td style="padding:10px 14px"><div style="display:flex;align-items:center;gap:8px">'+av+'<div style="font-size:13px;font-weight:500;color:var(--navy)">'+name+newBadge+'</div></div></td>'
+      +'<td style="padding:10px 14px;font-size:12px;color:var(--gray)">'+email+(phone?'<br><span style="color:var(--navy)">'+phone+'</span>':'')+'</td>'
+      +'<td style="padding:10px 14px;font-size:12px;color:var(--gray)">'+date+'</td>'
+      +'<td style="padding:10px 14px">'+sb+'</td>'
+      +'<td style="padding:10px 14px"><div style="display:flex;gap:4px;flex-wrap:wrap">'+ac+'</div></td></tr>';
+  }).join('');
+}
+window.approveOrder=async function(uid){
+  if(!confirm('Bu istifadəçini aktivləşdirirsiniz?'))return;
+  await update(ref(db,'users/'+uid),{status:'active',approvedAt:Date.now()});
+  showToast('İstifadəçi aktivləşdirildi ✓','success');loadOrders();loadAll();
+};
+window.cancelOrder=async function(uid){
+  if(!confirm('Bu əməliyyatı etmək istəyirsiniz?'))return;
+  await update(ref(db,'users/'+uid),{status:'cancelled',cancelledAt:Date.now()});
+  showToast('Əməliyyat tamamlandı','success');loadOrders();
+};
+
 window.doLogout=async function(){await signOut(auth);location.href='index.html';};
 
 // ── COMPANY ADMIN MANAGEMENT ──────────────────────────────────────────────
@@ -1177,15 +1393,15 @@ window.selectCAUser=function(uid,name,company,email,role){
   caSelectedUser={uid,name,company,email,role};
   document.getElementById('caSearch').value=`${name} (${email})`;
   document.getElementById('caSearchResults').innerHTML='';
-  const compEl=document.getElementById('caCompany');
-  compEl.value=company||'';
-  compEl.readOnly=false;
-  compEl.style.background='var(--white)';
+  document.getElementById('caCompany').value=company||'';
   const btn=document.getElementById('caGrantBtn');
-  btn.disabled=!compEl.value.trim();
-  compEl.oninput=function(){btn.disabled=!this.value.trim();};
-  compEl.focus();
-  if(!company) compEl.placeholder='Şirkət adı daxil edin (məs: ABB Bank)';
+  btn.disabled=!company;
+  if(!company){
+    document.getElementById('caCompany').readOnly=false;
+    document.getElementById('caCompany').style.background='var(--white)';
+    document.getElementById('caCompany').placeholder='Bu istifadəçinin şirkəti yoxdur — əl ilə daxil edin';
+    document.getElementById('caCompany').oninput=function(){btn.disabled=!this.value.trim();};
+  }
 };
 
 window.grantCompanyAdmin=async function(){
@@ -1194,7 +1410,7 @@ window.grantCompanyAdmin=async function(){
   if(!company){showToast('Şirkət adı boş ola bilməz','error');return;}
   const isAlreadyAdmin=caSelectedUser.role==='company_admin';
   if(!confirm(`${caSelectedUser.name} (${caSelectedUser.email}) — "${company}" şirkətinin admini edilsin?\n\nO, yalnız bu şirkətin profillərinə giriş edə biləcək.`))return;
-  await update(ref(db,`users/${caSelectedUser.uid}`),{role:'company_admin',company,profileLimit:caSelectedUser.profileLimit||10});
+  await update(ref(db,`users/${caSelectedUser.uid}`),{role:'company_admin',company});
   showToast(`${caSelectedUser.name} şirkət admini edildi`,'success');
   caSelectedUser=null;
   document.getElementById('caSearch').value='';
@@ -1219,7 +1435,8 @@ async function renderCompanyAdmins(){
     <thead><tr>
       <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">İstifadəçi</th>
       <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Şirkət</th>
-      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Profil sayı</th>
+      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Profil / Limit</th>
+      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Limit dəyiş</th>
       <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Əməliyyat</th>
     </tr></thead>
     <tbody>${admins.map(u=>{
@@ -1233,7 +1450,9 @@ async function renderCompanyAdmins(){
         <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light)">
           <span style="background:rgba(24,95,165,.08);color:var(--blue);padding:3px 9px;border-radius:8px;font-size:12px;font-weight:500">🏢 ${comp}</span>
         </td>
-        <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light);font-size:13px;color:var(--navy)">${profileCount} profil</td>
+        <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light);font-size:13px;color:var(--navy)">${profileCount} / ${u.profileLimit||10}</td>
+        <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light)">
+          <div style="display:flex;align-items:center;gap:6px"><input type="number" value="${u.profileLimit||10}" min="1" max="999" id="lim_${u.uid}" style="width:65px;padding:4px 8px;border:1px solid var(--gray-light);border-radius:7px;font-size:13px;color:var(--navy);text-align:center"><button class="btn btn-sm btn-primary" onclick="updateProfileLimit('${u.uid}')">Saxla</button></div></td>
         <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light)">
           <button class="btn btn-sm btn-danger" onclick="revokeCompanyAdmin('${u.uid}','${(u.name||'').replace(/'/g,"\\'")}')">İcazəni sil</button>
         </td>
