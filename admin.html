@@ -469,54 +469,20 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
           </div>
         </div>
 
-        <!-- Tab: Yeni yarat / Mövcud təyin et -->
-        <div style="display:flex;border-bottom:1.5px solid var(--gray-light);margin-bottom:1.25rem">
-          <div id="caTab1" class="auth-tab active" onclick="switchCaTab(1)" style="flex:1;padding:.65rem;font-size:13px;font-weight:500;color:var(--navy);text-align:center;cursor:pointer;border-bottom:2px solid var(--blue);margin-bottom:-1.5px">➕ Yeni hesab yarat</div>
-          <div id="caTab2" class="auth-tab" onclick="switchCaTab(2)" style="flex:1;padding:.65rem;font-size:13px;font-weight:500;color:var(--gray);text-align:center;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1.5px">👤 Mövcudu təyin et</div>
-        </div>
-
-        <!-- TAB 1: Yeni şirkət admini hesabı yarat -->
-        <div id="caPanel1">
-          <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1rem">
-            <div style="font-size:13px;font-weight:500;margin-bottom:.9rem">Yeni Şirkət Admini Hesabı Yarat</div>
-            <div class="error-box" id="caCreateErr"></div>
-            <div class="form-row">
-              <div class="form-group"><label class="form-label">Ad</label><input class="form-input" id="caNewName" placeholder="Aytən"></div>
-              <div class="form-group"><label class="form-label">Soyad</label><input class="form-input" id="caNewSurname" placeholder="Həsənova"></div>
-            </div>
-            <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" id="caNewEmail" placeholder="ayten@sirket.az"></div>
-            <div class="form-group"><label class="form-label">Şifrə</label><input class="form-input" type="password" id="caNewPass" placeholder="Minimum 6 simvol"></div>
-            <div class="form-group"><label class="form-label">Şirkət adı</label><input class="form-input" id="caNewCompany" placeholder="Məs: ABB Bank, Kapital Bank..."></div>
-            <div class="form-group">
-              <label class="form-label">Profil yaratma limiti</label>
-              <div style="display:flex;gap:8px;align-items:center">
-                <input class="form-input" type="number" id="caNewLimit" value="10" min="1" max="999" style="width:100px">
-                <span style="font-size:12px;color:var(--gray)">şirkət üzvü profili (sonradan dəyişdirilə bilər)</span>
-              </div>
-            </div>
-            <button class="btn btn-primary" onclick="createCompanyAdmin()">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
-              Hesab yarat və admin təyin et
-            </button>
+        <!-- Grant access form -->
+        <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1rem">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.9rem">Şirkət Admini Təyin Et</div>
+          <div class="form-group">
+            <label class="form-label">İstifadəçi (email ilə axtar)</label>
+            <input class="form-input" id="caSearch" placeholder="Email daxil edin..." oninput="searchForCA()">
           </div>
-        </div>
-
-        <!-- TAB 2: Mövcud istifadəçini təyin et -->
-        <div id="caPanel2" style="display:none">
-          <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1rem">
-            <div style="font-size:13px;font-weight:500;margin-bottom:.9rem">Mövcud İstifadəçini Şirkət Admini Təyin Et</div>
-            <div class="form-group">
-              <label class="form-label">İstifadəçi (email ilə axtar)</label>
-              <input class="form-input" id="caSearch" placeholder="Email daxil edin..." oninput="searchForCA()">
-            </div>
-            <div id="caSearchResults" style="margin-bottom:.75rem"></div>
-            <div class="form-group">
-              <label class="form-label">Şirkət adı</label>
-              <input class="form-input" id="caCompany" placeholder="Məs: ABB Bank" readonly style="background:var(--surface)">
-            </div>
-            <input type="hidden" id="caUid">
-            <button class="btn btn-primary" onclick="grantCompanyAdmin()" id="caGrantBtn" disabled>✅ İcazə ver</button>
+          <div id="caSearchResults" style="margin-bottom:.75rem"></div>
+          <div class="form-group">
+            <label class="form-label">Şirkət (bu şirkətin profillərinə giriş veriləcək)</label>
+            <input class="form-input" id="caCompany" placeholder="Şirkət adı daxil edin (məs: ABB Bank)">
           </div>
+          <input type="hidden" id="caUid">
+          <button class="btn btn-primary" onclick="grantCompanyAdmin()" id="caGrantBtn" disabled>✅ İcazə ver</button>
         </div>
 
         <!-- Current company admins list -->
@@ -1211,15 +1177,15 @@ window.selectCAUser=function(uid,name,company,email,role){
   caSelectedUser={uid,name,company,email,role};
   document.getElementById('caSearch').value=`${name} (${email})`;
   document.getElementById('caSearchResults').innerHTML='';
-  document.getElementById('caCompany').value=company||'';
+  const compEl=document.getElementById('caCompany');
+  compEl.value=company||'';
+  compEl.readOnly=false;
+  compEl.style.background='var(--white)';
   const btn=document.getElementById('caGrantBtn');
-  btn.disabled=!company;
-  if(!company){
-    document.getElementById('caCompany').readOnly=false;
-    document.getElementById('caCompany').style.background='var(--white)';
-    document.getElementById('caCompany').placeholder='Bu istifadəçinin şirkəti yoxdur — əl ilə daxil edin';
-    document.getElementById('caCompany').oninput=function(){btn.disabled=!this.value.trim();};
-  }
+  btn.disabled=!compEl.value.trim();
+  compEl.oninput=function(){btn.disabled=!this.value.trim();};
+  compEl.focus();
+  if(!company) compEl.placeholder='Şirkət adı daxil edin (məs: ABB Bank)';
 };
 
 window.grantCompanyAdmin=async function(){
@@ -1228,7 +1194,7 @@ window.grantCompanyAdmin=async function(){
   if(!company){showToast('Şirkət adı boş ola bilməz','error');return;}
   const isAlreadyAdmin=caSelectedUser.role==='company_admin';
   if(!confirm(`${caSelectedUser.name} (${caSelectedUser.email}) — "${company}" şirkətinin admini edilsin?\n\nO, yalnız bu şirkətin profillərinə giriş edə biləcək.`))return;
-  await update(ref(db,`users/${caSelectedUser.uid}`),{role:'company_admin',company});
+  await update(ref(db,`users/${caSelectedUser.uid}`),{role:'company_admin',company,profileLimit:caSelectedUser.profileLimit||10});
   showToast(`${caSelectedUser.name} şirkət admini edildi`,'success');
   caSelectedUser=null;
   document.getElementById('caSearch').value='';
@@ -1253,8 +1219,7 @@ async function renderCompanyAdmins(){
     <thead><tr>
       <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">İstifadəçi</th>
       <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Şirkət</th>
-      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Profil</th>
-      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Limit</th>
+      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Profil sayı</th>
       <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Əməliyyat</th>
     </tr></thead>
     <tbody>${admins.map(u=>{
@@ -1268,7 +1233,7 @@ async function renderCompanyAdmins(){
         <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light)">
           <span style="background:rgba(24,95,165,.08);color:var(--blue);padding:3px 9px;border-radius:8px;font-size:12px;font-weight:500">🏢 ${comp}</span>
         </td>
-        <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light);font-size:13px;color:var(--navy)">${profileCount} / ${u.profileLimit||10}</td>
+        <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light);font-size:13px;color:var(--navy)">${profileCount} profil</td>
         <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light)">
           <button class="btn btn-sm btn-danger" onclick="revokeCompanyAdmin('${u.uid}','${(u.name||'').replace(/'/g,"\\'")}')">İcazəni sil</button>
         </td>
@@ -1276,73 +1241,6 @@ async function renderCompanyAdmins(){
     }).join('')}</tbody>
   </table>`;
 }
-
-// ── Tab keçidi ──────────────────────────────────────────────────────────────
-window.switchCaTab=function(n){
-  document.getElementById('caPanel1').style.display=n===1?'block':'none';
-  document.getElementById('caPanel2').style.display=n===2?'block':'none';
-  document.getElementById('caTab1').style.cssText='flex:1;padding:.65rem;font-size:13px;font-weight:500;color:'+(n===1?'var(--navy)':'var(--gray)')+';text-align:center;cursor:pointer;border-bottom:2px solid '+(n===1?'var(--blue)':'transparent')+';margin-bottom:-1.5px';
-  document.getElementById('caTab2').style.cssText='flex:1;padding:.65rem;font-size:13px;font-weight:500;color:'+(n===2?'var(--navy)':'var(--gray)')+';text-align:center;cursor:pointer;border-bottom:2px solid '+(n===2?'var(--blue)':'transparent')+';margin-bottom:-1.5px';
-};
-
-// ── Yeni şirkət admini hesabı yarat ─────────────────────────────────────────
-window.createCompanyAdmin=async function(){
-  const err=document.getElementById('caCreateErr');
-  err.style.display='none';
-  const name    =(document.getElementById('caNewName')?.value||'').trim();
-  const surname =(document.getElementById('caNewSurname')?.value||'').trim();
-  const email   =(document.getElementById('caNewEmail')?.value||'').trim();
-  const pass    =(document.getElementById('caNewPass')?.value||'');
-  const company =(document.getElementById('caNewCompany')?.value||'').trim();
-  const limit   =parseInt(document.getElementById('caNewLimit')?.value||'10');
-
-  if(!name||!email||!pass||!company){
-    err.textContent='Ad, email, şifrə və şirkət adı məcburidir.';err.style.display='block';return;
-  }
-  if(pass.length<6){err.textContent='Şifrə minimum 6 simvol olmalıdır.';err.style.display='block';return;}
-
-  try{
-    // Firebase Auth-da hesab yarat
-    const {createUserWithEmailAndPassword:cup}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
-    const tmpAuth=getAuth();
-    const cred=await cup(tmpAuth,email,pass);
-    const uid=cred.user.uid;
-    const fullName=name+(surname?' '+surname:'');
-    const slug=email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g,'')+Math.floor(Math.random()*900+100);
-
-    await set(ref(db,`users/${uid}`),{
-      name:fullName, email, slug, company,
-      plan:'business', role:'company_admin', userRole:'company_admin',
-      status:'active', profileLimit:limit,
-      createdAt:Date.now(), createdBy:CU?.uid||'admin',
-      card:{name, surname, email}, brandLink:false
-    });
-
-    showToast(`${fullName} şirkət admini yaradıldı ✓`,'success');
-    ['caNewName','caNewSurname','caNewEmail','caNewPass','caNewCompany'].forEach(id=>{
-      const el=document.getElementById(id);if(el)el.value='';
-    });
-    const lim=document.getElementById('caNewLimit');if(lim)lim.value='10';
-    renderCompanyAdmins();
-  }catch(e){
-    const msgs={
-      'auth/email-already-in-use':'Bu email artıq mövcuddur.',
-      'auth/weak-password':'Şifrə çox sadədir.',
-      'auth/invalid-email':'Email formatı yanlışdır.'
-    };
-    err.textContent=msgs[e.code]||'Xəta: '+e.message;
-    err.style.display='block';
-  }
-};
-
-// ── Profil limitini yenilə ───────────────────────────────────────────────────
-window.updateProfileLimit=async function(uid){
-  const inp=document.getElementById('lim_'+uid);
-  if(!inp)return;
-  const limit=parseInt(inp.value)||10;
-  await update(ref(db,`users/${uid}`),{profileLimit:limit});
-  showToast('Limit yeniləndi ✓','success');
-};
 
 window.revokeCompanyAdmin=async function(uid,name){
   if(!confirm(`${name} şirkət admini icazəsi silinsin? O, artıq admin panelinə girə bilməyəcək.`))return;
