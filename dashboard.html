@@ -715,14 +715,14 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
           </div>
           <div>
             <div style="font-size:14px;font-weight:500;color:var(--navy);margin-bottom:3px">CRM İnteqrasiya</div>
-            <div style="font-size:12px;color:var(--gray);line-height:1.5">Kontaktlarınızı birbaşa HubSpot-a göndərin — heç bir vasitəçi xidmət olmadan.</div>
+            <div style="font-size:12px;color:var(--gray);line-height:1.5">Kontaktlarınızı birbaşa HubSpot-a göndərin.</div>
           </div>
         </div>
 
         <!-- Webhook URL -->
         <div style="background:var(--white);border-radius:13px;border:1px solid var(--gray-light);padding:1.25rem">
-          <div style="font-size:14px;font-weight:500;color:var(--navy);margin-bottom:.25rem">HubSpot Private App Token <span style="background:linear-gradient(135deg,#185FA5,#378ADD);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;margin-left:4px;vertical-align:middle">PRO</span></div>
-          <div style="font-size:12px;color:var(--gray);margin-bottom:1rem">HubSpot → Settings → Integrations → Private Apps → Create a private app → Token kopyalayın.</div>
+          <div style="font-size:14px;font-weight:500;color:var(--navy);margin-bottom:.25rem">HubSpot API Token</div>
+          <div style="font-size:12px;color:var(--gray);margin-bottom:1rem">HubSpot → Settings → Integrations → Private Apps → Token kopyalayın.</div>
           <div class="form-group" style="margin-bottom:0">
             <label class="form-label">HubSpot API Token <span style="background:linear-gradient(135deg,#185FA5,#378ADD);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:8px;margin-left:4px">PRO</span></label>
             <div style="display:flex;gap:8px;align-items:center">
@@ -838,7 +838,7 @@ textarea.form-input{resize:none;height:68px;line-height:1.5}
 
     <div class="panel" id="panel-company">
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:1.25rem">
-        <div><div style="font-size:15px;font-weight:600;color:var(--navy)">Şirkət Profil İdarəsi</div><div style="font-size:12px;color:var(--gray);margin-top:3px">Şirkət üzvlərinin profillərini yaradın, redaktə edin</div></div>
+        <div><div style="font-size:15px;font-weight:600;color:var(--navy)">Şirkət Profil İdarəsi</div><div style="font-size:12px;color:var(--gray);margin-top:3px">Şirkət üzvlərinin profillərini yaradın və idarə edin</div></div>
         <button class="btn btn-primary" onclick="openCreateMemberModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Yeni üzv</button>
       </div>
       <div id="companyMembersGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px">
@@ -990,9 +990,6 @@ onAuthStateChanged(auth,async u=>{
   if(!u){location.href='index.html';return;}CU=u;
   const s=await get(ref(db,`users/${u.uid}/role`));
   if(s.val()==='admin'){location.href='admin.html';return;}
-  const _stSnap=await get(ref(db,`users/${u.uid}/status`));
-  const _st=_stSnap.val()||'active';
-  if(_st==='pending_order'||_st==='pending_approval'){location.href='index.html';return;}
   // Check pending status — redirect to index if not yet activated
   const _stSnap=await get(ref(db,`users/${u.uid}/status`));
   const _st=_stSnap.val()||'active';
@@ -1366,7 +1363,7 @@ window.openCrmModal=function(t){crmTarget=t;const crm=UD?.crm||{};
 window.syncToHubspot=async function(){
   if(!(UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business')){openUpgradeModal();return;}
   const token=UD?.crm?.hubspot?.apiKey;
-  if(!token){showToast('Əvvəlcə HubSpot token daxil edin','error');openCrmModal('hubspot');return;}
+  if(!token){showToast('Əvvəlcə HubSpot token daxil edin','error');return;}
   if(!allContacts.length){showToast('Göndəriləcək kontakt yoxdur','error');return;}
   showToast('HubSpot-a göndərilir...');
   let count=0,errors=0;
@@ -1398,7 +1395,6 @@ window.syncToHubspot=async function(){
 
 // Yeni kontakt əlavə olunanda HubSpot-a avtomatik göndər
 async function syncContactToHubspot(contact){
-  if(!(UD?.plan==='pro'||UD?.plan==='premium'||UD?.plan==='business'))return;
   const token=UD?.crm?.hubspot?.apiKey;
   if(!token)return;
   try{
