@@ -168,11 +168,6 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
     <div class="nav-section">Ümumi</div>
     <div class="nav-item active" onclick="showPanel('overview')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>İcmal</div>
     <div class="nav-section">İdarəetmə</div>
-    <div class="nav-item" onclick="showPanel('orders')" style="position:relative">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-      Sifarişlər
-      <span id="ordersNavBadge" style="display:none;background:rgba(217,119,6,.2);color:#d97706;font-size:9px;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:auto">0</span>
-    </div>
     <div class="nav-item" onclick="showPanel('users')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>İstifadəçilər</div>
     <div class="nav-item" onclick="showPanel('cards')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2"/></svg>Bütün kartlar</div>
     <div class="nav-section">B2B</div>
@@ -219,55 +214,10 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
           </div>
         </div>
       </div>
-      <div class="section-head"><div class="section-title">Son qeydiyyatlar</div><div style="display:flex;gap:6px"><button class="btn btn-sm" onclick="showPanel('orders')" id="pendingOrdersBtn" style="display:none;background:rgba(217,119,6,.1);color:#d97706;border-color:rgba(217,119,6,.3)">⏳ <span id="pendingOrdersCount">0</span> sifariş gözləyir</button><button class="btn btn-sm" onclick="showPanel('users')">Hamısına bax</button></div></div>
+      <div class="section-head"><div class="section-title">Son qeydiyyatlar</div><button class="btn btn-sm" onclick="showPanel('users')">Hamısına bax</button></div>
       <div class="card">
         <table><thead><tr><th>İstifadəçi</th><th>Plan</th><th>Rol</th><th>Status</th><th>Qeydiyyat</th></tr></thead><tbody id="recentUsersBody"><tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray)">Yüklənir...</td></tr></tbody></table>
         <div id="recentMobileCards"></div>
-      </div>
-    </div>
-
-    <!-- ORDERS / NEW REGISTRATIONS -->
-    <div class="panel" id="panel-orders">
-      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:1.25rem">
-        <div>
-          <div style="font-size:15px;font-weight:600;color:var(--navy)">Sifariş Sorğuları</div>
-          <div style="font-size:12px;color:var(--gray);margin-top:3px">Kart sifariş edən istifadəçiləri aktivləşdirin</div>
-        </div>
-        <button class="btn btn-sm" onclick="loadOrders()">🔄 Yenilə</button>
-      </div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:1.25rem">
-        <div class="stat-card" style="text-align:center"><div class="stat-num" id="ordStatPending" style="color:#d97706;font-size:24px">0</div><div class="stat-label">Gözləyən</div></div>
-        <div class="stat-card" style="text-align:center"><div class="stat-num" id="ordStatApproved" style="color:var(--success);font-size:24px">0</div><div class="stat-label">Aktivləşdirilən</div></div>
-        <div class="stat-card" style="text-align:center"><div class="stat-num" id="ordStatCancelled" style="color:var(--error);font-size:24px">0</div><div class="stat-label">Ləğv edilən</div></div>
-        <div class="stat-card" style="text-align:center"><div class="stat-num" id="ordStatNew" style="color:#7C3AED;font-size:24px">0</div><div class="stat-label">Bu həftə yeni</div></div>
-      </div>
-      <div style="display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap">
-        <button class="btn btn-sm" id="ofAll" onclick="filterOrders('all')" style="background:var(--navy);color:#fff;border-color:var(--navy)">Hamısı</button>
-        <button class="btn btn-sm" id="ofPending" onclick="filterOrders('pending')">⏳ Gözləyən</button>
-        <button class="btn btn-sm" id="ofApproved" onclick="filterOrders('approved')">✓ Aktivlər</button>
-        <button class="btn btn-sm" id="ofCancelled" onclick="filterOrders('cancelled')">✗ Ləğv edilən</button>
-      </div>
-      <div class="card" style="padding:0;overflow:hidden">
-        <div style="overflow-x:auto">
-          <table style="width:100%;border-collapse:collapse" id="ordersTable">
-            <thead>
-              <tr style="border-bottom:1px solid var(--gray-light);background:var(--surface)">
-                <th style="padding:10px 14px;font-size:11px;font-weight:600;color:var(--gray);text-align:left">İSTİFADƏÇİ</th>
-                <th style="padding:10px 14px;font-size:11px;font-weight:600;color:var(--gray);text-align:left">EMAIL</th>
-                <th style="padding:10px 14px;font-size:11px;font-weight:600;color:var(--gray);text-align:left">QEYDIYYAT</th>
-                <th style="padding:10px 14px;font-size:11px;font-weight:600;color:var(--gray);text-align:left">STATUS</th>
-                <th style="padding:10px 14px;font-size:11px;font-weight:600;color:var(--gray);text-align:left">ƏMƏLİYYAT</th>
-              </tr>
-            </thead>
-            <tbody id="ordersTableBody">
-              <tr><td colspan="5" style="text-align:center;padding:2.5rem;color:var(--gray);font-size:13px">Yüklənir...</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div id="ordersEmpty" style="display:none;text-align:center;padding:3rem;color:var(--gray)">
-          <div style="font-size:32px;margin-bottom:.75rem">📭</div>
-          <div style="font-size:14px;font-weight:600;color:var(--navy)">Sifariş yoxdur</div>
-        </div>
       </div>
     </div>
 
@@ -519,20 +469,54 @@ input:checked+.toggle-slider::after{transform:translateX(18px)}
           </div>
         </div>
 
-        <!-- Grant access form -->
-        <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1rem">
-          <div style="font-size:13px;font-weight:500;margin-bottom:.9rem">Şirkət Admini Təyin Et</div>
-          <div class="form-group">
-            <label class="form-label">İstifadəçi (email ilə axtar)</label>
-            <input class="form-input" id="caSearch" placeholder="Email daxil edin..." oninput="searchForCA()">
+        <!-- Tab: Yeni yarat / Mövcud təyin et -->
+        <div style="display:flex;border-bottom:1.5px solid var(--gray-light);margin-bottom:1.25rem">
+          <div id="caTab1" class="auth-tab active" onclick="switchCaTab(1)" style="flex:1;padding:.65rem;font-size:13px;font-weight:500;color:var(--navy);text-align:center;cursor:pointer;border-bottom:2px solid var(--blue);margin-bottom:-1.5px">➕ Yeni hesab yarat</div>
+          <div id="caTab2" class="auth-tab" onclick="switchCaTab(2)" style="flex:1;padding:.65rem;font-size:13px;font-weight:500;color:var(--gray);text-align:center;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1.5px">👤 Mövcudu təyin et</div>
+        </div>
+
+        <!-- TAB 1: Yeni şirkət admini hesabı yarat -->
+        <div id="caPanel1">
+          <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1rem">
+            <div style="font-size:13px;font-weight:500;margin-bottom:.9rem">Yeni Şirkət Admini Hesabı Yarat</div>
+            <div class="error-box" id="caCreateErr"></div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Ad</label><input class="form-input" id="caNewName" placeholder="Aytən"></div>
+              <div class="form-group"><label class="form-label">Soyad</label><input class="form-input" id="caNewSurname" placeholder="Həsənova"></div>
+            </div>
+            <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" id="caNewEmail" placeholder="ayten@sirket.az"></div>
+            <div class="form-group"><label class="form-label">Şifrə</label><input class="form-input" type="password" id="caNewPass" placeholder="Minimum 6 simvol"></div>
+            <div class="form-group"><label class="form-label">Şirkət adı</label><input class="form-input" id="caNewCompany" placeholder="Məs: ABB Bank, Kapital Bank..."></div>
+            <div class="form-group">
+              <label class="form-label">Profil yaratma limiti</label>
+              <div style="display:flex;gap:8px;align-items:center">
+                <input class="form-input" type="number" id="caNewLimit" value="10" min="1" max="999" style="width:100px">
+                <span style="font-size:12px;color:var(--gray)">şirkət üzvü profili (sonradan dəyişdirilə bilər)</span>
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="createCompanyAdmin()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+              Hesab yarat və admin təyin et
+            </button>
           </div>
-          <div id="caSearchResults" style="margin-bottom:.75rem"></div>
-          <div class="form-group">
-            <label class="form-label">Şirkət (bu şirkətin profillərinə giriş veriləcək)</label>
-            <input class="form-input" id="caCompany" placeholder="Məs: ABB Bank" readonly style="background:var(--surface)">
+        </div>
+
+        <!-- TAB 2: Mövcud istifadəçini təyin et -->
+        <div id="caPanel2" style="display:none">
+          <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1rem">
+            <div style="font-size:13px;font-weight:500;margin-bottom:.9rem">Mövcud İstifadəçini Şirkət Admini Təyin Et</div>
+            <div class="form-group">
+              <label class="form-label">İstifadəçi (email ilə axtar)</label>
+              <input class="form-input" id="caSearch" placeholder="Email daxil edin..." oninput="searchForCA()">
+            </div>
+            <div id="caSearchResults" style="margin-bottom:.75rem"></div>
+            <div class="form-group">
+              <label class="form-label">Şirkət adı</label>
+              <input class="form-input" id="caCompany" placeholder="Məs: ABB Bank" readonly style="background:var(--surface)">
+            </div>
+            <input type="hidden" id="caUid">
+            <button class="btn btn-primary" onclick="grantCompanyAdmin()" id="caGrantBtn" disabled>✅ İcazə ver</button>
           </div>
-          <input type="hidden" id="caUid">
-          <button class="btn btn-primary" onclick="grantCompanyAdmin()" id="caGrantBtn" disabled>✅ İcazə ver</button>
         </div>
 
         <!-- Current company admins list -->
@@ -745,7 +729,6 @@ function loadAll(){
     }
     allUsers=users;
     renderStats();renderCharts();renderRecentUsers();renderUsers(allUsers);renderCards();renderTeam();renderPlanCounts();renderDomains();
-    loadOrders(); // Overview-dəki gözləyən sifariş sayını yenilə
     if(currentAdminRole==='admin')renderCompanyAdmins();
   });
 }
@@ -894,13 +877,12 @@ window.showPanel=function(n){
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
   document.getElementById('panel-'+n).classList.add('active');
-  const t={overview:'İcmal',orders:'Sifarişlər',users:'İstifadəçilər',cards:'Bütün kartlar',team:'Team & Şirkət',bulk:'Bulk Upload',companyadmins:'Şirkət Adminləri',domains:'Domain İdarəsi',plans:'Plan İdarəsi'};
+  const t={overview:'İcmal',users:'İstifadəçilər',cards:'Bütün kartlar',team:'Team & Şirkət',bulk:'Bulk Upload',companyadmins:'Şirkət Adminləri',domains:'Domain İdarəsi',plans:'Plan İdarəsi'};
   document.getElementById('topbarTitle').textContent=t[n]||n;
-  const m={overview:0,orders:1,users:2,cards:3,team:4,bulk:5,companyadmins:6,domains:7,plans:8};
+  const m={overview:0,users:1,cards:2,team:3,bulk:4,companyadmins:5,domains:6,plans:7};
   const items=document.querySelectorAll('.nav-item');if(items[m[n]])items[m[n]].classList.add('active');
   if(n==='domains')renderDomains();
   if(n==='companyadmins')renderCompanyAdmins();
-  if(n==='orders')loadOrders();
   closeSidebar();
 };
 
@@ -1188,117 +1170,6 @@ window.bulkChangePlan=async function(){
   showToast(`${targets.length} istifadəçi ${to} plana keçirildi`,'success');
 };
 
-// ── SİFARİŞLƏR & YENİ QEYDİYYATLAR ──────────────────────────────────────
-let _allOrders=[];
-let _ordersFilter='all';
-
-window.loadOrders=async function(){
-  const snap=await get(ref(db,'users'));
-  const ud=snap.val()||{};
-  const weekAgo=Date.now()-7*24*60*60*1000;
-  _allOrders=Object.entries(ud)
-    .filter(([,u])=>u.role!=='admin'&&(u.status==='pending_order'||u.status==='pending_approval'||u.status==='active'||u.status==='cancelled')&&(u.orderedAt||u.registeredAt))
-    .map(([uid,u])=>({uid,...u}))
-    .sort((a,b)=>(b.orderedAt||b.registeredAt||0)-(a.orderedAt||a.registeredAt||0));
-
-  const pendingCount=_allOrders.filter(o=>o.status==='pending_approval'||o.status==='pending_order').length;
-  const approvedCount=_allOrders.filter(o=>o.status==='active'&&o.orderedAt).length;
-  const cancelledCount=_allOrders.filter(o=>o.status==='cancelled').length;
-  const newCount=_allOrders.filter(o=>(o.registeredAt||0)>weekAgo).length;
-
-  const badge=document.getElementById('ordersNavBadge');
-  if(badge){badge.textContent=pendingCount;badge.style.display=pendingCount>0?'inline':'none';}
-  const sp=document.getElementById('ordStatPending');if(sp)sp.textContent=pendingCount;
-  const sa=document.getElementById('ordStatApproved');if(sa)sa.textContent=approvedCount;
-  const sc=document.getElementById('ordStatCancelled');if(sc)sc.textContent=cancelledCount;
-  const sn=document.getElementById('ordStatNew');if(sn)sn.textContent=newCount;
-  renderOrders();
-  // Overview panelindəki pending badge
-  const pb=document.getElementById('pendingOrdersBtn');
-  const pc=document.getElementById('pendingOrdersCount');
-  if(pb&&pc){pc.textContent=pendingCount;pb.style.display=pendingCount>0?'inline-flex':'none';}
-};
-
-window.filterOrders=function(f){
-  _ordersFilter=f;
-  ['All','Pending','Approved','Cancelled'].forEach(x=>{
-    const b=document.getElementById('of'+x);
-    if(b){b.style.background='';b.style.color='';b.style.borderColor='';}
-  });
-  const active=document.getElementById('of'+f.charAt(0).toUpperCase()+f.slice(1));
-  if(active){active.style.background='var(--navy)';active.style.color='#fff';active.style.borderColor='var(--navy)';}
-  renderOrders();
-  // Overview panelindəki pending badge
-  const pb=document.getElementById('pendingOrdersBtn');
-  const pc=document.getElementById('pendingOrdersCount');
-  if(pb&&pc){pc.textContent=pendingCount;pb.style.display=pendingCount>0?'inline-flex':'none';}
-};
-
-function renderOrders(){
-  const tbody=document.getElementById('ordersTableBody');
-  const empty=document.getElementById('ordersEmpty');
-  if(!tbody)return;
-  let filtered=_allOrders;
-  if(_ordersFilter==='pending')filtered=_allOrders.filter(o=>o.status==='pending_order'||o.status==='pending_approval');
-  else if(_ordersFilter==='approved')filtered=_allOrders.filter(o=>o.status==='active'&&o.orderedAt);
-  else if(_ordersFilter==='cancelled')filtered=_allOrders.filter(o=>o.status==='cancelled');
-
-  if(!filtered.length){tbody.innerHTML='';if(empty)empty.style.display='block';return;}
-  if(empty)empty.style.display='none';
-
-  const weekAgo=Date.now()-7*24*60*60*1000;
-  tbody.innerHTML=filtered.map(u=>{
-    const name=u.name||u.email||'—';
-    const email=u.email||'—';
-    const date=u.orderedAt?new Date(u.orderedAt).toLocaleDateString('az'):(u.registeredAt?new Date(u.registeredAt).toLocaleDateString('az'):'—');
-    const isNew=(u.registeredAt||0)>weekAgo;
-    const newBadge=isNew?'<span style="background:rgba(124,58,237,.1);color:#7C3AED;font-size:9px;font-weight:700;padding:1px 6px;border-radius:8px;margin-left:5px">YENİ</span>':'';
-
-    let statusBadge,actions;
-    if(u.status==='pending_order'){
-      statusBadge='<span style="background:rgba(59,130,246,.1);color:#1d4ed8;font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px">📋 Sifariş etməyib</span>';
-      actions=`<button class="btn btn-sm" onclick="cancelOrder('${u.uid}')" style="color:var(--error);border-color:rgba(231,76,60,.3)">✗ Sil</button>`;
-    } else if(u.status==='pending_approval'){
-      statusBadge='<span style="background:rgba(217,119,6,.1);color:#d97706;font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px">⏳ Təsdiq gözləyir</span>';
-      actions=`<button class="btn btn-sm btn-primary" onclick="approveOrder('${u.uid}')" style="margin-right:4px">✓ Aktivləşdir</button><button class="btn btn-sm" onclick="cancelOrder('${u.uid}')" style="color:var(--error);border-color:rgba(231,76,60,.3)">✗ Ləğv et</button>`;
-    } else if(u.status==='active'&&u.orderedAt){
-      statusBadge='<span style="background:rgba(39,174,96,.1);color:var(--success);font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px">✓ Aktivdir</span>';
-      actions=`<button class="btn btn-sm" onclick="cancelOrder('${u.uid}')" style="color:var(--error);border-color:rgba(231,76,60,.3)">Blokla</button>`;
-    } else if(u.status==='cancelled'){
-      statusBadge='<span style="background:rgba(231,76,60,.1);color:var(--error);font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px">✗ Ləğv edildi</span>';
-      actions=`<button class="btn btn-sm btn-primary" onclick="approveOrder('${u.uid}')">↩ Bərpa et</button>`;
-    } else {
-      statusBadge='<span style="color:var(--gray);font-size:11px">—</span>';actions='—';
-    }
-
-    const av=u.card?.photo
-      ?`<img src="${u.card.photo}" loading="lazy" style="width:30px;height:30px;border-radius:50%;object-fit:cover">`
-      :`<div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#378ADD);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#fff;flex-shrink:0">${name.charAt(0).toUpperCase()}</div>`;
-
-    return`<tr style="border-bottom:1px solid var(--gray-light)">
-      <td style="padding:10px 14px"><div style="display:flex;align-items:center;gap:8px">${av}<div><div style="font-size:13px;font-weight:500;color:var(--navy)">${name}${newBadge}</div></div></div></td>
-      <td style="padding:10px 14px;font-size:12px;color:var(--gray)">${email}</td>
-      <td style="padding:10px 14px;font-size:12px;color:var(--gray)">${date}</td>
-      <td style="padding:10px 14px">${statusBadge}</td>
-      <td style="padding:10px 14px"><div style="display:flex;gap:4px;flex-wrap:wrap">${actions}</div></td>
-    </tr>`;
-  }).join('');
-}
-
-window.approveOrder=async function(uid){
-  if(!confirm('Bu istifadəçini aktivləşdirirsiniz?'))return;
-  await update(ref(db,`users/${uid}`),{status:'active',approvedAt:Date.now()});
-  showToast('İstifadəçi aktivləşdirildi ✓','success');
-  loadOrders();loadAll();
-};
-
-window.cancelOrder=async function(uid){
-  if(!confirm('Bu əməliyyatı etmək istəyirsiniz?'))return;
-  await update(ref(db,`users/${uid}`),{status:'cancelled',cancelledAt:Date.now()});
-  showToast('Əməliyyat tamamlandı','success');
-  loadOrders();
-};
-
 window.doLogout=async function(){await signOut(auth);location.href='index.html';};
 
 // ── COMPANY ADMIN MANAGEMENT ──────────────────────────────────────────────
@@ -1382,7 +1253,8 @@ async function renderCompanyAdmins(){
     <thead><tr>
       <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">İstifadəçi</th>
       <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Şirkət</th>
-      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Profil sayı</th>
+      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Profil</th>
+      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Limit</th>
       <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Əməliyyat</th>
     </tr></thead>
     <tbody>${admins.map(u=>{
@@ -1396,7 +1268,7 @@ async function renderCompanyAdmins(){
         <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light)">
           <span style="background:rgba(24,95,165,.08);color:var(--blue);padding:3px 9px;border-radius:8px;font-size:12px;font-weight:500">🏢 ${comp}</span>
         </td>
-        <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light);font-size:13px;color:var(--navy)">${profileCount} profil</td>
+        <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light);font-size:13px;color:var(--navy)">${profileCount} / ${u.profileLimit||10}</td>
         <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light)">
           <button class="btn btn-sm btn-danger" onclick="revokeCompanyAdmin('${u.uid}','${(u.name||'').replace(/'/g,"\\'")}')">İcazəni sil</button>
         </td>
@@ -1404,6 +1276,73 @@ async function renderCompanyAdmins(){
     }).join('')}</tbody>
   </table>`;
 }
+
+// ── Tab keçidi ──────────────────────────────────────────────────────────────
+window.switchCaTab=function(n){
+  document.getElementById('caPanel1').style.display=n===1?'block':'none';
+  document.getElementById('caPanel2').style.display=n===2?'block':'none';
+  document.getElementById('caTab1').style.cssText='flex:1;padding:.65rem;font-size:13px;font-weight:500;color:'+(n===1?'var(--navy)':'var(--gray)')+';text-align:center;cursor:pointer;border-bottom:2px solid '+(n===1?'var(--blue)':'transparent')+';margin-bottom:-1.5px';
+  document.getElementById('caTab2').style.cssText='flex:1;padding:.65rem;font-size:13px;font-weight:500;color:'+(n===2?'var(--navy)':'var(--gray)')+';text-align:center;cursor:pointer;border-bottom:2px solid '+(n===2?'var(--blue)':'transparent')+';margin-bottom:-1.5px';
+};
+
+// ── Yeni şirkət admini hesabı yarat ─────────────────────────────────────────
+window.createCompanyAdmin=async function(){
+  const err=document.getElementById('caCreateErr');
+  err.style.display='none';
+  const name    =(document.getElementById('caNewName')?.value||'').trim();
+  const surname =(document.getElementById('caNewSurname')?.value||'').trim();
+  const email   =(document.getElementById('caNewEmail')?.value||'').trim();
+  const pass    =(document.getElementById('caNewPass')?.value||'');
+  const company =(document.getElementById('caNewCompany')?.value||'').trim();
+  const limit   =parseInt(document.getElementById('caNewLimit')?.value||'10');
+
+  if(!name||!email||!pass||!company){
+    err.textContent='Ad, email, şifrə və şirkət adı məcburidir.';err.style.display='block';return;
+  }
+  if(pass.length<6){err.textContent='Şifrə minimum 6 simvol olmalıdır.';err.style.display='block';return;}
+
+  try{
+    // Firebase Auth-da hesab yarat
+    const {createUserWithEmailAndPassword:cup}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
+    const tmpAuth=getAuth();
+    const cred=await cup(tmpAuth,email,pass);
+    const uid=cred.user.uid;
+    const fullName=name+(surname?' '+surname:'');
+    const slug=email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g,'')+Math.floor(Math.random()*900+100);
+
+    await set(ref(db,`users/${uid}`),{
+      name:fullName, email, slug, company,
+      plan:'business', role:'company_admin', userRole:'company_admin',
+      status:'active', profileLimit:limit,
+      createdAt:Date.now(), createdBy:CU?.uid||'admin',
+      card:{name, surname, email}, brandLink:false
+    });
+
+    showToast(`${fullName} şirkət admini yaradıldı ✓`,'success');
+    ['caNewName','caNewSurname','caNewEmail','caNewPass','caNewCompany'].forEach(id=>{
+      const el=document.getElementById(id);if(el)el.value='';
+    });
+    const lim=document.getElementById('caNewLimit');if(lim)lim.value='10';
+    renderCompanyAdmins();
+  }catch(e){
+    const msgs={
+      'auth/email-already-in-use':'Bu email artıq mövcuddur.',
+      'auth/weak-password':'Şifrə çox sadədir.',
+      'auth/invalid-email':'Email formatı yanlışdır.'
+    };
+    err.textContent=msgs[e.code]||'Xəta: '+e.message;
+    err.style.display='block';
+  }
+};
+
+// ── Profil limitini yenilə ───────────────────────────────────────────────────
+window.updateProfileLimit=async function(uid){
+  const inp=document.getElementById('lim_'+uid);
+  if(!inp)return;
+  const limit=parseInt(inp.value)||10;
+  await update(ref(db,`users/${uid}`),{profileLimit:limit});
+  showToast('Limit yeniləndi ✓','success');
+};
 
 window.revokeCompanyAdmin=async function(uid,name){
   if(!confirm(`${name} şirkət admini icazəsi silinsin? O, artıq admin panelinə girə bilməyəcək.`))return;
