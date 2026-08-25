@@ -421,6 +421,12 @@ body{font-family:'Inter',sans-serif;background:#f0f2f5;min-height:100vh;display:
 .pdf-dark{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.09)}
 .pdf-dark::before{display:none}
 .pdf-dark-name{font-size:13px;color:rgba(255,255,255,.85);font-weight:500;flex:1}
+
+/* ── Verified badge (PRO) ── */
+.verified-badge{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:var(--p);border-radius:50%;margin-left:5px;vertical-align:middle;flex-shrink:0;position:relative;top:-1px}
+.verified-badge svg{display:block}
+.c3-verified,.c7-verified,.c9-verified{filter:drop-shadow(0 1px 3px rgba(0,0,0,.3))}
+.name-row{display:inline-flex;align-items:center;gap:0}
 </style>
 </head>
 <body>
@@ -570,8 +576,8 @@ async function init(){
     lang=localStorage.getItem('cp_lang_'+slug)||PD.defaultLang||'az';
     const lm=LM[lang]||LM.az;const _lfl=document.getElementById('lfl');const _lco=document.getElementById('lco');if(_lfl)_lfl.textContent=lm.f;if(_lco)_lco.textContent=lm.c;document.querySelectorAll('.lang-opt').forEach(o=>o.classList.toggle('sel',o.dataset.l===lang));
     color=localStorage.getItem('cp_col_'+slug)||'#185FA5';
-    // tmplNum — Firebase həmişə prioritetdir, localStorage sonuncu seçimdir
-    const savedTmpl=parseInt(PD.tmplNum||PD.template||localStorage.getItem('cp_tmpl_'+slug)||'1');
+    // tmplNum — dashboard-dan seçilmiş şablon (1-12), lokal override var ise onu götür
+    const savedTmpl=parseInt(localStorage.getItem('cp_tmpl_'+slug)||PD.tmplNum||PD.template||'1');
     tmpl=isNaN(savedTmpl)?1:Math.min(Math.max(savedTmpl,1),12);
     applyColor(color);
     document.getElementById('lw').style.display='none';
@@ -613,7 +619,12 @@ document.addEventListener('click',e=>{if(!e.target.closest('.lang-dropdown')){co
 function initTmplBtns(){document.querySelectorAll('.to').forEach(t=>t.classList.remove('on'));document.getElementById('t-'+tmpl)?.classList.add('on');}
 
 // ── HELPERS ────────────────────────────────────────────────────────────────
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function verifiedBadge(color='#fff'){
+  const isPro=PD&&(PD.plan==='pro'||PD.plan==='premium'||PD.plan==='business');
+  if(!isPro)return'';
+  return`<span class="verified-badge" title="Doğrulanmış hesab"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>`;
+}
 function htp(u){if(!u)return'#';return u.startsWith('http')?u:'https://'+u;}
 function ytId(u){return u?.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|embed\/)([a-zA-Z0-9_-]{11})/)?.[1];}
 
@@ -710,7 +721,7 @@ function t1(d,c,name){
   <div class="c1-head">${bgImg(c.cover||c.photo)}</div>
   <div class="c1-body">
     <div class="c1-av-wrap"><div class="c1-av">${avImg(c.photo,name.charAt(0).toUpperCase())}</div></div>
-    <div class="c1-name">${esc(name)||'—'}</div>
+    <div class="c1-name name-row">${esc(name)||'—'}${verifiedBadge()}</div>
     ${c.position?`<div class="c1-pos">${esc(c.position)}</div>`:''}
     ${c.company?`<div class="c1-co">${esc(c.company)}</div>`:''}
     ${c.bio?`<div class="c1-bio">${esc(c.bio)}</div>`:''}
@@ -733,7 +744,7 @@ function t2(d,c,name){
   <div class="c2-stripe"></div>
   <div class="c2-hero">
     <div class="c2-av">${avImg(c.photo,name.charAt(0).toUpperCase())}</div>
-    <div><div class="c2-name">${esc(name)||'—'}</div>${c.position?`<div class="c2-pos">${esc(c.position)}</div>`:''}${c.company?`<div class="c2-co">${esc(c.company)}</div>`:''}</div>
+    <div><div class="c2-name name-row">${esc(name)||'—'}${verifiedBadge()}</div>${c.position?`<div class="c2-pos">${esc(c.position)}</div>`:''}${c.company?`<div class="c2-co">${esc(c.company)}</div>`:''}</div>
   </div>
   <div class="c2-body">
     ${c.bio?`<div class="c2-bio">${esc(c.bio)}</div>`:''}
@@ -757,7 +768,7 @@ function t3(d,c,name){
   return`<div class="c3">
   <div class="c3-head">${bgImg(c.cover)}<div class="c3-overlay"></div>
     <div class="c3-content"><div class="c3-av">${avImg(c.photo,name.charAt(0).toUpperCase())}</div>
-    <div class="c3-name">${esc(name)||'—'}</div>${c.position?`<div class="c3-pos">${esc(c.position)}</div>`:''}${c.company?`<div class="c3-co">${esc(c.company)}</div>`:''}</div>
+    <div class="c3-name name-row">${esc(name)||'—'}${verifiedBadge()}</div>${c.position?`<div class="c3-pos">${esc(c.position)}</div>`:''}${c.company?`<div class="c3-co">${esc(c.company)}</div>`:''}</div>
   </div>
   <div class="c3-body">
     ${c.bio?`<div class="c3-bio">${esc(c.bio)}</div>`:''}
@@ -780,7 +791,7 @@ function t4(d,c,name){
   <div class="c4-photo">${avPortrait(c.photo||c.cover,name)}</div>
   <svg viewBox="0 0 430 44" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="display:block;width:100%;height:44px;margin-top:-1px"><path d="M0,22 C72,44 144,0 216,22 C288,44 360,0 430,22 L430,44 L0,44 Z" fill="#fff"/></svg>
   <div class="c4-body">
-    <div class="c4-nameblock"><div class="c4-name">${esc(name)||'—'}</div>${c.position?`<div class="c4-pos">${esc(c.position)}</div>`:''}${c.company?`<div class="c4-co">${esc(c.company)}</div>`:''}</div>
+    <div class="c4-nameblock"><div class="c4-name name-row">${esc(name)||'—'}${verifiedBadge()}</div>${c.position?`<div class="c4-pos">${esc(c.position)}</div>`:''}${c.company?`<div class="c4-co">${esc(c.company)}</div>`:''}</div>
     ${c.bio?`<div class="c4-bio">${esc(c.bio)}</div>`:''}
     <div class="c4-list">${rows}</div>
     ${socPills(d,'c4-soc','c4-sp')}
@@ -804,7 +815,7 @@ function t5(d,c,name){
   </div>
   <div class="c5-body">
     <div class="c5-av-wrap"><div class="c5-av">${avImg(c.photo,name.charAt(0).toUpperCase())}</div></div>
-    <div class="c5-name">${esc(name)||'—'}</div>
+    <div class="c5-name name-row">${esc(name)||'—'}${verifiedBadge()}</div>
     ${c.position?`<div class="c5-pos">${esc(c.position)}</div>`:''}
     ${c.company?`<div class="c5-co">${esc(c.company)}</div>`:''}
     ${c.bio?`<div class="c5-bio">${esc(c.bio)}</div>`:''}
@@ -844,7 +855,7 @@ function t6(d,c,name){
     ${sdots?`<div class="c6-socdots" style="margin-top:auto">${sdots}</div>`:''}
   </div>
   <div class="c6-right">
-    <div class="c6-name">${esc(name)||'—'}</div>
+    <div class="c6-name name-row">${esc(name)||'—'}${verifiedBadge()}</div>
     ${c.position?`<div class="c6-pos">${esc(c.position)}</div>`:''}
     ${c.company?`<div class="c6-co">${esc(c.company)}</div>`:''}
     ${c.bio?`<div class="c6-bio">${esc(c.bio)}</div>`:''}
@@ -864,7 +875,7 @@ function t7(d,c,name){
   if(c.address) rows+=`<a class="c7-row" href="https://maps.google.com/?q=${encodeURIComponent(c.address)}" target="_blank">${ic('c7-ico',ico.locW)}<div><div class="c7-val">${esc(c.address)}</div><div class="c7-lbl">${t('addr')}</div></div></a>`;
   return`<div class="c7">
   <div class="c7-img">${avPortrait(c.photo||c.cover,name)}<div class="c7-grad"></div>
-    <div class="c7-nameblock"><div class="c7-name">${esc(name)||'—'}</div>${c.position?`<div class="c7-pos">${esc(c.position)}</div>`:''}${c.company?`<div class="c7-co">${esc(c.company)}</div>`:''}</div>
+    <div class="c7-nameblock"><div class="c7-name name-row">${esc(name)||'—'}${verifiedBadge()}</div>${c.position?`<div class="c7-pos">${esc(c.position)}</div>`:''}${c.company?`<div class="c7-co">${esc(c.company)}</div>`:''}</div>
   </div>
   <div class="c7-body">
     ${c.bio?`<div class="c7-bio">${esc(c.bio)}</div>`:''}
@@ -891,7 +902,7 @@ function t8(d,c,name){
   </div>
   <div class="c8-hero">
     <div class="c8-av">${avImg(c.photo,name.charAt(0).toUpperCase())}</div>
-    <div><div class="c8-name">${esc(name)||'—'}</div>${c.position?`<div class="c8-pos">${esc(c.position)}</div>`:''}${c.company?`<div class="c8-co">${esc(c.company)}</div>`:''}</div>
+    <div><div class="c8-name name-row">${esc(name)||'—'}${verifiedBadge()}</div>${c.position?`<div class="c8-pos">${esc(c.position)}</div>`:''}${c.company?`<div class="c8-co">${esc(c.company)}</div>`:''}</div>
   </div>
   <div class="c8-actbar">
     <div class="c8-acti" onclick="svContact()"><div class="c8-aci-c">${ico.save.replace('currentColor','var(--p)')}</div><span class="c8-aci-l">${t('ko')}</span></div>
@@ -925,7 +936,7 @@ function t9(d,c,name){
       <a class="c9-pill" onclick="shProfile()"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>${t('share')}</a>
     </div>
     <div class="c9-info">
-      <div class="c9-name">${esc(name)||'—'}</div>
+      <div class="c9-name name-row">${esc(name)||'—'}${verifiedBadge()}</div>
       ${c.position?`<div class="c9-pos">${esc(c.position)}</div>`:''}
       ${c.company?`<div class="c9-co">${esc(c.company)}</div>`:''}
     </div>
@@ -957,7 +968,7 @@ function t10(d,c,name){
   </div>
   <div class="c10-av-wrap"><div class="c10-av">${avImg(c.photo,(name||'?').charAt(0).toUpperCase())}</div></div>
   <div class="c10-body">
-    <div class="c10-name">${esc(name)||'—'}</div>
+    <div class="c10-name name-row">${esc(name)||'—'}${verifiedBadge()}</div>
     ${c.position?`<div class="c10-pos">${esc(c.position)}</div>`:''}
     ${c.position||c.company?`<div class="c10-badge"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>${esc(c.position||c.company)}</div>`:''}
     ${c.bio?`<div class="c10-bio">${esc(c.bio)}</div>`:''}
@@ -991,7 +1002,7 @@ function t11(d,c,name){
   </div>
   <svg class="c11-wave" viewBox="0 0 430 40" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,0 C80,38 160,42 220,28 C280,14 360,0 430,32 L430,0 Z" fill="var(--p)"/><path d="M0,32 C80,10 160,44 220,30 C280,16 360,2 430,40 L430,40 L0,40 Z" fill="#fff"/></svg>
   <div class="c11-body">
-    <div class="c11-nameblock"><div class="c11-accent"></div><div class="c11-ninfo"><div class="c11-name">${esc(name)||'—'}</div>${c.position?`<div class="c11-pos">${esc(c.position)}</div>`:''}${c.company?`<div class="c11-co">${esc(c.company)}</div>`:''}</div></div>
+    <div class="c11-nameblock"><div class="c11-accent"></div><div class="c11-ninfo"><div class="c11-name name-row">${esc(name)||'—'}${verifiedBadge()}</div>${c.position?`<div class="c11-pos">${esc(c.position)}</div>`:''}${c.company?`<div class="c11-co">${esc(c.company)}</div>`:''}</div></div>
     ${c.bio?`<div class="c11-bio">${esc(c.bio)}</div>`:''}
     <div class="c11-list">${rows}</div>
     ${sk.length?`<div class="c11-soc">${sk.map(x=>`<a class="c11-srow" href="${htp(soc[x])}" target="_blank"><span class="c11-sdot" style="background:${socCol[x]||'#888'}"></span>${socLab[x]||x}</a>`).join('')}</div>`:''}
@@ -1018,7 +1029,7 @@ function t12(d,c,name){
   <div class="c12-hero"></div>
   <div class="c12-av-wrap"><div class="c12-av">${avImg(c.photo,(name||'?').charAt(0).toUpperCase())}</div></div>
   <div class="c12-body">
-    <div class="c12-name">${esc(name)||'—'}</div>
+    <div class="c12-name name-row">${esc(name)||'—'}${verifiedBadge()}</div>
     ${c.position?`<div class="c12-pos">${esc(c.position)}</div>`:''}
     ${c.company?`<div class="c12-co">${esc(c.company)}</div>`:''}
     <div class="c12-actgrid">
