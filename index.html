@@ -3,741 +3,1363 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CardPro — Giriş</title>
+<title>MyContact — Admin Panel</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --navy: #0a1628;
-    --navy-mid: #112040;
-    --blue: #185FA5;
-    --blue-light: #378ADD;
-    --accent: #4FACFE;
-    --gold: #C9A84C;
-    --white: #ffffff;
-    --gray: #8A9BB5;
-    --gray-light: #E8EDF5;
-    --surface: #f4f6fb;
-    --error: #e74c3c;
-  }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--surface);
-    min-height: 100vh;
-    display: flex;
-    align-items: stretch;
-  }
-
-  /* Left panel */
-  .left {
-    width: 52%;
-    background: var(--navy);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 3rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .left::before {
-    content: '';
-    position: absolute;
-    top: -120px; right: -120px;
-    width: 400px; height: 400px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(55,138,221,0.18) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .left::after {
-    content: '';
-    position: absolute;
-    bottom: -80px; left: -80px;
-    width: 300px; height: 300px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(201,168,76,0.1) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    position: relative;
-    z-index: 1;
-  }
-
-  .brand-mark {
-    width: 36px; height: 36px;
-    background: linear-gradient(135deg, var(--blue) 0%, var(--accent) 100%);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  .brand-mark svg { width: 18px; height: 18px; }
-
-  .brand-name {
-    font-family: 'DM Serif Display', serif;
-    font-size: 22px;
-    color: var(--white);
-    letter-spacing: 0.01em;
-  }
-
-  .brand-name span { color: var(--accent); }
-
-  .hero {
-    position: relative;
-    z-index: 1;
-  }
-
-  .hero-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(79,172,254,0.12);
-    border: 1px solid rgba(79,172,254,0.25);
-    border-radius: 20px;
-    padding: 5px 12px;
-    font-size: 11px;
-    color: var(--accent);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
-  }
-
-  .hero-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    animation: pulse 2s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  .hero h1 {
-    font-family: 'DM Serif Display', serif;
-    font-size: 42px;
-    line-height: 1.15;
-    color: var(--white);
-    margin-bottom: 1rem;
-  }
-
-  .hero h1 em {
-    font-style: italic;
-    color: var(--accent);
-  }
-
-  .hero p {
-    font-size: 15px;
-    color: var(--gray);
-    line-height: 1.7;
-    max-width: 340px;
-    margin-bottom: 2rem;
-  }
-
-  .feature-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-
-  .feature-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 13px;
-    color: rgba(255,255,255,0.7);
-  }
-
-  .feature-icon {
-    width: 28px; height: 28px;
-    border-radius: 8px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-
-  .stats-row {
-    display: flex;
-    gap: 2rem;
-    position: relative;
-    z-index: 1;
-  }
-
-  .stat { }
-  .stat-num {
-    font-family: 'DM Serif Display', serif;
-    font-size: 28px;
-    color: var(--white);
-  }
-  .stat-label {
-    font-size: 11px;
-    color: var(--gray);
-    margin-top: 2px;
-  }
-
-  /* Right panel */
-  .right {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem 2rem;
-    background: var(--white);
-  }
-
-  .login-box {
-    width: 100%;
-    max-width: 380px;
-  }
-
-  .login-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 28px;
-    color: var(--navy);
-    margin-bottom: 6px;
-  }
-
-  .login-sub {
-    font-size: 14px;
-    color: var(--gray);
-    margin-bottom: 2rem;
-  }
-
-  .form-group {
-    margin-bottom: 1rem;
-  }
-
-  .form-label {
-    display: block;
-    font-size: 12px;
-    font-weight: 500;
-    color: var(--navy);
-    margin-bottom: 6px;
-    letter-spacing: 0.02em;
-  }
-
-  .form-input {
-    width: 100%;
-    padding: 11px 14px;
-    border: 1.5px solid var(--gray-light);
-    border-radius: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    color: var(--navy);
-    background: var(--surface);
-    outline: none;
-    transition: border-color .2s, box-shadow .2s;
-  }
-
-  .form-input:focus {
-    border-color: var(--blue);
-    box-shadow: 0 0 0 3px rgba(24,95,165,0.1);
-    background: var(--white);
-  }
-
-  .form-input::placeholder { color: var(--gray); }
-
-  .btn-login {
-    width: 100%;
-    padding: 12px;
-    background: var(--navy);
-    color: var(--white);
-    border: none;
-    border-radius: 10px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background .2s, transform .1s;
-    margin-top: 0.5rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .btn-login:hover { background: var(--navy-mid); }
-  .btn-login:active { transform: scale(0.99); }
-
-  .btn-login:disabled {
-    opacity: 0.7;
-    cursor: not-allowed;
-  }
-
-  .btn-login .spinner {
-    display: none;
-    width: 18px; height: 18px;
-    border: 2px solid rgba(255,255,255,0.3);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: spin .7s linear infinite;
-    margin: 0 auto;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .btn-login.loading .btn-text { display: none; }
-  .btn-login.loading .spinner { display: block; }
-
-  .error-msg {
-    background: #fef2f2;
-    border: 1px solid #fecaca;
-    color: var(--error);
-    font-size: 13px;
-    padding: 10px 12px;
-    border-radius: 8px;
-    margin-bottom: 1rem;
-    display: none;
-  }
-
-  .error-msg.show { display: block; }
-
-  .divider {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin: 1.5rem 0;
-    color: var(--gray);
-    font-size: 12px;
-  }
-
-  .divider::before, .divider::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--gray-light);
-  }
-
-  .secure-note {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-    font-size: 12px;
-    color: var(--gray);
-    margin-top: 1.5rem;
-  }
-
-  @media (max-width: 768px) {
-    body { flex-direction: column; }
-    .left { width: 100%; padding: 2rem; min-height: 260px; }
-    .hero h1 { font-size: 28px; }
-    .stats-row { display: none; }
-    .right { padding: 2rem 1.5rem; }
-  }
-  .attempt-warn{background:#fff7ed;border:1px solid #fed7aa;color:#c2410c;font-size:12px;padding:9px 12px;border-radius:8px;margin-bottom:1rem;display:none;align-items:center;gap:6px}
-  .attempt-warn.show{display:flex}
-  .auth-tabs{display:flex;border-bottom:1.5px solid var(--gray-light);margin-bottom:1.5rem}
-  .auth-tab{flex:1;padding:.7rem;font-size:13px;font-weight:500;color:var(--gray);text-align:center;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1.5px;transition:all .18s}
-  .auth-tab.active{color:var(--navy);border-bottom-color:var(--blue);font-weight:600}
-  .auth-panel{display:none}.auth-panel.active{display:block}
-  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .btn-register{width:100%;padding:12px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;margin-top:.25rem;transition:opacity .2s}
-  .btn-register:hover{opacity:.9}.btn-register:disabled{opacity:.6;cursor:not-allowed}
-  .btn-google{width:100%;padding:11px;background:#fff;color:var(--navy);border:1.5px solid var(--gray-light);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:border-color .2s}
-  .btn-google:hover{border-color:var(--blue)}
-  .pending-screen{display:none;text-align:center;padding:.5rem 0}
-  .pending-screen.show{display:block}
-  .pend-icon{font-size:52px;margin-bottom:1rem;display:block}
-  .pend-title{font-size:22px;font-weight:600;color:var(--navy);margin-bottom:.6rem}
-  .pend-sub{font-size:13px;color:var(--gray);line-height:1.7;margin-bottom:1.5rem}
-  .btn-order{width:100%;padding:13px;background:linear-gradient(135deg,var(--blue),#378ADD);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:.75rem;transition:opacity .2s}
-  .btn-order:hover{opacity:.92}.btn-order:disabled{opacity:.5;cursor:not-allowed}
-  .badge-wait{display:inline-flex;align-items:center;gap:7px;padding:7px 16px;background:rgba(217,119,6,.08);border:1px solid rgba(217,119,6,.25);color:#b45309;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:1.25rem}
-  .btn-ghost{width:100%;padding:10px;background:transparent;color:var(--gray);border:1.5px solid var(--gray-light);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:border-color .2s;margin-top:.5rem}
-  .reg-err{background:#fef2f2;border:1px solid #fecaca;color:#e74c3c;font-size:12px;padding:9px 12px;border-radius:8px;margin-bottom:.9rem;display:none}
-  .reg-err.show{display:block}
-  @keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}.blink{animation:blink 1.8s infinite}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0a1628;--navy-mid:#112040;--blue:#185FA5;--blue-light:#378ADD;--accent:#4FACFE;--white:#fff;--gray:#8A9BB5;--gray-light:#E8EDF5;--surface:#f4f6fb;--error:#e74c3c;--success:#27ae60;--warning:#f39c12;--sidebar:240px}
+body{font-family:'DM Sans',sans-serif;background:var(--surface);display:flex;min-height:100vh;color:var(--navy)}
+.sidebar{width:var(--sidebar);background:var(--navy);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:100;transition:transform .3s}
+.sidebar-brand{padding:1.25rem 1rem;border-bottom:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:9px}
+.brand-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--blue),var(--accent));border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.brand-name{font-family:'DM Serif Display',serif;font-size:17px;color:var(--white)}
+.brand-name span{color:var(--accent)}
+.sidebar-nav{flex:1;padding:.75rem 0;overflow-y:auto}
+.nav-section{padding:.4rem 1rem .2rem;font-size:10px;color:rgba(255,255,255,.3);letter-spacing:.1em;text-transform:uppercase;margin-top:.4rem}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 1rem;font-size:13px;color:rgba(255,255,255,.6);cursor:pointer;transition:all .15s;border-left:3px solid transparent}
+.nav-item:hover{color:var(--white);background:rgba(255,255,255,.05)}
+.nav-item.active{color:var(--white);background:rgba(79,172,254,.12);border-left-color:var(--accent)}
+.sidebar-footer{padding:.75rem 1rem;border-top:1px solid rgba(255,255,255,.08)}
+.admin-info{display:flex;align-items:center;gap:9px;margin-bottom:8px}
+.admin-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--white);flex-shrink:0}
+.admin-name{font-size:13px;color:var(--white);font-weight:500}
+.admin-role{font-size:11px;color:rgba(255,255,255,.4)}
+.logout-btn{width:100%;padding:7px;background:rgba(231,76,60,.12);border:1px solid rgba(231,76,60,.2);color:#e74c3c;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif}
+.hamburger{display:none;position:fixed;top:12px;left:12px;z-index:200;width:40px;height:40px;background:var(--navy);border:none;border-radius:9px;cursor:pointer;flex-direction:column;align-items:center;justify-content:center;gap:5px}
+.hamburger span{width:18px;height:2px;background:#fff;border-radius:2px;display:block}
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:99}
+.main{margin-left:var(--sidebar);flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:var(--white);border-bottom:1px solid var(--gray-light);padding:0 1.5rem;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+.topbar-title{font-size:14px;font-weight:500;color:var(--navy)}
+.badge-admin{background:rgba(79,172,254,.1);color:var(--blue);font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500;border:1px solid rgba(79,172,254,.2)}
+.content{padding:1.5rem;flex:1}
+.panel{display:none}.panel.active{display:block}
+/* Stats */
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:1.25rem}
+.stat-card{background:var(--white);border-radius:11px;padding:1rem;border:1px solid var(--gray-light)}
+.stat-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.stat-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center}
+.stat-icon.blue{background:rgba(24,95,165,.1)}.stat-icon.green{background:rgba(39,174,96,.1)}.stat-icon.gold{background:rgba(201,168,76,.1)}.stat-icon.red{background:rgba(231,76,60,.1)}.stat-icon.purple{background:rgba(124,58,237,.1)}
+.stat-trend{font-size:11px;font-weight:500;padding:2px 6px;border-radius:20px;background:#f0fdf4;color:var(--success)}
+.stat-num{font-family:'DM Serif Display',serif;font-size:28px;color:var(--navy);line-height:1}
+.stat-label{font-size:12px;color:var(--gray);margin-top:3px}
+/* Table */
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:.9rem;flex-wrap:wrap;gap:8px}
+.section-title{font-size:14px;font-weight:500;color:var(--navy)}
+.card{background:var(--white);border-radius:12px;border:1px solid var(--gray-light);overflow:hidden}
+.table-toolbar{padding:.9rem 1.1rem;display:flex;align-items:center;gap:9px;border-bottom:1px solid var(--gray-light);flex-wrap:wrap}
+.search-input{flex:1;min-width:160px;padding:7px 11px;border:1.5px solid var(--gray-light);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--navy);outline:none;background:var(--surface)}
+.search-input:focus{border-color:var(--blue)}
+.filter-select{padding:7px 9px;border:1.5px solid var(--gray-light);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--navy);outline:none;background:var(--white)}
+.btn{padding:7px 14px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;border:1.5px solid var(--gray-light);background:var(--white);color:var(--navy);display:inline-flex;align-items:center;gap:5px}
+.btn:hover{background:var(--surface)}
+.btn-primary{background:var(--navy);color:var(--white);border-color:var(--navy)}
+.btn-primary:hover{background:var(--navy-mid)}
+.btn-sm{padding:4px 9px;font-size:12px}
+.btn-danger{border-color:rgba(231,76,60,.3);color:var(--error);background:rgba(231,76,60,.05)}
+.btn-success{background:var(--success);color:var(--white);border-color:var(--success)}
+.badge{display:inline-flex;align-items:center;padding:2px 7px;border-radius:20px;font-size:11px;font-weight:500}
+.badge-pro{background:#eff6ff;color:#1d4ed8}.badge-premium{background:#fffbeb;color:#b45309}.badge-business{background:rgba(124,58,237,.1);color:#7C3AED}.badge-free{background:var(--surface);color:var(--gray)}.badge-active{background:#f0fdf4;color:var(--success)}.badge-blocked{background:#fef2f2;color:var(--error)}
+.role-badge{font-size:10px;padding:2px 7px;border-radius:20px;font-weight:600}
+.role-owner{background:rgba(201,168,76,.15);color:#b45309}
+.role-admin{background:rgba(24,95,165,.12);color:#185FA5}
+.role-manager{background:rgba(39,174,96,.12);color:var(--success)}
+.role-user{background:var(--surface);color:var(--gray)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{text-align:left;padding:8px 1.1rem;font-size:11px;font-weight:500;color:var(--gray);background:var(--surface);letter-spacing:.03em;border-bottom:1px solid var(--gray-light)}
+tbody td{padding:11px 1.1rem;border-bottom:1px solid var(--gray-light);color:var(--navy);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:#fafbfd}
+.user-cell{display:flex;align-items:center;gap:9px}
+.user-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--blue-light),var(--accent));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--white);flex-shrink:0;overflow:hidden}
+.user-av img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.user-name{font-weight:500;font-size:13px}
+.user-email{font-size:11px;color:var(--gray)}
+.action-btns{display:flex;gap:5px}
+.form-group{margin-bottom:11px}
+.form-label{display:block;font-size:12px;font-weight:500;color:var(--navy);margin-bottom:4px}
+.form-input{width:100%;padding:8px 11px;border:1.5px solid var(--gray-light);border-radius:9px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--navy);outline:none;background:var(--surface);transition:border-color .2s}
+.form-input:focus{border-color:var(--blue);background:var(--white)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.plan-options{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:.9rem}
+.plan-opt{padding:10px 7px;border:1.5px solid var(--gray-light);border-radius:9px;text-align:center;cursor:pointer;transition:all .15s}
+.plan-opt.selected{border-color:var(--blue);background:rgba(24,95,165,.05)}
+.plan-opt-name{font-size:12px;font-weight:500;color:var(--navy)}
+.plan-opt-desc{font-size:10px;color:var(--gray);margin-top:2px}
+/* Team roles */
+.role-options{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:.9rem}
+.role-opt{padding:9px 5px;border:1.5px solid var(--gray-light);border-radius:9px;text-align:center;cursor:pointer;transition:all .15s}
+.role-opt.selected{border-color:var(--blue);background:rgba(24,95,165,.05)}
+.role-opt-name{font-size:12px;font-weight:500;color:var(--navy)}
+.role-opt-desc{font-size:9px;color:var(--gray);margin-top:2px}
+/* Domain */
+.domain-card{background:var(--white);border:1px solid var(--gray-light);border-radius:11px;padding:1rem 1.25rem;margin-bottom:9px;display:flex;align-items:center;gap:12px}
+.domain-status{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:500}
+.ds-active{color:var(--success)}.ds-pending{color:var(--warning)}.ds-error{color:var(--error)}
+.dns-guide{background:var(--surface);border-radius:9px;padding:.9rem;font-size:12px;color:var(--gray);line-height:1.8;margin-top:.75rem;border:1px solid var(--gray-light)}
+.dns-record{font-family:monospace;font-size:12px;color:var(--navy);background:rgba(24,95,165,.06);padding:3px 7px;border-radius:4px;display:inline-block;margin:2px 0}
+/* Bulk upload */
+.drop-zone{border:2px dashed var(--gray-light);border-radius:12px;padding:2rem;text-align:center;cursor:pointer;transition:all .2s}
+.drop-zone:hover,.drop-zone.dragover{border-color:var(--blue);background:rgba(24,95,165,.03)}
+.drop-zone-icon{font-size:36px;margin-bottom:.75rem}
+.bulk-preview{background:var(--surface);border-radius:11px;border:1px solid var(--gray-light);overflow:hidden;margin-top:1rem}
+.bulk-preview-head{padding:.75rem 1rem;background:var(--navy);display:flex;align-items:center;justify-content:space-between}
+.bulk-preview-title{font-size:12px;font-weight:500;color:#fff}
+.bulk-row{display:grid;grid-template-columns:1fr 1fr 100px 80px 100px;gap:9px;padding:7px 1rem;border-bottom:1px solid var(--gray-light);font-size:12px;align-items:center}
+.bulk-row.header{background:var(--surface);font-weight:500;font-size:11px;color:var(--gray)}
+.bulk-row-status{font-size:11px;padding:2px 7px;border-radius:20px;font-weight:500;text-align:center}
+.bs-add{background:#f0fdf4;color:var(--success)}.bs-update{background:#eff6ff;color:var(--blue)}.bs-delete{background:#fef2f2;color:var(--error)}
+/* Modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(10,22,40,.5);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:var(--white);border-radius:16px;padding:1.75rem;width:calc(100% - 2rem);max-width:480px;transform:translateY(12px);transition:transform .2s;max-height:90vh;overflow-y:auto}
+.modal-overlay.open .modal{transform:translateY(0)}
+.modal-title{font-family:'DM Serif Display',serif;font-size:21px;color:var(--navy);margin-bottom:3px}
+.modal-sub{font-size:13px;color:var(--gray);margin-bottom:1.25rem}
+.modal-footer{display:flex;gap:9px;margin-top:1.25rem}
+.modal-footer .btn{flex:1;justify-content:center}
+.error-box{background:#fef2f2;border:1px solid #fecaca;color:var(--error);font-size:12px;padding:8px 11px;border-radius:8px;margin-bottom:.9rem;display:none}
+.error-box.show{display:block}
+.success-box{background:#f0fdf4;border:1px solid #bbf7d0;color:var(--success);font-size:12px;padding:8px 11px;border-radius:8px;margin-bottom:.9rem;display:none}
+.success-box.show{display:block}
+.mobile-card{display:none;background:var(--white);border:1px solid var(--gray-light);border-radius:11px;padding:1rem;margin-bottom:8px}
+.mobile-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.mobile-card-meta{font-size:12px;color:var(--gray);margin-top:4px;line-height:1.5}
+#brandLinkToggle:checked + #brandLinkSlider{background:var(--blue)}
+#brandLinkSlider::after{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2);transition:.3s;top:2px;left:2px}
+#brandLinkToggle:checked + #brandLinkSlider::after{transform:translateX(18px)}
+.toggle-wrap{position:relative;display:inline-block;width:42px;height:24px}
+.toggle-wrap input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;inset:0;border-radius:12px;background:var(--gray-light);transition:.3s;cursor:pointer}
+.toggle-slider::after{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.2);transition:.3s;top:2px;left:2px}
+input:checked+.toggle-slider{background:var(--blue)}
+input:checked+.toggle-slider::after{transform:translateX(18px)}
+.crm-access-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:8px;font-size:10px;font-weight:600;background:rgba(39,174,96,.12);color:var(--success)}
+.crm-access-badge.off{background:var(--surface);color:var(--gray)}
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--navy);color:var(--white);padding:11px 16px;border-radius:10px;font-size:13px;z-index:999;transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none;max-width:280px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{background:var(--success)}.toast.error{background:var(--error)}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:900px){.stats-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%)}.sidebar.open{transform:translateX(0)}
+  .sidebar-overlay.open{display:block}.hamburger{display:flex}
+  .main{margin-left:0}.topbar{padding-left:60px}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}.content{padding:1rem}
+  table{display:none}.mobile-card{display:block}
+  .table-toolbar{flex-direction:column;align-items:stretch}.search-input{min-width:100%}
+  .plan-options{grid-template-columns:repeat(2,1fr)}.role-options{grid-template-columns:repeat(2,1fr)}
+  .bulk-row{grid-template-columns:1fr 1fr 80px}
+}
+@media(max-width:480px){.stats-grid{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}}
 </style>
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
 </head>
 <body>
+<button class="hamburger" onclick="toggleSidebar()"><span></span><span></span><span></span></button>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-<div class="left">
-  <div class="brand">
-    <div class="brand-mark">
-      <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
-        <rect x="3" y="6" width="18" height="13" rx="2"/>
-        <path d="M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2"/>
-        <circle cx="12" cy="13" r="2"/>
-      </svg>
-    </div>
-    <span class="brand-name">Card<span>Pro</span></span>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-mark"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><rect x="3" y="6" width="18" height="13" rx="2"/><circle cx="12" cy="13" r="2"/></svg></div>
+    <span class="brand-name">My<span>Contact</span></span>
   </div>
-
-  <div class="hero">
-    <div class="hero-tag">
-      <div class="hero-dot"></div>
-      Rəqəmsal vizit kart platforması
-    </div>
-    <h1>Peşəkar kartınız<br><em>həmişə yanınızda</em></h1>
-    <p>Bir link ilə bütün kontakt məlumatlarınızı, sosial şəbəkələrinizi və portfelinizi paylaşın.</p>
-    <div class="feature-list">
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-        </div>
-        Profil şəkli və cover foto
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3m0 4h4v-4m-7 0h3"/></svg>
-        </div>
-        QR kod — vCard ilə kontakt saxla
-      </div>
-      <div class="feature-item">
-        <div class="feature-icon">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="2"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
-        </div>
-        PDF, YouTube video, sosial şəbəkələr
-      </div>
-    </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Ümumi</div>
+    <div class="nav-item active" onclick="showPanel('overview')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>İcmal</div>
+    <div class="nav-section">İdarəetmə</div>
+    <div class="nav-item" onclick="showPanel('users')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>İstifadəçilər</div>
+    <div class="nav-item" onclick="showPanel('cards')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2"/></svg>Bütün kartlar</div>
+    <div class="nav-section">B2B</div>
+    <div class="nav-item" onclick="showPanel('team')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><circle cx="20" cy="7" r="3"/></svg>Team & Şirkət</div>
+    <div class="nav-item master-only" onclick="showPanel('bulk')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Bulk Upload</div>
+    <div class="nav-section master-only">Konfiqurasiya</div>
+    <div class="nav-item master-only" onclick="showPanel('companyadmins')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Şirkət Adminləri</div>
+    <div class="nav-item master-only" onclick="showPanel('domains')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>Domain idarəsi</div>
+    <div class="nav-item master-only" onclick="showPanel('plans')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Plan idarəsi</div>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="admin-info"><div class="admin-av" id="adminInitials">A</div><div><div class="admin-name" id="adminName">Admin</div><div class="admin-role" id="adminRoleLabel">Master Admin</div></div></div>
+    <button class="logout-btn" onclick="doLogout()">Çıxış</button>
   </div>
+</aside>
 
-  <div class="stats-row">
-    <div class="stat">
-      <div class="stat-num">1K+</div>
-      <div class="stat-label">İstifadəçi</div>
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbarTitle">İcmal</div>
+    <div><span class="badge-admin" id="topbarBadge">🔐 Master Admin</span></div>
+  </div>
+  <div class="content">
+
+    <!-- OVERVIEW -->
+    <div class="panel active" id="panel-overview">
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon blue"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#185FA5" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div><span class="stat-trend" id="trendUsers">—</span></div><div class="stat-num" id="statUsers">—</div><div class="stat-label">Ümumi istifadəçi</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon green"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="2"><rect x="3" y="6" width="18" height="13" rx="2"/></svg></div><span class="stat-trend" id="trendCards">—</span></div><div class="stat-num" id="statCards">—</div><div class="stat-label">Aktiv kartlar</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon gold"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div><span class="stat-trend" id="trendPro">—</span></div><div class="stat-num" id="statPro">—</div><div class="stat-label">Ödənişli planlar</div></div>
+        <div class="stat-card"><div class="stat-top"><div class="stat-icon purple"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><circle cx="20" cy="7" r="3"/></svg></div><span class="stat-trend" id="trendBusiness">—</span></div><div class="stat-num" id="statBusiness">—</div><div class="stat-label">Business planlar</div></div>
+      </div>
+      <!-- Charts -->
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:1rem;margin-bottom:1.25rem">
+        <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem">
+          <div style="font-size:13px;font-weight:500;margin-bottom:1rem">Plan bölgüsü</div>
+          <canvas id="planChart" height="120"></canvas>
+        </div>
+        <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;display:flex;flex-direction:column;align-items:center">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.75rem;align-self:flex-start">Status</div>
+          <canvas id="statusChart" width="140" height="140"></canvas>
+          <div style="display:flex;gap:1rem;margin-top:.75rem">
+            <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gray)"><span style="width:9px;height:9px;border-radius:50%;background:#27ae60;display:inline-block"></span>Aktiv</div>
+            <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--gray)"><span style="width:9px;height:9px;border-radius:50%;background:#e74c3c;display:inline-block"></span>Bloklu</div>
+          </div>
+        </div>
+      </div>
+      <div class="section-head"><div class="section-title">Son qeydiyyatlar</div><button class="btn btn-sm" onclick="showPanel('users')">Hamısına bax</button></div>
+      <div class="card">
+        <table><thead><tr><th>İstifadəçi</th><th>Plan</th><th>Rol</th><th>Status</th><th>Qeydiyyat</th></tr></thead><tbody id="recentUsersBody"><tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray)">Yüklənir...</td></tr></tbody></table>
+        <div id="recentMobileCards"></div>
+      </div>
     </div>
-    <div class="stat">
-      <div class="stat-num">50K+</div>
-      <div class="stat-label">Kart baxışı</div>
+
+    <!-- USERS -->
+    <div class="panel" id="panel-users">
+      <div class="section-head">
+        <div class="section-title">İstifadəçilər</div>
+        <div style="display:flex;gap:7px">
+          <button class="btn btn-primary" onclick="openCreateModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Yeni istifadəçi</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="table-toolbar">
+          <input class="search-input" type="text" placeholder="Ad, email, link..." id="userSearch" oninput="filterUsers()">
+          <select class="filter-select" id="planFilter" onchange="filterUsers()"><option value="">Bütün planlar</option><option value="free">Free</option><option value="pro">Pro</option><option value="premium">Premium</option><option value="business">Business</option></select>
+          <select class="filter-select" id="roleFilter" onchange="filterUsers()"><option value="">Bütün rollar</option><option value="owner">Owner</option><option value="admin_user">Admin</option><option value="manager">Manager</option><option value="user">User</option></select>
+          <select class="filter-select" id="statusFilter" onchange="filterUsers()"><option value="">Bütün statuslar</option><option value="active">Aktiv</option><option value="blocked">Bloklu</option></select>
+        </div>
+        <table><thead><tr><th>İstifadəçi</th><th>Plan</th><th>Rol</th><th>Status</th><th>Link</th><th>Əməliyyat</th></tr></thead><tbody id="usersBody"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--gray)">Yüklənir...</td></tr></tbody></table>
+        <div id="usersMobileCards"></div>
+      </div>
     </div>
-    <div class="stat">
-      <div class="stat-num">99%</div>
-      <div class="stat-label">Uptime</div>
+
+    <!-- CARDS -->
+    <div class="panel" id="panel-cards">
+      <div class="section-head"><div class="section-title">Bütün kartlar</div></div>
+      <div class="card">
+        <table><thead><tr><th>İstifadəçi</th><th>Vəzifə</th><th>Şirkət</th><th>Plan</th><th>Baxış</th><th>Əməliyyat</th></tr></thead><tbody id="cardsBody"><tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--gray)">Yüklənir...</td></tr></tbody></table>
+        <div id="cardsMobileCards"></div>
+      </div>
     </div>
+
+    <!-- TEAM MANAGEMENT -->
+    <div class="panel" id="panel-team">
+      <div style="margin-bottom:1.25rem">
+        <div style="font-size:15px;font-weight:500;color:var(--navy);margin-bottom:4px">Team & Şirkət İdarəsi</div>
+        <div style="font-size:13px;color:var(--gray)">İstifadəçilərə rol təyin edin. Şirkət daxilindəki profil bölgüsünü idarə edin.</div>
+      </div>
+      <!-- Role Hierarchy -->
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.25rem">
+        <div style="background:var(--white);border-radius:11px;border:2px solid #D97706;padding:1rem;text-align:center">
+          <div style="font-size:22px;margin-bottom:6px">👑</div>
+          <div style="font-size:13px;font-weight:600;color:#b45309">Owner</div>
+          <div style="font-size:11px;color:var(--gray);margin-top:4px;line-height:1.5">Bütün kartlar üzərində tam nəzarət. Billing idarəsi.</div>
+        </div>
+        <div style="background:var(--white);border-radius:11px;border:2px solid #185FA5;padding:1rem;text-align:center">
+          <div style="font-size:22px;margin-bottom:6px">🛡️</div>
+          <div style="font-size:13px;font-weight:600;color:#185FA5">Admin</div>
+          <div style="font-size:11px;color:var(--gray);margin-top:4px;line-height:1.5">İstifadəçi yaratma, plan dəyişmə, domain idarəsi.</div>
+        </div>
+        <div style="background:var(--white);border-radius:11px;border:2px solid #27ae60;padding:1rem;text-align:center">
+          <div style="font-size:22px;margin-bottom:6px">📋</div>
+          <div style="font-size:13px;font-weight:600;color:#27ae60">Manager</div>
+          <div style="font-size:11px;color:var(--gray);margin-top:4px;line-height:1.5">Öz qrupundakı istifadəçiləri idarə edir.</div>
+        </div>
+        <div style="background:var(--white);border-radius:11px;border:1px solid var(--gray-light);padding:1rem;text-align:center">
+          <div style="font-size:22px;margin-bottom:6px">👤</div>
+          <div style="font-size:13px;font-weight:600;color:var(--gray)">User</div>
+          <div style="font-size:11px;color:var(--gray);margin-top:4px;line-height:1.5">Yalnız öz profilini redaktə edə bilər.</div>
+        </div>
+      </div>
+      <!-- Team Members table -->
+      <div class="section-head"><div class="section-title">Komanda üzvləri</div><button class="btn btn-primary btn-sm" onclick="openAssignRoleModal()">+ Rol təyin et</button></div>
+      <div class="card">
+        <table><thead><tr><th>İstifadəçi</th><th>Plan</th><th>Rol</th><th>Şirkət</th><th>Əməliyyat</th></tr></thead>
+        <tbody id="teamBody"><tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray)">Yüklənir...</td></tr></tbody></table>
+        <div id="teamMobileCards"></div>
+      </div>
+    </div>
+
+    <!-- BULK UPLOAD -->
+    <div class="panel" id="panel-bulk">
+      <div style="max-width:760px">
+        <div style="margin-bottom:1.25rem">
+          <div style="font-size:15px;font-weight:500;color:var(--navy);margin-bottom:4px">Bulk İstifadəçi Upload</div>
+          <div style="font-size:13px;color:var(--gray)">Excel (.xlsx) faylı ilə toplu istifadəçi əlavə et, yenilə, sil.</div>
+        </div>
+        <!-- Template download -->
+        <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1rem">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.5rem">1. Şablonu yüklə</div>
+          <div style="font-size:12px;color:var(--gray);margin-bottom:.75rem">Excel şablonunu yükləyin, məlumatları doldurun: ad, soyad, email, şifrə, plan, rol, şirkət</div>
+          <button class="btn btn-sm" onclick="downloadBulkTemplate()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Şablonu yüklə (.xlsx)</button>
+        </div>
+        <!-- Drop zone -->
+        <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1rem">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.75rem">2. Faylı yüklə</div>
+          <div class="drop-zone" id="dropZone" onclick="document.getElementById('bulkFile').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="handleDrop(event)">
+            <div class="drop-zone-icon">📊</div>
+            <div style="font-size:13px;color:var(--navy);margin-bottom:5px">Excel faylını buraya sürükləyin</div>
+            <div style="font-size:12px;color:var(--gray)">və ya klik edərək seçin (.xlsx, .csv)</div>
+            <input type="file" id="bulkFile" accept=".xlsx,.csv" style="display:none" onchange="processBulkFile(event)">
+          </div>
+        </div>
+        <!-- Preview -->
+        <div id="bulkPreviewWrap" style="display:none">
+          <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem">
+            <div style="font-size:13px;font-weight:500;margin-bottom:.75rem">3. Nəticəni yoxla və tətbiq et</div>
+            <div style="display:flex;gap:9px;margin-bottom:.9rem">
+              <span id="bulkAddCount" style="font-size:12px;padding:3px 9px;border-radius:20px;background:#f0fdf4;color:var(--success)">0 əlavə</span>
+              <span id="bulkUpdateCount" style="font-size:12px;padding:3px 9px;border-radius:20px;background:#eff6ff;color:var(--blue)">0 yenilə</span>
+              <span id="bulkDeleteCount" style="font-size:12px;padding:3px 9px;border-radius:20px;background:#fef2f2;color:var(--error)">0 sil</span>
+            </div>
+            <div class="bulk-preview" id="bulkPreview"></div>
+            <div style="margin-top:.9rem;display:flex;gap:7px">
+              <button class="btn btn-primary" id="bulkApplyBtn" onclick="applyBulk()">Tətbiq et</button>
+              <button class="btn" onclick="clearBulk()">Sıfırla</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOMAINS -->
+    <div class="panel" id="panel-domains">
+      <div style="max-width:720px">
+        <div style="margin-bottom:1.25rem">
+          <div style="font-size:15px;font-weight:500;color:var(--navy);margin-bottom:4px">Domain İdarəsi (White-label)</div>
+          <div style="font-size:13px;color:var(--gray)">Şirkətlər üçün öz domeni ilə white-label xidmət. Hər domenə limitli sub-admin icazəsi verin.</div>
+        </div>
+
+        <!-- How it works -->
+        <div style="background:rgba(24,95,165,.05);border:1px solid rgba(24,95,165,.15);border-radius:12px;padding:1.1rem;margin-bottom:1.25rem">
+          <div style="font-size:13px;font-weight:500;color:var(--blue);margin-bottom:.6rem">ℹ️ Necə işləyir?</div>
+          <div style="font-size:12px;color:var(--navy);line-height:1.8">
+            <div>1️⃣ <strong>Şirkət alır</strong> → onlara domain əlavə edirsən (məs. <code style="background:var(--gray-light);padding:2px 5px;border-radius:4px">cards.sirket.az</code>)</div>
+            <div>2️⃣ <strong>DNS yazısı</strong> → şirkət domain qeydiyyatçısında CNAME əlavə edir</div>
+            <div>3️⃣ <strong>Sub-admin icazəsi</strong> → şirkətin öz adminini seçirsən, yalnız öz domeninin istifadəçilərini idarə edə bilir</div>
+            <div>4️⃣ <strong>Sən master admin</strong> olaraq hər şeyi görürsən — plan, limit, billing sənin əlindədir</div>
+          </div>
+        </div>
+
+        <!-- Domain types -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.25rem">
+          <div style="background:var(--white);border-radius:11px;border:1px solid var(--gray-light);padding:1rem">
+            <div style="font-size:13px;font-weight:500;margin-bottom:4px">🌐 Subdomain <span style="font-size:10px;background:#f0fdf4;color:var(--success);padding:2px 7px;border-radius:10px;font-weight:600;margin-left:4px">STANDARD</span></div>
+            <div style="font-size:12px;color:var(--gray);margin-bottom:.75rem">brand.apps.mycontact.az — avtomatik aktivdir</div>
+            <div style="font-family:monospace;font-size:12px;background:var(--surface);padding:6px 10px;border-radius:7px;color:var(--blue)">brand.apps.mycontact.az/profil</div>
+          </div>
+          <div style="background:var(--white);border-radius:11px;border:1px solid var(--gray-light);padding:1rem">
+            <div style="font-size:13px;font-weight:500;margin-bottom:4px">🔗 Custom Domain <span style="font-size:10px;background:rgba(201,168,76,.15);color:#b45309;padding:2px 7px;border-radius:10px;font-weight:600;margin-left:4px">PRO/BUSINESS</span></div>
+            <div style="font-size:12px;color:var(--gray);margin-bottom:.75rem">brand.com — DNS ilə qoşulur</div>
+            <div style="font-family:monospace;font-size:12px;background:var(--surface);padding:6px 10px;border-radius:7px;color:var(--blue)">cards.brand.com/profil</div>
+          </div>
+        </div>
+
+        <!-- Add domain -->
+        <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1rem">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.75rem">Yeni domain əlavə et</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:8px;align-items:flex-end">
+            <div class="form-group" style="margin-bottom:0">
+              <label class="form-label">Domain</label>
+              <input class="form-input" id="newDomain" placeholder="cards.brand.com">
+            </div>
+            <div class="form-group" style="margin-bottom:0">
+              <label class="form-label">Sub-admin (optional)</label>
+              <select class="form-input" id="newDomainAdmin">
+                <option value="">-- Seçin --</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" onclick="addDomain()" style="flex-shrink:0;margin-bottom:0">Əlavə et</button>
+          </div>
+          <div style="font-size:11px;color:var(--gray);margin-top:7px">Sub-admin yalnız bu domenin istifadəçilərini görə bilər (profil açmaq, şablon dəyişmək). Plan/billing idarəsi yalnız sizin əlinizdədir.</div>
+        </div>
+
+        <!-- Domain list -->
+        <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1rem">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.9rem">Əlavə edilmiş domainlər</div>
+          <div id="domainsInner"><div style="font-size:12px;color:var(--gray);text-align:center;padding:1rem">Hələ domain əlavə edilməyib</div></div>
+        </div>
+
+        <!-- DNS Guide -->
+        <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-top:1rem">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.75rem">📋 DNS Konfiqurasiya Rəhbəri</div>
+          <div style="font-size:12px;color:var(--gray);margin-bottom:.75rem">Domain qeydiyyatçınızda (Aznet, NIC.az, GoDaddy, Cloudflare vs.) aşağıdakı DNS qeydlərini əlavə edin:</div>
+          <div class="dns-guide">
+            <div><strong>CNAME qeydi (subdomain üçün):</strong></div>
+            <div><span class="dns-record">Host: cards (və ya istənilən subdomain)</span></div>
+            <div><span class="dns-record">Value: proxy.apps.mycontact.az</span></div>
+            <div style="margin-top:.6rem"><strong>A qeydi (kök domain üçün):</strong></div>
+            <div><span class="dns-record">Host: @ </span></div>
+            <div><span class="dns-record">Value: 76.76.21.21</span></div>
+            <div style="margin-top:.6rem"><strong>TXT qeydi (doğrulama):</strong></div>
+            <div><span class="dns-record">Host: _cardpro</span></div>
+            <div><span class="dns-record">Value: verify=[sistem tərəfindən verilir]</span></div>
+            <div style="margin-top:.5rem;font-size:11px">⏱ DNS yayılması 24-48 saat çəkə bilər. Status avtomatik yenilənir.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PLAN MANAGEMENT -->
+    <div class="panel" id="panel-plans">
+      <div style="max-width:760px">
+        <div style="margin-bottom:1.25rem">
+          <div style="font-size:15px;font-weight:500;color:var(--navy);margin-bottom:4px">Plan İdarəsi</div>
+          <div style="font-size:13px;color:var(--gray)">İstifadəçilərin planlarını toplu və ya fərdi dəyişin.</div>
+        </div>
+        <!-- Plan overview cards -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-bottom:1.5rem">
+          <div style="background:var(--white);border-radius:12px;border:2px solid var(--gray-light);padding:1.1rem">
+            <div style="font-size:11px;font-weight:600;color:var(--gray);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">🟢 FREE</div>
+            <div style="font-size:26px;font-family:'DM Serif Display',serif;color:var(--navy)" id="planFreeCount">—</div>
+            <div style="font-size:11px;color:var(--gray);margin-top:4px">istifadəçi</div>
+            <div style="margin-top:.75rem;font-size:11px;color:var(--gray);line-height:1.7">1 profil · 3 şablon · Əsas məlumat</div>
+          </div>
+          <div style="background:var(--white);border-radius:12px;border:2px solid #185FA5;padding:1.1rem">
+            <div style="font-size:11px;font-weight:600;color:#185FA5;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">🔵 PRO</div>
+            <div style="font-size:26px;font-family:'DM Serif Display',serif;color:var(--navy)" id="planProCount">—</div>
+            <div style="font-size:11px;color:var(--gray);margin-top:4px">istifadəçi</div>
+            <div style="margin-top:.75rem;font-size:11px;color:var(--gray);line-height:1.7">Multi-lang · CRM · Email imzası · Custom dizayn</div>
+          </div>
+          <div style="background:var(--white);border-radius:12px;border:2px solid #7C3AED;padding:1.1rem">
+            <div style="font-size:11px;font-weight:600;color:#7C3AED;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.75rem">🟣 BUSINESS</div>
+            <div style="font-size:26px;font-family:'DM Serif Display',serif;color:var(--navy)" id="planBusinessCount">—</div>
+            <div style="font-size:11px;color:var(--gray);margin-top:4px">istifadəçi</div>
+            <div style="margin-top:.75rem;font-size:11px;color:var(--gray);line-height:1.7">Team · Bulk upload · White-label · Custom domain</div>
+          </div>
+        </div>
+        <!-- Bulk plan change -->
+        <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.9rem">Toplu plan dəyişimi</div>
+          <div style="display:flex;gap:9px;align-items:flex-end;flex-wrap:wrap">
+            <div class="form-group" style="margin-bottom:0;flex:1;min-width:140px"><label class="form-label">Cari plan</label><select class="form-input" id="bulkFromPlan"><option value="free">Free</option><option value="pro">Pro</option><option value="premium">Premium</option><option value="business">Business</option></select></div>
+            <div style="font-size:18px;padding-bottom:9px">→</div>
+            <div class="form-group" style="margin-bottom:0;flex:1;min-width:140px"><label class="form-label">Yeni plan</label><select class="form-input" id="bulkToPlan"><option value="free">Free</option><option value="pro">Pro</option><option value="premium">Premium</option><option value="business">Business</option></select></div>
+            <button class="btn btn-primary" onclick="bulkChangePlan()" style="flex-shrink:0">Tətbiq et</button>
+          </div>
+          <div style="font-size:11px;color:var(--gray);margin-top:.75rem">⚠️ Bu əməliyyat seçilmiş plandakı bütün istifadəçiləri dəyişəcək.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COMPANY ADMINS PANEL (master-only) -->
+    <div class="panel" id="panel-companyadmins">
+      <div style="max-width:760px">
+        <div style="margin-bottom:1.25rem">
+          <div style="font-size:15px;font-weight:500;color:var(--navy);margin-bottom:4px">Şirkət Adminləri</div>
+          <div style="font-size:13px;color:var(--gray)">Müəyyən şirkətin istifadəçisinə həmin şirkətin profilləri üzərində idarə icazəsi verin.</div>
+        </div>
+
+        <!-- How it works info box -->
+        <div style="background:rgba(24,95,165,.05);border:1px solid rgba(24,95,165,.15);border-radius:12px;padding:1.1rem;margin-bottom:1.25rem">
+          <div style="font-size:13px;font-weight:500;color:var(--blue);margin-bottom:.6rem">ℹ️ Necə işləyir?</div>
+          <div style="font-size:12px;color:var(--navy);line-height:1.9">
+            <div>1️⃣ Şirkətin bir işçisini seçirsiniz (məs. ABB Bankın IT müdiri)</div>
+            <div>2️⃣ Ona <strong>Şirkət Admini</strong> icazəsi verirsiniz</div>
+            <div>3️⃣ O, admin panelinə giriş edəndə <strong>yalnız öz şirkətinin profilləri</strong>ni görür və redaktə edir</div>
+            <div>4️⃣ Plan, billing, domain, digər şirkətlər — <strong>ona görünmür</strong></div>
+          </div>
+        </div>
+
+        <!-- Tab: Yeni yarat / Mövcud təyin et -->
+        <div style="display:flex;border-bottom:1.5px solid var(--gray-light);margin-bottom:1.25rem">
+          <div id="caTab1" class="auth-tab active" onclick="switchCaTab(1)" style="flex:1;padding:.65rem;font-size:13px;font-weight:500;color:var(--navy);text-align:center;cursor:pointer;border-bottom:2px solid var(--blue);margin-bottom:-1.5px">➕ Yeni hesab yarat</div>
+          <div id="caTab2" class="auth-tab" onclick="switchCaTab(2)" style="flex:1;padding:.65rem;font-size:13px;font-weight:500;color:var(--gray);text-align:center;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1.5px">👤 Mövcudu təyin et</div>
+        </div>
+
+        <!-- TAB 1: Yeni şirkət admini hesabı yarat -->
+        <div id="caPanel1">
+          <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1rem">
+            <div style="font-size:13px;font-weight:500;margin-bottom:.9rem">Yeni Şirkət Admini Hesabı Yarat</div>
+            <div class="error-box" id="caCreateErr"></div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Ad</label><input class="form-input" id="caNewName" placeholder="Aytən"></div>
+              <div class="form-group"><label class="form-label">Soyad</label><input class="form-input" id="caNewSurname" placeholder="Həsənova"></div>
+            </div>
+            <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" id="caNewEmail" placeholder="ayten@sirket.az"></div>
+            <div class="form-group"><label class="form-label">Şifrə</label><input class="form-input" type="password" id="caNewPass" placeholder="Minimum 6 simvol"></div>
+            <div class="form-group"><label class="form-label">Şirkət adı</label><input class="form-input" id="caNewCompany" placeholder="Məs: ABB Bank, Kapital Bank..."></div>
+            <div class="form-group">
+              <label class="form-label">Profil yaratma limiti</label>
+              <div style="display:flex;gap:8px;align-items:center">
+                <input class="form-input" type="number" id="caNewLimit" value="10" min="1" max="999" style="width:100px">
+                <span style="font-size:12px;color:var(--gray)">şirkət üzvü profili (sonradan dəyişdirilə bilər)</span>
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="createCompanyAdmin()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+              Hesab yarat və admin təyin et
+            </button>
+          </div>
+        </div>
+
+        <!-- TAB 2: Mövcud istifadəçini təyin et -->
+        <div id="caPanel2" style="display:none">
+          <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem;margin-bottom:1rem">
+            <div style="font-size:13px;font-weight:500;margin-bottom:.9rem">Mövcud İstifadəçini Şirkət Admini Təyin Et</div>
+            <div class="form-group">
+              <label class="form-label">İstifadəçi (email ilə axtar)</label>
+              <input class="form-input" id="caSearch" placeholder="Email daxil edin..." oninput="searchForCA()">
+            </div>
+            <div id="caSearchResults" style="margin-bottom:.75rem"></div>
+            <div class="form-group">
+              <label class="form-label">Şirkət adı</label>
+              <input class="form-input" id="caCompany" placeholder="Məs: ABB Bank" readonly style="background:var(--surface)">
+            </div>
+            <input type="hidden" id="caUid">
+            <button class="btn btn-primary" onclick="grantCompanyAdmin()" id="caGrantBtn" disabled>✅ İcazə ver</button>
+          </div>
+        </div>
+
+        <!-- Current company admins list -->
+        <div style="background:var(--white);border-radius:12px;border:1px solid var(--gray-light);padding:1.25rem">
+          <div style="font-size:13px;font-weight:500;margin-bottom:.9rem">Mövcud Şirkət Adminləri</div>
+          <div id="caList"><div style="font-size:12px;color:var(--gray);text-align:center;padding:1rem">Yüklənir...</div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- CREATE USER MODAL -->
+<div class="modal-overlay" id="createModal">
+  <div class="modal">
+    <div class="modal-title">Yeni istifadəçi</div>
+    <div class="modal-sub">Firebase-də hesab yaradılacaq</div>
+    <div class="error-box" id="createErr"></div>
+    <div class="success-box" id="createOk"></div>
+    <div class="form-row"><div class="form-group"><label class="form-label">Ad</label><input class="form-input" id="newName" placeholder="Aytən"></div><div class="form-group"><label class="form-label">Soyad</label><input class="form-input" id="newSurname" placeholder="Həsənova"></div></div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" id="newEmail"></div>
+    <div class="form-group"><label class="form-label">Şifrə</label><input class="form-input" type="password" id="newPass" placeholder="Min 6 simvol"></div>
+    <div class="form-group"><label class="form-label">Şirkət</label><input class="form-input" id="newCompany" placeholder="Şirkət adı (optional)"></div>
+    <div class="form-group"><label class="form-label">Plan</label>
+      <div class="plan-options">
+        <div class="plan-opt selected" onclick="selectPlan(this,'free')"><div class="plan-opt-name">🟢 Free</div><div class="plan-opt-desc">Əsas</div></div>
+        <div class="plan-opt" onclick="selectPlan(this,'pro')"><div class="plan-opt-name">🔵 Pro</div><div class="plan-opt-desc">CRM+</div></div>
+        <div class="plan-opt" onclick="selectPlan(this,'premium')"><div class="plan-opt-name">⭐ Premium</div><div class="plan-opt-desc">Priority</div></div>
+        <div class="plan-opt" onclick="selectPlan(this,'business')"><div class="plan-opt-name">🟣 Business</div><div class="plan-opt-desc">Team</div></div>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Rol</label>
+      <div class="role-options" id="createRoleOpts">
+        <div class="role-opt" onclick="selectRole(this,'owner','createRoleOpts')"><div class="role-opt-name">👑 Owner</div><div class="role-opt-desc">Tam nəzarət</div></div>
+        <div class="role-opt" onclick="selectRole(this,'admin_user','createRoleOpts')"><div class="role-opt-name">🛡️ Admin</div><div class="role-opt-desc">İdarəetmə</div></div>
+        <div class="role-opt" onclick="selectRole(this,'manager','createRoleOpts')"><div class="role-opt-name">📋 Manager</div><div class="role-opt-desc">Qrup</div></div>
+        <div class="role-opt selected" onclick="selectRole(this,'user','createRoleOpts')"><div class="role-opt-name">👤 User</div><div class="role-opt-desc">Normal</div></div>
+      </div>
+    </div>
+    <div class="modal-footer"><button class="btn" onclick="closeModal('createModal')">Ləğv et</button><button class="btn btn-primary" id="createBtn" onclick="createUser()">Yarat</button></div>
   </div>
 </div>
 
-<div class="right">
-  <div class="login-box">
-    <!-- Tabs -->
-    <div class="auth-tabs" id="authTabs">
-      <div class="auth-tab active" onclick="switchTab('login')">Daxil ol</div>
-      <div class="auth-tab" onclick="switchTab('register')">Qeydiyyat</div>
-    </div>
-
-    <!-- LOGIN -->
-    <div class="auth-panel active" id="panelLogin">
-      <div class="login-title" style="margin-bottom:4px">Xoş gəldiniz</div>
-      <div class="login-sub" style="margin-bottom:1.5rem">Hesabınıza daxil olun</div>
-      <div class="error-msg" id="errorMsg"></div>
-      <div class="attempt-warn" id="attemptWarn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span id="attemptWarnTxt"></span></div>
-      <div class="form-group">
-        <label class="form-label">Email ünvanı</label>
-        <input type="email" class="form-input" id="emailInput" placeholder="email@nümunə.az" autocomplete="email">
+<!-- EDIT USER MODAL -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <div class="modal-title">İstifadəçini redaktə et</div>
+    <div class="modal-sub" id="editModalSub">—</div>
+    <div class="error-box" id="editErr"></div>
+    <input type="hidden" id="editUid">
+    <div class="form-group"><label class="form-label">Ad Soyad</label><input class="form-input" id="editName"></div>
+    <div class="form-group"><label class="form-label">Şirkət</label><input class="form-input" id="editCompany"></div>
+    <div class="form-group"><label class="form-label">Kart linki</label><div style="display:flex;align-items:center;gap:6px"><span style="font-size:12px;color:var(--gray);white-space:nowrap">apps.mycontact.az/</span><input class="form-input" id="editSlug"></div></div>
+    <div class="form-group"><label class="form-label">Plan</label>
+      <div class="plan-options">
+        <div class="plan-opt" onclick="selectEditPlan(this,'free')"><div class="plan-opt-name">🟢 Free</div></div>
+        <div class="plan-opt" onclick="selectEditPlan(this,'pro')"><div class="plan-opt-name">🔵 Pro</div></div>
+        <div class="plan-opt" onclick="selectEditPlan(this,'premium')"><div class="plan-opt-name">⭐ Premium</div></div>
+        <div class="plan-opt" onclick="selectEditPlan(this,'business')"><div class="plan-opt-name">🟣 Business</div></div>
       </div>
-      <div class="form-group">
-        <label class="form-label">Şifrə</label>
-        <input type="password" class="form-input" id="passInput" placeholder="••••••••" autocomplete="current-password">
-      </div>
-      <div id="cf-turnstile-wrap" style="margin:0.75rem 0 0.25rem"></div>
-      <button class="btn-login" id="loginBtn" onclick="doLogin()">
-        <span class="btn-text">Daxil ol</span>
-        <div class="spinner"></div>
-      </button>
-      <div class="divider">və ya</div>
-      <button class="btn-google" onclick="doGoogle()">
-        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-        Google ilə daxil ol
-      </button>
-      <div class="secure-note" style="margin-top:1.25rem">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
-        Firebase ilə qorunan giriş
+      <div id="proDurationWrap" style="display:none;margin-top:8px;background:rgba(24,95,165,.05);border:1px solid rgba(24,95,165,.15);border-radius:9px;padding:10px 12px">
+        <label style="font-size:12px;color:var(--navy);font-weight:500;display:block;margin-bottom:6px">Pro müddəti</label>
+        <div style="display:flex;gap:7px;flex-wrap:wrap">
+          <button type="button" onclick="setProDuration(7)" class="dur-btn" style="padding:5px 10px;border-radius:7px;font-size:12px;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--white);font-family:'DM Sans',sans-serif">7 gün</button>
+          <button type="button" onclick="setProDuration(30)" class="dur-btn" style="padding:5px 10px;border-radius:7px;font-size:12px;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--white);font-family:'DM Sans',sans-serif">1 ay</button>
+          <button type="button" onclick="setProDuration(90)" class="dur-btn" style="padding:5px 10px;border-radius:7px;font-size:12px;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--white);font-family:'DM Sans',sans-serif">3 ay</button>
+          <button type="button" onclick="setProDuration(180)" class="dur-btn" style="padding:5px 10px;border-radius:7px;font-size:12px;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--white);font-family:'DM Sans',sans-serif">6 ay</button>
+          <button type="button" onclick="setProDuration(365)" class="dur-btn" style="padding:5px 10px;border-radius:7px;font-size:12px;cursor:pointer;border:1.5px solid var(--blue);background:rgba(24,95,165,.08);color:var(--blue);font-family:'DM Sans',sans-serif">1 il</button>
+          <button type="button" onclick="setProDuration(0)" class="dur-btn" style="padding:5px 10px;border-radius:7px;font-size:12px;cursor:pointer;border:1.5px solid var(--gray-light);background:var(--white);font-family:'DM Sans',sans-serif">Limitsiz</button>
+        </div>
+        <div id="proDurationLabel" style="font-size:11px;color:var(--gray);margin-top:6px">Seçin</div>
+        <input type="hidden" id="proDurationDays" value="">
       </div>
     </div>
-
-    <!-- REGISTER -->
-    <div class="auth-panel" id="panelRegister">
-      <div class="login-title" style="margin-bottom:4px">Hesab yaradın</div>
-      <div class="login-sub" style="margin-bottom:1.5rem">Qeydiyyatdan keçin</div>
-      <div class="reg-err" id="regErr"></div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Ad</label><input type="text" class="form-input" id="regName" placeholder="Adınız" autocomplete="given-name"></div>
-        <div class="form-group"><label class="form-label">Soyad</label><input type="text" class="form-input" id="regSurname" placeholder="Soyadınız" autocomplete="family-name"></div>
+    <div class="form-group"><label class="form-label">Rol</label>
+      <div class="role-options" id="editRoleOpts">
+        <div class="role-opt" onclick="selectRole(this,'owner','editRoleOpts')"><div class="role-opt-name">👑 Owner</div></div>
+        <div class="role-opt" onclick="selectRole(this,'admin_user','editRoleOpts')"><div class="role-opt-name">🛡️ Admin</div></div>
+        <div class="role-opt" onclick="selectRole(this,'manager','editRoleOpts')"><div class="role-opt-name">📋 Manager</div></div>
+        <div class="role-opt" onclick="selectRole(this,'user','editRoleOpts')"><div class="role-opt-name">👤 User</div></div>
       </div>
-      <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" id="regEmail" placeholder="email@nümunə.az" autocomplete="email"></div>
-      <div class="form-group"><label class="form-label">Şifrə</label><input type="password" class="form-input" id="regPass" placeholder="Minimum 6 simvol" autocomplete="new-password"></div>
-      <button class="btn-register" id="btnRegister" onclick="doRegister()">Hesab yarat</button>
-      <div class="divider">və ya</div>
-      <button class="btn-google" onclick="doGoogle()">
-        <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.35-8.16 2.35-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-        Google ilə qeydiyyat
-      </button>
     </div>
-
-    <!-- ORDER SCREEN -->
-    <div class="pending-screen" id="screenOrder">
-      <span class="pend-icon">📦</span>
-      <div class="pend-title">Kart sifariş edin</div>
-      <div class="pend-sub">Hesabınız yaradıldı! Fiziki <strong>MyContact</strong> kartınızı sifariş edin. Sifarişiniz təsdiqləndikdən sonra hesabınız aktivləşəcək.</div>
-      <button class="btn-order" id="btnOrder" onclick="placeOrder()">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
-        WhatsApp ilə sifariş et
-      </button>
-      <button class="btn-ghost" onclick="doLogout()">Çıxış</button>
+    <div class="form-group"><label class="form-label">Status</label><select class="form-input" id="editStatus"><option value="active">Aktiv</option><option value="blocked">Bloklu</option></select></div>
+    <div class="form-group"><label class="form-label">Default dil</label><select class="form-input" id="editDefaultLang"><option value="az">🇦🇿 Azərbaycan</option><option value="en">🇬🇧 English</option><option value="ru">🇷🇺 Русский</option><option value="tr">🇹🇷 Türkçe</option><option value="zh">🇨🇳 中文</option><option value="ar">🇸🇦 العربية</option><option value="de">🇩🇪 Deutsch</option><option value="es">🇪🇸 Español</option></select></div>
+    <!-- ADMIN CRM ACCESS -->
+    <div class="form-group">
+      <label class="form-label" style="display:flex;align-items:center;gap:6px">
+        <span style="background:rgba(24,95,165,.12);color:var(--blue);font-size:10px;padding:2px 7px;border-radius:8px;font-weight:600">ADMİN</span>
+        CRM Xüsusi Giriş (Pulsuz, Admin tərəfindən verilir)
+      </label>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-top:4px">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--navy)">
+          <input type="checkbox" id="crmHsAccess" style="width:16px;height:16px;accent-color:var(--blue)">
+          <span style="width:28px;height:28px;border-radius:7px;background:#FF7A59;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">HS</span>
+          HubSpot girişi aktiv et
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--navy)">
+          <input type="checkbox" id="crmSfAccess" style="width:16px;height:16px;accent-color:var(--blue)">
+          <span style="width:28px;height:28px;border-radius:7px;background:#00A1E0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">SF</span>
+          Salesforce girişi aktiv et
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--navy)">
+          <input type="checkbox" id="crmZohoAccess" style="width:16px;height:16px;accent-color:var(--blue)">
+          <span style="width:28px;height:28px;border-radius:7px;background:#E42527;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">ZO</span>
+          Zoho CRM girişi aktiv et
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:13px;color:var(--navy)">
+          <input type="checkbox" id="crmPipeAccess" style="width:16px;height:16px;accent-color:var(--blue)">
+          <span style="width:28px;height:28px;border-radius:7px;background:#1A7F4B;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0">PD</span>
+          Pipedrive girişi aktiv et
+        </label>
+      </div>
     </div>
-
-    <!-- WAIT SCREEN -->
-    <div class="pending-screen" id="screenWait">
-      <span class="pend-icon blink">⏳</span>
-      <div class="pend-title">Sifarişiniz gözləyir</div>
-      <div class="pend-sub">Sifarişiniz qəbul edildi. Admin tərəfindən təsdiqlənəndən sonra <strong>hesabınız aktivləşəcək</strong> və daxil ola biləcəksiniz.</div>
-      <div class="badge-wait"><span class="blink">●</span> Admin təsdiqi gözlənilir</div>
-      <button class="btn-ghost" onclick="doLogout()">Çıxış</button>
+    <!-- BRAND LINK -->
+    <div class="form-group">
+      <label class="form-label" style="display:flex;align-items:center;gap:6px">
+        <span style="background:rgba(24,95,165,.12);color:var(--blue);font-size:10px;padding:2px 7px;border-radius:8px;font-weight:600">ADMİN</span>
+        Brand Link (MyContact loqosu profil altında)
+      </label>
+      <div style="display:flex;align-items:center;justify-content:space-between;background:var(--surface);border-radius:9px;padding:10px 14px;border:1px solid var(--gray-light)">
+        <span style="font-size:13px;color:var(--navy)">Brand linki göstər</span>
+        <label style="position:relative;display:inline-block;width:42px;height:24px;cursor:pointer">
+          <input type="checkbox" id="brandLinkToggle" style="opacity:0;width:0;height:0">
+          <span id="brandLinkSlider" style="position:absolute;inset:0;border-radius:12px;background:var(--gray-light);transition:.3s;display:flex;align-items:center;padding:2px"></span>
+        </label>
+      </div>
+      <div style="font-size:11px;color:var(--gray);margin-top:4px">Söndürüldükdə "MyContact ilə yaradılmışdır" linki profil səhifəsindən gizlənir</div>
     </div>
-
+    <div class="modal-footer"><button class="btn btn-danger btn-sm" onclick="deleteUser()">Sil</button><button class="btn" onclick="closeModal('editModal')">Ləğv et</button><button class="btn btn-primary" onclick="saveUser()">Saxla</button></div>
   </div>
 </div>
 
+<!-- ASSIGN ROLE MODAL -->
+<div class="modal-overlay" id="assignRoleModal">
+  <div class="modal">
+    <div class="modal-title">Rol Təyin Et</div>
+    <div class="modal-sub">İstifadəçini seçin və rol təyin edin</div>
+    <div class="form-group"><label class="form-label">İstifadəçi</label><select class="form-input" id="assignUserSelect"></select></div>
+    <div class="form-group"><label class="form-label">Rol</label>
+      <div class="role-options" id="assignRoleOpts">
+        <div class="role-opt" onclick="selectRole(this,'owner','assignRoleOpts')"><div class="role-opt-name">👑 Owner</div></div>
+        <div class="role-opt" onclick="selectRole(this,'admin_user','assignRoleOpts')"><div class="role-opt-name">🛡️ Admin</div></div>
+        <div class="role-opt" onclick="selectRole(this,'manager','assignRoleOpts')"><div class="role-opt-name">📋 Manager</div></div>
+        <div class="role-opt selected" onclick="selectRole(this,'user','assignRoleOpts')"><div class="role-opt-name">👤 User</div></div>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Şirkət (optional)</label><input class="form-input" id="assignCompany" placeholder="Şirkət adı"></div>
+    <div class="modal-footer"><button class="btn" onclick="closeModal('assignRoleModal')">Ləğv et</button><button class="btn btn-primary" onclick="saveAssignRole()">Təyin et</button></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-  import { getDatabase, ref, get, set, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,onAuthStateChanged,signOut,createUserWithEmailAndPassword}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import{getDatabase,ref,get,set,update,remove,onValue}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+const cfg={apiKey:"AIzaSyBx81QDpjHSPvhkmnnSUNkJYMvR_fnRTaU",authDomain:"mycontact-e626e.firebaseapp.com",databaseURL:"https://mycontact-e626e-default-rtdb.firebaseio.com",projectId:"mycontact-e626e",storageBucket:"mycontact-e626e.firebasestorage.app",messagingSenderId:"420594516827",appId:"1:420594516827:web:f30266800c690c6ff9107e"};
+const app=initializeApp(cfg);const auth=getAuth(app);const db=getDatabase(app);
+let allUsers=[],selectedPlan='free',selectedEditPlan='free',selectedRole='user',selectedEditRole='user',selectedAssignRole='user',bulkData=[];
+let currentAdminRole='admin',currentAdminCompany='',currentAdminUid='';
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyBx81QDpjHSPvhkmnnSUNkJYMvR_fnRTaU",
-    authDomain: "mycontact-e626e.firebaseapp.com",
-    databaseURL: "https://mycontact-e626e-default-rtdb.firebaseio.com",
-    projectId: "mycontact-e626e",
-    storageBucket: "mycontact-e626e.firebasestorage.app",
-    messagingSenderId: "420594516827",
-    appId: "1:420594516827:web:f30266800c690c6ff9107e"
-  };
+onAuthStateChanged(auth,async u=>{
+  if(!u){location.href='index.html';return;}
+  try{
+    const s=await get(ref(db,`users/${u.uid}`));
+    const data=s.val();
+    if(!data||(data.role!=='admin'&&data.role!=='company_admin')){
+      alert('Giriş icazəsi yoxdur');
+      await signOut(auth);
+      location.href='index.html';
+      return;
+    }
+    currentAdminRole=data.role;
+    currentAdminCompany=data.company||'';
+    currentAdminUid=u.uid;
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getDatabase(app);
+    // Apply UI for company_admin — hide master-only sections
+    if(data.role==='company_admin'){
+      document.querySelectorAll('.master-only').forEach(el=>el.style.display='none');
+      document.getElementById('topbarBadge').textContent='🏢 Şirkət Admini';
+      document.getElementById('adminRoleLabel').textContent=data.company||'Şirkət Admin';
+      // Hide "create user" button — company admin cannot create new users
+      document.querySelectorAll('[onclick="openCreateModal()"]').forEach(el=>el.style.display='none');
+    }
+  }catch(e){
+    await signOut(auth);
+    location.href='index.html';
+    return;
+  }
+  const ns=await get(ref(db,`users/${u.uid}/name`));
+  const n=ns.val()||u.email;
+  document.getElementById('adminName').textContent=n;
+  document.getElementById('adminInitials').textContent=n.charAt(0).toUpperCase();
+  loadAll();
+});
 
-  // ── Turnstile ──
-  const SITE_KEY = '0x4AAAAAADD1DxxfxSthx3HI';
-  let tsToken = null, tsId = null;
+function loadAll(){
+  onValue(ref(db,'users'),s=>{
+    const d=s.val()||{};
+    let users=Object.entries(d)
+      .filter(([,u])=>u.role!=='admin'&&u.role!=='company_admin')
+      .map(([uid,u])=>({uid,...u}));
+    // Company admin sees only their company's users
+    if(currentAdminRole==='company_admin'&&currentAdminCompany){
+      const comp=currentAdminCompany.toLowerCase().trim();
+      users=users.filter(u=>(u.company||u.card?.company||'').toLowerCase().trim()===comp);
+    }
+    allUsers=users;
+    renderStats();renderCharts();renderRecentUsers();renderUsers(allUsers);renderCards();renderTeam();renderPlanCounts();renderDomains();
+    if(currentAdminRole==='admin')renderCompanyAdmins();
+  });
+}
 
-  function initTS() {
-    if (!window.turnstile) { setTimeout(initTS, 200); return; }
-    tsId = window.turnstile.render('#cf-turnstile-wrap', {
-      sitekey: SITE_KEY,
-      theme: 'light',
-      callback: t => { tsToken = t; },
-      'error-callback': () => { tsToken = null; },
-      'expired-callback': () => { tsToken = null; if(tsId!==null) window.turnstile.reset(tsId); }
+function renderStats(){
+  const total=allUsers.length;
+  const active=allUsers.filter(u=>u.status!=='blocked').length;
+  const paid=allUsers.filter(u=>u.plan==='pro'||u.plan==='premium'||u.plan==='business').length;
+  const biz=allUsers.filter(u=>u.plan==='business').length;
+  document.getElementById('statUsers').textContent=total;
+  document.getElementById('statCards').textContent=active;
+  document.getElementById('statPro').textContent=paid;
+  document.getElementById('statBusiness').textContent=biz;
+  document.getElementById('trendUsers').textContent=total+' cəmi';
+  document.getElementById('trendCards').textContent=active+' aktiv';
+  document.getElementById('trendPro').textContent=paid+' ödənişli';
+  document.getElementById('trendBusiness').textContent=biz+' business';
+}
+
+let _planChart=null,_statusChart=null;
+function renderCharts(){
+  const free=allUsers.filter(u=>u.plan==='free'||!u.plan).length;
+  const pro=allUsers.filter(u=>u.plan==='pro').length;
+  const prem=allUsers.filter(u=>u.plan==='premium').length;
+  const biz=allUsers.filter(u=>u.plan==='business').length;
+  const active=allUsers.filter(u=>u.status!=='blocked').length;
+  const blocked=allUsers.filter(u=>u.status==='blocked').length;
+  if(typeof Chart==='undefined')return;
+  const pc=document.getElementById('planChart');
+  if(_planChart)_planChart.destroy();
+  _planChart=new Chart(pc,{type:'bar',data:{labels:['Free','Pro','Premium','Business'],datasets:[{data:[free,pro,prem,biz],backgroundColor:['rgba(138,155,181,.5)','rgba(24,95,165,.8)','rgba(201,168,76,.8)','rgba(124,58,237,.8)'],borderRadius:6,borderSkipped:false}]},options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0},grid:{color:'rgba(0,0,0,.04)'}},x:{grid:{display:false}}}}});
+  const sc=document.getElementById('statusChart');
+  if(_statusChart)_statusChart.destroy();
+  _statusChart=new Chart(sc,{type:'doughnut',data:{labels:['Aktiv','Bloklu'],datasets:[{data:[active||0,blocked||0],backgroundColor:['#27ae60','#e74c3c'],borderWidth:0}]},options:{responsive:false,cutout:'72%',plugins:{legend:{display:false}}}});
+}
+
+function planBadge(p){if(p==='business')return'<span class="badge badge-business">Business</span>';if(p==='pro')return'<span class="badge badge-pro">Pro</span>';if(p==='premium')return'<span class="badge badge-premium">Premium</span>';return'<span class="badge badge-free">Free</span>';}
+function statusBadge(s){return s==='blocked'?'<span class="badge badge-blocked">Bloklu</span>':'<span class="badge badge-active">Aktiv</span>';}
+function roleBadge(r){const m={owner:'role-owner',admin_user:'role-admin',manager:'role-manager',user:'role-user'};const l={owner:'👑 Owner',admin_user:'🛡️ Admin',manager:'📋 Manager',user:'👤 User'};return`<span class="role-badge ${m[r]||'role-user'}">${l[r]||'User'}</span>`;}
+
+function renderRecentUsers(){
+  const recent=[...allUsers].sort((a,b)=>(b.createdAt||0)-(a.createdAt||0)).slice(0,5);
+  const tbody=document.getElementById('recentUsersBody');const mc=document.getElementById('recentMobileCards');
+  if(!recent.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray)">İstifadəçi yoxdur</td></tr>';mc.innerHTML='';return;}
+  tbody.innerHTML=recent.map(u=>`<tr><td><div class="user-cell"><div class="user-av">${u.card?.photo?`<img src="${u.card.photo}">`:(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div></td><td>${planBadge(u.plan)}</td><td>${roleBadge(u.userRole||'user')}</td><td>${statusBadge(u.status)}</td><td style="font-size:12px;color:var(--gray)">${u.createdAt?new Date(u.createdAt).toLocaleDateString('az'):'—'}</td></tr>`).join('');
+  mc.innerHTML=recent.map(u=>`<div class="mobile-card"><div class="mobile-card-top"><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div></div></div><div style="display:flex;gap:5px">${planBadge(u.plan)}${roleBadge(u.userRole||'user')}</div></div><div class="mobile-card-meta">${u.email||''}</div></div>`).join('');
+}
+
+function renderUsers(users){
+  const tbody=document.getElementById('usersBody');const mc=document.getElementById('usersMobileCards');
+  if(!users.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--gray)">Nəticə tapılmadı</td></tr>';mc.innerHTML='';return;}
+  tbody.innerHTML=users.map(u=>`<tr><td><div class="user-cell"><div class="user-av">${u.card?.photo?`<img src="${u.card.photo}">`:(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div></td><td>${planBadge(u.plan)}</td><td>${roleBadge(u.userRole||'user')}</td><td>${statusBadge(u.status)}</td><td style="font-size:12px;color:var(--blue-light)">${u.slug?'apps.mycontact.az/'+u.slug:'—'}</td><td><div class="action-btns"><button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button><button class="btn btn-sm" onclick="toggleBlock('${u.uid}','${u.status||'active'}')">${u.status==='blocked'?'Aktiv et':'Blokla'}</button></div></td></tr>`).join('');
+  mc.innerHTML=users.map(u=>`<div class="mobile-card"><div class="mobile-card-top"><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div><div style="display:flex;gap:4px;flex-wrap:wrap">${planBadge(u.plan)}${roleBadge(u.userRole||'user')}</div></div><div class="mobile-card-meta">${u.slug?'apps.mycontact.az/'+u.slug:'Link yoxdur'}</div><div style="display:flex;gap:5px;margin-top:8px"><button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button><button class="btn btn-sm" onclick="toggleBlock('${u.uid}','${u.status||'active'}')">${u.status==='blocked'?'Aktiv et':'Blokla'}</button></div></div>`).join('');
+}
+
+function renderCards(){
+  const tbody=document.getElementById('cardsBody');const mc=document.getElementById('cardsMobileCards');
+  const wc=allUsers.filter(u=>u.card);
+  if(!wc.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;padding:2rem;color:var(--gray)">Hələ kart yoxdur</td></tr>';mc.innerHTML='';return;}
+  tbody.innerHTML=wc.map(u=>`<tr><td><div class="user-cell"><div class="user-av">${u.card?.photo?`<img src="${u.card.photo}">`:(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div></td><td style="font-size:13px">${u.card.position||'—'}</td><td style="font-size:13px">${u.card.company||'—'}</td><td>${planBadge(u.plan)}</td><td style="font-size:12px;color:var(--gray)">${u.stats?.views||0}</td><td><button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button></td></tr>`).join('');
+  mc.innerHTML=wc.map(u=>`<div class="mobile-card"><div class="mobile-card-top"><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.card?.position||''} · ${u.card?.company||''}</div></div></div>${planBadge(u.plan)}</div><div class="mobile-card-meta">${u.stats?.views||0} baxış</div><button class="btn btn-sm" style="margin-top:8px" onclick="openEditModal('${u.uid}')">Redaktə</button></div>`).join('');
+}
+
+function renderTeam(){
+  const tbody=document.getElementById('teamBody');const mc=document.getElementById('teamMobileCards');
+  if(!allUsers.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:2rem;color:var(--gray)">İstifadəçi yoxdur</td></tr>';return;}
+  tbody.innerHTML=allUsers.map(u=>`<tr><td><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div><div class="user-email">${u.email||''}</div></div></div></td><td>${planBadge(u.plan)}</td><td>${roleBadge(u.userRole||'user')}</td><td style="font-size:12px;color:var(--gray)">${u.card?.company||u.company||'—'}</td><td><div class="action-btns"><button class="btn btn-sm" onclick="openEditModal('${u.uid}')">Redaktə</button></div></td></tr>`).join('');
+  mc.innerHTML=allUsers.map(u=>`<div class="mobile-card"><div class="mobile-card-top"><div class="user-cell"><div class="user-av">${(u.name||'?').charAt(0).toUpperCase()}</div><div><div class="user-name">${u.name||'—'}</div></div></div>${roleBadge(u.userRole||'user')}</div><div class="mobile-card-meta">${u.card?.company||'—'} · ${planBadge(u.plan)}</div><button class="btn btn-sm" style="margin-top:8px" onclick="openEditModal('${u.uid}')">Redaktə</button></div>`).join('');
+  // Populate assign select
+  const sel=document.getElementById('assignUserSelect');
+  if(sel)sel.innerHTML=allUsers.map(u=>`<option value="${u.uid}">${u.name||u.email}</option>`).join('');
+}
+
+function renderPlanCounts(){
+  document.getElementById('planFreeCount').textContent=allUsers.filter(u=>!u.plan||u.plan==='free').length;
+  document.getElementById('planProCount').textContent=allUsers.filter(u=>u.plan==='pro'||u.plan==='premium').length;
+  document.getElementById('planBusinessCount').textContent=allUsers.filter(u=>u.plan==='business').length;
+}
+
+// Domains
+function renderDomains(){
+  // Populate sub-admin select
+  const sel=document.getElementById('newDomainAdmin');
+  if(sel){sel.innerHTML='<option value="">-- Sub-admin seçin --</option>'+allUsers.filter(u=>u.status!=='blocked').map(u=>`<option value="${u.uid}">${u.name||u.email} (${u.userRole||'user'})</option>`).join('');}
+  get(ref(db,'domains')).then(s=>{
+    const d=s.val()||{};
+    const keys=Object.keys(d);
+    const inner=document.getElementById('domainsInner');
+    if(!keys.length){inner.innerHTML='<div style="font-size:12px;color:var(--gray);text-align:center;padding:1rem">Hələ domain əlavə edilməyib</div>';return;}
+    inner.innerHTML=keys.map(k=>{
+      const dom=d[k];
+      const statusHtml=dom.status==='active'?'<span class="domain-status ds-active">✓ Aktiv</span>':dom.status==='error'?'<span class="domain-status ds-error">✗ Xəta</span>':'<span class="domain-status ds-pending">⏳ Gözləyir</span>';
+      const adminUser=dom.adminUid?allUsers.find(u=>u.uid===dom.adminUid):null;
+      const adminBadge=adminUser?`<span style="font-size:10px;background:rgba(24,95,165,.1);color:var(--blue);padding:2px 8px;border-radius:10px;margin-left:6px">👤 ${adminUser.name||adminUser.email}</span>`:'<span style="font-size:10px;color:var(--gray);margin-left:6px">sub-admin yoxdur</span>';
+      return`<div class="domain-card"><div style="flex:1"><div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px"><span style="font-size:13px;font-weight:500;color:var(--navy)">${dom.domain}</span>${adminBadge}</div><div style="font-size:11px;color:var(--gray);margin-top:3px">Əlavə edildi: ${dom.addedAt?new Date(dom.addedAt).toLocaleDateString('az'):'—'} · Limit: ${dom.userLimit||'limitsiz'} istifadəçi</div></div>${statusHtml}<button class="btn btn-sm" onclick="editDomainAdmin('${k}')">Admin</button><button class="btn btn-sm btn-danger" onclick="removeDomain('${k}')">Sil</button></div>`;
+    }).join('');
+  });
+}
+window.addDomain=async function(){
+  const d=document.getElementById('newDomain').value.trim();
+  if(!d){showToast('Domain daxil edin','error');return;}
+  const adminUid=document.getElementById('newDomainAdmin')?.value||'';
+  const key=d.replace(/[^a-zA-Z0-9]/g,'-');
+  const verifyToken='cp-'+Math.random().toString(36).slice(2,10);
+  await set(ref(db,`domains/${key}`),{domain:d,status:'pending',addedAt:Date.now(),adminUid:adminUid||null,verifyToken,userLimit:50});
+  // If admin assigned, update their role in users
+  if(adminUid){await update(ref(db,`users/${adminUid}`),{domainAdmin:key,domainAdminOf:d});}
+  document.getElementById('newDomain').value='';if(document.getElementById('newDomainAdmin'))document.getElementById('newDomainAdmin').value='';
+  showToast(`Domain əlavə edildi. DNS: CNAME → proxy.apps.mycontact.az`,'success');
+  renderDomains();
+};
+window.editDomainAdmin=async function(k){
+  const d=(await get(ref(db,`domains/${k}`))).val();if(!d)return;
+  const curAdmin=d.adminUid||'';
+  const opts=allUsers.map(u=>`<option value="${u.uid}"${u.uid===curAdmin?' selected':''}>${u.name||u.email}</option>`).join('');
+  const newAdminUid=prompt(`"${d.domain}" üçün sub-admin seçin (UID daxil edin)\nMövcud: ${curAdmin||'yoxdur'}\nİstifadəçi listinə baxın. Boş buraxsanız silir.`,'');
+  if(newAdminUid===null)return;
+  await update(ref(db,`domains/${k}`),{adminUid:newAdminUid||null});
+  if(newAdminUid){await update(ref(db,`users/${newAdminUid}`),{domainAdmin:k,domainAdminOf:d.domain});}
+  if(curAdmin&&curAdmin!==newAdminUid){await update(ref(db,`users/${curAdmin}`),{domainAdmin:null,domainAdminOf:null});}
+  showToast('Sub-admin yeniləndi','success');renderDomains();
+};
+window.removeDomain=async function(k){
+  if(!confirm('Bu domeni silmək istəyirsiniz? Sub-admin icazəsi də silinəcək.'))return;
+  const d=(await get(ref(db,`domains/${k}`))).val();
+  if(d?.adminUid){await update(ref(db,`users/${d.adminUid}`),{domainAdmin:null,domainAdminOf:null});}
+  await remove(ref(db,`domains/${k}`));renderDomains();showToast('Silindi');
+};
+
+// Filter
+window.filterUsers=function(){
+  const q=document.getElementById('userSearch').value.toLowerCase();
+  const pl=document.getElementById('planFilter').value;
+  const rl=document.getElementById('roleFilter').value;
+  const st=document.getElementById('statusFilter').value;
+  renderUsers(allUsers.filter(u=>{
+    const mq=!q||(u.name||'').toLowerCase().includes(q)||(u.email||'').toLowerCase().includes(q)||(u.slug||'').includes(q);
+    const mp=!pl||u.plan===pl;
+    const mr=!rl||(u.userRole||'user')===rl;
+    const ms=!st||(st==='blocked'?u.status==='blocked':u.status!=='blocked');
+    return mq&&mp&&mr&&ms;
+  }));
+};
+
+window.showPanel=function(n){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
+  document.getElementById('panel-'+n).classList.add('active');
+  const t={overview:'İcmal',users:'İstifadəçilər',cards:'Bütün kartlar',team:'Team & Şirkət',bulk:'Bulk Upload',companyadmins:'Şirkət Adminləri',domains:'Domain İdarəsi',plans:'Plan İdarəsi'};
+  document.getElementById('topbarTitle').textContent=t[n]||n;
+  const m={overview:0,users:1,cards:2,team:3,bulk:4,companyadmins:5,domains:6,plans:7};
+  const items=document.querySelectorAll('.nav-item');if(items[m[n]])items[m[n]].classList.add('active');
+  if(n==='domains')renderDomains();
+  if(n==='companyadmins')renderCompanyAdmins();
+  closeSidebar();
+};
+
+window.selectPlan=function(el,p){selectedPlan=p;document.querySelectorAll('#createModal .plan-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');};
+window.selectEditPlan=function(el,p){
+  selectedEditPlan=p;
+  document.querySelectorAll('#editModal .plan-opt').forEach(o=>o.classList.remove('selected'));
+  el.classList.add('selected');
+  const wrap=document.getElementById('proDurationWrap');
+  if(wrap)wrap.style.display=(p==='pro'||p==='premium'||p==='business')?'block':'none';
+};
+window.setProDuration=function(days){
+  document.getElementById('proDurationDays').value=days;
+  document.querySelectorAll('.dur-btn').forEach(b=>b.style.borderColor='var(--gray-light)');
+  event.target.style.borderColor='var(--blue)';
+  const label=document.getElementById('proDurationLabel');
+  if(days===0)label.textContent='Limitsiz — müddətsiz aktiv';
+  else label.textContent=`${days} gün — bitmə tarixi: ${new Date(Date.now()+days*86400000).toLocaleDateString('az')}`;
+};
+window.selectRole=function(el,r,containerId){
+  const container=document.getElementById(containerId);
+  container.querySelectorAll('.role-opt').forEach(o=>o.classList.remove('selected'));el.classList.add('selected');
+  if(containerId==='createRoleOpts')selectedRole=r;
+  else if(containerId==='editRoleOpts')selectedEditRole=r;
+  else if(containerId==='assignRoleOpts')selectedAssignRole=r;
+};
+window.closeModal=function(id){document.getElementById(id).classList.remove('open');};
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+function genRandomSlug(){const c='abcdefghijklmnopqrstuvwxyz0123456789';return Array.from({length:8},()=>c[Math.floor(Math.random()*c.length)]).join('');}
+
+window.openCreateModal=function(){
+  ['createErr','createOk'].forEach(id=>document.getElementById(id).className=id.includes('Err')?'error-box':'success-box');
+  ['newName','newSurname','newEmail','newPass','newCompany'].forEach(id=>document.getElementById(id).value='');
+  selectedPlan='free';document.querySelectorAll('#createModal .plan-opt').forEach(o=>o.classList.remove('selected'));document.querySelector('#createModal .plan-opt').classList.add('selected');
+  selectedRole='user';document.querySelectorAll('#createRoleOpts .role-opt').forEach(o=>o.classList.remove('selected'));document.querySelectorAll('#createRoleOpts .role-opt')[3].classList.add('selected');
+  document.getElementById('createModal').classList.add('open');
+};
+
+window.createUser=async function(){
+  const name=document.getElementById('newName').value.trim(),sur=document.getElementById('newSurname').value.trim(),email=document.getElementById('newEmail').value.trim(),pass=document.getElementById('newPass').value,company=document.getElementById('newCompany').value.trim();
+  const slug=genRandomSlug();
+  const err=document.getElementById('createErr'),ok=document.getElementById('createOk');
+  err.className='error-box';ok.className='success-box';
+  if(!name||!email||!pass){err.textContent='Ad, email və şifrəni doldurun.';err.className='error-box show';return;}
+  if(pass.length<6){err.textContent='Şifrə min 6 simvol.';err.className='error-box show';return;}
+  const btn=document.getElementById('createBtn');btn.disabled=true;btn.textContent='Yaradılır...';
+  try{
+    const cred=await createUserWithEmailAndPassword(auth,email,pass);
+    await set(ref(db,`users/${cred.user.uid}`),{
+      name:name+(sur?' '+sur:''),email,slug,plan:selectedPlan,status:'active',role:'user',userRole:selectedRole,
+      company,createdAt:Date.now(),scanCount:0,defaultLang:'az',
+      card:{name,surname:sur||'',phone:'',email,web:'',position:'',company,bio:'',address:'',photo:'',cover:''}
     });
-  }
-  window.addEventListener('load', initTS);
+    ok.textContent='Yaradıldı! Link: apps.mycontact.az/'+slug;ok.className='success-box show';
+    showToast('İstifadəçi yaradıldı','success');setTimeout(()=>closeModal('createModal'),2000);
+  }catch(e){let m='Xəta baş verdi.';if(e.code==='auth/email-already-in-use')m='Bu email artıq istifadə olunur.';err.textContent=m;err.className='error-box show';}
+  btn.disabled=false;btn.textContent='Yarat';
+};
 
-  // ── Rate limiting ──
-  const RL = 'mc_attempts';
-  const MAX = 5, LOCK = 15 * 60 * 1000;
-  const getA = () => { try { return JSON.parse(localStorage.getItem(RL))||{c:0,lu:0}; } catch { return {c:0,lu:0}; } };
-  const saveA = d => localStorage.setItem(RL, JSON.stringify(d));
-  const clearA = () => localStorage.removeItem(RL);
+window.openEditModal=function(uid){
+  const u=allUsers.find(x=>x.uid===uid);if(!u)return;
+  document.getElementById('editUid').value=uid;
+  document.getElementById('editModalSub').textContent=u.email||'';
+  document.getElementById('editName').value=u.name||'';
+  document.getElementById('editCompany').value=u.card?.company||u.company||'';
+  document.getElementById('editSlug').value=u.slug||'';
+  document.getElementById('editStatus').value=u.status==='blocked'?'blocked':'active';
+  document.getElementById('editDefaultLang').value=u.defaultLang||'az';
+  selectedEditPlan=u.plan||'free';
+  const pi=['free','pro','premium','business'].indexOf(selectedEditPlan);
+  document.querySelectorAll('#editModal .plan-opt').forEach(o=>o.classList.remove('selected'));
+  if(pi>=0)document.querySelectorAll('#editModal .plan-opt')[pi].classList.add('selected');
+  selectedEditRole=u.userRole||'user';
+  const ri=['owner','admin_user','manager','user'].indexOf(selectedEditRole);
+  document.querySelectorAll('#editRoleOpts .role-opt').forEach(o=>o.classList.remove('selected'));
+  if(ri>=0)document.querySelectorAll('#editRoleOpts .role-opt')[ri].classList.add('selected');
+  document.getElementById('editErr').className='error-box';
+  // CRM access
+  const ca=u.adminCrmAccess||{};
+  document.getElementById('crmHsAccess').checked=!!ca.hubspot;
+  document.getElementById('crmSfAccess').checked=!!ca.salesforce;
+  document.getElementById('crmZohoAccess').checked=!!ca.zoho;
+  document.getElementById('crmPipeAccess').checked=!!ca.pipedrive;
+  // Brand link toggle
+  const bl=document.getElementById('brandLinkToggle');
+  const bs=document.getElementById('brandLinkSlider');
+  const brandOn=u.brandLink!==false;
+  bl.checked=brandOn;
+  bs.style.background=brandOn?'var(--blue)':'var(--gray-light)';
+  bl.onchange=function(){bs.style.background=this.checked?'var(--blue)':'var(--gray-light)';};
+  // Duration wrap
+  const isPro=selectedEditPlan==='pro'||selectedEditPlan==='premium'||selectedEditPlan==='business';
+  const wrap=document.getElementById('proDurationWrap');
+  if(wrap)wrap.style.display=isPro?'block':'none';
+  // Reset duration
+  document.getElementById('proDurationDays').value='';
+  document.getElementById('proDurationLabel').textContent=u.proExpiry?`Mövcud bitmə tarixi: ${new Date(u.proExpiry).toLocaleDateString('az')}`:'Yeni müddət seçin';
+  document.querySelectorAll('.dur-btn').forEach(b=>b.style.borderColor='var(--gray-light)');
+  document.getElementById('editModal').classList.add('open');
+};
 
-  function checkLock() {
-    const a = getA();
-    const btn = document.getElementById('loginBtn');
-    const warn = document.getElementById('attemptWarn');
-    const warnTxt = document.getElementById('attemptWarnTxt');
-    if (a.lu && Date.now() < a.lu) {
-      const min = Math.ceil((a.lu - Date.now()) / 60000);
-      warnTxt.textContent = `Çox cəhd edildi. ${min} dəqiqə gözləyin.`;
-      warn.classList.add('show');
-      btn.disabled = true;
-      setTimeout(checkLock, 15000);
-    } else {
-      btn.disabled = false;
-      if (a.c > 0 && a.c < MAX) {
-        warnTxt.textContent = `${MAX - a.c} cəhdiniz qalıb.`;
-        warn.classList.add('show');
-      }
-    }
-  }
-  checkLock();
-
-  const gProvider = new GoogleAuthProvider();
-  let CU = null;
-
-  function showScreen(name) {
-    const tabs = document.getElementById('authTabs');
-    ['panelLogin','panelRegister'].forEach(id => { const el=document.getElementById(id); if(el)el.classList.remove('active'); });
-    ['screenOrder','screenWait'].forEach(id => { const el=document.getElementById(id); if(el)el.classList.remove('show'); });
-    if(name==='login'){if(tabs)tabs.style.display='flex';const p=document.getElementById('panelLogin');if(p)p.classList.add('active');}
-    else if(name==='register'){if(tabs)tabs.style.display='flex';const p=document.getElementById('panelRegister');if(p)p.classList.add('active');}
-    else if(name==='order'){if(tabs)tabs.style.display='none';const p=document.getElementById('screenOrder');if(p)p.classList.add('show');}
-    else if(name==='wait'){if(tabs)tabs.style.display='none';const p=document.getElementById('screenWait');if(p)p.classList.add('show');}
-  }
-  window.switchTab = function(t) {
-    document.querySelectorAll('.auth-tab').forEach((el,i)=>el.classList.toggle('active',(t==='login'&&i===0)||(t==='register'&&i===1)));
-    const pl=document.getElementById('panelLogin');const pr=document.getElementById('panelRegister');
-    if(pl)pl.classList.toggle('active',t==='login');
-    if(pr)pr.classList.toggle('active',t==='register');
+window.saveUser=async function(){
+  const uid=document.getElementById('editUid').value;
+  const name=document.getElementById('editName').value.trim();
+  const slug=document.getElementById('editSlug').value.trim();
+  const company=document.getElementById('editCompany').value.trim();
+  const status=document.getElementById('editStatus').value;
+  const defaultLang=document.getElementById('editDefaultLang').value;
+  if(!name||!slug){document.getElementById('editErr').textContent='Ad və link boş ola bilməz.';document.getElementById('editErr').className='error-box show';return;}
+  const parts=name.trim().split(' ');
+  const adminCrmAccess={
+    hubspot:document.getElementById('crmHsAccess').checked,
+    salesforce:document.getElementById('crmSfAccess').checked,
+    zoho:document.getElementById('crmZohoAccess').checked,
+    pipedrive:document.getElementById('crmPipeAccess').checked,
   };
+  const brandLink=document.getElementById('brandLinkToggle').checked;
+  const isPro=selectedEditPlan==='pro'||selectedEditPlan==='premium'||selectedEditPlan==='business';
+  const daysVal=document.getElementById('proDurationDays').value;
+  let proExpiry=null;
+  if(isPro&&daysVal!==''){
+    proExpiry=daysVal==='0'?null:Date.now()+parseInt(daysVal)*86400000;
+  }
+  // Free-yə keçdikdə brandLink avtomatik aktiv olsun
+  const finalBrandLink=!isPro?true:brandLink;
+  const updateData={name,slug,plan:selectedEditPlan,status,userRole:selectedEditRole,company,defaultLang,'card/name':parts[0]||'','card/surname':parts.slice(1).join(' ')||'','card/company':company,adminCrmAccess,brandLink:finalBrandLink};
+  if(isPro&&daysVal!=='')updateData.proExpiry=proExpiry;
+  if(!isPro)updateData.proExpiry=null;
+  await update(ref(db,`users/${uid}`),updateData);
+  showToast('Dəyişikliklər saxlanıldı','success');closeModal('editModal');
+};
 
-  // ── Auth redirect ──
-  onAuthStateChanged(auth, async user => {
-    if (!user) { showScreen('login'); return; }
-    CU = user;
-    const snap = await get(ref(db, `users/${user.uid}`));
-    const data = snap.val();
-    if (!data) { await signOut(auth); showScreen('login'); return; }
-    if (data.role === 'admin') { window.location.href = 'admin.html'; return; }
-    const st = data.status || 'active';
-    if (st === 'pending_order') { showScreen('order'); return; }
-    if (st === 'pending_approval') { showScreen('wait'); return; }
-    if (st === 'cancelled') {
-      const err=document.getElementById('errorMsg');
-      if(err){err.textContent='Sifarişiniz ləğv edilmişdir. Əlaqə saxlayın.';err.classList.add('show');}
-      await signOut(auth); showScreen('login'); return;
-    }
-    window.location.href = 'dashboard.html';
-  });
+window.deleteUser=async function(){
+  const uid=document.getElementById('editUid').value;
+  if(!confirm('Bu istifadəçini silmək istəyirsiniz?'))return;
+  await remove(ref(db,`users/${uid}`));showToast('Silindi','error');closeModal('editModal');
+};
 
-  // ── Login ──
-  window.doLogin = async function() {
-    const email = document.getElementById('emailInput').value.trim();
-    const pass = document.getElementById('passInput').value;
-    const btn = document.getElementById('loginBtn');
-    const err = document.getElementById('errorMsg');
-    const warn = document.getElementById('attemptWarn');
-    const warnTxt = document.getElementById('attemptWarnTxt');
+window.toggleBlock=async function(uid,cur){
+  const ns=cur==='blocked'?'active':'blocked';
+  await update(ref(db,`users/${uid}`),{status:ns});
+  showToast(ns==='blocked'?'Bloklandı':'Aktivləşdirildi','success');
+};
 
-    err.classList.remove('show');
+// ASSIGN ROLE
+window.openAssignRoleModal=function(){
+  const sel=document.getElementById('assignUserSelect');
+  sel.innerHTML=allUsers.map(u=>`<option value="${u.uid}">${u.name||u.email} (${u.userRole||'user'})</option>`).join('');
+  selectedAssignRole='user';
+  document.querySelectorAll('#assignRoleOpts .role-opt').forEach(o=>o.classList.remove('selected'));
+  document.querySelectorAll('#assignRoleOpts .role-opt')[3].classList.add('selected');
+  document.getElementById('assignCompany').value='';
+  document.getElementById('assignRoleModal').classList.add('open');
+};
+window.saveAssignRole=async function(){
+  const uid=document.getElementById('assignUserSelect').value;const company=document.getElementById('assignCompany').value.trim();
+  if(!uid)return;
+  const updates={userRole:selectedAssignRole};if(company)updates.company=company;
+  await update(ref(db,`users/${uid}`),updates);
+  showToast('Rol təyin edildi','success');closeModal('assignRoleModal');
+};
 
-    const a = getA();
-    if (a.lu && Date.now() < a.lu) {
-      const min = Math.ceil((a.lu - Date.now()) / 60000);
-      warnTxt.textContent = `Çox cəhd edildi. ${min} dəqiqə gözləyin.`;
-      warn.classList.add('show');
-      return;
-    }
+// BULK UPLOAD
+window.handleDrop=function(e){e.preventDefault();document.getElementById('dropZone').classList.remove('dragover');const f=e.dataTransfer.files[0];if(f)processBulkFileObj(f);};
+window.processBulkFile=function(e){const f=e.target.files[0];if(f)processBulkFileObj(f);};
+function processBulkFileObj(file){
+  if(typeof XLSX==='undefined'){showToast('XLSX kitabxanası yüklənmir','error');return;}
+  const reader=new FileReader();
+  reader.onload=ev=>{
+    const wb=XLSX.read(ev.target.result,{type:'array'});
+    const ws=wb.Sheets[wb.SheetNames[0]];
+    const rows=XLSX.utils.sheet_to_json(ws);
+    bulkData=rows.map(r=>({
+      name:String(r.name||r.Name||r.ad||'').trim(),
+      surname:String(r.surname||r.Surname||r.soyad||'').trim(),
+      email:String(r.email||r.Email||'').trim().toLowerCase(),
+      password:String(r.password||r.Password||r.sifre||r.şifrə||'').trim(),
+      plan:String(r.plan||r.Plan||'free').trim().toLowerCase(),
+      role:String(r.role||r.Role||r.rol||'user').trim().toLowerCase(),
+      company:String(r.company||r.Company||r.sirket||r.şirkət||'').trim(),
+      action:String(r.action||r.Action||r.emeliyyat||r.əməliyyat||'add').trim().toLowerCase()
+    })).filter(r=>r.email);
+    renderBulkPreview();
+  };
+  reader.readAsArrayBuffer(file);
+}
+function renderBulkPreview(){
+  const adds=bulkData.filter(r=>r.action!=='delete'&&r.action!=='update').length;
+  const updates=bulkData.filter(r=>r.action==='update').length;
+  const deletes=bulkData.filter(r=>r.action==='delete').length;
+  document.getElementById('bulkAddCount').textContent=adds+' əlavə';
+  document.getElementById('bulkUpdateCount').textContent=updates+' yenilə';
+  document.getElementById('bulkDeleteCount').textContent=deletes+' sil';
+  const head='<div class="bulk-row header"><div>Ad</div><div>Email</div><div>Plan</div><div>Şifrə</div><div>Status</div></div>';
+  const rows=bulkData.slice(0,20).map(r=>{
+    const sc=r.action==='delete'?'bs-delete':r.action==='update'?'bs-update':'bs-add';
+    const sl=r.action==='delete'?'SİL':r.action==='update'?'YENİLƏ':'ƏLAVƏ';
+    const passDisplay=r.password?'✓ var':'auto';
+    return`<div class="bulk-row"><div>${r.name} ${r.surname}</div><div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.email}</div><div>${r.plan}</div><div style="font-size:11px;color:var(--gray)">${passDisplay}</div><div><span class="bulk-row-status ${sc}">${sl}</span></div></div>`;
+  }).join('');
+  document.getElementById('bulkPreview').innerHTML=head+rows+(bulkData.length>20?`<div style="text-align:center;padding:.75rem;font-size:12px;color:var(--gray)">+${bulkData.length-20} daha çox sətir</div>`:'');
+  document.getElementById('bulkPreviewWrap').style.display='block';
+}
+window.applyBulk=async function(){
+  const btn=document.getElementById('bulkApplyBtn');btn.disabled=true;btn.textContent='Tətbiq edilir...';
+  let done=0,skipped=0,errors=[];
+  const totalAdd=bulkData.filter(r=>r.action!=='delete'&&r.action!=='update').length;
+  showToast(`${totalAdd} profil yaradılır...`);
 
-    if (!email || !pass) {
-      err.textContent = 'Email və şifrəni daxil edin.';
-      err.classList.add('show');
-      return;
-    }
-
-    if (!tsToken) {
-      err.textContent = 'Zəhmət olmasa təhlükəsizlik yoxlamasını tamamlayın.';
-      err.classList.add('show');
-      return;
-    }
-
-    btn.classList.add('loading');
-    btn.disabled = true;
-
-    try {
-      const cred = await signInWithEmailAndPassword(auth, email, pass);
-      clearA();
-      // onAuthStateChanged handles routing based on status
-    } catch (e) {
-      let msg = 'Giriş uğursuz oldu.';
-      if (e.code === 'auth/user-not-found' || e.code === 'auth/wrong-password' || e.code === 'auth/invalid-credential') msg = 'Email və ya şifrə yanlışdır.';
-      else if (e.code === 'auth/too-many-requests') msg = 'Çox cəhd edildi. Bir az gözləyin.';
-      err.textContent = msg;
-      err.classList.add('show');
-      btn.classList.remove('loading');
-
-      const na = getA();
-      na.c++;
-      if (na.c >= MAX) na.lu = Date.now() + LOCK;
-      saveA(na);
-      if (na.lu) {
-        warnTxt.textContent = 'Çox cəhd edildi. 15 dəqiqə gözləyin.';
-        warn.classList.add('show');
-        btn.disabled = true;
+  for(const r of bulkData){
+    try{
+      const existing=allUsers.find(u=>(u.email||'').toLowerCase()===r.email);
+      if(r.action==='delete'){
+        if(existing){await remove(ref(db,`users/${existing.uid}`));done++;}
+      } else if(r.action==='update'){
+        if(existing){await update(ref(db,`users/${existing.uid}`),{name:(r.name+' '+r.surname).trim(),plan:r.plan,userRole:r.role,company:r.company});done++;}
       } else {
-        btn.disabled = false;
-        warnTxt.textContent = `${MAX - na.c} cəhdiniz qalıb.`;
-        warn.classList.add('show');
+        if(existing){skipped++;continue;}
+        // Auto-generate password if not provided
+        const pass=r.password||genBulkPassword(r.name,r.surname);
+        try{
+          const cred=await createUserWithEmailAndPassword(auth,r.email,pass);
+          const slug=genRandomSlug();
+          await set(ref(db,`users/${cred.user.uid}`),{
+            name:(r.name+' '+r.surname).trim(),email:r.email,slug,
+            plan:r.plan,status:'active',role:'user',userRole:r.role,
+            company:r.company,createdAt:Date.now(),scanCount:0,defaultLang:'az',
+            bulkPassword:r.password?'custom':'auto', // track if auto-generated
+            card:{name:r.name,surname:r.surname,company:r.company,email:r.email,phone:'',web:'',position:'',bio:'',address:'',photo:'',cover:''}
+          });
+          done++;
+        }catch(authErr){
+          if(authErr.code==='auth/email-already-in-use'){skipped++;}
+          else{errors.push(`${r.email}: ${authErr.message}`);}
+        }
       }
-      tsToken = null;
-      if (tsId !== null) window.turnstile.reset(tsId);
-    }
-  };
+    }catch(e){errors.push(`${r.email}: ${e.message}`);}
+  }
 
-  document.getElementById('passInput').addEventListener('keydown', e => {
-    if (e.key === 'Enter') window.doLogin();
+  let msg=`${done}/${bulkData.length} tamamlandı`;
+  if(skipped)msg+=` (${skipped} mövcuddur)`;
+  if(errors.length)msg+=` — ${errors.length} xəta`;
+  showToast(msg,errors.length?'error':'success');
+  btn.disabled=false;btn.textContent='Tətbiq et';
+  if(!errors.length)clearBulk();
+  else{// show errors
+    console.error('Bulk errors:',errors);
+    const errDiv=document.createElement('div');errDiv.style.cssText='margin-top:.75rem;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:.75rem;font-size:11px;color:#e74c3c;max-height:120px;overflow-y:auto';
+    errDiv.innerHTML='<strong>Xətalar:</strong><br>'+errors.join('<br>');
+    document.getElementById('bulkApplyBtn').parentNode.appendChild(errDiv);
+  }
+};
+function genBulkPassword(name,surname){
+  // Generate a predictable but somewhat secure password
+  const base=(name.charAt(0)||'U').toUpperCase()+(surname.charAt(0)||'u').toLowerCase();
+  const num=Math.floor(1000+Math.random()*9000);
+  return base+num+'!';
+}
+window.clearBulk=function(){bulkData=[];document.getElementById('bulkPreviewWrap').style.display='none';document.getElementById('bulkFile').value='';};
+window.downloadBulkTemplate=function(){
+  if(typeof XLSX==='undefined'){showToast('XLSX yüklənmir','error');return;}
+  const ws=XLSX.utils.aoa_to_sheet([
+    ['name','surname','email','password','plan','role','company','action'],
+    ['Aytən','Həsənova','ayten@email.com','Sifre123!','pro','user','ABC Şirkəti','add'],
+    ['Rauf','Əliyev','rauf@email.com','Sifre456!','free','manager','XYZ Corp','add'],
+    ['Leyla','Məmmədova','leyla@email.com','','business','owner','Big Corp','add'],
+  ]);
+  // Add column width hints
+  ws['!cols']=[{wch:12},{wch:14},{wch:26},{wch:16},{wch:10},{wch:10},{wch:18},{wch:8}];
+  // Add note cell about password
+  ws['A5']={t:'s',v:'Qeyd: password boş buraxılsa avtomatik yaranır. İstifadəçiyə email göndərin.'};
+  const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,'Users');
+  XLSX.writeFile(wb,'cardpro_bulk_template.xlsx');
+  showToast('Şablon yükləndi','success');
+};
+
+// BULK PLAN CHANGE
+window.bulkChangePlan=async function(){
+  const from=document.getElementById('bulkFromPlan').value;const to=document.getElementById('bulkToPlan').value;
+  if(from===to){showToast('Eyni planı seçdiniz','error');return;}
+  const targets=allUsers.filter(u=>(u.plan||'free')===from);
+  if(!targets.length){showToast('Bu planda istifadəçi yoxdur','error');return;}
+  if(!confirm(`${targets.length} istifadəçinin planı ${from} → ${to} edilsin?`))return;
+  for(const u of targets)await update(ref(db,`users/${u.uid}`),{plan:to});
+  showToast(`${targets.length} istifadəçi ${to} plana keçirildi`,'success');
+};
+
+window.doLogout=async function(){await signOut(auth);location.href='index.html';};
+
+// ── COMPANY ADMIN MANAGEMENT ──────────────────────────────────────────────
+let caSelectedUser=null;
+
+// Search users for company admin grant
+window.searchForCA=function(){
+  const q=document.getElementById('caSearch').value.toLowerCase().trim();
+  const res=document.getElementById('caSearchResults');
+  if(q.length<3){res.innerHTML='';return;}
+  // Search all DB users (including company admins)
+  get(ref(db,'users')).then(s=>{
+    const d=s.val()||{};
+    const matches=Object.entries(d)
+      .filter(([uid,[,u]])=>true) // remap below
+      .map(([uid,u])=>({uid,...u}))
+      .filter(u=>u.role!=='admin'&&(
+        (u.email||'').toLowerCase().includes(q)||
+        (u.name||'').toLowerCase().includes(q)
+      )).slice(0,5);
+    if(!matches.length){res.innerHTML='<div style="font-size:12px;color:var(--gray);padding:6px 0">Nəticə tapılmadı</div>';return;}
+    res.innerHTML=matches.map(u=>`
+      <div onclick="selectCAUser('${u.uid}','${(u.name||'').replace(/'/g,"\\'")}','${(u.company||u.card?.company||'').replace(/'/g,"\\'")}','${(u.email||'').replace(/'/g,"\\'")}','${u.role||'user'}')"
+        style="padding:9px 11px;border:1.5px solid var(--gray-light);border-radius:9px;cursor:pointer;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;font-size:13px;transition:border-color .15s"
+        onmouseover="this.style.borderColor='var(--blue)'" onmouseout="this.style.borderColor='var(--gray-light)'">
+        <div>
+          <span style="font-weight:500">${u.name||'—'}</span>
+          <span style="font-size:11px;color:var(--gray);margin-left:8px">${u.email||''}</span>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center">
+          ${u.company||u.card?.company?`<span style="font-size:11px;background:var(--surface);padding:2px 7px;border-radius:8px;color:var(--gray)">${u.company||u.card?.company}</span>`:''}
+          ${u.role==='company_admin'?'<span style="font-size:10px;background:rgba(39,174,96,.12);color:var(--success);padding:2px 7px;border-radius:8px;font-weight:600">✅ Admin</span>':''}
+        </div>
+      </div>`).join('');
   });
+};
 
-  // ── Register ──
-  window.doRegister = async function() {
-    const err = document.getElementById('regErr');
-    err.classList.remove('show');
-    const name = document.getElementById('regName').value.trim();
-    const surname = document.getElementById('regSurname').value.trim();
-    const email = document.getElementById('regEmail').value.trim();
-    const pass = document.getElementById('regPass').value;
-    if (!name || !email || !pass) { err.textContent='Ad, email və şifrəni daxil edin.'; err.classList.add('show'); return; }
-    if (pass.length < 6) { err.textContent='Şifrə minimum 6 simvol olmalıdır.'; err.classList.add('show'); return; }
-    const btn = document.getElementById('btnRegister');
-    btn.disabled = true; btn.textContent = 'Hesab yaradılır...';
-    try {
-      const cred = await createUserWithEmailAndPassword(auth, email, pass);
-      const uid = cred.user.uid;
-      const slug = email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g,'') + Math.floor(Math.random()*900+100);
-      await set(ref(db, `users/${uid}`), {
-        name: name + (surname ? ' '+surname : ''), email, slug,
-        plan: 'free', role: 'user', userRole: 'user',
-        status: 'pending_order', createdAt: Date.now(), registeredAt: Date.now(),
-        card: { name, surname, email }, brandLink: true
-      });
-      CU = cred.user; showScreen('order');
-    } catch(e) {
-      const msgs = {'auth/email-already-in-use':'Bu email artıq qeydiyyatdan keçib.','auth/invalid-email':'Email formatı yanlışdır.','auth/weak-password':'Şifrə çox sadədir.'};
-      err.textContent = msgs[e.code] || 'Xəta: ' + e.message; err.classList.add('show');
-      btn.disabled = false; btn.textContent = 'Hesab yarat';
-    }
-  };
+window.selectCAUser=function(uid,name,company,email,role){
+  caSelectedUser={uid,name,company,email,role};
+  document.getElementById('caSearch').value=`${name} (${email})`;
+  document.getElementById('caSearchResults').innerHTML='';
+  document.getElementById('caCompany').value=company||'';
+  const btn=document.getElementById('caGrantBtn');
+  btn.disabled=!company;
+  if(!company){
+    document.getElementById('caCompany').readOnly=false;
+    document.getElementById('caCompany').style.background='var(--white)';
+    document.getElementById('caCompany').placeholder='Bu istifadəçinin şirkəti yoxdur — əl ilə daxil edin';
+    document.getElementById('caCompany').oninput=function(){btn.disabled=!this.value.trim();};
+  }
+};
 
-  // ── Google ──
-  window.doGoogle = async function() {
-    try {
-      const result = await signInWithPopup(auth, gProvider);
-      const u = result.user;
-      const snap = await get(ref(db, `users/${u.uid}`));
-      if (!snap.exists()) {
-        const slug = (u.displayName||u.email||'user').toLowerCase().replace(/[^a-z0-9]/g,'') + Math.floor(Math.random()*900+100);
-        await set(ref(db, `users/${u.uid}`), {
-          name: u.displayName||u.email, email: u.email, slug,
-          plan: 'free', role: 'user', userRole: 'user',
-          status: 'pending_order', createdAt: Date.now(), registeredAt: Date.now(),
-          card: { name: u.displayName||'', email: u.email }, brandLink: true
-        });
-        CU = u; showScreen('order');
-      }
-      // existing user → onAuthStateChanged routes
-    } catch(e) { if(e.code!=='auth/popup-closed-by-user') alert('Google xətası: '+e.message); }
-  };
+window.grantCompanyAdmin=async function(){
+  if(!caSelectedUser){showToast('İstifadəçi seçilməyib','error');return;}
+  const company=document.getElementById('caCompany').value.trim();
+  if(!company){showToast('Şirkət adı boş ola bilməz','error');return;}
+  const isAlreadyAdmin=caSelectedUser.role==='company_admin';
+  if(!confirm(`${caSelectedUser.name} (${caSelectedUser.email}) — "${company}" şirkətinin admini edilsin?\n\nO, yalnız bu şirkətin profillərinə giriş edə biləcək.`))return;
+  await update(ref(db,`users/${caSelectedUser.uid}`),{role:'company_admin',company});
+  showToast(`${caSelectedUser.name} şirkət admini edildi`,'success');
+  caSelectedUser=null;
+  document.getElementById('caSearch').value='';
+  document.getElementById('caCompany').value='';
+  document.getElementById('caGrantBtn').disabled=true;
+  renderCompanyAdmins();
+};
 
-  // ── Place Order → WhatsApp ──
-  window.placeOrder = async function() {
-    if (!CU) return;
-    const btn = document.getElementById('btnOrder');
-    btn.disabled = true; btn.textContent = 'Göndərilir...';
-    await update(ref(db, `users/${CU.uid}`), { status: 'pending_approval', orderedAt: Date.now() });
-    await set(ref(db, `orders/${CU.uid}`), { uid: CU.uid, orderedAt: Date.now(), status: 'pending' });
-    const snap = await get(ref(db, `users/${CU.uid}`));
-    const ud = snap.val()||{};
-    const name = ud.name || CU.email || 'istifadəçi';
-    const msg = encodeURIComponent('Salam! MyContact kartı sifariş etmək istəyirəm.\nAd: '+name+'\nEmail: '+CU.email);
-    window.open('https://wa.me/994552829954?text='+msg, '_blank');
-    showScreen('wait');
-  };
+async function renderCompanyAdmins(){
+  const el=document.getElementById('caList');
+  if(!el)return;
+  const s=await get(ref(db,'users'));
+  const d=s.val()||{};
+  const admins=Object.entries(d)
+    .map(([uid,u])=>({uid,...u}))
+    .filter(u=>u.role==='company_admin');
+  if(!admins.length){
+    el.innerHTML='<div style="font-size:12px;color:var(--gray);text-align:center;padding:1.5rem">Hələ heç bir şirkət admini yoxdur</div>';
+    return;
+  }
+  el.innerHTML=`<table style="width:100%;border-collapse:collapse;font-size:13px">
+    <thead><tr>
+      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">İstifadəçi</th>
+      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Şirkət</th>
+      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Profil</th>
+      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Limit</th>
+      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Əməliyyat</th>
+    </tr></thead>
+    <tbody>${admins.map(u=>{
+      const comp=u.company||'—';
+      const profileCount=Object.values(d).filter(x=>x.role!=='admin'&&x.role!=='company_admin'&&((x.company||x.card?.company||'').toLowerCase().trim()===comp.toLowerCase().trim())).length;
+      return`<tr>
+        <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light)">
+          <div style="font-weight:500">${u.name||'—'}</div>
+          <div style="font-size:11px;color:var(--gray)">${u.email||''}</div>
+        </td>
+        <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light)">
+          <span style="background:rgba(24,95,165,.08);color:var(--blue);padding:3px 9px;border-radius:8px;font-size:12px;font-weight:500">🏢 ${comp}</span>
+        </td>
+        <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light);font-size:13px;color:var(--navy)">${profileCount} / ${u.profileLimit||10}</td>
+        <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light)">
+          <button class="btn btn-sm btn-danger" onclick="revokeCompanyAdmin('${u.uid}','${(u.name||'').replace(/'/g,"\\'")}')">İcazəni sil</button>
+        </td>
+      </tr>`;
+    }).join('')}</tbody>
+  </table>`;
+}
 
-  // ── Logout ──
-  window.doLogout = async function() { await signOut(auth); showScreen('login'); };
+// ── Tab keçidi ──────────────────────────────────────────────────────────────
+window.switchCaTab=function(n){
+  document.getElementById('caPanel1').style.display=n===1?'block':'none';
+  document.getElementById('caPanel2').style.display=n===2?'block':'none';
+  document.getElementById('caTab1').style.cssText='flex:1;padding:.65rem;font-size:13px;font-weight:500;color:'+(n===1?'var(--navy)':'var(--gray)')+';text-align:center;cursor:pointer;border-bottom:2px solid '+(n===1?'var(--blue)':'transparent')+';margin-bottom:-1.5px';
+  document.getElementById('caTab2').style.cssText='flex:1;padding:.65rem;font-size:13px;font-weight:500;color:'+(n===2?'var(--navy)':'var(--gray)')+';text-align:center;cursor:pointer;border-bottom:2px solid '+(n===2?'var(--blue)':'transparent')+';margin-bottom:-1.5px';
+};
 
-  ['regName','regSurname','regEmail','regPass'].forEach(id => {
-    const el = document.getElementById(id);
-    if(el) el.addEventListener('keydown', e => { if(e.key==='Enter') window.doRegister(); });
-  });
+// ── Yeni şirkət admini hesabı yarat ─────────────────────────────────────────
+window.createCompanyAdmin=async function(){
+  const err=document.getElementById('caCreateErr');
+  err.style.display='none';
+  const name    =(document.getElementById('caNewName')?.value||'').trim();
+  const surname =(document.getElementById('caNewSurname')?.value||'').trim();
+  const email   =(document.getElementById('caNewEmail')?.value||'').trim();
+  const pass    =(document.getElementById('caNewPass')?.value||'');
+  const company =(document.getElementById('caNewCompany')?.value||'').trim();
+  const limit   =parseInt(document.getElementById('caNewLimit')?.value||'10');
+
+  if(!name||!email||!pass||!company){
+    err.textContent='Ad, email, şifrə və şirkət adı məcburidir.';err.style.display='block';return;
+  }
+  if(pass.length<6){err.textContent='Şifrə minimum 6 simvol olmalıdır.';err.style.display='block';return;}
+
+  try{
+    // Firebase Auth-da hesab yarat
+    const {createUserWithEmailAndPassword:cup}=await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js');
+    const tmpAuth=getAuth();
+    const cred=await cup(tmpAuth,email,pass);
+    const uid=cred.user.uid;
+    const fullName=name+(surname?' '+surname:'');
+    const slug=email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g,'')+Math.floor(Math.random()*900+100);
+
+    await set(ref(db,`users/${uid}`),{
+      name:fullName, email, slug, company,
+      plan:'business', role:'company_admin', userRole:'company_admin',
+      status:'active', profileLimit:limit,
+      createdAt:Date.now(), createdBy:CU?.uid||'admin',
+      card:{name, surname, email}, brandLink:false
+    });
+
+    showToast(`${fullName} şirkət admini yaradıldı ✓`,'success');
+    ['caNewName','caNewSurname','caNewEmail','caNewPass','caNewCompany'].forEach(id=>{
+      const el=document.getElementById(id);if(el)el.value='';
+    });
+    const lim=document.getElementById('caNewLimit');if(lim)lim.value='10';
+    renderCompanyAdmins();
+  }catch(e){
+    const msgs={
+      'auth/email-already-in-use':'Bu email artıq mövcuddur.',
+      'auth/weak-password':'Şifrə çox sadədir.',
+      'auth/invalid-email':'Email formatı yanlışdır.'
+    };
+    err.textContent=msgs[e.code]||'Xəta: '+e.message;
+    err.style.display='block';
+  }
+};
+
+// ── Profil limitini yenilə ───────────────────────────────────────────────────
+window.updateProfileLimit=async function(uid){
+  const inp=document.getElementById('lim_'+uid);
+  if(!inp)return;
+  const limit=parseInt(inp.value)||10;
+  await update(ref(db,`users/${uid}`),{profileLimit:limit});
+  showToast('Limit yeniləndi ✓','success');
+};
+
+window.revokeCompanyAdmin=async function(uid,name){
+  if(!confirm(`${name} şirkət admini icazəsi silinsin? O, artıq admin panelinə girə bilməyəcək.`))return;
+  await update(ref(db,`users/${uid}`),{role:'user'});
+  showToast(`${name} icazəsi silindi`,'success');
+  renderCompanyAdmins();
+};
+
+
+
+
+function showToast(m,t=''){const el=document.getElementById('toast');el.textContent=m;el.className='toast show '+t;setTimeout(()=>el.className='toast',3000);}
+window.showToast=showToast;
+</script>
+<script>
+function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('sidebarOverlay').classList.toggle('open');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('open');}
 </script>
 </body>
 </html>
