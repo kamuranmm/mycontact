@@ -793,6 +793,9 @@ function renderStats(){
 
 let _planChart=null,_statusChart=null;
 function renderCharts(){
+  // Köhnə chart-ları sil
+  const existPlan=Chart.getChart('planChart');if(existPlan)existPlan.destroy();
+  const existStatus=Chart.getChart('statusChart');if(existStatus)existStatus.destroy();
   const free=allUsers.filter(u=>u.plan==='free'||!u.plan).length;
   const pro=allUsers.filter(u=>u.plan==='pro').length;
   const prem=allUsers.filter(u=>u.plan==='premium').length;
