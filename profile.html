@@ -585,7 +585,13 @@ async function init(){
     const pgEl=document.getElementById('pgfoot');
     if(pgEl){const _ip=PD.plan==='pro'||PD.plan==='premium'||PD.plan==='business';pgEl.style.display=(_ip&&PD.brandLink===false)?'none':'block';}
     try{await update(ref(db,`users/${PU}/stats`),{views:((PD.stats?.views||0)+1)});}catch(e){}
-  }catch(e){console.error(e);showNF();}
+  }catch(e){
+    console.error('Profile load error:',e);
+    showNF();
+    // Xətanı səhifədə göstər
+    const nfSub = document.querySelector('#nfCard p, #nfCard div:last-child');
+    if(nfSub) nfSub.textContent = 'Xəta: ' + (e.message||e.code||String(e));
+  }
 }
 function showNF(){document.getElementById('lw').style.display='none';document.getElementById('nfCard').style.display='block';}
 function showBlocked(){
