@@ -623,7 +623,11 @@ document.addEventListener('click',e=>{if(!e.target.closest('.lang-dropdown')){co
 function initTmplBtns(){document.querySelectorAll('.to').forEach(t=>t.classList.remove('on'));document.getElementById('t-'+tmpl)?.classList.add('on');}
 
 // ── HELPERS ────────────────────────────────────────────────────────────────
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;').replace(/'/g,'&#39;');}
+function verifiedBadge(){
+  if(!(PD&&(PD.plan==='pro'||PD.plan==='premium'||PD.plan==='business')))return'';
+  return'<span class="verified-badge" title="Doğrulanmış hesab"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>';
+}
 function htp(u){if(!u)return'#';return u.startsWith('http')?u:'https://'+u;}
 function ytId(u){return u?.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|embed\/)([a-zA-Z0-9_-]{11})/)?.[1];}
 
