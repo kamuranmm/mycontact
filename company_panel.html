@@ -151,7 +151,9 @@ onAuthStateChanged(auth,async u=>{
   const snap=await get(ref(db,`users/${u.uid}`));
   UD=snap.val();
   if(!UD||UD.role!=='company_admin'){location.href='index.html';return;}
-  document.getElementById('topCompany').innerHTML=`<strong>${UD.company||'Şirkət'}</strong> — İdarə Paneli`;
+  const _compPro=UD.companyProExpiresAt&&UD.companyProExpiresAt>Date.now();
+  const _proLabel=_compPro?` <span style="background:rgba(39,174,96,.15);color:var(--success);font-size:10px;font-weight:700;padding:2px 7px;border-radius:8px;margin-left:6px">★ Şirkət PRO</span>`:'';
+  document.getElementById('topCompany').innerHTML=`<strong>${UD.company||'Şirkət'}</strong> — İdarə Paneli${_proLabel}`;
   document.getElementById('topName').textContent=UD.name||u.email;
   const av=document.getElementById('topAv');
   if(UD.card?.photo){av.innerHTML=`<img src="${UD.card.photo}" loading="lazy">`;}
@@ -175,8 +177,11 @@ async function loadMembers(){
   const limit=UD.profileLimit||10;
   // Auto-expire PRO planları
   const now=Date.now();
+  // Əgər şirkət PRO bitibsə — bütün üzvlərin PRO-su da bitir
+  const companyProExpired=UD.companyProExpiresAt&&UD.companyProExpiresAt<now;
   for(const m of _members){
-    if((m.plan==='pro'||m.plan==='business')&&m.proExpiresAt&&m.proExpiresAt<now){
+    const memberProExpired=(m.plan==='pro'||m.plan==='business')&&m.proExpiresAt&&m.proExpiresAt<now;
+    if(memberProExpired||companyProExpired&&(m.plan==='pro'||m.plan==='business')){
       await update(ref(db,`users/${m.uid}`),{plan:'free',proExpiredAt:now});
       m.plan='free';
     }
@@ -297,7 +302,18 @@ window.saveMember=async function(){
       const uid=cred.user.uid;
       const slug=email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g,'')+Math.floor(Math.random()*900+100);
       const company=UD.company||CU.uid;
-      await set(ref(db,`users/${uid}`),{name:fullName,email,slug,phone,plan:'free',role:'user',userRole:'user',status:'active',company,managedBy:CU.uid,createdAt:Date.now(),card:{name:fullName,position:pos,phone,email},brandLink:true});
+      // Şirkət PRO aktivdirsə → yeni profil avtomatik PRO olur
+      const companyProActive=UD.companyProExpiresAt&&UD.companyProExpiresAt>Date.now();
+      const memberPlan=companyProActive?'pro':'free';
+      const memberProExpires=companyProActive?UD.companyProExpiresAt:null;
+      await set(ref(db,`users/${uid}`),{
+        name:fullName,email,slug,phone,
+        plan:memberPlan,role:'user',userRole:'user',status:'active',
+        company,managedBy:CU.uid,createdAt:Date.now(),
+        proExpiresAt:memberProExpires,
+        proStartedAt:companyProActive?Date.now():null,
+        card:{name:fullName,position:pos,phone,email},brandLink:true
+      });
       _members.push({uid,name:fullName,email,company,slug,card:{position:pos,phone}});
       document.getElementById('statTotal').textContent=_members.length;
       document.getElementById('statLeft').textContent=Math.max(0,(UD.profileLimit||10)-_members.length);
