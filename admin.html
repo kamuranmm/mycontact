@@ -1398,6 +1398,27 @@ window.updateProLimit=async function(uid){
     showToast('Xəta: '+e.message,'error');
   }
 };
+// ── ŞİRKƏT PRO ───────────────────────────────────────────────────────────
+window.activateCompanyPro=async function(uid,years){
+  if(!confirm(`Bu şirkəti ${years} il PRO edirsiniz? Bütün yeni yaradılan profillər avtomatik PRO olacaq.`))return;
+  const ms=years*365*24*60*60*1000;
+  const expiresAt=Date.now()+ms;
+  await update(ref(db,'users/'+uid),{
+    companyProExpiresAt:expiresAt,
+    companyProYears:years,
+    companyProActivatedAt:Date.now(),
+    companyProActivatedBy:currentAdminUid
+  });
+  showToast(`Şirkət ${years} il PRO aktivləşdi ✓`,'success');
+  renderCompanyAdmins();
+};
+window.revokeCompanyPro=async function(uid){
+  if(!confirm('Şirkət PRO-sunu ləğv edirsiniz?'))return;
+  await update(ref(db,'users/'+uid),{companyProExpiresAt:null,companyProYears:null});
+  showToast('Şirkət PRO ləğv edildi','success');
+  renderCompanyAdmins();
+};
+
 window.doLogout=async function(){await signOut(auth);location.href='index.html';};
 
 // ── COMPANY ADMIN MANAGEMENT ──────────────────────────────────────────────
@@ -1482,8 +1503,9 @@ async function renderCompanyAdmins(){
       <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">İstifadəçi</th>
       <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Şirkət</th>
       <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Profil / Limit</th>
-      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">PRO icazəsi</th>
-      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Limit dəyiş</th>
+      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Şirkət PRO</th>
+      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Fərdi PRO icazəsi</th>
+      <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Limit</th>
       <th style="text-align:left;padding:7px 10px;font-size:11px;color:var(--gray);font-weight:500;background:var(--surface);border-bottom:1px solid var(--gray-light)">Əməliyyat</th>
     </tr></thead>
     <tbody>${admins.map(u=>{
@@ -1499,13 +1521,27 @@ async function renderCompanyAdmins(){
         </td>
         <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light);font-size:13px;color:var(--navy)">${profileCount} / ${u.profileLimit||10}</td>
         <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light)">
+          ${u.companyProExpiresAt&&u.companyProExpiresAt>Date.now()
+            ?`<div style="display:flex;flex-direction:column;gap:4px">
+                <span style="background:rgba(39,174,96,.1);color:var(--success);font-size:11px;font-weight:600;padding:2px 8px;border-radius:8px;white-space:nowrap">✓ Aktiv — ${new Date(u.companyProExpiresAt).toLocaleDateString('az')}-dək</span>
+                <button class="btn btn-sm btn-danger" onclick="revokeCompanyPro('${u.uid}')">Ləğv et</button>
+              </div>`
+            :`<div style="display:flex;gap:4px;flex-wrap:wrap">
+                <button class="btn btn-sm" onclick="activateCompanyPro('${u.uid}',1)" style="font-size:11px;padding:4px 8px">1 il</button>
+                <button class="btn btn-sm" onclick="activateCompanyPro('${u.uid}',2)" style="font-size:11px;padding:4px 8px">2 il</button>
+                <button class="btn btn-sm btn-primary" onclick="activateCompanyPro('${u.uid}',3)" style="font-size:11px;padding:4px 8px">3 il</button>
+              </div>`
+          }
+        </td>
+        <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light)">
           <div style="display:flex;align-items:center;gap:6px">
-            <input type="number" value="${u.proLimit||0}" min="0" max="999" id="pro_${u.uid}" style="width:55px;padding:4px 8px;border:1px solid var(--gray-light);border-radius:7px;font-size:13px;color:var(--navy);text-align:center" title="Neçə üzvü PRO edə bilər">
+            <input type="number" value="${u.proLimit||0}" min="0" max="999" id="pro_${u.uid}" style="width:55px;padding:4px 8px;border:1px solid var(--gray-light);border-radius:7px;font-size:13px;color:var(--navy);text-align:center">
             <button class="btn btn-sm" onclick="updateProLimit('${u.uid}')" style="background:linear-gradient(135deg,#185FA5,#378ADD);color:#fff;border:none">★ Saxla</button>
           </div>
         </td>
         <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light)">
-          <div style="display:flex;align-items:center;gap:6px"><input type="number" value="${u.profileLimit||10}" min="1" max="999" id="lim_${u.uid}" style="width:65px;padding:4px 8px;border:1px solid var(--gray-light);border-radius:7px;font-size:13px;color:var(--navy);text-align:center"><button class="btn btn-sm btn-primary" onclick="updateProfileLimit('${u.uid}')">Saxla</button></div></td>
+          <div style="display:flex;align-items:center;gap:6px"><input type="number" value="${u.profileLimit||10}" min="1" max="999" id="lim_${u.uid}" style="width:65px;padding:4px 8px;border:1px solid var(--gray-light);border-radius:7px;font-size:13px;color:var(--navy);text-align:center"><button class="btn btn-sm btn-primary" onclick="updateProfileLimit('${u.uid}')">Saxla</button></div>
+        </td>
         <td style="padding:10px 10px;border-bottom:1px solid var(--gray-light)">
           <button class="btn btn-sm btn-danger" onclick="revokeCompanyAdmin('${u.uid}','${(u.name||'').replace(/'/g,"\\'")}')">İcazəni sil</button>
         </td>
